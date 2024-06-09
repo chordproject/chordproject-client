@@ -45,6 +45,8 @@
                             "includePaths": ["src/@fuse/styles"]
                         },
                         "styles": [
+                            "src/styles/splash-screen.css",
+                            "src/styles/inter.css",
                             "src/@fuse/styles/tailwind.scss",
                             "src/@fuse/styles/themes.scss",
                             "src/styles/vendors.scss",
