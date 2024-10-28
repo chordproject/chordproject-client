@@ -3,12 +3,7 @@ import { APP_INITIALIZER, ApplicationConfig, inject } from '@angular/core';
 import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import {
-    PreloadAllModules,
-    provideRouter,
-    withInMemoryScrolling,
-    withPreloading,
-} from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideFuse } from '@fuse';
 import { TranslocoService, provideTransloco } from '@ngneat/transloco';
 import { appRoutes } from 'app/app.routes';
@@ -24,7 +19,6 @@ export const appConfig: ApplicationConfig = {
         provideHttpClient(),
         provideRouter(
             appRoutes,
-            withPreloading(PreloadAllModules),
             withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
         ),
 
