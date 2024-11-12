@@ -13,8 +13,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { NotesService } from 'app/modules/admin/apps/notes/notes.service';
-import { Label } from 'app/modules/admin/apps/notes/notes.types';
 import {
     Observable,
     Subject,
@@ -23,6 +21,8 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
+import { NotesService } from '../notes.service';
+import { Label } from '../notes.types';
 
 @Component({
     selector: 'notes-labels',

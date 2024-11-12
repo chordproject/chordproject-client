@@ -11,12 +11,12 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideFuse } from '@fuse';
 import { TranslocoService, provideTransloco } from '@jsverse/transloco';
-import { appRoutes } from 'app/app.routes';
-import { provideAuth } from 'app/core/auth/auth.provider';
-import { provideIcons } from 'app/core/icons/icons.provider';
-import { MockApiService } from 'app/mock-api';
 import { firstValueFrom } from 'rxjs';
+import { appRoutes } from './app.routes';
+import { provideAuth } from './core/auth/auth.provider';
+import { provideIcons } from './core/icons/icons.provider';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
+import { MockApiService } from './mock-api';
 
 export const appConfig: ApplicationConfig = {
     providers: [

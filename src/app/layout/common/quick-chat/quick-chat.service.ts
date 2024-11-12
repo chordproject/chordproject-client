@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Chat } from 'app/layout/common/quick-chat/quick-chat.types';
 import {
     BehaviorSubject,
     map,
@@ -10,6 +9,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import { Chat } from './quick-chat.types';
 
 @Injectable({ providedIn: 'root' })
 export class QuickChatService {

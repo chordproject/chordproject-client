@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ChangelogComponent } from 'app/modules/admin/docs/changelog/changelog';
+import { ChangelogComponent } from './changelog';
 
 export default [
     {

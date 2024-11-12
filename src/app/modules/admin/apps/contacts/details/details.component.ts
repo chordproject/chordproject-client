@@ -36,14 +36,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { ContactsService } from 'app/modules/admin/apps/contacts/contacts.service';
-import {
-    Contact,
-    Country,
-    Tag,
-} from 'app/modules/admin/apps/contacts/contacts.types';
-import { ContactsListComponent } from 'app/modules/admin/apps/contacts/list/list.component';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { ContactsService } from '../contacts.service';
+import { Contact, Country, Tag } from '../contacts.types';
+import { ContactsListComponent } from '../list/list.component';
 
 @Component({
     selector: 'contacts-details',

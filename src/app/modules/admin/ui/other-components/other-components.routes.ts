@@ -1,15 +1,15 @@
 import { Routes } from '@angular/router';
-import { LanguagesComponent } from 'app/modules/admin/ui/other-components/common/languages/languages.component';
-import { MessagesComponent } from 'app/modules/admin/ui/other-components/common/messages/messages.component';
-import { NotificationsComponent } from 'app/modules/admin/ui/other-components/common/notifications/notifications.component';
-import { OverviewComponent } from 'app/modules/admin/ui/other-components/common/overview/overview.component';
-import { QuickChatComponent } from 'app/modules/admin/ui/other-components/common/quick-chat/quick-chat.component';
-import { SearchComponent } from 'app/modules/admin/ui/other-components/common/search/search.component';
-import { ShortcutsComponent } from 'app/modules/admin/ui/other-components/common/shortcuts/shortcuts.component';
-import { UserComponent } from 'app/modules/admin/ui/other-components/common/user/user.component';
-import { OtherComponentsComponent } from 'app/modules/admin/ui/other-components/other-components.component';
-import { ApexChartsComponent } from 'app/modules/admin/ui/other-components/third-party/apex-charts/apex-charts.component';
-import { QuillEditorComponent } from 'app/modules/admin/ui/other-components/third-party/quill-editor/quill-editor.component';
+import { LanguagesComponent } from './common/languages/languages.component';
+import { MessagesComponent } from './common/messages/messages.component';
+import { NotificationsComponent } from './common/notifications/notifications.component';
+import { OverviewComponent } from './common/overview/overview.component';
+import { QuickChatComponent } from './common/quick-chat/quick-chat.component';
+import { SearchComponent } from './common/search/search.component';
+import { ShortcutsComponent } from './common/shortcuts/shortcuts.component';
+import { UserComponent } from './common/user/user.component';
+import { OtherComponentsComponent } from './other-components.component';
+import { ApexChartsComponent } from './third-party/apex-charts/apex-charts.component';
+import { QuillEditorComponent } from './third-party/quill-editor/quill-editor.component';
 
 export default [
     {

@@ -27,15 +27,11 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import {
-    Board,
-    Card,
-    Label,
-} from 'app/modules/admin/apps/scrumboard/scrumboard.models';
-import { ScrumboardService } from 'app/modules/admin/apps/scrumboard/scrumboard.service';
 import { assign } from 'lodash-es';
 import { DateTime } from 'luxon';
 import { Subject, debounceTime, takeUntil, tap } from 'rxjs';
+import { Board, Card, Label } from '../../scrumboard.models';
+import { ScrumboardService } from '../../scrumboard.service';
 
 @Component({
     selector: 'scrumboard-card-details',
@@ -78,9 +74,9 @@ export class ScrumboardCardDetailsComponent implements OnInit, OnDestroy {
         private _scrumboardService: ScrumboardService
     ) {}
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * On init
@@ -150,9 +146,9 @@ export class ScrumboardCardDetailsComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Return whether the card has the given label
@@ -284,9 +280,9 @@ export class ScrumboardCardDetailsComponent implements OnInit, OnDestroy {
         return item.id || index;
     }
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Private methods
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Read the given file for demonstration purposes

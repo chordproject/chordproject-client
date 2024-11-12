@@ -5,8 +5,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
 import { FuseMasonryComponent } from '@fuse/components/masonry';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fuse-components.component';
 import { Subject, takeUntil } from 'rxjs';
+import { FuseComponentsComponent } from '../../fuse-components.component';
 
 @Component({
     selector: 'masonry',

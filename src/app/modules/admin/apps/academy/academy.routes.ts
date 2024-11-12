@@ -5,11 +5,11 @@ import {
     RouterStateSnapshot,
     Routes,
 } from '@angular/router';
-import { AcademyComponent } from 'app/modules/admin/apps/academy/academy.component';
-import { AcademyService } from 'app/modules/admin/apps/academy/academy.service';
-import { AcademyDetailsComponent } from 'app/modules/admin/apps/academy/details/details.component';
-import { AcademyListComponent } from 'app/modules/admin/apps/academy/list/list.component';
 import { catchError, throwError } from 'rxjs';
+import { AcademyComponent } from './academy.component';
+import { AcademyService } from './academy.service';
+import { AcademyDetailsComponent } from './details/details.component';
+import { AcademyListComponent } from './list/list.component';
 
 /**
  * Course resolver

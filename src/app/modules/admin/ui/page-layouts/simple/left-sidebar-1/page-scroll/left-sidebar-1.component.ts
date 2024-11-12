@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { DemoSidebarComponent } from 'app/modules/admin/ui/page-layouts/common/demo-sidebar/demo-sidebar.component';
 import { Subject, takeUntil } from 'rxjs';
+import { DemoSidebarComponent } from '../../../common/demo-sidebar/demo-sidebar.component';
 
 @Component({
     selector: 'simple-left-sidebar-1-page-scroll',

@@ -7,8 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
-import { IconsService } from 'app/modules/admin/ui/icons/icons.service';
-import { Icon } from 'app/modules/admin/ui/icons/icons.types';
 import {
     BehaviorSubject,
     Observable,
@@ -17,6 +15,8 @@ import {
     map,
     takeUntil,
 } from 'rxjs';
+import { IconsService } from './icons.service';
+import { Icon } from './icons.types';
 
 @Component({
     selector: 'icons',

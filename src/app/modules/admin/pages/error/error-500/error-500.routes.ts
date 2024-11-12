@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Error500Component } from 'app/modules/admin/pages/error/error-500/error-500.component';
+import { Error500Component } from './error-500.component';
 
 export default [
     {

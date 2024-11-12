@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { IconsService } from 'app/modules/admin/ui/icons/icons.service';
 import { Observable } from 'rxjs';
+import { IconsService } from './icons.service';
 
 @Injectable({ providedIn: 'root' })
 export class IconsResolver {

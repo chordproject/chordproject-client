@@ -38,15 +38,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inventory.service';
-import {
-    InventoryBrand,
-    InventoryCategory,
-    InventoryPagination,
-    InventoryProduct,
-    InventoryTag,
-    InventoryVendor,
-} from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
 import {
     Observable,
     Subject,
@@ -56,6 +47,15 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
+import { InventoryService } from '../inventory.service';
+import {
+    InventoryBrand,
+    InventoryCategory,
+    InventoryPagination,
+    InventoryProduct,
+    InventoryTag,
+    InventoryVendor,
+} from '../inventory.types';
 
 @Component({
     selector: 'inventory-list',

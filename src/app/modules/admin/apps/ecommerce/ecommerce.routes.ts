@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
-import { InventoryComponent } from 'app/modules/admin/apps/ecommerce/inventory/inventory.component';
-import { InventoryService } from 'app/modules/admin/apps/ecommerce/inventory/inventory.service';
-import { InventoryListComponent } from 'app/modules/admin/apps/ecommerce/inventory/list/inventory.component';
+import { InventoryComponent } from './inventory/inventory.component';
+import { InventoryService } from './inventory/inventory.service';
+import { InventoryListComponent } from './inventory/list/inventory.component';
 
 export default [
     {

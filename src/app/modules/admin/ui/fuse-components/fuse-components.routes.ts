@@ -1,22 +1,22 @@
 import { Routes } from '@angular/router';
-import { AlertComponent } from 'app/modules/admin/ui/fuse-components/components/alert/alert.component';
-import { CardComponent } from 'app/modules/admin/ui/fuse-components/components/card/card.component';
-import { DrawerComponent } from 'app/modules/admin/ui/fuse-components/components/drawer/drawer.component';
-import { FullscreenComponent } from 'app/modules/admin/ui/fuse-components/components/fullscreen/fullscreen.component';
-import { HighlightComponent } from 'app/modules/admin/ui/fuse-components/components/highlight/highlight.component';
-import { LoadingBarComponent } from 'app/modules/admin/ui/fuse-components/components/loading-bar/loading-bar.component';
-import { MasonryComponent } from 'app/modules/admin/ui/fuse-components/components/masonry/masonry.component';
-import { NavigationComponent } from 'app/modules/admin/ui/fuse-components/components/navigation/navigation.component';
-import { ScrollResetComponent } from 'app/modules/admin/ui/fuse-components/directives/scroll-reset/scroll-reset.component';
-import { ScrollbarComponent } from 'app/modules/admin/ui/fuse-components/directives/scrollbar/scrollbar.component';
-import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fuse-components.component';
-import { MockApiComponent } from 'app/modules/admin/ui/fuse-components/libraries/mock-api/mock-api.component';
-import { FindByKeyComponent } from 'app/modules/admin/ui/fuse-components/pipes/find-by-key/find-by-key.component';
-import { ConfigComponent } from 'app/modules/admin/ui/fuse-components/services/config/config.component';
-import { ConfirmationComponent } from 'app/modules/admin/ui/fuse-components/services/confirmation/confirmation.component';
-import { MediaWatcherComponent } from 'app/modules/admin/ui/fuse-components/services/media-watcher/media-watcher.component';
-import { SplashScreenComponent } from 'app/modules/admin/ui/fuse-components/services/splash-screen/splash-screen.component';
-import { MustMatchComponent } from 'app/modules/admin/ui/fuse-components/validators/must-match/must-match.component';
+import { AlertComponent } from './components/alert/alert.component';
+import { CardComponent } from './components/card/card.component';
+import { DrawerComponent } from './components/drawer/drawer.component';
+import { FullscreenComponent } from './components/fullscreen/fullscreen.component';
+import { HighlightComponent } from './components/highlight/highlight.component';
+import { LoadingBarComponent } from './components/loading-bar/loading-bar.component';
+import { MasonryComponent } from './components/masonry/masonry.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { ScrollResetComponent } from './directives/scroll-reset/scroll-reset.component';
+import { ScrollbarComponent } from './directives/scrollbar/scrollbar.component';
+import { FuseComponentsComponent } from './fuse-components.component';
+import { MockApiComponent } from './libraries/mock-api/mock-api.component';
+import { FindByKeyComponent } from './pipes/find-by-key/find-by-key.component';
+import { ConfigComponent } from './services/config/config.component';
+import { ConfirmationComponent } from './services/confirmation/confirmation.component';
+import { MediaWatcherComponent } from './services/media-watcher/media-watcher.component';
+import { SplashScreenComponent } from './services/splash-screen/splash-screen.component';
+import { MustMatchComponent } from './validators/must-match/must-match.component';
 
 export default [
     {

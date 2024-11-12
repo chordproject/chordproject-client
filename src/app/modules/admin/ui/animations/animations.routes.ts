@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AnimationsComponent } from 'app/modules/admin/ui/animations/animations.component';
+import { AnimationsComponent } from './animations.component';
 
 export default [
     {

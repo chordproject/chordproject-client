@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Tag, Task } from 'app/modules/admin/apps/tasks/tasks.types';
 import {
     BehaviorSubject,
     Observable,
@@ -12,6 +11,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import { Tag, Task } from './tasks.types';
 
 @Injectable({ providedIn: 'root' })
 export class TasksService {

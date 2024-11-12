@@ -5,11 +5,11 @@ import {
     RouterStateSnapshot,
     Routes,
 } from '@angular/router';
-import { FileManagerDetailsComponent } from 'app/modules/admin/apps/file-manager/details/details.component';
-import { FileManagerComponent } from 'app/modules/admin/apps/file-manager/file-manager.component';
-import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
-import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/list/list.component';
 import { catchError, throwError } from 'rxjs';
+import { FileManagerDetailsComponent } from './details/details.component';
+import { FileManagerComponent } from './file-manager.component';
+import { FileManagerService } from './file-manager.service';
+import { FileManagerListComponent } from './list/list.component';
 
 /**
  * Folder resolver

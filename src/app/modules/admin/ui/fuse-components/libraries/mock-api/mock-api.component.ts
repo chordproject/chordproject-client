@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FuseAlertComponent } from '@fuse/components/alert';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
-import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fuse-components.component';
+import { FuseComponentsComponent } from '../../fuse-components.component';
 
 @Component({
     selector: 'mock-api',

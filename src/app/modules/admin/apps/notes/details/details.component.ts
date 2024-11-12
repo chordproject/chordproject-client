@@ -20,8 +20,6 @@ import {
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { NotesService } from 'app/modules/admin/apps/notes/notes.service';
-import { Label, Note, Task } from 'app/modules/admin/apps/notes/notes.types';
 import {
     Observable,
     Subject,
@@ -31,6 +29,8 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
+import { NotesService } from '../notes.service';
+import { Label, Note, Task } from '../notes.types';
 
 @Component({
     selector: 'notes-details',

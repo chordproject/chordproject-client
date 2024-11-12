@@ -5,7 +5,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { FuseAlertComponent } from '@fuse/components/alert';
 import { FuseDrawerComponent, FuseDrawerMode } from '@fuse/components/drawer';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
-import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fuse-components.component';
+import { FuseComponentsComponent } from '../../fuse-components.component';
 
 @Component({
     selector: 'drawer',

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { MaintenanceComponent } from 'app/modules/admin/pages/maintenance/maintenance.component';
+import { MaintenanceComponent } from './maintenance.component';
 
 export default [
     {

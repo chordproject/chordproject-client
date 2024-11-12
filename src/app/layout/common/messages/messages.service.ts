@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Message } from 'app/layout/common/messages/messages.types';
 import { map, Observable, ReplaySubject, switchMap, take, tap } from 'rxjs';
+import { Message } from './messages.types';
 
 @Injectable({ providedIn: 'root' })
 export class MessagesService {

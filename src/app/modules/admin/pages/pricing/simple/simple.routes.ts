@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { PricingSimpleComponent } from 'app/modules/admin/pages/pricing/simple/simple.component';
+import { PricingSimpleComponent } from './simple.component';
 
 export default [
     {

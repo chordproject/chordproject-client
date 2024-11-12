@@ -12,9 +12,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
-import { AnalyticsService } from 'app/modules/admin/dashboards/analytics/analytics.service';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { Subject, takeUntil } from 'rxjs';
+import { AnalyticsService } from './analytics.service';
 
 @Component({
     selector: 'analytics',

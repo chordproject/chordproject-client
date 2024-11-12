@@ -1,13 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-    Mail,
-    MailCategory,
-    MailFilter,
-    MailFolder,
-    MailLabel,
-} from 'app/modules/admin/apps/mailbox/mailbox.types';
-import {
     BehaviorSubject,
     Observable,
     map,
@@ -17,6 +10,13 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import {
+    Mail,
+    MailCategory,
+    MailFilter,
+    MailFolder,
+    MailLabel,
+} from './mailbox.types';
 
 @Injectable({ providedIn: 'root' })
 export class MailboxService {

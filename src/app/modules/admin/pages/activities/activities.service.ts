@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Activity } from 'app/modules/admin/pages/activities/activities.types';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Activity } from './activities.types';
 
 @Injectable({ providedIn: 'root' })
 export class ActivitiesService {

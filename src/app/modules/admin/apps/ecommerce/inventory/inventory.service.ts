@@ -1,14 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-    InventoryBrand,
-    InventoryCategory,
-    InventoryPagination,
-    InventoryProduct,
-    InventoryTag,
-    InventoryVendor,
-} from 'app/modules/admin/apps/ecommerce/inventory/inventory.types';
-import {
     BehaviorSubject,
     Observable,
     filter,
@@ -19,6 +11,14 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import {
+    InventoryBrand,
+    InventoryCategory,
+    InventoryPagination,
+    InventoryProduct,
+    InventoryTag,
+    InventoryVendor,
+} from './inventory.types';
 
 @Injectable({ providedIn: 'root' })
 export class InventoryService {

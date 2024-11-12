@@ -18,12 +18,9 @@ import {
     RouterOutlet,
 } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
-import {
-    Item,
-    Items,
-} from 'app/modules/admin/apps/file-manager/file-manager.types';
 import { Subject, takeUntil } from 'rxjs';
+import { FileManagerService } from '../file-manager.service';
+import { Item, Items } from '../file-manager.types';
 
 @Component({
     selector: 'file-manager-list',

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Label, Note } from 'app/modules/admin/apps/notes/notes.types';
 import { cloneDeep } from 'lodash-es';
 import {
     BehaviorSubject,
@@ -12,6 +11,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import { Label, Note } from './notes.types';
 
 @Injectable({ providedIn: 'root' })
 export class NotesService {

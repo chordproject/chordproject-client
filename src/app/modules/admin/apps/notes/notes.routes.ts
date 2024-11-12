@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { NotesListComponent } from 'app/modules/admin/apps/notes/list/list.component';
-import { NotesComponent } from 'app/modules/admin/apps/notes/notes.component';
+import { NotesListComponent } from './list/list.component';
+import { NotesComponent } from './notes.component';
 
 export default [
     {

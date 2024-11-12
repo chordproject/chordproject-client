@@ -1,22 +1,22 @@
 import { Routes } from '@angular/router';
-import { JwtComponent } from 'app/modules/admin/docs/guides/authentication/jwt/jwt';
-import { ComponentThemingComponent } from 'app/modules/admin/docs/guides/customization/component-theming/component-theming';
-import { MultiLanguageCustomizationComponent } from 'app/modules/admin/docs/guides/customization/multi-language/multi-language';
-import { PageLayoutsComponent } from 'app/modules/admin/docs/guides/customization/page-layouts/page-layouts';
-import { SplashScreenCustomizationComponent } from 'app/modules/admin/docs/guides/customization/splash-screen/splash-screen';
-import { TailwindCSSComponent } from 'app/modules/admin/docs/guides/customization/tailwindcss/tailwindcss';
-import { ThemeLayoutsComponent } from 'app/modules/admin/docs/guides/customization/theme-layouts/theme-layouts';
-import { ThemingComponent } from 'app/modules/admin/docs/guides/customization/theming/theming';
-import { ComponentStructureComponent } from 'app/modules/admin/docs/guides/development/component-structure/component-structure';
-import { DeploymentComponent } from 'app/modules/admin/docs/guides/development/deployment/deployment';
-import { DirectoryStructureComponent } from 'app/modules/admin/docs/guides/development/directory-structure/directory-structure';
-import { StarterKitComponent } from 'app/modules/admin/docs/guides/development/starter-kit/starter-kit';
-import { UpdatingComponent } from 'app/modules/admin/docs/guides/development/updating/updating';
-import { InstallationComponent } from 'app/modules/admin/docs/guides/getting-started/installation/installation';
-import { IntroductionComponent } from 'app/modules/admin/docs/guides/getting-started/introduction/introduction';
-import { PrerequisitesComponent } from 'app/modules/admin/docs/guides/getting-started/prerequisites/prerequisites';
-import { ServingComponent } from 'app/modules/admin/docs/guides/getting-started/serving/serving';
-import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component';
+import { JwtComponent } from './authentication/jwt/jwt';
+import { ComponentThemingComponent } from './customization/component-theming/component-theming';
+import { MultiLanguageCustomizationComponent } from './customization/multi-language/multi-language';
+import { PageLayoutsComponent } from './customization/page-layouts/page-layouts';
+import { SplashScreenCustomizationComponent } from './customization/splash-screen/splash-screen';
+import { TailwindCSSComponent } from './customization/tailwindcss/tailwindcss';
+import { ThemeLayoutsComponent } from './customization/theme-layouts/theme-layouts';
+import { ThemingComponent } from './customization/theming/theming';
+import { ComponentStructureComponent } from './development/component-structure/component-structure';
+import { DeploymentComponent } from './development/deployment/deployment';
+import { DirectoryStructureComponent } from './development/directory-structure/directory-structure';
+import { StarterKitComponent } from './development/starter-kit/starter-kit';
+import { UpdatingComponent } from './development/updating/updating';
+import { InstallationComponent } from './getting-started/installation/installation';
+import { IntroductionComponent } from './getting-started/introduction/introduction';
+import { PrerequisitesComponent } from './getting-started/prerequisites/prerequisites';
+import { ServingComponent } from './getting-started/serving/serving';
+import { GuidesComponent } from './guides.component';
 
 export default [
     {

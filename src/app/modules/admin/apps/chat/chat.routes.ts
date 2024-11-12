@@ -5,12 +5,12 @@ import {
     RouterStateSnapshot,
     Routes,
 } from '@angular/router';
-import { ChatComponent } from 'app/modules/admin/apps/chat/chat.component';
-import { ChatService } from 'app/modules/admin/apps/chat/chat.service';
-import { ChatsComponent } from 'app/modules/admin/apps/chat/chats/chats.component';
-import { ConversationComponent } from 'app/modules/admin/apps/chat/conversation/conversation.component';
-import { EmptyConversationComponent } from 'app/modules/admin/apps/chat/empty-conversation/empty-conversation.component';
 import { catchError, throwError } from 'rxjs';
+import { ChatComponent } from './chat.component';
+import { ChatService } from './chat.service';
+import { ChatsComponent } from './chats/chats.component';
+import { ConversationComponent } from './conversation/conversation.component';
+import { EmptyConversationComponent } from './empty-conversation/empty-conversation.component';
 
 /**
  * Conversation resolver

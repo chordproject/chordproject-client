@@ -32,9 +32,9 @@ import {
     FuseVerticalNavigationComponent,
 } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { TasksService } from 'app/modules/admin/apps/tasks/tasks.service';
-import { Tag, Task } from 'app/modules/admin/apps/tasks/tasks.types';
 import { Subject, filter, fromEvent, takeUntil } from 'rxjs';
+import { TasksService } from '../tasks.service';
+import { Tag, Task } from '../tasks.types';
 
 @Component({
     selector: 'tasks-list',
@@ -85,9 +85,9 @@ export class TasksListComponent implements OnInit, OnDestroy {
         private _fuseNavigationService: FuseNavigationService
     ) {}
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * On init
@@ -203,9 +203,9 @@ export class TasksListComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * On backdrop clicked

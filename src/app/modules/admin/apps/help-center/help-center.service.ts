@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-    FaqCategory,
-    Guide,
-    GuideCategory,
-} from 'app/modules/admin/apps/help-center/help-center.type';
 import { Observable, ReplaySubject, tap } from 'rxjs';
+import { FaqCategory, Guide, GuideCategory } from './help-center.type';
 
 @Injectable({ providedIn: 'root' })
 export class HelpCenterService {

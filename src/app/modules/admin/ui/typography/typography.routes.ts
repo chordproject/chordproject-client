@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { TypographyComponent } from 'app/modules/admin/ui/typography/typography.component';
+import { TypographyComponent } from './typography.component';
 
 export default [
     {

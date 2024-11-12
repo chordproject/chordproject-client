@@ -10,10 +10,10 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { Board } from 'app/modules/admin/apps/scrumboard/scrumboard.models';
-import { ScrumboardService } from 'app/modules/admin/apps/scrumboard/scrumboard.service';
 import { DateTime } from 'luxon';
 import { Subject, takeUntil } from 'rxjs';
+import { Board } from '../scrumboard.models';
+import { ScrumboardService } from '../scrumboard.service';
 
 @Component({
     selector: 'scrumboard-boards',
@@ -37,9 +37,9 @@ export class ScrumboardBoardsComponent implements OnInit, OnDestroy {
         private _scrumboardService: ScrumboardService
     ) {}
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * On init
@@ -65,9 +65,9 @@ export class ScrumboardBoardsComponent implements OnInit, OnDestroy {
         this._unsubscribeAll.complete();
     }
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Format the given ISO_8601 date as a relative date

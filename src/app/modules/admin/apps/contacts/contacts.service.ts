@@ -1,11 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-    Contact,
-    Country,
-    Tag,
-} from 'app/modules/admin/apps/contacts/contacts.types';
-import {
     BehaviorSubject,
     Observable,
     filter,
@@ -16,6 +11,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import { Contact, Country, Tag } from './contacts.types';
 
 @Injectable({ providedIn: 'root' })
 export class ContactsService {

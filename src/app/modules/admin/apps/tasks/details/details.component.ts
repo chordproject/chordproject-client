@@ -40,12 +40,12 @@ import {
 } from '@angular/router';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { TasksListComponent } from 'app/modules/admin/apps/tasks/list/list.component';
-import { TasksService } from 'app/modules/admin/apps/tasks/tasks.service';
-import { Tag, Task } from 'app/modules/admin/apps/tasks/tasks.types';
 import { assign } from 'lodash-es';
 import { DateTime } from 'luxon';
 import { Subject, debounceTime, filter, takeUntil, tap } from 'rxjs';
+import { TasksListComponent } from '../list/list.component';
+import { TasksService } from '../tasks.service';
+import { Tag, Task } from '../tasks.types';
 
 @Component({
     selector: 'tasks-details',
@@ -102,9 +102,9 @@ export class TasksDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         private _viewContainerRef: ViewContainerRef
     ) {}
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * On init
@@ -224,9 +224,9 @@ export class TasksDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Close the drawer

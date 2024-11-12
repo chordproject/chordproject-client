@@ -10,10 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { RouterLink } from '@angular/router';
-import { FileManagerService } from 'app/modules/admin/apps/file-manager/file-manager.service';
-import { Item } from 'app/modules/admin/apps/file-manager/file-manager.types';
-import { FileManagerListComponent } from 'app/modules/admin/apps/file-manager/list/list.component';
 import { Subject, takeUntil } from 'rxjs';
+import { FileManagerService } from '../file-manager.service';
+import { Item } from '../file-manager.types';
+import { FileManagerListComponent } from '../list/list.component';
 
 @Component({
     selector: 'file-manager-details',

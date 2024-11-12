@@ -7,10 +7,10 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { ActivitiesService } from 'app/modules/admin/pages/activities/activities.service';
-import { Activity } from 'app/modules/admin/pages/activities/activities.types';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
+import { ActivitiesService } from './activities.service';
+import { Activity } from './activities.types';
 
 @Component({
     selector: 'activity',

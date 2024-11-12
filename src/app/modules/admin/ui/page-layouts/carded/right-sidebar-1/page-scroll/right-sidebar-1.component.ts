@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink } from '@angular/router';
-import { DemoSidebarComponent } from 'app/modules/admin/ui/page-layouts/common/demo-sidebar/demo-sidebar.component';
+import { DemoSidebarComponent } from '../../../common/demo-sidebar/demo-sidebar.component';
 
 @Component({
     selector: 'carded-right-sidebar-1-page-scroll',

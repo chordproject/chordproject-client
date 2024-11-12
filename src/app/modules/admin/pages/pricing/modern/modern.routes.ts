@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { PricingModernComponent } from 'app/modules/admin/pages/pricing/modern/modern.component';
+import { PricingModernComponent } from './modern.component';
 
 export default [
     {

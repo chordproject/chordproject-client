@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { FormsFieldsComponent } from 'app/modules/admin/ui/forms/fields/fields.component';
-import { FormsLayoutsComponent } from 'app/modules/admin/ui/forms/layouts/layouts.component';
-import { FormsWizardsComponent } from 'app/modules/admin/ui/forms/wizards/wizards.component';
+import { FormsFieldsComponent } from './fields/fields.component';
+import { FormsLayoutsComponent } from './layouts/layouts.component';
+import { FormsWizardsComponent } from './wizards/wizards.component';
 
 export default [
     {

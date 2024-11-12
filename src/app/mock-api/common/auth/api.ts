@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { FuseMockApiService } from '@fuse/lib/mock-api';
-import { user as userData } from 'app/mock-api/common/user/data';
 import Base64 from 'crypto-js/enc-base64';
 import Utf8 from 'crypto-js/enc-utf8';
 import HmacSHA256 from 'crypto-js/hmac-sha256';
 import { cloneDeep } from 'lodash-es';
+import { user as userData } from '../user/data';
 
 @Injectable({ providedIn: 'root' })
 export class AuthMockApi {

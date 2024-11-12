@@ -23,14 +23,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import {
-    Board,
-    Card,
-    List,
-} from 'app/modules/admin/apps/scrumboard/scrumboard.models';
-import { ScrumboardService } from 'app/modules/admin/apps/scrumboard/scrumboard.service';
 import { DateTime } from 'luxon';
 import { Subject, takeUntil } from 'rxjs';
+import { Board, Card, List } from '../scrumboard.models';
+import { ScrumboardService } from '../scrumboard.service';
 import { ScrumboardBoardAddCardComponent } from './add-card/add-card.component';
 import { ScrumboardBoardAddListComponent } from './add-list/add-list.component';
 
@@ -78,9 +74,9 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy {
         private _scrumboardService: ScrumboardService
     ) {}
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * On init
@@ -303,9 +299,9 @@ export class ScrumboardBoardComponent implements OnInit, OnDestroy {
         return item.id || index;
     }
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Private methods
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Calculate and set item positions

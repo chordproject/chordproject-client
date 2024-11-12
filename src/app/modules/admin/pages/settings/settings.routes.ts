@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { SettingsComponent } from 'app/modules/admin/pages/settings/settings.component';
+import { SettingsComponent } from './settings.component';
 
 export default [
     {

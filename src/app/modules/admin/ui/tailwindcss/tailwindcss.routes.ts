@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { TailwindCSSComponent } from 'app/modules/admin/ui/tailwindcss/tailwindcss.component';
+import { TailwindCSSComponent } from './tailwindcss.component';
 
 export default [
     {

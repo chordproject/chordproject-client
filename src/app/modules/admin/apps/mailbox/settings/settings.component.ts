@@ -14,14 +14,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MailboxComponent } from 'app/modules/admin/apps/mailbox/mailbox.component';
-import {
-    labelColorDefs,
-    labelColors,
-} from 'app/modules/admin/apps/mailbox/mailbox.constants';
-import { MailboxService } from 'app/modules/admin/apps/mailbox/mailbox.service';
-import { MailLabel } from 'app/modules/admin/apps/mailbox/mailbox.types';
 import { debounceTime, take } from 'rxjs';
+import { MailboxComponent } from '../mailbox.component';
+import { labelColorDefs, labelColors } from '../mailbox.constants';
+import { MailboxService } from '../mailbox.service';
+import { MailLabel } from '../mailbox.types';
 
 @Component({
     selector: 'mailbox-settings',

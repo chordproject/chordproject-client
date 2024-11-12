@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { FuseCardComponent } from '@fuse/components/card';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
-import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fuse-components.component';
+import { FuseComponentsComponent } from '../../fuse-components.component';
 
 @Component({
     selector: 'card',

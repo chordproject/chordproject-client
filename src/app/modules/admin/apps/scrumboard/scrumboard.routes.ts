@@ -5,12 +5,12 @@ import {
     RouterStateSnapshot,
     Routes,
 } from '@angular/router';
-import { ScrumboardBoardComponent } from 'app/modules/admin/apps/scrumboard/board/board.component';
-import { ScrumboardBoardsComponent } from 'app/modules/admin/apps/scrumboard/boards/boards.component';
-import { ScrumboardCardComponent } from 'app/modules/admin/apps/scrumboard/card/card.component';
-import { Board } from 'app/modules/admin/apps/scrumboard/scrumboard.models';
-import { ScrumboardService } from 'app/modules/admin/apps/scrumboard/scrumboard.service';
 import { Observable, catchError, throwError } from 'rxjs';
+import { ScrumboardBoardComponent } from './board/board.component';
+import { ScrumboardBoardsComponent } from './boards/boards.component';
+import { ScrumboardCardComponent } from './card/card.component';
+import { Board } from './scrumboard.models';
+import { ScrumboardService } from './scrumboard.service';
 
 /**
  * Board resolver

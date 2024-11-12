@@ -16,8 +16,8 @@ import { RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { FuseValidators } from '@fuse/validators';
-import { AuthService } from 'app/core/auth/auth.service';
 import { finalize } from 'rxjs';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
     selector: 'auth-reset-password',

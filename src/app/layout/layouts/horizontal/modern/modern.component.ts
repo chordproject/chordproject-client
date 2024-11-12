@@ -10,16 +10,16 @@ import {
     FuseVerticalNavigationComponent,
 } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { NavigationService } from 'app/core/navigation/navigation.service';
-import { Navigation } from 'app/core/navigation/navigation.types';
-import { LanguagesComponent } from 'app/layout/common/languages/languages.component';
-import { MessagesComponent } from 'app/layout/common/messages/messages.component';
-import { NotificationsComponent } from 'app/layout/common/notifications/notifications.component';
-import { QuickChatComponent } from 'app/layout/common/quick-chat/quick-chat.component';
-import { SearchComponent } from 'app/layout/common/search/search.component';
-import { ShortcutsComponent } from 'app/layout/common/shortcuts/shortcuts.component';
-import { UserComponent } from 'app/layout/common/user/user.component';
 import { Subject, takeUntil } from 'rxjs';
+import { NavigationService } from '../../../../core/navigation/navigation.service';
+import { Navigation } from '../../../../core/navigation/navigation.types';
+import { LanguagesComponent } from '../../../common/languages/languages.component';
+import { MessagesComponent } from '../../../common/messages/messages.component';
+import { NotificationsComponent } from '../../../common/notifications/notifications.component';
+import { QuickChatComponent } from '../../../common/quick-chat/quick-chat.component';
+import { SearchComponent } from '../../../common/search/search.component';
+import { ShortcutsComponent } from '../../../common/shortcuts/shortcuts.component';
+import { UserComponent } from '../../../common/user/user.component';
 
 @Component({
     selector: 'modern-layout',

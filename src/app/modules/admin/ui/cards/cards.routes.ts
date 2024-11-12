@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { CardsComponent } from 'app/modules/admin/ui/cards/cards.component';
+import { CardsComponent } from './cards.component';
 
 export default [
     {

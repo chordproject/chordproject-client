@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { HelpCenterService } from 'app/modules/admin/apps/help-center/help-center.service';
-import { GuideCategory } from 'app/modules/admin/apps/help-center/help-center.type';
 import { Subject, takeUntil } from 'rxjs';
+import { HelpCenterService } from '../../help-center.service';
+import { GuideCategory } from '../../help-center.type';
 
 @Component({
     selector: 'help-center-guides-category',

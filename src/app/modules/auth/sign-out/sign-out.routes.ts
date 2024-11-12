@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthSignOutComponent } from 'app/modules/auth/sign-out/sign-out.component';
+import { AuthSignOutComponent } from './sign-out.component';
 
 export default [
     {

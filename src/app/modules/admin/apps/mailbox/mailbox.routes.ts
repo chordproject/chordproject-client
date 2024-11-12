@@ -7,14 +7,14 @@ import {
     UrlMatchResult,
     UrlSegment,
 } from '@angular/router';
-import { MailboxDetailsComponent } from 'app/modules/admin/apps/mailbox/details/details.component';
-import { MailboxEmptyDetailsComponent } from 'app/modules/admin/apps/mailbox/empty-details/empty-details.component';
-import { MailboxListComponent } from 'app/modules/admin/apps/mailbox/list/list.component';
-import { MailboxComponent } from 'app/modules/admin/apps/mailbox/mailbox.component';
-import { MailboxService } from 'app/modules/admin/apps/mailbox/mailbox.service';
-import { MailboxSettingsComponent } from 'app/modules/admin/apps/mailbox/settings/settings.component';
 import { isEqual } from 'lodash-es';
 import { catchError, finalize, forkJoin, throwError } from 'rxjs';
+import { MailboxDetailsComponent } from './details/details.component';
+import { MailboxEmptyDetailsComponent } from './empty-details/empty-details.component';
+import { MailboxListComponent } from './list/list.component';
+import { MailboxComponent } from './mailbox.component';
+import { MailboxService } from './mailbox.service';
+import { MailboxSettingsComponent } from './settings/settings.component';
 
 /**
  * Mailbox custom route matcher

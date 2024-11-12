@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Category, Course } from 'app/modules/admin/apps/academy/academy.types';
 import {
     BehaviorSubject,
     Observable,
@@ -10,6 +9,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import { Category, Course } from './academy.types';
 
 @Injectable({ providedIn: 'root' })
 export class AcademyService {

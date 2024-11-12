@@ -11,13 +11,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { MailboxComponent } from 'app/modules/admin/apps/mailbox/mailbox.component';
-import { MailboxService } from 'app/modules/admin/apps/mailbox/mailbox.service';
-import {
-    Mail,
-    MailCategory,
-} from 'app/modules/admin/apps/mailbox/mailbox.types';
 import { Subject, takeUntil } from 'rxjs';
+import { MailboxComponent } from '../mailbox.component';
+import { MailboxService } from '../mailbox.service';
+import { Mail, MailCategory } from '../mailbox.types';
 
 @Component({
     selector: 'mailbox-list',

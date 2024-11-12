@@ -20,10 +20,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { ChatService } from 'app/modules/admin/apps/chat/chat.service';
-import { Chat } from 'app/modules/admin/apps/chat/chat.types';
-import { ContactInfoComponent } from 'app/modules/admin/apps/chat/contact-info/contact-info.component';
 import { Subject, takeUntil } from 'rxjs';
+import { ChatService } from '../chat.service';
+import { Chat } from '../chat.types';
+import { ContactInfoComponent } from '../contact-info/contact-info.component';
 
 @Component({
     selector: 'chat-conversation',

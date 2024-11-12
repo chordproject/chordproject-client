@@ -1,10 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-    Item,
-    Items,
-} from 'app/modules/admin/apps/file-manager/file-manager.types';
-import {
     BehaviorSubject,
     Observable,
     map,
@@ -14,6 +10,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import { Item, Items } from './file-manager.types';
 
 @Injectable({ providedIn: 'root' })
 export class FileManagerService {

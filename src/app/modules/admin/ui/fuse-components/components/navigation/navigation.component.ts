@@ -9,7 +9,7 @@ import {
     FuseNavigationService,
     FuseVerticalNavigationComponent,
 } from '@fuse/components/navigation';
-import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fuse-components.component';
+import { FuseComponentsComponent } from '../../fuse-components.component';
 
 @Component({
     selector: 'navigation',

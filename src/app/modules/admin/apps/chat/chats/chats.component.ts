@@ -14,11 +14,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { ChatService } from 'app/modules/admin/apps/chat/chat.service';
-import { Chat, Profile } from 'app/modules/admin/apps/chat/chat.types';
-import { NewChatComponent } from 'app/modules/admin/apps/chat/new-chat/new-chat.component';
-import { ProfileComponent } from 'app/modules/admin/apps/chat/profile/profile.component';
 import { Subject, takeUntil } from 'rxjs';
+import { ChatService } from '../chat.service';
+import { Chat, Profile } from '../chat.types';
+import { NewChatComponent } from '../new-chat/new-chat.component';
+import { ProfileComponent } from '../profile/profile.component';
 
 @Component({
     selector: 'chat-chats',

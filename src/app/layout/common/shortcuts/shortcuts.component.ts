@@ -26,9 +26,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { ShortcutsService } from 'app/layout/common/shortcuts/shortcuts.service';
-import { Shortcut } from 'app/layout/common/shortcuts/shortcuts.types';
 import { Subject, takeUntil } from 'rxjs';
+import { ShortcutsService } from './shortcuts.service';
+import { Shortcut } from './shortcuts.types';
 
 @Component({
     selector: 'shortcuts',

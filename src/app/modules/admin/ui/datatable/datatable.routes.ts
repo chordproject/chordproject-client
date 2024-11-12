@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { DatatableComponent } from 'app/modules/admin/ui/datatable/datatable.component';
+import { DatatableComponent } from './datatable.component';
 
 export default [
     {

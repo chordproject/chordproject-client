@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ModernComponent } from 'app/modules/admin/pages/invoice/printable/modern/modern.component';
+import { ModernComponent } from './modern.component';
 
 export default [
     {

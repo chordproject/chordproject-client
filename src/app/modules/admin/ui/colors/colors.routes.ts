@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ColorsComponent } from 'app/modules/admin/ui/colors/colors.component';
+import { ColorsComponent } from './colors.component';
 
 export default [
     {

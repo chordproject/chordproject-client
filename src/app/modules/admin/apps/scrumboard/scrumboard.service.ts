@@ -1,12 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-    Board,
-    Card,
-    Label,
-    List,
-} from 'app/modules/admin/apps/scrumboard/scrumboard.models';
-import {
     BehaviorSubject,
     Observable,
     map,
@@ -16,6 +10,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import { Board, Card, Label, List } from './scrumboard.models';
 
 @Injectable({ providedIn: 'root' })
 export class ScrumboardService {

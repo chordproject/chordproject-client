@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent } from '@fuse/components/alert';
-import { HelpCenterService } from 'app/modules/admin/apps/help-center/help-center.service';
+import { HelpCenterService } from '../help-center.service';
 
 @Component({
     selector: 'help-center-support',

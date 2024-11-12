@@ -9,9 +9,9 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDrawer } from '@angular/material/sidenav';
-import { ChatService } from 'app/modules/admin/apps/chat/chat.service';
-import { Contact } from 'app/modules/admin/apps/chat/chat.types';
 import { Subject, takeUntil } from 'rxjs';
+import { ChatService } from '../chat.service';
+import { Contact } from '../chat.types';
 
 @Component({
     selector: 'chat-new-chat',

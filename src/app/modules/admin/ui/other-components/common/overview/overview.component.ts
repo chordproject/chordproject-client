@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FuseAlertComponent } from '@fuse/components/alert';
-import { OtherComponentsComponent } from 'app/modules/admin/ui/other-components/other-components.component';
+import { OtherComponentsComponent } from '../../other-components.component';
 
 @Component({
     selector: 'overview',

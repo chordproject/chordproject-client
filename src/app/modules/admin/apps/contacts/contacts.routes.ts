@@ -5,11 +5,11 @@ import {
     RouterStateSnapshot,
     Routes,
 } from '@angular/router';
-import { ContactsComponent } from 'app/modules/admin/apps/contacts/contacts.component';
-import { ContactsService } from 'app/modules/admin/apps/contacts/contacts.service';
-import { ContactsDetailsComponent } from 'app/modules/admin/apps/contacts/details/details.component';
-import { ContactsListComponent } from 'app/modules/admin/apps/contacts/list/list.component';
 import { catchError, throwError } from 'rxjs';
+import { ContactsComponent } from './contacts.component';
+import { ContactsService } from './contacts.service';
+import { ContactsDetailsComponent } from './details/details.component';
+import { ContactsListComponent } from './list/list.component';
 
 /**
  * Contact resolver

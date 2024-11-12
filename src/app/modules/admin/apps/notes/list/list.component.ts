@@ -16,10 +16,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FuseMasonryComponent } from '@fuse/components/masonry';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { NotesDetailsComponent } from 'app/modules/admin/apps/notes/details/details.component';
-import { NotesLabelsComponent } from 'app/modules/admin/apps/notes/labels/labels.component';
-import { NotesService } from 'app/modules/admin/apps/notes/notes.service';
-import { Label, Note } from 'app/modules/admin/apps/notes/notes.types';
 import { cloneDeep } from 'lodash-es';
 import {
     BehaviorSubject,
@@ -30,6 +26,10 @@ import {
     map,
     takeUntil,
 } from 'rxjs';
+import { NotesDetailsComponent } from '../details/details.component';
+import { NotesLabelsComponent } from '../labels/labels.component';
+import { NotesService } from '../notes.service';
+import { Label, Note } from '../notes.types';
 
 @Component({
     selector: 'notes-list',

@@ -12,9 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatDrawer } from '@angular/material/sidenav';
-import { ChatService } from 'app/modules/admin/apps/chat/chat.service';
-import { Profile } from 'app/modules/admin/apps/chat/chat.types';
 import { Subject, takeUntil } from 'rxjs';
+import { ChatService } from '../chat.service';
+import { Profile } from '../chat.types';
 
 @Component({
     selector: 'chat-profile',

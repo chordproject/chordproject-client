@@ -15,8 +15,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from 'app/core/auth/auth.service';
-import { UserService } from 'app/core/user/user.service';
+import { AuthService } from '../../../core/auth/auth.service';
+import { UserService } from '../../../core/user/user.service';
 
 @Component({
     selector: 'auth-unlock-session',

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Shortcut } from 'app/layout/common/shortcuts/shortcuts.types';
 import { map, Observable, ReplaySubject, switchMap, take, tap } from 'rxjs';
+import { Shortcut } from './shortcuts.types';
 
 @Injectable({ providedIn: 'root' })
 export class ShortcutsService {

@@ -4,9 +4,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
-import { HelpCenterService } from 'app/modules/admin/apps/help-center/help-center.service';
-import { FaqCategory } from 'app/modules/admin/apps/help-center/help-center.type';
 import { Subject, takeUntil } from 'rxjs';
+import { HelpCenterService } from './help-center.service';
+import { FaqCategory } from './help-center.type';
 
 @Component({
     selector: 'help-center',

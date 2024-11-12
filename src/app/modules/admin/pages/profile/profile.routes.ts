@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ProfileComponent } from 'app/modules/admin/pages/profile/profile.component';
+import { ProfileComponent } from './profile.component';
 
 export default [
     {

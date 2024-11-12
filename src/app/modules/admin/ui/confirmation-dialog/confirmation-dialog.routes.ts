@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ConfirmationDialogComponent } from 'app/modules/admin/ui/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 
 export default [
     {

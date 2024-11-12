@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ScrumboardCardDetailsComponent } from 'app/modules/admin/apps/scrumboard/card/details/details.component';
+import { ScrumboardCardDetailsComponent } from './details/details.component';
 
 @Component({
     selector: 'scrumboard-card',
@@ -25,9 +25,9 @@ export class ScrumboardCardComponent implements OnInit {
         private _router: Router
     ) {}
 
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * On init

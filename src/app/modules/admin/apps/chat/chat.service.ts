@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Chat, Contact, Profile } from 'app/modules/admin/apps/chat/chat.types';
 import {
     BehaviorSubject,
     Observable,
@@ -12,6 +11,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import { Chat, Contact, Profile } from './chat.types';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {

@@ -1,5 +1,4 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +9,7 @@ import {
 } from '@angular/material/tree';
 import { RouterLink } from '@angular/router';
 import { FuseAlertComponent } from '@fuse/components/alert';
-import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component';
+import { GuidesComponent } from '../../guides.component';
 
 interface DirNode {
     name: string;

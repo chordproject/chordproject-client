@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FuseAlertComponent } from '@fuse/components/alert';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
-import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component';
+import { GuidesComponent } from '../../guides.component';
 
 @Component({
     selector: 'serving',

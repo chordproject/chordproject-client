@@ -16,9 +16,9 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { MessagesService } from 'app/layout/common/messages/messages.service';
-import { Message } from 'app/layout/common/messages/messages.types';
 import { Subject, takeUntil } from 'rxjs';
+import { MessagesService } from './messages.service';
+import { Message } from './messages.types';
 
 @Component({
     selector: 'messages',

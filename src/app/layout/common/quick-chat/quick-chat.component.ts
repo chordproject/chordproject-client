@@ -20,9 +20,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FuseScrollbarDirective } from '@fuse/directives/scrollbar';
-import { QuickChatService } from 'app/layout/common/quick-chat/quick-chat.service';
-import { Chat } from 'app/layout/common/quick-chat/quick-chat.types';
 import { Subject, takeUntil } from 'rxjs';
+import { QuickChatService } from './quick-chat.service';
+import { Chat } from './quick-chat.types';
 
 @Component({
     selector: 'quick-chat',
@@ -50,8 +50,7 @@ export class QuickChatComponent implements OnInit, AfterViewInit, OnDestroy {
     opened: boolean = false;
     selectedChat: Chat;
     private _mutationObserver: MutationObserver;
-    private _scrollStrategy: ScrollStrategy =
-        this._scrollStrategyOptions.block();
+    private _scrollStrategy: ScrollStrategy;
     private _overlay: HTMLElement;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -65,7 +64,9 @@ export class QuickChatComponent implements OnInit, AfterViewInit, OnDestroy {
         private _ngZone: NgZone,
         private _quickChatService: QuickChatService,
         private _scrollStrategyOptions: ScrollStrategyOptions
-    ) {}
+    ) {
+        this._scrollStrategy = this._scrollStrategyOptions.block();
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Decorated methods

@@ -4,8 +4,8 @@ import {
     RouterStateSnapshot,
     Routes,
 } from '@angular/router';
-import { IconsComponent } from 'app/modules/admin/ui/icons/icons.component';
-import { IconsService } from 'app/modules/admin/ui/icons/icons.service';
+import { IconsComponent } from './icons.component';
+import { IconsService } from './icons.service';
 
 export default [
     {

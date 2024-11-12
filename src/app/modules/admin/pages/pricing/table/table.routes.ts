@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { PricingTableComponent } from 'app/modules/admin/pages/pricing/table/table.component';
+import { PricingTableComponent } from './table.component';
 
 export default [
     {

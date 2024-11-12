@@ -19,9 +19,9 @@ import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { RouterLink } from '@angular/router';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { AcademyService } from 'app/modules/admin/apps/academy/academy.service';
-import { Category, Course } from 'app/modules/admin/apps/academy/academy.types';
 import { Subject, takeUntil } from 'rxjs';
+import { AcademyService } from '../academy.service';
+import { Category, Course } from '../academy.types';
 
 @Component({
     selector: 'academy-details',
