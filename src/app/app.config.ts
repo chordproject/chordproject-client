@@ -1,5 +1,10 @@
 import { provideHttpClient } from '@angular/common/http';
-import { APP_INITIALIZER, ApplicationConfig, inject } from '@angular/core';
+import {
+    APP_INITIALIZER,
+    ApplicationConfig,
+    inject,
+    isDevMode,
+} from '@angular/core';
 import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -58,7 +63,7 @@ export const appConfig: ApplicationConfig = {
                 defaultLang: 'en',
                 fallbackLang: 'en',
                 reRenderOnLangChange: true,
-                prodMode: true,
+                prodMode: !isDevMode(),
             },
             loader: TranslocoHttpLoader,
         }),
