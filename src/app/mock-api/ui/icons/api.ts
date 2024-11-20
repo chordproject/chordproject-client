@@ -28,21 +28,23 @@ export class IconsMockApi {
         // -----------------------------------------------------------------------------------------------------
         // @ Feather icons - GET
         // -----------------------------------------------------------------------------------------------------
-        this._fuseMockApiService.onGet('api/ui/icons/feather').reply(() => [
-            200,
-            {
-                namespace: 'feather',
-                name: 'Feather',
-                grid: 'icon-size-6',
-                list: cloneDeep(this._feather),
-            },
-        ]);
+        this._fuseMockApiService
+            .onGet('api/documentation/ui/icons/feather')
+            .reply(() => [
+                200,
+                {
+                    namespace: 'feather',
+                    name: 'Feather',
+                    grid: 'icon-size-6',
+                    list: cloneDeep(this._feather),
+                },
+            ]);
 
         // -----------------------------------------------------------------------------------------------------
         // @ Heroicons outline icons - GET
         // -----------------------------------------------------------------------------------------------------
         this._fuseMockApiService
-            .onGet('api/ui/icons/heroicons-outline')
+            .onGet('api/documentation/ui/icons/heroicons-outline')
             .reply(() => [
                 200,
                 {
@@ -57,7 +59,7 @@ export class IconsMockApi {
         // @ Heroicons solid icons - GET
         // -----------------------------------------------------------------------------------------------------
         this._fuseMockApiService
-            .onGet('api/ui/icons/heroicons-solid')
+            .onGet('api/documentation/ui/icons/heroicons-solid')
             .reply(() => [
                 200,
                 {
@@ -72,7 +74,7 @@ export class IconsMockApi {
         // @ Heroicons mini icons - GET
         // -----------------------------------------------------------------------------------------------------
         this._fuseMockApiService
-            .onGet('api/ui/icons/heroicons-mini')
+            .onGet('api/documentation/ui/icons/heroicons-mini')
             .reply(() => [
                 200,
                 {
@@ -87,7 +89,7 @@ export class IconsMockApi {
         // @ Material solid icons - GET
         // -----------------------------------------------------------------------------------------------------
         this._fuseMockApiService
-            .onGet('api/ui/icons/material-solid')
+            .onGet('api/documentation/ui/icons/material-solid')
             .reply(() => [
                 200,
                 {
@@ -102,7 +104,7 @@ export class IconsMockApi {
         // @ Material outline icons - GET
         // -----------------------------------------------------------------------------------------------------
         this._fuseMockApiService
-            .onGet('api/ui/icons/material-outline')
+            .onGet('api/documentation/ui/icons/material-outline')
             .reply(() => [
                 200,
                 {
@@ -117,7 +119,7 @@ export class IconsMockApi {
         // @ Material twotone icons - GET
         // -----------------------------------------------------------------------------------------------------
         this._fuseMockApiService
-            .onGet('api/ui/icons/material-twotone')
+            .onGet('api/documentation/ui/icons/material-twotone')
             .reply(() => [
                 200,
                 {

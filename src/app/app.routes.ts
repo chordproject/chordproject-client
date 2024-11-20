@@ -33,11 +33,11 @@ export const appRoutes: Route[] = [
             layout: 'empty'
         },
         children: [
-            {path: 'confirmation-required', loadChildren: () => import('./modules/auth/confirmation-required/confirmation-required.routes')},
-            {path: 'forgot-password', loadChildren: () => import('./modules/auth/forgot-password/forgot-password.routes')},
-            {path: 'reset-password', loadChildren: () => import('./modules/auth/reset-password/reset-password.routes')},
-            {path: 'sign-in', loadChildren: () => import('./modules/auth/sign-in/sign-in.routes')},
-            {path: 'sign-up', loadChildren: () => import('./modules/auth/sign-up/sign-up.routes')}
+            {path: 'confirmation-required', loadChildren: () => import('./features/auth/confirmation-required/confirmation-required.routes')},
+            {path: 'forgot-password', loadChildren: () => import('./features/auth/forgot-password/forgot-password.routes')},
+            {path: 'reset-password', loadChildren: () => import('./features/auth/reset-password/reset-password.routes')},
+            {path: 'sign-in', loadChildren: () => import('./features/auth/sign-in/sign-in.routes')},
+            {path: 'sign-up', loadChildren: () => import('./features/auth/sign-up/sign-up.routes')}
         ]
     },
 
@@ -51,8 +51,8 @@ export const appRoutes: Route[] = [
             layout: 'empty'
         },
         children: [
-            {path: 'sign-out', loadChildren: () => import('./modules/auth/sign-out/sign-out.routes')},
-            {path: 'unlock-session', loadChildren: () => import('./modules/auth/unlock-session/unlock-session.routes')}
+            {path: 'sign-out', loadChildren: () => import('./features/auth/sign-out/sign-out.routes')},
+            {path: 'unlock-session', loadChildren: () => import('./features/auth/unlock-session/unlock-session.routes')}
         ]
     },
 
@@ -64,8 +64,24 @@ export const appRoutes: Route[] = [
             layout: 'empty'
         },
         children: [
-            {path: 'home', loadChildren: () => import('./modules/landing/home/home.routes')},
+            {path: 'home', loadChildren: () => import('./features/landing/home/home.routes')},
         ]
+    },
+
+    // Documentation routes
+    // {
+    //     path: '',
+    //     component: LayoutComponent,
+    //     data: {
+    //         layout: 'classic'
+    //     },
+    //     children: [
+    //         {path: 'documentation', loadChildren: () => import('./features/documentation/documentation.routes')},
+    //     ]
+    // },
+    {
+        path: 'documentation',
+        loadChildren: () => import('./features/documentation/documentation.routes')
     },
 
     // Admin routes
@@ -81,128 +97,72 @@ export const appRoutes: Route[] = [
 
             // Dashboards
             {path: 'dashboards', children: [
-                {path: 'project', loadChildren: () => import('./modules/admin/dashboards/project/project.routes')},
-                {path: 'analytics', loadChildren: () => import('./modules/admin/dashboards/analytics/analytics.routes')},
-                {path: 'finance', loadChildren: () => import('./modules/admin/dashboards/finance/finance.routes')},
-                {path: 'crypto', loadChildren: () => import('./modules/admin/dashboards/crypto/crypto.routes')},
+                {path: 'project', loadChildren: () => import('./features/admin/dashboards/project/project.routes')},
+                {path: 'analytics', loadChildren: () => import('./features/admin/dashboards/analytics/analytics.routes')},
+                {path: 'finance', loadChildren: () => import('./features/admin/dashboards/finance/finance.routes')},
+                {path: 'crypto', loadChildren: () => import('./features/admin/dashboards/crypto/crypto.routes')},
             ]},
 
             // Apps
             {path: 'apps', children: [
-                {path: 'academy', loadChildren: () => import('./modules/admin/apps/academy/academy.routes')},
-                {path: 'chat', loadChildren: () => import('./modules/admin/apps/chat/chat.routes')},
-                {path: 'contacts', loadChildren: () => import('./modules/admin/apps/contacts/contacts.routes')},
-                {path: 'ecommerce', loadChildren: () => import('./modules/admin/apps/ecommerce/ecommerce.routes')},
-                {path: 'file-manager', loadChildren: () => import('./modules/admin/apps/file-manager/file-manager.routes')},
-                {path: 'help-center', loadChildren: () => import('./modules/admin/apps/help-center/help-center.routes')},
-                {path: 'mailbox', loadChildren: () => import('./modules/admin/apps/mailbox/mailbox.routes')},
-                {path: 'notes', loadChildren: () => import('./modules/admin/apps/notes/notes.routes')},
-                {path: 'scrumboard', loadChildren: () => import('./modules/admin/apps/scrumboard/scrumboard.routes')},
-                {path: 'tasks', loadChildren: () => import('./modules/admin/apps/tasks/tasks.routes')},
+                {path: 'academy', loadChildren: () => import('./features/admin/apps/academy/academy.routes')},
+                {path: 'chat', loadChildren: () => import('./features/admin/apps/chat/chat.routes')},
+                {path: 'contacts', loadChildren: () => import('./features/admin/apps/contacts/contacts.routes')},
+                {path: 'ecommerce', loadChildren: () => import('./features/admin/apps/ecommerce/ecommerce.routes')},
+                {path: 'file-manager', loadChildren: () => import('./features/admin/apps/file-manager/file-manager.routes')},
+                {path: 'help-center', loadChildren: () => import('./features/admin/apps/help-center/help-center.routes')},
+                {path: 'mailbox', loadChildren: () => import('./features/admin/apps/mailbox/mailbox.routes')},
+                {path: 'notes', loadChildren: () => import('./features/admin/apps/notes/notes.routes')},
+                {path: 'scrumboard', loadChildren: () => import('./features/admin/apps/scrumboard/scrumboard.routes')},
+                {path: 'tasks', loadChildren: () => import('./features/admin/apps/tasks/tasks.routes')},
             ]},
 
             // Pages
             {path: 'pages', children: [
 
                 // Activities
-                {path: 'activities', loadChildren: () => import('./modules/admin/pages/activities/activities.routes')},
+                {path: 'activities', loadChildren: () => import('./features/admin/pages/activities/activities.routes')},
 
                 // Authentication
-                {path: 'authentication', loadChildren: () => import('./modules/admin/pages/authentication/authentication.routes')},
+                {path: 'authentication', loadChildren: () => import('./features/admin/pages/authentication/authentication.routes')},
 
                 // Coming Soon
-                {path: 'coming-soon', loadChildren: () => import('./modules/admin/pages/coming-soon/coming-soon.routes')},
+                {path: 'coming-soon', loadChildren: () => import('./features/admin/pages/coming-soon/coming-soon.routes')},
 
                 // Error
                 {path: 'error', children: [
-                    {path: '404', loadChildren: () => import('./modules/admin/pages/error/error-404/error-404.routes')},
-                    {path: '500', loadChildren: () => import('./modules/admin/pages/error/error-500/error-500.routes')}
+                    {path: '404', loadChildren: () => import('./features/admin/pages/error/error-404/error-404.routes')},
+                    {path: '500', loadChildren: () => import('./features/admin/pages/error/error-500/error-500.routes')}
                 ]},
 
                 // Invoice
                 {path: 'invoice', children: [
                     {path: 'printable', children: [
-                        {path: 'compact', loadChildren: () => import('./modules/admin/pages/invoice/printable/compact/compact.routes')},
-                        {path: 'modern', loadChildren: () => import('./modules/admin/pages/invoice/printable/modern/modern.routes')}
+                        {path: 'compact', loadChildren: () => import('./features/admin/pages/invoice/printable/compact/compact.routes')},
+                        {path: 'modern', loadChildren: () => import('./features/admin/pages/invoice/printable/modern/modern.routes')}
                     ]}
                 ]},
 
                 // Maintenance
-                {path: 'maintenance', loadChildren: () => import('./modules/admin/pages/maintenance/maintenance.routes')},
+                {path: 'maintenance', loadChildren: () => import('./features/admin/pages/maintenance/maintenance.routes')},
 
                 // Pricing
                 {path: 'pricing', children: [
-                    {path: 'modern', loadChildren: () => import('./modules/admin/pages/pricing/modern/modern.routes')},
-                    {path: 'simple', loadChildren: () => import('./modules/admin/pages/pricing/simple/simple.routes')},
-                    {path: 'single', loadChildren: () => import('./modules/admin/pages/pricing/single/single.routes')},
-                    {path: 'table', loadChildren: () => import('./modules/admin/pages/pricing/table/table.routes')}
+                    {path: 'modern', loadChildren: () => import('./features/admin/pages/pricing/modern/modern.routes')},
+                    {path: 'simple', loadChildren: () => import('./features/admin/pages/pricing/simple/simple.routes')},
+                    {path: 'single', loadChildren: () => import('./features/admin/pages/pricing/single/single.routes')},
+                    {path: 'table', loadChildren: () => import('./features/admin/pages/pricing/table/table.routes')}
                 ]},
 
                 // Profile
-                {path: 'profile', loadChildren: () => import('./modules/admin/pages/profile/profile.routes')},
+                {path: 'profile', loadChildren: () => import('./features/admin/pages/profile/profile.routes')},
 
                 // Settings
-                {path: 'settings', loadChildren: () => import('./modules/admin/pages/settings/settings.routes')},
-            ]},
-
-            // User Interface
-            {path: 'ui', children: [
-
-                // Material Components
-                {path: 'material-components', loadChildren: () => import('./modules/admin/ui/material-components/material-components.routes')},
-
-                // Fuse Components
-                {path: 'fuse-components', loadChildren: () => import('./modules/admin/ui/fuse-components/fuse-components.routes')},
-
-                // Other Components
-                {path: 'other-components', loadChildren: () => import('./modules/admin/ui/other-components/other-components.routes')},
-
-                // TailwindCSS
-                {path: 'tailwindcss', loadChildren: () => import('./modules/admin/ui/tailwindcss/tailwindcss.routes')},
-
-                // Advanced Search
-                {path: 'advanced-search', loadChildren: () => import('./modules/admin/ui/advanced-search/advanced-search.routes')},
-
-                // Animations
-                {path: 'animations', loadChildren: () => import('./modules/admin/ui/animations/animations.routes')},
-
-                 // Cards
-                {path: 'cards', loadChildren: () => import('./modules/admin/ui/cards/cards.routes')},
-
-                // Colors
-                {path: 'colors', loadChildren: () => import('./modules/admin/ui/colors/colors.routes')},
-
-                // Confirmation Dialog
-                {path: 'confirmation-dialog', loadChildren: () => import('./modules/admin/ui/confirmation-dialog/confirmation-dialog.routes')},
-
-                // Datatable
-                {path: 'datatable', loadChildren: () => import('./modules/admin/ui/datatable/datatable.routes')},
-
-                // Forms
-                {path: 'forms', loadChildren: () => import('./modules/admin/ui/forms/forms.routes')},
-
-                // Icons
-                {path: 'icons', loadChildren: () => import('./modules/admin/ui/icons/icons.routes')},
-
-                // Page Layouts
-                {path: 'page-layouts', loadChildren: () => import('./modules/admin/ui/page-layouts/page-layouts.routes')},
-
-                // Typography
-                {path: 'typography', loadChildren: () => import('./modules/admin/ui/typography/typography.routes')}
-            ]},
-
-            // Documentation
-            {path: 'docs', children: [
-
-                // Changelog
-                {path: 'changelog', loadChildren: () => import('./modules/admin/docs/changelog/changelog.routes')},
-
-                // Guides
-                {path: 'guides', loadChildren: () => import('./modules/admin/docs/guides/guides.routes')}
+                {path: 'settings', loadChildren: () => import('./features/admin/pages/settings/settings.routes')},
             ]},
 
             // 404 & Catch all
-            {path: '404-not-found', pathMatch: 'full', loadChildren: () => import('./modules/admin/pages/error/error-404/error-404.routes')},
+            {path: '404-not-found', pathMatch: 'full', loadChildren: () => import('./features/admin/pages/error/error-404/error-404.routes')},
             {path: '**', redirectTo: '404-not-found'}
         ]
     }
