@@ -4,71 +4,69 @@ import { MatIconModule } from '@angular/material/icon';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
 
 @Component({
-    selector: 'find-by-key',
-    standalone: true,
-    imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
-    template: `
-        <div class="flex min-w-0 flex-auto flex-col">
-            <!-- Header -->
-            <div
-                class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
-            >
-                <div class="min-w-0 flex-1">
-                    <!-- Breadcrumbs -->
-                    <div class="flex flex-wrap items-center font-medium">
-                        <div>
-                            <a class="whitespace-nowrap text-primary-500"
-                                >Documentation</a
-                            >
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <a class="ml-1 text-primary-500">Fuse Components</a>
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <span class="text-secondary ml-1">Pipes</span>
-                        </div>
-                    </div>
-                    <!-- Title -->
-                    <div class="mt-2">
-                        <h2
-                            class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
-                        >
-                            findByKey
-                        </h2>
-                    </div>
-                </div>
+  selector: 'find-by-key',
+  standalone: true,
+  imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
+  template: `
+    <div class="flex min-w-0 flex-auto flex-col">
+      <!-- Header -->
+      <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+      >
+        <div class="min-w-0 flex-1">
+          <!-- Breadcrumbs -->
+          <div class="flex flex-wrap items-center font-medium">
+            <div>
+              <a class="whitespace-nowrap text-primary-500">Documentation</a>
             </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <a class="ml-1 text-primary-500">Fuse Components</a>
+            </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <span class="text-secondary ml-1">Pipes</span>
+            </div>
+          </div>
+          <!-- Title -->
+          <div class="mt-2">
+            <h2
+              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+            >
+              findByKey
+            </h2>
+          </div>
+        </div>
+      </div>
 
-            <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
-                <p>
-                    <strong>fuseFindByKey</strong> is a helper pipe that finds
-                    entries from an object using given key-source set.
-                </p>
+      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+        <p>
+          <strong>fuseFindByKey</strong> is a helper pipe that finds entries
+          from an object using given key-source set.
+        </p>
 
-                <h2>Module</h2>
-                <textarea fuse-highlight lang="typescript">
+        <h2>Module</h2>
+        <textarea fuse-highlight lang="typescript">
                     import { FuseFindByKeyPipeModule } from '@fuse/pipe/find-by-key';
                 </textarea
-                >
+        >
 
-                <h2>Usage</h2>
-                <textarea fuse-highlight lang="html">
+        <h2>Usage</h2>
+        <textarea fuse-highlight lang="html">
                     value | fuseFindByKey:key:source
                 </textarea
-                >
-                <p>
-                    Consider this array of objects representing the
-                    <em>tags</em> and <em>tasks</em> data stored on the backend:
-                </p>
-                <textarea fuse-highlight lang="typescript">
+        >
+        <p>
+          Consider this array of objects representing the
+          <em>tags</em> and <em>tasks</em> data stored on the backend:
+        </p>
+        <textarea fuse-highlight lang="typescript">
                     const tags = [
                     {
                     id   : 'tag-00',
@@ -114,13 +112,13 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     }
                     ]
                 </textarea
-                >
-                <p>
-                    Normally, you would <em>join</em> these two data together in
-                    the backend before sending it to the frontend so you can
-                    access tags of a task right from the task itself:
-                </p>
-                <textarea fuse-highlight lang="typescript">
+        >
+        <p>
+          Normally, you would <em>join</em> these two data together in the
+          backend before sending it to the frontend so you can access tags of a
+          task right from the task itself:
+        </p>
+        <textarea fuse-highlight lang="typescript">
                     const tasksWithTags = [
                     {
                     id   : 'task-00',
@@ -172,16 +170,15 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     }
                     ]
                 </textarea
-                >
-                <p>
-                    But, let's say you cannot <em>join</em> them. You have no
-                    access to the backend app or you cannot make any changes to
-                    it and you have to work with what you have. In this case,
-                    you can use the <code>fuseFindByKey</code> pipe to get the
-                    tags of a task without joining the two data using
-                    javascript:
-                </p>
-                <textarea fuse-highlight lang="html">
+        >
+        <p>
+          But, let's say you cannot <em>join</em> them. You have no access to
+          the backend app or you cannot make any changes to it and you have to
+          work with what you have. In this case, you can use the
+          <code>fuseFindByKey</code> pipe to get the tags of a task without
+          joining the two data using javascript:
+        </p>
+        <textarea fuse-highlight lang="html">
                     <!-- Iterate through the tasks -->
                     <ng-container *ngFor="let task of tasks">
 
@@ -194,20 +191,19 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
 
                     </ng-container>
                 </textarea
-                >
-                <p>
-                    The above code will iterate through the tasks, and for each
-                    task, it will also iterate the task's tags.
-                </p>
-                <p>
-                    <code>task.tags</code> array normally holds the
-                    <em>ids</em> of the assigned tags. But using
-                    <code>fuseFindByKey</code> pipe, we can use those
-                    <em>ids</em> to extract the actual tag object from the
-                    <em>tags</em> array.
-                </p>
-            </div>
-        </div>
-    `,
+        >
+        <p>
+          The above code will iterate through the tasks, and for each task, it
+          will also iterate the task's tags.
+        </p>
+        <p>
+          <code>task.tags</code> array normally holds the <em>ids</em> of the
+          assigned tags. But using <code>fuseFindByKey</code> pipe, we can use
+          those <em>ids</em> to extract the actual tag object from the
+          <em>tags</em> array.
+        </p>
+      </div>
+    </div>
+  `,
 })
 export default class FindByKey {}

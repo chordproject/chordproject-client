@@ -1,408 +1,392 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-    BehaviorSubject,
-    Observable,
-    map,
-    of,
-    switchMap,
-    take,
-    tap,
-    throwError,
+  BehaviorSubject,
+  Observable,
+  map,
+  of,
+  switchMap,
+  take,
+  tap,
+  throwError,
 } from 'rxjs';
 import {
-    Mail,
-    MailCategory,
-    MailFilter,
-    MailFolder,
-    MailLabel,
+  Mail,
+  MailCategory,
+  MailFilter,
+  MailFolder,
+  MailLabel,
 } from './mailbox.types';
 
 @Injectable({ providedIn: 'root' })
 export class MailboxService {
-    selectedMailChanged: BehaviorSubject<any> = new BehaviorSubject(null);
-    private _category: BehaviorSubject<MailCategory> = new BehaviorSubject(
-        null
+  selectedMailChanged: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _category: BehaviorSubject<MailCategory> = new BehaviorSubject(null);
+  private _filters: BehaviorSubject<MailFilter[]> = new BehaviorSubject(null);
+  private _folders: BehaviorSubject<MailFolder[]> = new BehaviorSubject(null);
+  private _labels: BehaviorSubject<MailLabel[]> = new BehaviorSubject(null);
+  private _mails: BehaviorSubject<Mail[]> = new BehaviorSubject(null);
+  private _mailsLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _mail: BehaviorSubject<Mail> = new BehaviorSubject(null);
+  private _pagination: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  /**
+   * Constructor
+   */
+  constructor(private _httpClient: HttpClient) {}
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Accessors
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Getter for category
+   */
+  get category$(): Observable<MailCategory> {
+    return this._category.asObservable();
+  }
+
+  /**
+   * Getter for filters
+   */
+  get filters$(): Observable<MailFilter[]> {
+    return this._filters.asObservable();
+  }
+
+  /**
+   * Getter for folders
+   */
+  get folders$(): Observable<MailFolder[]> {
+    return this._folders.asObservable();
+  }
+
+  /**
+   * Getter for labels
+   */
+  get labels$(): Observable<MailLabel[]> {
+    return this._labels.asObservable();
+  }
+
+  /**
+   * Getter for mails
+   */
+  get mails$(): Observable<Mail[]> {
+    return this._mails.asObservable();
+  }
+
+  /**
+   * Getter for mails loading
+   */
+  get mailsLoading$(): Observable<boolean> {
+    return this._mailsLoading.asObservable();
+  }
+
+  /**
+   * Getter for mail
+   */
+  get mail$(): Observable<Mail> {
+    return this._mail.asObservable();
+  }
+
+  /**
+   * Getter for pagination
+   */
+  get pagination$(): Observable<any> {
+    return this._pagination.asObservable();
+  }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Public methods
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Get filters
+   */
+  getFilters(): Observable<any> {
+    return this._httpClient.get<MailFilter[]>('api/apps/mailbox/filters').pipe(
+      tap((response: any) => {
+        this._filters.next(response);
+      })
     );
-    private _filters: BehaviorSubject<MailFilter[]> = new BehaviorSubject(null);
-    private _folders: BehaviorSubject<MailFolder[]> = new BehaviorSubject(null);
-    private _labels: BehaviorSubject<MailLabel[]> = new BehaviorSubject(null);
-    private _mails: BehaviorSubject<Mail[]> = new BehaviorSubject(null);
-    private _mailsLoading: BehaviorSubject<boolean> = new BehaviorSubject(
-        false
+  }
+
+  /**
+   * Get folders
+   */
+  getFolders(): Observable<any> {
+    return this._httpClient.get<MailFolder[]>('api/apps/mailbox/folders').pipe(
+      tap((response: any) => {
+        this._folders.next(response);
+      })
     );
-    private _mail: BehaviorSubject<Mail> = new BehaviorSubject(null);
-    private _pagination: BehaviorSubject<any> = new BehaviorSubject(null);
+  }
 
-    /**
-     * Constructor
-     */
-    constructor(private _httpClient: HttpClient) {}
+  /**
+   * Get labels
+   */
+  getLabels(): Observable<any> {
+    return this._httpClient.get<MailLabel[]>('api/apps/mailbox/labels').pipe(
+      tap((response: any) => {
+        this._labels.next(response);
+      })
+    );
+  }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Accessors
-    // -----------------------------------------------------------------------------------------------------
+  /**
+   * Get mails by filter
+   */
+  getMailsByFilter(filter: string, page: string = '1'): Observable<any> {
+    // Execute the mails loading with true
+    this._mailsLoading.next(true);
 
-    /**
-     * Getter for category
-     */
-    get category$(): Observable<MailCategory> {
-        return this._category.asObservable();
-    }
+    return this._httpClient
+      .get<Mail[]>('api/apps/mailbox/mails', {
+        params: {
+          filter,
+          page,
+        },
+      })
+      .pipe(
+        tap((response: any) => {
+          this._category.next({
+            type: 'filter',
+            name: filter,
+          });
+          this._mails.next(response.mails);
+          this._pagination.next(response.pagination);
+          this._mailsLoading.next(false);
+        }),
+        switchMap((response) => {
+          if (response.mails === null) {
+            return throwError({
+              message: 'Requested page is not available!',
+              pagination: response.pagination,
+            });
+          }
 
-    /**
-     * Getter for filters
-     */
-    get filters$(): Observable<MailFilter[]> {
-        return this._filters.asObservable();
-    }
+          return of(response);
+        })
+      );
+  }
 
-    /**
-     * Getter for folders
-     */
-    get folders$(): Observable<MailFolder[]> {
-        return this._folders.asObservable();
-    }
+  /**
+   * Get mails by folder
+   */
+  getMailsByFolder(folder: string, page: string = '1'): Observable<any> {
+    // Execute the mails loading with true
+    this._mailsLoading.next(true);
 
-    /**
-     * Getter for labels
-     */
-    get labels$(): Observable<MailLabel[]> {
-        return this._labels.asObservable();
-    }
+    return this._httpClient
+      .get<Mail[]>('api/apps/mailbox/mails', {
+        params: {
+          folder,
+          page,
+        },
+      })
+      .pipe(
+        tap((response: any) => {
+          this._category.next({
+            type: 'folder',
+            name: folder,
+          });
+          this._mails.next(response.mails);
+          this._pagination.next(response.pagination);
+          this._mailsLoading.next(false);
+        }),
+        switchMap((response) => {
+          if (response.mails === null) {
+            return throwError({
+              message: 'Requested page is not available!',
+              pagination: response.pagination,
+            });
+          }
 
-    /**
-     * Getter for mails
-     */
-    get mails$(): Observable<Mail[]> {
-        return this._mails.asObservable();
-    }
+          return of(response);
+        })
+      );
+  }
 
-    /**
-     * Getter for mails loading
-     */
-    get mailsLoading$(): Observable<boolean> {
-        return this._mailsLoading.asObservable();
-    }
+  /**
+   * Get mails by label
+   */
+  getMailsByLabel(label: string, page: string = '1'): Observable<any> {
+    // Execute the mails loading with true
+    this._mailsLoading.next(true);
 
-    /**
-     * Getter for mail
-     */
-    get mail$(): Observable<Mail> {
-        return this._mail.asObservable();
-    }
+    return this._httpClient
+      .get<Mail[]>('api/apps/mailbox/mails', {
+        params: {
+          label,
+          page,
+        },
+      })
+      .pipe(
+        tap((response: any) => {
+          this._category.next({
+            type: 'label',
+            name: label,
+          });
+          this._mails.next(response.mails);
+          this._pagination.next(response.pagination);
+          this._mailsLoading.next(false);
+        }),
+        switchMap((response) => {
+          if (response.mails === null) {
+            return throwError({
+              message: 'Requested page is not available!',
+              pagination: response.pagination,
+            });
+          }
 
-    /**
-     * Getter for pagination
-     */
-    get pagination$(): Observable<any> {
-        return this._pagination.asObservable();
-    }
+          return of(response);
+        })
+      );
+  }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+  /**
+   * Get mail by id
+   */
+  getMailById(id: string): Observable<any> {
+    return this._mails.pipe(
+      take(1),
+      map((mails) => {
+        // Find the mail
+        const mail = mails.find((item) => item.id === id) || null;
 
-    /**
-     * Get filters
-     */
-    getFilters(): Observable<any> {
-        return this._httpClient
-            .get<MailFilter[]>('api/apps/mailbox/filters')
-            .pipe(
-                tap((response: any) => {
-                    this._filters.next(response);
-                })
-            );
-    }
+        // Update the mail
+        this._mail.next(mail);
 
-    /**
-     * Get folders
-     */
-    getFolders(): Observable<any> {
-        return this._httpClient
-            .get<MailFolder[]>('api/apps/mailbox/folders')
-            .pipe(
-                tap((response: any) => {
-                    this._folders.next(response);
-                })
-            );
-    }
+        // Return the mail
+        return mail;
+      }),
+      switchMap((mail) => {
+        if (!mail) {
+          return throwError('Could not found mail with id of ' + id + '!');
+        }
 
-    /**
-     * Get labels
-     */
-    getLabels(): Observable<any> {
-        return this._httpClient
-            .get<MailLabel[]>('api/apps/mailbox/labels')
-            .pipe(
-                tap((response: any) => {
-                    this._labels.next(response);
-                })
-            );
-    }
+        return of(mail);
+      })
+    );
+  }
 
-    /**
-     * Get mails by filter
-     */
-    getMailsByFilter(filter: string, page: string = '1'): Observable<any> {
-        // Execute the mails loading with true
-        this._mailsLoading.next(true);
+  /**
+   * Update mail
+   *
+   * @param id
+   * @param mail
+   */
+  updateMail(id: string, mail: Mail): Observable<any> {
+    return this._httpClient
+      .patch('api/apps/mailbox/mail', {
+        id,
+        mail,
+      })
+      .pipe(
+        tap(() => {
+          // Re-fetch the folders on mail update
+          // to get the updated counts on the sidebar
+          this.getFolders().subscribe();
+        })
+      );
+  }
 
-        return this._httpClient
-            .get<Mail[]>('api/apps/mailbox/mails', {
-                params: {
-                    filter,
-                    page,
-                },
+  /**
+   * Reset the current mail
+   */
+  resetMail(): Observable<boolean> {
+    return of(true).pipe(
+      take(1),
+      tap(() => {
+        this._mail.next(null);
+      })
+    );
+  }
+
+  /**
+   * Add label
+   *
+   * @param label
+   */
+  addLabel(label: MailLabel): Observable<any> {
+    return this.labels$.pipe(
+      take(1),
+      switchMap((labels) =>
+        this._httpClient
+          .post<MailLabel>('api/apps/mailbox/label', { label })
+          .pipe(
+            map((newLabel) => {
+              // Update the labels with the new label
+              this._labels.next([...labels, newLabel]);
+
+              // Return the new label
+              return newLabel;
             })
-            .pipe(
-                tap((response: any) => {
-                    this._category.next({
-                        type: 'filter',
-                        name: filter,
-                    });
-                    this._mails.next(response.mails);
-                    this._pagination.next(response.pagination);
-                    this._mailsLoading.next(false);
-                }),
-                switchMap((response) => {
-                    if (response.mails === null) {
-                        return throwError({
-                            message: 'Requested page is not available!',
-                            pagination: response.pagination,
-                        });
-                    }
+          )
+      )
+    );
+  }
 
-                    return of(response);
-                })
-            );
-    }
+  /**
+   * Update label
+   *
+   * @param id
+   * @param label
+   */
+  updateLabel(id: string, label: MailLabel): Observable<any> {
+    return this.labels$.pipe(
+      take(1),
+      switchMap((labels) =>
+        this._httpClient
+          .patch<MailLabel>('api/apps/mailbox/label', {
+            id,
+            label,
+          })
+          .pipe(
+            map((updatedLabel: any) => {
+              // Find the index of the updated label within the labels
+              const index = labels.findIndex((item) => item.id === id);
 
-    /**
-     * Get mails by folder
-     */
-    getMailsByFolder(folder: string, page: string = '1'): Observable<any> {
-        // Execute the mails loading with true
-        this._mailsLoading.next(true);
+              // Update the label
+              labels[index] = updatedLabel;
 
-        return this._httpClient
-            .get<Mail[]>('api/apps/mailbox/mails', {
-                params: {
-                    folder,
-                    page,
-                },
+              // Update the labels
+              this._labels.next(labels);
+
+              // Return the updated label
+              return updatedLabel;
             })
-            .pipe(
-                tap((response: any) => {
-                    this._category.next({
-                        type: 'folder',
-                        name: folder,
-                    });
-                    this._mails.next(response.mails);
-                    this._pagination.next(response.pagination);
-                    this._mailsLoading.next(false);
-                }),
-                switchMap((response) => {
-                    if (response.mails === null) {
-                        return throwError({
-                            message: 'Requested page is not available!',
-                            pagination: response.pagination,
-                        });
-                    }
+          )
+      )
+    );
+  }
 
-                    return of(response);
-                })
-            );
-    }
+  /**
+   * Delete label
+   *
+   * @param id
+   */
+  deleteLabel(id: string): Observable<any> {
+    return this.labels$.pipe(
+      take(1),
+      switchMap((labels) =>
+        this._httpClient
+          .delete('api/apps/mailbox/label', { params: { id } })
+          .pipe(
+            map((isDeleted: any) => {
+              // Find the index of the deleted label within the labels
+              const index = labels.findIndex((item) => item.id === id);
 
-    /**
-     * Get mails by label
-     */
-    getMailsByLabel(label: string, page: string = '1'): Observable<any> {
-        // Execute the mails loading with true
-        this._mailsLoading.next(true);
+              // Delete the label
+              labels.splice(index, 1);
 
-        return this._httpClient
-            .get<Mail[]>('api/apps/mailbox/mails', {
-                params: {
-                    label,
-                    page,
-                },
+              // Update the labels
+              this._labels.next(labels);
+
+              // Return the deleted status
+              return isDeleted;
             })
-            .pipe(
-                tap((response: any) => {
-                    this._category.next({
-                        type: 'label',
-                        name: label,
-                    });
-                    this._mails.next(response.mails);
-                    this._pagination.next(response.pagination);
-                    this._mailsLoading.next(false);
-                }),
-                switchMap((response) => {
-                    if (response.mails === null) {
-                        return throwError({
-                            message: 'Requested page is not available!',
-                            pagination: response.pagination,
-                        });
-                    }
-
-                    return of(response);
-                })
-            );
-    }
-
-    /**
-     * Get mail by id
-     */
-    getMailById(id: string): Observable<any> {
-        return this._mails.pipe(
-            take(1),
-            map((mails) => {
-                // Find the mail
-                const mail = mails.find((item) => item.id === id) || null;
-
-                // Update the mail
-                this._mail.next(mail);
-
-                // Return the mail
-                return mail;
-            }),
-            switchMap((mail) => {
-                if (!mail) {
-                    return throwError(
-                        'Could not found mail with id of ' + id + '!'
-                    );
-                }
-
-                return of(mail);
-            })
-        );
-    }
-
-    /**
-     * Update mail
-     *
-     * @param id
-     * @param mail
-     */
-    updateMail(id: string, mail: Mail): Observable<any> {
-        return this._httpClient
-            .patch('api/apps/mailbox/mail', {
-                id,
-                mail,
-            })
-            .pipe(
-                tap(() => {
-                    // Re-fetch the folders on mail update
-                    // to get the updated counts on the sidebar
-                    this.getFolders().subscribe();
-                })
-            );
-    }
-
-    /**
-     * Reset the current mail
-     */
-    resetMail(): Observable<boolean> {
-        return of(true).pipe(
-            take(1),
-            tap(() => {
-                this._mail.next(null);
-            })
-        );
-    }
-
-    /**
-     * Add label
-     *
-     * @param label
-     */
-    addLabel(label: MailLabel): Observable<any> {
-        return this.labels$.pipe(
-            take(1),
-            switchMap((labels) =>
-                this._httpClient
-                    .post<MailLabel>('api/apps/mailbox/label', { label })
-                    .pipe(
-                        map((newLabel) => {
-                            // Update the labels with the new label
-                            this._labels.next([...labels, newLabel]);
-
-                            // Return the new label
-                            return newLabel;
-                        })
-                    )
-            )
-        );
-    }
-
-    /**
-     * Update label
-     *
-     * @param id
-     * @param label
-     */
-    updateLabel(id: string, label: MailLabel): Observable<any> {
-        return this.labels$.pipe(
-            take(1),
-            switchMap((labels) =>
-                this._httpClient
-                    .patch<MailLabel>('api/apps/mailbox/label', {
-                        id,
-                        label,
-                    })
-                    .pipe(
-                        map((updatedLabel: any) => {
-                            // Find the index of the updated label within the labels
-                            const index = labels.findIndex(
-                                (item) => item.id === id
-                            );
-
-                            // Update the label
-                            labels[index] = updatedLabel;
-
-                            // Update the labels
-                            this._labels.next(labels);
-
-                            // Return the updated label
-                            return updatedLabel;
-                        })
-                    )
-            )
-        );
-    }
-
-    /**
-     * Delete label
-     *
-     * @param id
-     */
-    deleteLabel(id: string): Observable<any> {
-        return this.labels$.pipe(
-            take(1),
-            switchMap((labels) =>
-                this._httpClient
-                    .delete('api/apps/mailbox/label', { params: { id } })
-                    .pipe(
-                        map((isDeleted: any) => {
-                            // Find the index of the deleted label within the labels
-                            const index = labels.findIndex(
-                                (item) => item.id === id
-                            );
-
-                            // Delete the label
-                            labels.splice(index, 1);
-
-                            // Update the labels
-                            this._labels.next(labels);
-
-                            // Return the deleted status
-                            return isDeleted;
-                        })
-                    )
-            )
-        );
-    }
+          )
+      )
+    );
+  }
 }

@@ -4,11 +4,11 @@ import { FinanceComponent } from './finance.component';
 import { FinanceService } from './finance.service';
 
 export default [
-    {
-        path: '',
-        component: FinanceComponent,
-        resolve: {
-            data: () => inject(FinanceService).getData(),
-        },
+  {
+    path: '',
+    component: FinanceComponent,
+    resolve: {
+      data: () => inject(FinanceService).getData(),
     },
+  },
 ] as Routes;

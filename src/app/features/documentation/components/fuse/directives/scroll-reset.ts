@@ -4,86 +4,79 @@ import { MatIconModule } from '@angular/material/icon';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
 
 @Component({
-    selector: 'scroll-reset',
-    standalone: true,
-    imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
-    template: `
-        <div class="flex min-w-0 flex-auto flex-col">
-            <!-- Header -->
-            <div
-                class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
-            >
-                <div class="min-w-0 flex-1">
-                    <!-- Breadcrumbs -->
-                    <div class="flex flex-wrap items-center font-medium">
-                        <div>
-                            <a class="whitespace-nowrap text-primary-500"
-                                >Documentation</a
-                            >
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <a class="ml-1 text-primary-500">Fuse Components</a>
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <span class="text-secondary ml-1">Directives</span>
-                        </div>
-                    </div>
-                    <!-- Title -->
-                    <div class="mt-2">
-                        <h2
-                            class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
-                        >
-                            ScrollReset
-                        </h2>
-                    </div>
-                </div>
+  selector: 'scroll-reset',
+  standalone: true,
+  imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
+  template: `
+    <div class="flex min-w-0 flex-auto flex-col">
+      <!-- Header -->
+      <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+      >
+        <div class="min-w-0 flex-1">
+          <!-- Breadcrumbs -->
+          <div class="flex flex-wrap items-center font-medium">
+            <div>
+              <a class="whitespace-nowrap text-primary-500">Documentation</a>
             </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <a class="ml-1 text-primary-500">Fuse Components</a>
+            </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <span class="text-secondary ml-1">Directives</span>
+            </div>
+          </div>
+          <!-- Title -->
+          <div class="mt-2">
+            <h2
+              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+            >
+              ScrollReset
+            </h2>
+          </div>
+        </div>
+      </div>
 
-            <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
-                <p>
-                    <strong>fuseScrollReset</strong> is a helper directive to
-                    reset the given element's scroll position to the top on
-                    route changes.
-                </p>
-                <p>
-                    This directive is especially useful in situations like
-                    having a
-                    <code>router-outlet</code> inside a scrollable area such as
-                    <code>mat-drawer-content</code>,
-                    <code>mat-sidenav-content</code> or a custom scrollable
-                    element.
-                </p>
-                <p>
-                    <strong>Exported as: </strong><code>fuseScrollReset</code>
-                </p>
+      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+        <p>
+          <strong>fuseScrollReset</strong> is a helper directive to reset the
+          given element's scroll position to the top on route changes.
+        </p>
+        <p>
+          This directive is especially useful in situations like having a
+          <code>router-outlet</code> inside a scrollable area such as
+          <code>mat-drawer-content</code>, <code>mat-sidenav-content</code> or a
+          custom scrollable element.
+        </p>
+        <p><strong>Exported as: </strong><code>fuseScrollReset</code></p>
 
-                <h2>Module</h2>
-                <textarea fuse-highlight lang="typescript">
+        <h2>Module</h2>
+        <textarea fuse-highlight lang="typescript">
                     import { FuseScrollResetModule } from '@fuse/directives/scroll-reset';
                 </textarea
-                >
+        >
 
-                <h2>Usage</h2>
-                <p>
-                    Here are some of the basic usages of the
-                    <code>fuseScrollReset</code>:
-                </p>
-                <textarea fuse-highlight lang="html">
+        <h2>Usage</h2>
+        <p>
+          Here are some of the basic usages of the
+          <code>fuseScrollReset</code>:
+        </p>
+        <textarea fuse-highlight lang="html">
                     <mat-drawer-content fuseScrollReset>
                     <router-outlet></router-outlet>
                     </mat-drawer-content>
                 </textarea
-                >
+        >
 
-                <textarea class="mt-8" fuse-highlight lang="html">
+        <textarea class="mt-8" fuse-highlight lang="html">
                     <div class="mail">
                     <div
                     class="threads"
@@ -92,9 +85,9 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     </div>
                     </div>
                 </textarea
-                >
-            </div>
-        </div>
-    `,
+        >
+      </div>
+    </div>
+  `,
 })
 export default class ScrollReset {}

@@ -4,11 +4,11 @@ import { CryptoComponent } from './crypto.component';
 import { CryptoService } from './crypto.service';
 
 export default [
-    {
-        path: '',
-        component: CryptoComponent,
-        resolve: {
-            data: () => inject(CryptoService).getData(),
-        },
+  {
+    path: '',
+    component: CryptoComponent,
+    resolve: {
+      data: () => inject(CryptoService).getData(),
     },
+  },
 ] as Routes;

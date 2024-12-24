@@ -1,11 +1,18 @@
 import {
-    EnvironmentProviders,
-    inject,
-    provideEnvironmentInitializer,
-    Provider,
+  EnvironmentProviders,
+  inject,
+  makeEnvironmentProviders,
+  provideAppInitializer,
 } from '@angular/core';
 import { IconsService } from './icons.service';
 
-export const provideIcons = (): Array<Provider | EnvironmentProviders> => {
-    return [provideEnvironmentInitializer(() => inject(IconsService))];
+/**
+ * Provide the icons service to the application.
+ */
+export const provideIcons = (): EnvironmentProviders => {
+  return makeEnvironmentProviders([
+    provideAppInitializer(() => {
+      inject(IconsService);
+    }),
+  ]);
 };

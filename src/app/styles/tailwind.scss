@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Injects additional styles into Tailwind's base layer.
+@layer base {
+  * {
+    // Text rendering
+    text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -webkit-text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+
+    // Font smoothing
+    @apply antialiased;
+
+    // Remove the focus ring
+    &:focus {
+      outline: none !important;
+    }
+  }
+
+  // HTML and Body default styles
+  html,
+  body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 100%;
+  }
+
+  // Font size
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    font-size: 0.8125rem; // 13px
+    font-feature-settings: 'salt'; // Stylistic alternates for Inter
+  }
+
+  // Better spacing and border for horizontal rule
+  hr {
+    margin: 32px 0;
+    border-bottom-width: 1px;
+  }
+
+  // Make images and videos to take up all the available space
+  img {
+    width: 100%;
+    vertical-align: top;
+  }
+
+  // Fix: Disabled placeholder color is too faded on Safari
+  input[disabled] {
+    opacity: 1;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  // Set the background and foreground colors
+  body {
+    background-color: var(--mat-sys-background);
+    color: var(--mat-sys-on-background);
+  }
+
+  // Set the border color
+  *,
+  ::before,
+  ::after {
+    border-color: var(--mat-sys-surface-variant);
+  }
+
+  // Style scrollbars on platforms other than MacOS and iOS
+  @media only screen and (min-width: 960px) {
+    body:not(.os-mac) {
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background-color: rgba(0, 0, 0, 0);
+      }
+
+      ::-webkit-scrollbar:hover {
+        width: 8px;
+        height: 8px;
+        background-color: rgba(0, 0, 0, 0.06);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        border: 2px solid transparent;
+        border-radius: 20px;
+        box-shadow: inset 0 0 0 20px rgba(0, 0, 0, 0.24);
+      }
+
+      ::-webkit-scrollbar-thumb:active {
+        border-radius: 20px;
+        box-shadow: inset 0 0 0 20px rgba(0, 0, 0, 0.37);
+      }
+
+      &.dark {
+        ::-webkit-scrollbar-thumb {
+          box-shadow: inset 0 0 0 20px rgba(255, 255, 255, 0.24);
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+          box-shadow: inset 0 0 0 20px rgba(255, 255, 255, 0.37);
+        }
+      }
+    }
+  }
+
+  // Set the foreground color for disabled elements
+  [disabled] {
+    @apply text-disabled #{'!important'};
+  }
+
+  // Print styles
+  @media print {
+    html {
+      font-size: 12px !important; // Make the base font size smaller
+    }
+
+    body,
+    .dark,
+    .light {
+      background: none !important;
+    }
+  }
+}
+
+@layer utilities {
+  .bg-default {
+    background: var(--mat-sys-background);
+  }
+
+  .bg-card {
+    background: var(--mat-sys-surface-container-lowest);
+  }
+
+  .text-default {
+    color: var(--mat-sys-on-background);
+  }
+}

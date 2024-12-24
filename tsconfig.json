@@ -1,21 +1,22 @@
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
-    "compileOnSave": false,
-    "compilerOptions": {
-        "paths": {
-            "@fuse": ["./src/@fuse"],
-            "@fuse/*": ["./src/@fuse/*"]
-        },
-        "outDir": "./dist/out-tsc",
-        "esModuleInterop": true,
-        "experimentalDecorators": true,
-        "moduleResolution": "bundler",
-        "importHelpers": true,
-        "target": "ES2022",
-        "module": "ES2022"
+  "compileOnSave": false,
+  "compilerOptions": {
+    "paths": {
+      "@fuse": ["./src/@fuse"],
+      "@fuse/*": ["./src/@fuse/*"],
+      "@/*": ["./src/*"]
     },
-    "angularCompilerOptions": {
-        "enableI18nLegacyMessageIdFormat": false
-    }
+    "outDir": "./dist/out-tsc",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false
+  }
 }

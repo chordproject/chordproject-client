@@ -4,11 +4,11 @@ import { AnalyticsComponent } from './analytics.component';
 import { AnalyticsService } from './analytics.service';
 
 export default [
-    {
-        path: '',
-        component: AnalyticsComponent,
-        resolve: {
-            data: () => inject(AnalyticsService).getData(),
-        },
+  {
+    path: '',
+    component: AnalyticsComponent,
+    resolve: {
+      data: () => inject(AnalyticsService).getData(),
     },
+  },
 ] as Routes;

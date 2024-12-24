@@ -4,11 +4,11 @@ import { ActivitiesComponent } from './activities.component';
 import { ActivitiesService } from './activities.service';
 
 export default [
-    {
-        path: '',
-        component: ActivitiesComponent,
-        resolve: {
-            activities: () => inject(ActivitiesService).getActivities(),
-        },
+  {
+    path: '',
+    component: ActivitiesComponent,
+    resolve: {
+      activities: () => inject(ActivitiesService).getActivities(),
     },
+  },
 ] as Routes;

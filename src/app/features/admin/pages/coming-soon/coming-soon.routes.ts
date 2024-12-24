@@ -8,32 +8,32 @@ import { ComingSoonSplitScreenReversedComponent } from './split-screen-reversed/
 import { ComingSoonSplitScreenComponent } from './split-screen/coming-soon.component';
 
 export default [
-    {
-        path: 'classic',
-        component: ComingSoonClassicComponent,
-    },
-    {
-        path: 'modern',
-        component: ComingSoonModernComponent,
-    },
-    {
-        path: 'modern-reversed',
-        component: ComingSoonModernReversedComponent,
-    },
-    {
-        path: 'split-screen',
-        component: ComingSoonSplitScreenComponent,
-    },
-    {
-        path: 'split-screen-reversed',
-        component: ComingSoonSplitScreenReversedComponent,
-    },
-    {
-        path: 'fullscreen',
-        component: ComingSoonFullscreenComponent,
-    },
-    {
-        path: 'fullscreen-reversed',
-        component: ComingSoonFullscreenReversedComponent,
-    },
+  {
+    path: 'classic',
+    component: ComingSoonClassicComponent,
+  },
+  {
+    path: 'modern',
+    component: ComingSoonModernComponent,
+  },
+  {
+    path: 'modern-reversed',
+    component: ComingSoonModernReversedComponent,
+  },
+  {
+    path: 'split-screen',
+    component: ComingSoonSplitScreenComponent,
+  },
+  {
+    path: 'split-screen-reversed',
+    component: ComingSoonSplitScreenReversedComponent,
+  },
+  {
+    path: 'fullscreen',
+    component: ComingSoonFullscreenComponent,
+  },
+  {
+    path: 'fullscreen-reversed',
+    component: ComingSoonFullscreenReversedComponent,
+  },
 ] as Routes;

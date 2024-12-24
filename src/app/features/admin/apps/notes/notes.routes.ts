@@ -3,14 +3,14 @@ import { NotesListComponent } from './list/list.component';
 import { NotesComponent } from './notes.component';
 
 export default [
-    {
+  {
+    path: '',
+    component: NotesComponent,
+    children: [
+      {
         path: '',
-        component: NotesComponent,
-        children: [
-            {
-                path: '',
-                component: NotesListComponent,
-            },
-        ],
-    },
+        component: NotesListComponent,
+      },
+    ],
+  },
 ] as Routes;

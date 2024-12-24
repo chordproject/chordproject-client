@@ -4,101 +4,99 @@ import { MatIconModule } from '@angular/material/icon';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
 
 @Component({
-    selector: 'must-match',
-    standalone: true,
-    imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
-    template: `
-        <div class="flex min-w-0 flex-auto flex-col">
-            <!-- Header -->
-            <div
-                class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
-            >
-                <div class="min-w-0 flex-1">
-                    <!-- Breadcrumbs -->
-                    <div class="flex flex-wrap items-center font-medium">
-                        <div>
-                            <a class="whitespace-nowrap text-primary-500"
-                                >Documentation</a
-                            >
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <a class="ml-1 text-primary-500">Fuse Components</a>
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <span class="text-secondary ml-1">Validators</span>
-                        </div>
-                    </div>
-                    <!-- Title -->
-                    <div class="mt-2">
-                        <h2
-                            class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
-                        >
-                            mustMatch
-                        </h2>
-                    </div>
-                </div>
+  selector: 'must-match',
+  standalone: true,
+  imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
+  template: `
+    <div class="flex min-w-0 flex-auto flex-col">
+      <!-- Header -->
+      <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+      >
+        <div class="min-w-0 flex-1">
+          <!-- Breadcrumbs -->
+          <div class="flex flex-wrap items-center font-medium">
+            <div>
+              <a class="whitespace-nowrap text-primary-500">Documentation</a>
             </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <a class="ml-1 text-primary-500">Fuse Components</a>
+            </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <span class="text-secondary ml-1">Validators</span>
+            </div>
+          </div>
+          <!-- Title -->
+          <div class="mt-2">
+            <h2
+              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+            >
+              mustMatch
+            </h2>
+          </div>
+        </div>
+      </div>
 
-            <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
-                <p>
-                    The <code>mustMatch</code> validator can be used to check if
-                    two different form fields has the same value. For example, a
-                    <strong>Confirm password</strong> should have the same value
-                    with the <strong>Password</strong> field. To validate that,
-                    the <code>mustMatch</code> validator can be used.
-                </p>
+      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+        <p>
+          The <code>mustMatch</code> validator can be used to check if two
+          different form fields has the same value. For example, a
+          <strong>Confirm password</strong> should have the same value with the
+          <strong>Password</strong> field. To validate that, the
+          <code>mustMatch</code> validator can be used.
+        </p>
 
-                <h3>Usage</h3>
-                <textarea fuse-highlight lang="typescript">
+        <h3>Usage</h3>
+        <textarea fuse-highlight lang="typescript">
                     FuseValidators.mustMatch(controlPath, matchingControlPath)
                 </textarea
-                >
+        >
 
-                <h3>Parameters</h3>
-                <div class="bg-card mb-4 rounded px-6 py-3 shadow">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>controlPath: string</div>
-                                </td>
-                                <td>
-                                    A dot-delimited string values that define
-                                    the path to the control.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>matchingControlPath: string</div>
-                                </td>
-                                <td>
-                                    A dot-delimited string values that define
-                                    the path to the matching control.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p>
-                    Because the <code>mustMatch</code> validator requires
-                    parameters, it must be used within the
-                    <code>validators</code> option of the form builder:
-                </p>
-                <textarea fuse-highlight lang="typescript">
+        <h3>Parameters</h3>
+        <div class="bg-card mb-4 rounded px-6 py-3 shadow">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>controlPath: string</div>
+                </td>
+                <td>
+                  A dot-delimited string values that define the path to the
+                  control.
+                </td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>matchingControlPath: string</div>
+                </td>
+                <td>
+                  A dot-delimited string values that define the path to the
+                  matching control.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Because the <code>mustMatch</code> validator requires parameters, it
+          must be used within the <code>validators</code> option of the form
+          builder:
+        </p>
+        <textarea fuse-highlight lang="typescript">
                     import { FuseValidators } from '@fuse/validators';
 
                     // Create the reset password form
@@ -112,20 +110,20 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     }
                     );
                 </textarea
-                >
-                <p>
-                    To show an error message on the field, the
-                    <code>mat-error</code> element can be used within the
-                    <code>mat-form-field</code>:
-                </p>
-                <textarea fuse-highlight lang="html">
+        >
+        <p>
+          To show an error message on the field, the
+          <code>mat-error</code> element can be used within the
+          <code>mat-form-field</code>:
+        </p>
+        <textarea fuse-highlight lang="html">
                     <mat-error *ngIf="resetPasswordForm.get('passwordConfirm').hasError('mustMatch')">
                     Passwords must match
                     </mat-error>
                 </textarea
-                >
-            </div>
-        </div>
-    `,
+        >
+      </div>
+    </div>
+  `,
 })
 export default class MustMatch {}

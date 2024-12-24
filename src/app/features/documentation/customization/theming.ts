@@ -5,83 +5,78 @@ import { FuseAlertComponent } from '@fuse/components/alert';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
 
 @Component({
-    selector: 'theming',
-    standalone: true,
-    imports: [
-        MatIconModule,
-        MatButtonModule,
-        FuseHighlightComponent,
-        FuseAlertComponent,
-    ],
-    template: `
-        <div class="flex min-w-0 flex-auto flex-col">
-            <!-- Header -->
-            <div
-                class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
-            >
-                <div class="min-w-0 flex-1">
-                    <!-- Breadcrumbs -->
-                    <div class="flex flex-wrap items-center font-medium">
-                        <div>
-                            <a class="whitespace-nowrap text-primary-500"
-                                >Documentation</a
-                            >
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <a class="ml-1 text-primary-500">Guides</a>
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <span class="text-secondary ml-1"
-                                >Customization</span
-                            >
-                        </div>
-                    </div>
-                    <!-- Title -->
-                    <div class="mt-2">
-                        <h2
-                            class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
-                        >
-                            Theming
-                        </h2>
-                    </div>
-                </div>
+  selector: 'theming',
+  standalone: true,
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    FuseHighlightComponent,
+    FuseAlertComponent,
+  ],
+  template: `
+    <div class="flex min-w-0 flex-auto flex-col">
+      <!-- Header -->
+      <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+      >
+        <div class="min-w-0 flex-1">
+          <!-- Breadcrumbs -->
+          <div class="flex flex-wrap items-center font-medium">
+            <div>
+              <a class="whitespace-nowrap text-primary-500">Documentation</a>
             </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <a class="ml-1 text-primary-500">Guides</a>
+            </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <span class="text-secondary ml-1">Customization</span>
+            </div>
+          </div>
+          <!-- Title -->
+          <div class="mt-2">
+            <h2
+              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+            >
+              Theming
+            </h2>
+          </div>
+        </div>
+      </div>
 
-            <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
-                <p>
-                    Since Fuse uses <em>Angular Material</em> as its primary UI
-                    library, it also uses the
-                    <a
-                        href="https://material.angular.io/guide/theming-your-components"
-                        rel="noreferrer"
-                        target="_blank"
-                        >Angular Material Theming
-                    </a>
-                    with a twist.
-                </p>
-                <p>
-                    Rather than using Angular Material's default theming
-                    process, Fuse incorporates that into the Tailwind's build
-                    process. This way, you can configure your application using
-                    Tailwind's configuration file and things like colors, font
-                    families, breakpoints and etc. will be carried over and
-                    applied to the Angular Material components.
-                </p>
-                <p>
-                    You can also create color themes using Tailwind's
-                    configuration and they will also be carried over and used
-                    for building Angular Material themes. Here's an example
-                    theme configuration from Tailwind's configuration:
-                </p>
-                <textarea fuse-highlight lang="js">
+      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+        <p>
+          Since Fuse uses <em>Angular Material</em> as its primary UI library,
+          it also uses the
+          <a
+            href="https://material.angular.io/guide/theming-your-components"
+            rel="noreferrer"
+            target="_blank"
+            >Angular Material Theming
+          </a>
+          with a twist.
+        </p>
+        <p>
+          Rather than using Angular Material's default theming process, Fuse
+          incorporates that into the Tailwind's build process. This way, you can
+          configure your application using Tailwind's configuration file and
+          things like colors, font families, breakpoints and etc. will be
+          carried over and applied to the Angular Material components.
+        </p>
+        <p>
+          You can also create color themes using Tailwind's configuration and
+          they will also be carried over and used for building Angular Material
+          themes. Here's an example theme configuration from Tailwind's
+          configuration:
+        </p>
+        <textarea fuse-highlight lang="js">
                     // tailwind.config.js
 
                     /**
@@ -103,7 +98,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     ...colors.red,
                     DEFAULT: colors.red[600]
                     },
-                    'on-warn': {
+                    'on-error': {
                     500: colors.red['50']
                     }
                     },
@@ -130,72 +125,64 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     }
                     };
                 </textarea
-                >
-                <p>Here's the general structure of a theme configuration:</p>
-                <textarea fuse-highlight lang="js">
+        >
+        <p>Here's the general structure of a theme configuration:</p>
+        <textarea fuse-highlight lang="js">
                     THEME_NAME: {
                     primary     : { ... },
                     accent      : { ... },
                     warn        : { ... },
                     'on-primary': { ... }
                     'on-accent' : { ... }
-                    'on-warn'   : { ... }
+                    'on-error'   : { ... }
                     }
                 </textarea
-                >
-                <ul>
-                    <li>
-                        <p class="font-medium">primary, accent, warn</p>
-                        These are the 3 main color palettes of the theme. They
-                        <strong>must</strong> be a Tailwind color palette. If
-                        DEFAULT is provided, that will become the main color of
-                        that palette otherwise the 500 hue level from the same
-                        palette will be used as the DEFAULT.
-                    </li>
-                    <li>
-                        <p class="font-medium">
-                            on-primary, on-accent, on-warn
-                        </p>
-                        These are the 3 main contrasting color palettes of the
-                        theme. They can be either a complete or a partial
-                        Tailwind color palette. By default, Fuse will
-                        automatically generate contrasting colors using the
-                        colors from "Primary", "Accent" and "Warn" palettes but
-                        for some reason, if you want more control over the
-                        contrasting colors, you can use these objects to
-                        customize them.
-                    </li>
-                </ul>
+        >
+        <ul>
+          <li>
+            <p class="font-medium">primary, accent, warn</p>
+            These are the 3 main color palettes of the theme. They
+            <strong>must</strong> be a Tailwind color palette. If DEFAULT is
+            provided, that will become the main color of that palette otherwise
+            the 500 hue level from the same palette will be used as the DEFAULT.
+          </li>
+          <li>
+            <p class="font-medium">on-primary, on-accent, on-error</p>
+            These are the 3 main contrasting color palettes of the theme. They
+            can be either a complete or a partial Tailwind color palette. By
+            default, Fuse will automatically generate contrasting colors using
+            the colors from "Primary", "Accent" and "Warn" palettes but for some
+            reason, if you want more control over the contrasting colors, you
+            can use these objects to customize them.
+          </li>
+        </ul>
 
-                <fuse-alert [appearance]="'border'" [type]="'info'">
-                    <div class="prose prose-sm max-w-none text-current">
-                        <p>
-                            Angular Material library uses 3 main color palettes
-                            and their contrasting colors to theme their
-                            components. Here we basically moved that
-                            configuration (in a customized and simplified way)
-                            into the Tailwind.
-                        </p>
-                        <p>
-                            In order to have a complete understanding how
-                            Angular Material components are themed, you can
-                            check their official guides here:
-                            <a
-                                href="https://material.angular.io/guide/theming"
-                                rel="noreferrer"
-                                target="_blank"
-                                >https://material.angular.io/guide/theming
-                            </a>
-                        </p>
-                    </div>
-                </fuse-alert>
+        <fuse-alert [appearance]="'border'" [type]="'info'">
+          <div class="prose prose-sm max-w-none text-current">
+            <p>
+              Angular Material library uses 3 main color palettes and their
+              contrasting colors to theme their components. Here we basically
+              moved that configuration (in a customized and simplified way) into
+              the Tailwind.
+            </p>
+            <p>
+              In order to have a complete understanding how Angular Material
+              components are themed, you can check their official guides here:
+              <a
+                href="https://material.angular.io/guide/theming"
+                rel="noreferrer"
+                target="_blank"
+                >https://material.angular.io/guide/theming
+              </a>
+            </p>
+          </div>
+        </fuse-alert>
 
-                <p class="mt-12">
-                    Let's break down the 'default' theme configuration. This one
-                    is required for entire theming system and Fuse to work
-                    correctly:
-                </p>
-                <textarea fuse-highlight lang="js">
+        <p class="mt-12">
+          Let's break down the 'default' theme configuration. This one is
+          required for entire theming system and Fuse to work correctly:
+        </p>
+        <textarea fuse-highlight lang="js">
                     // tailwind.config.js
 
                     'default': {
@@ -229,22 +216,22 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     // for "Primary" and "Accent" palettes, we omit "on-primary" and
                     // "on-accent" objects.
 
-                    // Here we define the "on-warn" palette. As you can see, it's not a
+                    // Here we define the "on-error" palette. As you can see, it's not a
                     // complete palette but a partial one. Fuse will actually automatically
                     // generate the contrasting colors for "Warn" palette as well but it will
                     // also merge the below configuration so the contrasting color for
                     // red.500 will be red.50 from the same palette.
-                    'on-warn': {
+                    'on-error': {
                     500: colors.red['50']
                     }
                     }
                 </textarea
-                >
+        >
 
-                <p class="mt-12">
-                    Let's break down the rest of the theme configuration:
-                </p>
-                <textarea fuse-highlight lang="js">
+        <p class="mt-12">
+          Let's break down the rest of the theme configuration:
+        </p>
+        <textarea fuse-highlight lang="js">
                     // tailwind.config.js
 
                     // All themes will inherit the configuration from the "default" theme so you
@@ -286,47 +273,43 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     primary: colors.amber
                     }
                 </textarea
-                >
+        >
 
-                <h2>Color palettes</h2>
-                <p>
-                    By default, Tailwind provides lots of color palettes so you
-                    can always use them to create themes.
-                </p>
-                <p>
-                    If you have a different color that you want to use, like a
-                    brand color or a custom hand picked one, you must generate a
-                    Tailwind-like color palette in order to be able to generate
-                    themes with. There are couple ways of creating such
-                    palettes;
-                </p>
-                <ol>
-                    <li>
-                        You can create them by hand. Though this gives you
-                        complete freedom, it is by far the hardest one
-                        especially if you don't have any experience with colors
-                        and their relations.
-                    </li>
-                    <li>
-                        You can use online tools to generate Tailwind color
-                        palettes. They usually do a decent job for creating
-                        palettes but they could be a little off in some cases.
-                    </li>
-                    <li>
-                        You can use our custom
-                        <code>generatePalette()</code> helper method to create
-                        palettes either from a single color, or from multiple
-                        colors.
-                    </li>
-                </ol>
+        <h2>Color palettes</h2>
+        <p>
+          By default, Tailwind provides lots of color palettes so you can always
+          use them to create themes.
+        </p>
+        <p>
+          If you have a different color that you want to use, like a brand color
+          or a custom hand picked one, you must generate a Tailwind-like color
+          palette in order to be able to generate themes with. There are couple
+          ways of creating such palettes;
+        </p>
+        <ol>
+          <li>
+            You can create them by hand. Though this gives you complete freedom,
+            it is by far the hardest one especially if you don't have any
+            experience with colors and their relations.
+          </li>
+          <li>
+            You can use online tools to generate Tailwind color palettes. They
+            usually do a decent job for creating palettes but they could be a
+            little off in some cases.
+          </li>
+          <li>
+            You can use our custom
+            <code>generatePalette()</code> helper method to create palettes
+            either from a single color, or from multiple colors.
+          </li>
+        </ol>
 
-                <h3><code>generatePalette()</code></h3>
-                <p>
-                    This custom helper method allows you to generate
-                    Tailwind-like palettes from either a single color or
-                    multiple colors:
-                </p>
-                <textarea fuse-highlight lang="js">
+        <h3><code>generatePalette()</code></h3>
+        <p>
+          This custom helper method allows you to generate Tailwind-like
+          palettes from either a single color or multiple colors:
+        </p>
+        <textarea fuse-highlight lang="js">
                     // tailwind.config.js
 
                     const generatePalette = require(path.resolve(__dirname, ('src/@fuse/tailwind/utils/generate-palette')));
@@ -346,67 +329,61 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     })
                     };
                 </textarea
-                >
-                <p>
-                    Usually, if you are working on an app by yourself, both
-                    designing and developing it, generating a complete
-                    Tailwind-like palette from a single color is a great option.
-                    But that's not always the case and most palette generators
-                    only give you an option to generate a palette using a single
-                    color. That becomes problematic if you have more than one
-                    color because then you would have to go through the
-                    generated palette and try to fit your remaining colors into
-                    it.
-                </p>
-                <p>
-                    This is exactly where the
-                    <code>generatePalette()</code> method shines!
-                </p>
-                <p>
-                    You can provide an object with multiple color levels and it
-                    will handle the rest for you. The best thing about the
-                    <code>generatePalette()</code> method is that it will
-                    actually respect the colors you choose. It will adjust the
-                    palette to make sure all the colors you provided will fit
-                    into it seamlessly.
-                </p>
-                <p>
-                    Once you generate the palettes, you can use them to create
-                    color themes for your app.
-                </p>
+        >
+        <p>
+          Usually, if you are working on an app by yourself, both designing and
+          developing it, generating a complete Tailwind-like palette from a
+          single color is a great option. But that's not always the case and
+          most palette generators only give you an option to generate a palette
+          using a single color. That becomes problematic if you have more than
+          one color because then you would have to go through the generated
+          palette and try to fit your remaining colors into it.
+        </p>
+        <p>
+          This is exactly where the
+          <code>generatePalette()</code> method shines!
+        </p>
+        <p>
+          You can provide an object with multiple color levels and it will
+          handle the rest for you. The best thing about the
+          <code>generatePalette()</code> method is that it will actually respect
+          the colors you choose. It will adjust the palette to make sure all the
+          colors you provided will fit into it seamlessly.
+        </p>
+        <p>
+          Once you generate the palettes, you can use them to create color
+          themes for your app.
+        </p>
 
-                <h2>Setting the default theme</h2>
-                <p>
-                    By default, the "default" theme will be used as the default
-                    theme for your application. If for some reason, you want to
-                    have more than one themes and choose something other than
-                    the "default", you can do so by setting the default theme
-                    via
-                    <code>src/app.config.ts</code> file. You can also change the
-                    theme runtime using the <code>FuseConfigService</code>.
-                </p>
+        <h2>Setting the default theme</h2>
+        <p>
+          By default, the "default" theme will be used as the default theme for
+          your application. If for some reason, you want to have more than one
+          themes and choose something other than the "default", you can do so by
+          setting the default theme via
+          <code>src/app.config.ts</code> file. You can also change the theme
+          runtime using the <code>FuseConfigService</code>.
+        </p>
 
-                <h2>Schemes</h2>
-                <p>
-                    Every color theme you configure will automatically have 2
-                    schemes;
-                    <strong>Light</strong> and <strong>Dark</strong>. This way
-                    you can immediately change to a "dark" mode without losing
-                    your theme or setting up a separate "dark" theme.
-                </p>
-                <p>
-                    You can set the default scheme via
-                    <code>src/app.config.ts</code> file. You can also change the
-                    scheme runtime using the <code>FuseConfigService</code>.
-                </p>
-                <p>
-                    While you can set the scheme to "light" or "dark" you can
-                    also set it to "auto". "auto" mode will automatically switch
-                    between the "light" and "dark" schemes depending on the
-                    user's operating system's setting.
-                </p>
-            </div>
-        </div>
-    `,
+        <h2>Schemes</h2>
+        <p>
+          Every color theme you configure will automatically have 2 schemes;
+          <strong>Light</strong> and <strong>Dark</strong>. This way you can
+          immediately change to a "dark" mode without losing your theme or
+          setting up a separate "dark" theme.
+        </p>
+        <p>
+          You can set the default scheme via
+          <code>src/app.config.ts</code> file. You can also change the scheme
+          runtime using the <code>FuseConfigService</code>.
+        </p>
+        <p>
+          While you can set the scheme to "light" or "dark" you can also set it
+          to "auto". "auto" mode will automatically switch between the "light"
+          and "dark" schemes depending on the user's operating system's setting.
+        </p>
+      </div>
+    </div>
+  `,
 })
 export default class Theming {}

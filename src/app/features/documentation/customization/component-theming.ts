@@ -4,93 +4,85 @@ import { MatIconModule } from '@angular/material/icon';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
 
 @Component({
-    selector: 'component-theming',
-    standalone: true,
-    imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
-    template: `
-        <div class="flex min-w-0 flex-auto flex-col">
-            <!-- Header -->
-            <div
-                class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
-            >
-                <div class="min-w-0 flex-1">
-                    <!-- Breadcrumbs -->
-                    <div class="flex flex-wrap items-center font-medium">
-                        <div>
-                            <a class="whitespace-nowrap text-primary-500"
-                                >Documentation</a
-                            >
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <a class="ml-1 text-primary-500">Guides</a>
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <span class="text-secondary ml-1"
-                                >Customization</span
-                            >
-                        </div>
-                    </div>
-                    <!-- Title -->
-                    <div class="mt-2">
-                        <h2
-                            class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
-                        >
-                            Component Theming
-                        </h2>
-                    </div>
-                </div>
+  selector: 'component-theming',
+  standalone: true,
+  imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
+  template: `
+    <div class="flex min-w-0 flex-auto flex-col">
+      <!-- Header -->
+      <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+      >
+        <div class="min-w-0 flex-1">
+          <!-- Breadcrumbs -->
+          <div class="flex flex-wrap items-center font-medium">
+            <div>
+              <a class="whitespace-nowrap text-primary-500">Documentation</a>
             </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <a class="ml-1 text-primary-500">Guides</a>
+            </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <span class="text-secondary ml-1">Customization</span>
+            </div>
+          </div>
+          <!-- Title -->
+          <div class="mt-2">
+            <h2
+              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+            >
+              Component Theming
+            </h2>
+          </div>
+        </div>
+      </div>
 
-            <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
-                <p>
-                    Normally, Angular Material requires a separate .scss file
-                    for theming and that file must be included into a mixin
-                    where the defined Angular Material themes can be applied.
-                    This approach not only forces you to create another .scss
-                    file for component theming, but it also forces you to import
-                    that file from another place just so you can use the Angular
-                    Material mixin to apply the theme.
-                </p>
-                <p>
-                    This breaks the modularity because now you have a reference
-                    to your component's theming file from who knows where and
-                    you also have to remember to do all this again and again
-                    every time you want to use the theme colors from your
-                    components.
-                </p>
-                <p>
-                    Fuse, on the other hand, provides a way easier method to add
-                    theming to your components: Tailwind utilities!
-                </p>
+      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+        <p>
+          Normally, Angular Material requires a separate .scss file for theming
+          and that file must be included into a mixin where the defined Angular
+          Material themes can be applied. This approach not only forces you to
+          create another .scss file for component theming, but it also forces
+          you to import that file from another place just so you can use the
+          Angular Material mixin to apply the theme.
+        </p>
+        <p>
+          This breaks the modularity because now you have a reference to your
+          component's theming file from who knows where and you also have to
+          remember to do all this again and again every time you want to use the
+          theme colors from your components.
+        </p>
+        <p>
+          Fuse, on the other hand, provides a way easier method to add theming
+          to your components: Tailwind utilities!
+        </p>
 
-                <h3>Color palette utilities</h3>
-                <p>
-                    As mentioned before, Angular Material uses 3 main palettes
-                    to generate themes; "Primary", "Accent" and "Warn". Being
-                    able to access these palettes and use their colors with your
-                    components is a must have feature, otherwise you wouldn't be
-                    able to create components, apps or pages that "belong" to
-                    your app.
-                </p>
-                <p>
-                    All palette colors are available as Tailwind utility
-                    classes, and since these palettes are no more than Tailwind
-                    color palettes, they are processed as one by Tailwind,
-                    therefore, every single color related utility you have in
-                    Tailwind also have
-                    <strong>primary</strong>, <strong>accent</strong> and
-                    <strong>warn</strong> colors and you can use them just like
-                    any other color utility:
-                </p>
-                <textarea fuse-highlight lang="html">
+        <h3>Color palette utilities</h3>
+        <p>
+          As mentioned before, Angular Material uses 3 main palettes to generate
+          themes; "Primary", "Accent" and "Warn". Being able to access these
+          palettes and use their colors with your components is a must have
+          feature, otherwise you wouldn't be able to create components, apps or
+          pages that "belong" to your app.
+        </p>
+        <p>
+          All palette colors are available as Tailwind utility classes, and
+          since these palettes are no more than Tailwind color palettes, they
+          are processed as one by Tailwind, therefore, every single color
+          related utility you have in Tailwind also have
+          <strong>primary</strong>, <strong>accent</strong> and
+          <strong>warn</strong> colors and you can use them just like any other
+          color utility:
+        </p>
+        <textarea fuse-highlight lang="html">
                     <!-- Default primary color as the text color -->
                     <h1 class="text-primary">I'm a Title</h1>
 
@@ -98,11 +90,11 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     <h1 class="text-accent-300">I'm a Title</h1>
 
                     <!-- warn-800 as the text color -->
-                    <h1 class="text-warn-800">I'm a Title</h1>
+                    <h1 class="text-error-800">I'm a Title</h1>
                 </textarea
-                >
+        >
 
-                <textarea fuse-highlight lang="html">
+        <textarea fuse-highlight lang="html">
                     <!-- Default primary color as the bg color -->
                     <div class="bg-primary"></div>
 
@@ -110,11 +102,11 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     <div class="bg-accent-300"></div>
 
                     <!-- warn-800 as the bg color -->
-                    <div class="bg-warn-800"></div>
+                    <div class="bg-error-800"></div>
                 </textarea
-                >
+        >
 
-                <textarea fuse-highlight lang="html">
+        <textarea fuse-highlight lang="html">
                     <!-- primary-600 as the bg and the contrasting color as the text color -->
                     <div class="bg-primary-600 text-on-primary-600"></div>
 
@@ -122,13 +114,13 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     <div class="bg-accent-300 text-on-accent-300"></div>
 
                     <!-- warn-800 as the bg and the contrasting color as the text color -->
-                    <div class="bg-warn-800 text-on-warn-800"></div>
+                    <div class="bg-error-800 text-on-error-800"></div>
                 </textarea
-                >
+        >
 
-                <textarea fuse-highlight lang="html">
+        <textarea fuse-highlight lang="html">
                     <!-- Some more examples -->
-                    <div class="text-primary bg-primary-100 border-accent ring-warn-400 ..."></div>
+                    <div class="text-primary bg-primary-100 border-accent ring-error-400 ..."></div>
 
                     <!-- Some more examples -->
                     <div class="text-primary text-opacity-50"></div>
@@ -136,18 +128,17 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     <!-- Some more examples -->
                     <div class="bg-accent-900 bg-opacity-5"></div>
                 </textarea
-                >
+        >
 
-                <h3>Other color utilities</h3>
-                <p>
-                    There are also other color utilities to quickly set the
-                    background or the text color of an element. These special
-                    utilities have different values on different schemes. For
-                    example, "bg-card" will have different colors depending on
-                    the selected scheme so you don't have to set the background
-                    color explicitly for "Dark" themes.
-                </p>
-                <textarea fuse-highlight lang="html">
+        <h3>Other color utilities</h3>
+        <p>
+          There are also other color utilities to quickly set the background or
+          the text color of an element. These special utilities have different
+          values on different schemes. For example, "bg-card" will have
+          different colors depending on the selected scheme so you don't have to
+          set the background color explicitly for "Dark" themes.
+        </p>
+        <textarea fuse-highlight lang="html">
                     <!-- Default text color -->
                     .text-default
 
@@ -181,9 +172,9 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     <!-- Default card background color as the ring color -->
                     .ring-bg-card
                 </textarea
-                >
-            </div>
-        </div>
-    `,
+        >
+      </div>
+    </div>
+  `,
 })
 export default class ComponentTheming {}

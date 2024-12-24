@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import {
-    ActivatedRouteSnapshot,
-    Router,
-    RouterStateSnapshot,
-    Routes,
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot,
+  Routes,
 } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { ChatComponent } from './chat.component';
@@ -19,58 +19,58 @@ import { EmptyConversationComponent } from './empty-conversation/empty-conversat
  * @param state
  */
 const conversationResolver = (
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
 ) => {
-    const chatService = inject(ChatService);
-    const router = inject(Router);
+  const chatService = inject(ChatService);
+  const router = inject(Router);
 
-    return chatService.getChatById(route.paramMap.get('id')).pipe(
-        // Error here means the requested chat is not available
-        catchError((error) => {
-            // Log the error
-            console.error(error);
+  return chatService.getChatById(route.paramMap.get('id')).pipe(
+    // Error here means the requested chat is not available
+    catchError((error) => {
+      // Log the error
+      console.error(error);
 
-            // Get the parent url
-            const parentUrl = state.url.split('/').slice(0, -1).join('/');
+      // Get the parent url
+      const parentUrl = state.url.split('/').slice(0, -1).join('/');
 
-            // Navigate to there
-            router.navigateByUrl(parentUrl);
+      // Navigate to there
+      router.navigateByUrl(parentUrl);
 
-            // Throw an error
-            return throwError(error);
-        })
-    );
+      // Throw an error
+      return throwError(error);
+    })
+  );
 };
 
 export default [
-    {
-        path: '',
-        component: ChatComponent,
-        resolve: {
-            chats: () => inject(ChatService).getChats(),
-            contacts: () => inject(ChatService).getContacts(),
-            profile: () => inject(ChatService).getProfile(),
-        },
-        children: [
-            {
-                path: '',
-                component: ChatsComponent,
-                children: [
-                    {
-                        path: '',
-                        pathMatch: 'full',
-                        component: EmptyConversationComponent,
-                    },
-                    {
-                        path: ':id',
-                        component: ConversationComponent,
-                        resolve: {
-                            conversation: conversationResolver,
-                        },
-                    },
-                ],
-            },
-        ],
+  {
+    path: '',
+    component: ChatComponent,
+    resolve: {
+      chats: () => inject(ChatService).getChats(),
+      contacts: () => inject(ChatService).getContacts(),
+      profile: () => inject(ChatService).getProfile(),
     },
+    children: [
+      {
+        path: '',
+        component: ChatsComponent,
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: EmptyConversationComponent,
+          },
+          {
+            path: ':id',
+            component: ConversationComponent,
+            resolve: {
+              conversation: conversationResolver,
+            },
+          },
+        ],
+      },
+    ],
+  },
 ] as Routes;

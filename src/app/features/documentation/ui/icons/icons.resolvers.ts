@@ -5,25 +5,25 @@ import { IconsService } from './icons.service';
 
 @Injectable({ providedIn: 'root' })
 export class IconsResolver {
-    /**
-     * Constructor
-     */
-    constructor(private _iconsService: IconsService) {}
+  /**
+   * Constructor
+   */
+  constructor(private _iconsService: IconsService) {}
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------------
+  // @ Public methods
+  // -----------------------------------------------------------------------------------------------------
 
-    /**
-     * Resolve
-     *
-     * @param route
-     * @param state
-     */
-    resolve(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<any> {
-        return this._iconsService.getIcons(state.url);
-    }
+  /**
+   * Resolve
+   *
+   * @param route
+   * @param state
+   */
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<any> {
+    return this._iconsService.getIcons(state.url);
+  }
 }

@@ -4,52 +4,69 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({ providedIn: 'root' })
 export class IconsService {
-    /**
-     * Constructor
-     */
-    constructor() {
-        const domSanitizer = inject(DomSanitizer);
-        const matIconRegistry = inject(MatIconRegistry);
+  private domSanitizer = inject(DomSanitizer);
+  private matIconRegistry = inject(MatIconRegistry);
 
-        // Register icon sets
-        matIconRegistry.addSvgIconSet(
-            domSanitizer.bypassSecurityTrustResourceUrl(
-                'icons/material-twotone.svg'
-            )
-        );
-        matIconRegistry.addSvgIconSetInNamespace(
-            'mat_outline',
-            domSanitizer.bypassSecurityTrustResourceUrl(
-                'icons/material-outline.svg'
-            )
-        );
-        matIconRegistry.addSvgIconSetInNamespace(
-            'mat_solid',
-            domSanitizer.bypassSecurityTrustResourceUrl(
-                'icons/material-solid.svg'
-            )
-        );
-        matIconRegistry.addSvgIconSetInNamespace(
-            'feather',
-            domSanitizer.bypassSecurityTrustResourceUrl('icons/feather.svg')
-        );
-        matIconRegistry.addSvgIconSetInNamespace(
-            'heroicons_outline',
-            domSanitizer.bypassSecurityTrustResourceUrl(
-                'icons/heroicons-outline.svg'
-            )
-        );
-        matIconRegistry.addSvgIconSetInNamespace(
-            'heroicons_solid',
-            domSanitizer.bypassSecurityTrustResourceUrl(
-                'icons/heroicons-solid.svg'
-            )
-        );
-        matIconRegistry.addSvgIconSetInNamespace(
-            'heroicons_mini',
-            domSanitizer.bypassSecurityTrustResourceUrl(
-                'icons/heroicons-mini.svg'
-            )
-        );
-    }
+  constructor() {
+    // Deprecated
+    this.matIconRegistry.addSvgIconSet(
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        'icons/material-twotone.svg'
+      )
+    );
+
+    // Deprecated
+    this.matIconRegistry.addSvgIconSetInNamespace(
+      'mat_outline',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        'icons/material-outline.svg'
+      )
+    );
+
+    // Deprecated
+    this.matIconRegistry.addSvgIconSetInNamespace(
+      'mat_solid',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        'icons/material-solid.svg'
+      )
+    );
+
+    // Deprecated
+    this.matIconRegistry.addSvgIconSetInNamespace(
+      'feather',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('icons/feather.svg')
+    );
+
+    // Deprecated
+    this.matIconRegistry.addSvgIconSetInNamespace(
+      'heroicons_outline',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        'icons/heroicons-outline.svg'
+      )
+    );
+
+    // Deprecated
+    this.matIconRegistry.addSvgIconSetInNamespace(
+      'heroicons_solid',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        'icons/heroicons-solid.svg'
+      )
+    );
+
+    // Deprecated
+    this.matIconRegistry.addSvgIconSetInNamespace(
+      'heroicons_mini',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        'icons/heroicons-mini.svg'
+      )
+    );
+
+    this.matIconRegistry.addSvgIconSetInNamespace(
+      'lucide',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('icons/lucide.svg'),
+      {
+        viewBox: '0 0 24 24',
+      }
+    );
+  }
 }

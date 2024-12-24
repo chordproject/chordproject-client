@@ -4,71 +4,69 @@ import { MatIconModule } from '@angular/material/icon';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
 
 @Component({
-    selector: 'config',
-    standalone: true,
-    imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
-    template: `
-        <div class="flex min-w-0 flex-auto flex-col">
-            <!-- Header -->
-            <div
-                class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
-            >
-                <div class="min-w-0 flex-1">
-                    <!-- Breadcrumbs -->
-                    <div class="flex flex-wrap items-center font-medium">
-                        <div>
-                            <a class="whitespace-nowrap text-primary-500"
-                                >Documentation</a
-                            >
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <a class="ml-1 text-primary-500">Fuse Components</a>
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <span class="text-secondary ml-1">Services</span>
-                        </div>
-                    </div>
-                    <!-- Title -->
-                    <div class="mt-2">
-                        <h2
-                            class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
-                        >
-                            Config
-                        </h2>
-                    </div>
-                </div>
+  selector: 'config',
+  standalone: true,
+  imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
+  template: `
+    <div class="flex min-w-0 flex-auto flex-col">
+      <!-- Header -->
+      <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+      >
+        <div class="min-w-0 flex-1">
+          <!-- Breadcrumbs -->
+          <div class="flex flex-wrap items-center font-medium">
+            <div>
+              <a class="whitespace-nowrap text-primary-500">Documentation</a>
             </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <a class="ml-1 text-primary-500">Fuse Components</a>
+            </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <span class="text-secondary ml-1">Services</span>
+            </div>
+          </div>
+          <!-- Title -->
+          <div class="mt-2">
+            <h2
+              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+            >
+              Config
+            </h2>
+          </div>
+        </div>
+      </div>
 
-            <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
-                <p>
-                    <strong>FuseConfigService</strong> is a singleton service to
-                    store and access an application wide configuration object.
-                    It can be used to store any kind of data and can be accessed
-                    from anywhere within your application.
-                </p>
+      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+        <p>
+          <strong>FuseConfigService</strong> is a singleton service to store and
+          access an application wide configuration object. It can be used to
+          store any kind of data and can be accessed from anywhere within your
+          application.
+        </p>
 
-                <h2>Module</h2>
-                <textarea fuse-highlight lang="typescript">
+        <h2>Module</h2>
+        <textarea fuse-highlight lang="typescript">
                     import { FuseConfigModule } from '@fuse/services/config';
                 </textarea
-                >
+        >
 
-                <h2>Default configuration</h2>
-                <p>
-                    By default, the application wide configuration is stored in
-                    <code>src/app.config.ts</code> file and it includes the
-                    <strong>layout style</strong> as well as the
-                    <strong>color theme</strong> configurations:
-                </p>
-                <textarea fuse-highlight lang="typescript">
+        <h2>Default configuration</h2>
+        <p>
+          By default, the application wide configuration is stored in
+          <code>src/app.config.ts</code> file and it includes the
+          <strong>layout style</strong> as well as the
+          <strong>color theme</strong> configurations:
+        </p>
+        <textarea fuse-highlight lang="typescript">
                     provideFuse({
                     ...
                     fuse   : {
@@ -108,22 +106,21 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     },
                     }),
                 </textarea
-                >
-                <p>
-                    The default configuration is supplied to the
-                    <strong>FuseConfigService</strong> automatically:
-                </p>
+        >
+        <p>
+          The default configuration is supplied to the
+          <strong>FuseConfigService</strong> automatically:
+        </p>
 
-                <h2>Methods</h2>
-                <p>
-                    To set a configuration use <code>config</code> setter on
-                    <strong>FuseConfigService</strong>. The setter will
-                    intelligently merge the configuration by replacing only the
-                    given options if they exist while preserving others. If the
-                    supplied option does not exist on the configuration, it will
-                    be added:
-                </p>
-                <textarea fuse-highlight lang="typescript">
+        <h2>Methods</h2>
+        <p>
+          To set a configuration use <code>config</code> setter on
+          <strong>FuseConfigService</strong>. The setter will intelligently
+          merge the configuration by replacing only the given options if they
+          exist while preserving others. If the supplied option does not exist
+          on the configuration, it will be added:
+        </p>
+        <textarea fuse-highlight lang="typescript">
                     import { FuseConfigService } from '@fuse/services/config';
 
                     private _fuseConfigService = inject(FuseConfigService);
@@ -136,13 +133,13 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     this._fuseConfigService.config = {layout: 'classy'};
                     }
                 </textarea
-                >
-                <p>
-                    To get the configuration use <code>config$</code> getter on
-                    <strong>FuseConfigService</strong> which returns an
-                    <code>Observable</code> of the configuration object:
-                </p>
-                <textarea fuse-highlight lang="typescript">
+        >
+        <p>
+          To get the configuration use <code>config$</code> getter on
+          <strong>FuseConfigService</strong> which returns an
+          <code>Observable</code> of the configuration object:
+        </p>
+        <textarea fuse-highlight lang="typescript">
                     import { FuseConfigService } from '@fuse/services/config';
                     import { AppConfig } from 'app/core/config/app.config';
 
@@ -162,9 +159,9 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     }
                     });
                 </textarea
-                >
-            </div>
-        </div>
-    `,
+        >
+      </div>
+    </div>
+  `,
 })
 export default class Config {}

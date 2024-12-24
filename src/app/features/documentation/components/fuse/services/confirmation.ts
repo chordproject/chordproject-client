@@ -4,68 +4,66 @@ import { MatIconModule } from '@angular/material/icon';
 import { FuseHighlightComponent } from '@fuse/components/highlight';
 
 @Component({
-    selector: 'confirmation',
-    standalone: true,
-    imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
-    template: `
-        <div class="flex min-w-0 flex-auto flex-col">
-            <!-- Header -->
-            <div
-                class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
-            >
-                <div class="min-w-0 flex-1">
-                    <!-- Breadcrumbs -->
-                    <div class="flex flex-wrap items-center font-medium">
-                        <div>
-                            <a class="whitespace-nowrap text-primary-500"
-                                >Documentation</a
-                            >
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <a class="ml-1 text-primary-500">Fuse Components</a>
-                        </div>
-                        <div class="ml-1 flex items-center whitespace-nowrap">
-                            <mat-icon
-                                class="text-secondary icon-size-5"
-                                [svgIcon]="'heroicons_mini:chevron-right'"
-                            ></mat-icon>
-                            <span class="text-secondary ml-1">Services</span>
-                        </div>
-                    </div>
-                    <!-- Title -->
-                    <div class="mt-2">
-                        <h2
-                            class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
-                        >
-                            Confirmation
-                        </h2>
-                    </div>
-                </div>
+  selector: 'confirmation',
+  standalone: true,
+  imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
+  template: `
+    <div class="flex min-w-0 flex-auto flex-col">
+      <!-- Header -->
+      <div
+        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+      >
+        <div class="min-w-0 flex-1">
+          <!-- Breadcrumbs -->
+          <div class="flex flex-wrap items-center font-medium">
+            <div>
+              <a class="whitespace-nowrap text-primary-500">Documentation</a>
             </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <a class="ml-1 text-primary-500">Fuse Components</a>
+            </div>
+            <div class="ml-1 flex items-center whitespace-nowrap">
+              <mat-icon
+                class="text-secondary icon-size-5"
+                [svgIcon]="'heroicons_mini:chevron-right'"
+              ></mat-icon>
+              <span class="text-secondary ml-1">Services</span>
+            </div>
+          </div>
+          <!-- Title -->
+          <div class="mt-2">
+            <h2
+              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+            >
+              Confirmation
+            </h2>
+          </div>
+        </div>
+      </div>
 
-            <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
-                <p>
-                    <strong>FuseConfirmationService</strong> is a singleton
-                    service for creating confirmation and information dialogs.
-                    Internally it uses MatDialog to create and show the dialog.
-                </p>
+      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+        <p>
+          <strong>FuseConfirmationService</strong> is a singleton service for
+          creating confirmation and information dialogs. Internally it uses
+          MatDialog to create and show the dialog.
+        </p>
 
-                <h2>Module</h2>
-                <textarea fuse-highlight lang="typescript">
+        <h2>Module</h2>
+        <textarea fuse-highlight lang="typescript">
                     import { FuseConfirmationModule } from '@fuse/services/confirmation';
                 </textarea
-                >
+        >
 
-                <h2>Confirmation Config</h2>
-                <p>
-                    Here is the interface for the
-                    <em>Confirmation configuration</em>:
-                </p>
-                <textarea fuse-highlight lang="typescript">
+        <h2>Confirmation Config</h2>
+        <p>
+          Here is the interface for the
+          <em>Confirmation configuration</em>:
+        </p>
+        <textarea fuse-highlight lang="typescript">
                     export interface FuseConfirmationConfig
                     {
                     title?: string;
@@ -75,13 +73,11 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     name?: string;
                     color?:
                     | 'primary'
-                    | 'accent'
-                    | 'warn'
+                    | 'error'
                     | 'basic'
                     | 'info'
                     | 'success'
-                    | 'warning'
-                    | 'error';
+                    | 'warning';
                     };
                     actions?: {
                     confirm?: {
@@ -89,8 +85,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     label?: string;
                     color?:
                     | 'primary'
-                    | 'accent'
-                    | 'warn';
+                    | 'error';
                     };
                     cancel?: {
                     show?: boolean;
@@ -100,136 +95,123 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     dismissible?: boolean;
                     }
                 </textarea
-                >
-                <div class="bg-card mt-2 rounded px-6 py-3 shadow">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>title</div>
-                                </td>
-                                <td>
-                                    Title of the confirmation dialog, HTML is
-                                    allowed.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>message</div>
-                                </td>
-                                <td>
-                                    Message of the confirmation dialog, HTML is
-                                    allowed.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>icon.show</div>
-                                </td>
-                                <td>Whether to show the icon.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>icon.name</div>
-                                </td>
-                                <td>Name of the icon.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>icon.color</div>
-                                </td>
-                                <td>Color of the icon.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>actions.confirm.show</div>
-                                </td>
-                                <td>
-                                    Whether to show the confirmation button.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>actions.confirm.label</div>
-                                </td>
-                                <td>Label of the confirmation button.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>actions.confirm.color</div>
-                                </td>
-                                <td>Color of the confirmation button.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>actions.cancel.show</div>
-                                </td>
-                                <td>Whether to show the cancel button.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>actions.confirm.label</div>
-                                </td>
-                                <td>Label of the cancel button.</td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div>dismissible</div>
-                                </td>
-                                <td>
-                                    Sets the dismissible status of the
-                                    confirmation dialog.<br />
-                                    If <code>false</code>, confirmation dialog
-                                    cannot be closed by clicking on backdrop or
-                                    pressing Escape key. The close button on the
-                                    top right corner also won't show up.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        >
+        <div class="bg-card mt-2 rounded px-6 py-3 shadow">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>title</div>
+                </td>
+                <td>Title of the confirmation dialog, HTML is allowed.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>message</div>
+                </td>
+                <td>Message of the confirmation dialog, HTML is allowed.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>icon.show</div>
+                </td>
+                <td>Whether to show the icon.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>icon.name</div>
+                </td>
+                <td>Name of the icon.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>icon.color</div>
+                </td>
+                <td>Color of the icon.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>actions.confirm.show</div>
+                </td>
+                <td>Whether to show the confirmation button.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>actions.confirm.label</div>
+                </td>
+                <td>Label of the confirmation button.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>actions.confirm.color</div>
+                </td>
+                <td>Color of the confirmation button.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>actions.cancel.show</div>
+                </td>
+                <td>Whether to show the cancel button.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>actions.confirm.label</div>
+                </td>
+                <td>Label of the cancel button.</td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div>dismissible</div>
+                </td>
+                <td>
+                  Sets the dismissible status of the confirmation dialog.<br />
+                  If <code>false</code>, confirmation dialog cannot be closed by
+                  clicking on backdrop or pressing Escape key. The close button
+                  on the top right corner also won't show up.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-                <h2>Methods</h2>
-                <div class="bg-card mt-4 rounded shadow">
-                    <div class="text-secondary border-b px-6 py-3 font-mono">
-                        open(config: FuseConfirmationConfig):
-                        MatDialogRef&lt;FuseConfirmationDialogComponent&gt;
-                    </div>
-                    <div class="p-6">
-                        Opens the confirmation dialog with the given
-                        configuration
-                    </div>
-                </div>
+        <h2>Methods</h2>
+        <div class="bg-card mt-4 rounded shadow">
+          <div class="text-secondary border-b px-6 py-3 font-mono">
+            open(config: FuseConfirmationConfig):
+            MatDialogRef&lt;FuseConfirmationDialogComponent&gt;
+          </div>
+          <div class="p-6">
+            Opens the confirmation dialog with the given configuration
+          </div>
+        </div>
 
-                <h2>MatDialogRef</h2>
-                <p>
-                    Since <code>FuseConfirmationService</code> uses
-                    <em>MatDialog</em> behind the scenes, it returns a reference
-                    to the created dialog. You can use all available methods
-                    from that reference such as <code>updateSize</code> and
-                    <code>updatePosition</code> to further customize the dialog.
-                </p>
-                <p>
-                    See
-                    <a
-                        href="https://material.angular.io/components/dialog/api#MatDialogRef"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        https://material.angular.io/components/dialog/api#MatDialogRef
-                    </a>
-                    for the complete list of available methods.
-                </p>
-                <p>
-                    Using the reference, you can also access to the user input:
-                </p>
-                <textarea fuse-highlight [lang]="'ts'">
+        <h2>MatDialogRef</h2>
+        <p>
+          Since <code>FuseConfirmationService</code> uses
+          <em>MatDialog</em> behind the scenes, it returns a reference to the
+          created dialog. You can use all available methods from that reference
+          such as <code>updateSize</code> and <code>updatePosition</code> to
+          further customize the dialog.
+        </p>
+        <p>
+          See
+          <a
+            href="https://material.angular.io/components/dialog/api#MatDialogRef"
+            target="_blank"
+            rel="noreferrer"
+          >
+            https://material.angular.io/components/dialog/api#MatDialogRef
+          </a>
+          for the complete list of available methods.
+        </p>
+        <p>Using the reference, you can also access to the user input:</p>
+        <textarea fuse-highlight [lang]="'ts'">
                     // Open the confirmation and save the reference
                     const dialogRef = this._fuseConfirmationService.open({...});
 
@@ -238,50 +220,47 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     console.log(result);
                     });
                 </textarea
-                >
-                <div class="bg-card mt-2 rounded px-6 py-3 shadow">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Result</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div><code>'confirmed'</code></div>
-                                </td>
-                                <td>
-                                    This is the result if the user pressed the
-                                    Confirm button.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div><code>'cancelled'</code></div>
-                                </td>
-                                <td>
-                                    This is the result if the user pressed the
-                                    Cancel button.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-secondary font-mono text-md">
-                                    <div><code>undefined</code></div>
-                                </td>
-                                <td>
-                                    This is the result if the confirmation
-                                    dismissed either using the close button,
-                                    clicking on the backdrop or pressing the
-                                    Escape key.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        >
+        <div class="bg-card mt-2 rounded px-6 py-3 shadow">
+          <table>
+            <thead>
+              <tr>
+                <th>Result</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div><code>'confirmed'</code></div>
+                </td>
+                <td>
+                  This is the result if the user pressed the Confirm button.
+                </td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div><code>'cancelled'</code></div>
+                </td>
+                <td>
+                  This is the result if the user pressed the Cancel button.
+                </td>
+              </tr>
+              <tr>
+                <td class="text-secondary font-mono">
+                  <div><code>undefined</code></div>
+                </td>
+                <td>
+                  This is the result if the confirmation dismissed either using
+                  the close button, clicking on the backdrop or pressing the
+                  Escape key.
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-    `,
+      </div>
+    </div>
+  `,
 })
 export default class Confirmation {}
