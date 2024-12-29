@@ -8,6 +8,20 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class ChangelogComponent {
     changelog: any[] = [
+        // v21.0.0
+        {
+            version: 'v21.0.0',
+            releaseDate: 'Dec 29, 2024',
+            changes: [
+                {
+                    type: 'Changed',
+                    list: [
+                        '(Dependencies) Updated Angular & Angular Material to v19',
+                        '(Dependencies) Updated other packages',
+                    ],
+                },
+            ],
+        },
         // v20.0.0
         {
             version: 'v20.0.0',

@@ -14,7 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Router } from '@angular/router';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { ProjectService } from 'app/modules/admin/dashboards/project/project.service';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
 import { Subject, takeUntil } from 'rxjs';
@@ -191,7 +191,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
                 hover: {
                     filter: {
                         type: 'darken',
-                        value: 0.75,
                     },
                 },
             },
@@ -261,7 +260,6 @@ export class ProjectComponent implements OnInit, OnDestroy {
                 hover: {
                     filter: {
                         type: 'darken',
-                        value: 0.75,
                     },
                 },
             },
