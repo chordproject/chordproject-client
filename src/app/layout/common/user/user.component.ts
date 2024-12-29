@@ -24,7 +24,6 @@ import { Subject, takeUntil } from 'rxjs';
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     exportAs: 'user',
-    standalone: true,
     imports: [
         MatButtonModule,
         MatMenuModule,
