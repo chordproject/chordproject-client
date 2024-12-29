@@ -27,7 +27,6 @@ import { debounceTime, take } from 'rxjs';
     selector: 'mailbox-settings',
     templateUrl: './settings.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatButtonModule,
         MatIconModule,

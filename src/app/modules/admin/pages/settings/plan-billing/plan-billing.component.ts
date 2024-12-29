@@ -25,7 +25,6 @@ import { FuseAlertComponent } from '@fuse/components/alert';
     templateUrl: './plan-billing.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,

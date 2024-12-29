@@ -13,7 +13,6 @@ import { FuseCardComponent } from '@fuse/components/card';
     templateUrl: './modern.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [MatButtonModule, NgClass, FuseCardComponent, MatIconModule],
 })
 export class PricingModernComponent {

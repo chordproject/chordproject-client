@@ -11,7 +11,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'simple-left-sidebar-3-content-scroll',
     templateUrl: './left-sidebar-3.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatIconModule,
         RouterLink,

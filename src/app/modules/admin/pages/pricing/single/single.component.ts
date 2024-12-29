@@ -12,7 +12,6 @@ import { FuseCardComponent } from '@fuse/components/card';
     templateUrl: './single.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [FuseCardComponent, MatIconModule, MatButtonModule],
 })
 export class PricingSingleComponent {

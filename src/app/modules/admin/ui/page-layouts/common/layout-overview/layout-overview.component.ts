@@ -176,7 +176,6 @@ export interface PageLayoutsOverviewData {
         `,
     ],
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatButtonToggleModule,
         FormsModule,

@@ -31,7 +31,6 @@ import { BehaviorSubject, Subject, combineLatest, takeUntil } from 'rxjs';
     templateUrl: './list.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         CdkScrollable,
         MatFormFieldModule,

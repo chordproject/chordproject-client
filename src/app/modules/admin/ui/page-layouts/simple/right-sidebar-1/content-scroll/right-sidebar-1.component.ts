@@ -10,7 +10,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'simple-right-sidebar-1-content-scroll',
     templateUrl: './right-sidebar-1.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatSidenavModule,
         DemoSidebarComponent,

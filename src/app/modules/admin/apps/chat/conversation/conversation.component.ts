@@ -30,7 +30,6 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './conversation.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatSidenavModule,
         ContactInfoComponent,

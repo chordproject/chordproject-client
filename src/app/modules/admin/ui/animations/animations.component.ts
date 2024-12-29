@@ -13,7 +13,6 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     styleUrls: ['./animations.component.scss'],
     animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         FuseHighlightComponent,
         MatButtonModule,

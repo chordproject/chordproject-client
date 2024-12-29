@@ -21,7 +21,6 @@ import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
     templateUrl: './unlock-session.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
-    standalone: true,
     imports: [
         FuseAlertComponent,
         FormsModule,

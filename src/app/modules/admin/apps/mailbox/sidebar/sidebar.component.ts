@@ -22,7 +22,6 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [MatButtonModule, MatIconModule, FuseVerticalNavigationComponent],
 })
 export class MailboxSidebarComponent implements OnInit, OnDestroy {

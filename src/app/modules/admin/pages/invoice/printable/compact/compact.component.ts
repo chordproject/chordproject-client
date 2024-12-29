@@ -10,7 +10,6 @@ import {
     templateUrl: './compact.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [CdkScrollable],
 })
 export class CompactComponent {

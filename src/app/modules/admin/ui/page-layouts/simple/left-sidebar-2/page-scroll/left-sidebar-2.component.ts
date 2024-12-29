@@ -12,7 +12,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'simple-left-sidebar-2-page-scroll',
     templateUrl: './left-sidebar-2.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         CdkScrollable,
         MatSidenavModule,

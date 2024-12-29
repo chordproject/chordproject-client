@@ -39,7 +39,6 @@ import { FuseCardComponent } from '@fuse/components/card';
     ],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatButtonToggleModule,
         FormsModule,

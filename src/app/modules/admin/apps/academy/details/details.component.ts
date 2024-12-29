@@ -28,7 +28,6 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './details.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatSidenavModule,
         RouterLink,

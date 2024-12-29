@@ -51,7 +51,6 @@ interface FlatDirNode {
         `,
     ],
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatIconModule,
         MatButtonModule,

@@ -24,7 +24,6 @@ import { SettingsTeamComponent } from './team/team.component';
     templateUrl: './settings.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatSidenavModule,
         MatButtonModule,

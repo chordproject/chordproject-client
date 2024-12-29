@@ -32,7 +32,6 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './crypto.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatSidenavModule,
         MatIconModule,

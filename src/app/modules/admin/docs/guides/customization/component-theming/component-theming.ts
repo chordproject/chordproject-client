@@ -7,7 +7,6 @@ import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component'
 @Component({
     selector: 'component-theming',
     templateUrl: './component-theming.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
 })
 export class ComponentThemingComponent {

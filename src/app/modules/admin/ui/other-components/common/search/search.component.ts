@@ -7,7 +7,6 @@ import { OtherComponentsComponent } from 'app/modules/admin/ui/other-components/
 @Component({
     selector: 'search',
     templateUrl: './search.component.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
 })
 export class SearchComponent {

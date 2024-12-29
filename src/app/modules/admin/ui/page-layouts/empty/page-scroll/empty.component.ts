@@ -5,7 +5,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
     selector: 'empty-page-scroll',
     templateUrl: './empty.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [CdkScrollable],
 })
 export class EmptyPageScrollComponent {

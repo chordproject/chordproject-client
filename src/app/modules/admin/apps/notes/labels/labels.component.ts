@@ -29,7 +29,6 @@ import {
     templateUrl: './labels.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatButtonModule,
         MatDialogModule,

@@ -7,7 +7,6 @@ import { OtherComponentsComponent } from 'app/modules/admin/ui/other-components/
 @Component({
     selector: 'overview',
     templateUrl: './overview.component.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule, FuseAlertComponent],
 })
 export class OverviewComponent {

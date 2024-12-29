@@ -6,7 +6,6 @@ import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component'
 @Component({
     selector: 'starter-kit',
     templateUrl: './starter-kit.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule],
 })
 export class StarterKitComponent {

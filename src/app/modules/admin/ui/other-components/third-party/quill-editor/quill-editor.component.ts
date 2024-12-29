@@ -6,7 +6,6 @@ import { OtherComponentsComponent } from 'app/modules/admin/ui/other-components/
 @Component({
     selector: 'quill-editor',
     templateUrl: './quill-editor.component.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule],
 })
 export class QuillEditorComponent {

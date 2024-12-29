@@ -15,7 +15,6 @@ import { MailboxSidebarComponent } from './sidebar/sidebar.component';
     selector: 'mailbox',
     templateUrl: './mailbox.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [MatSidenavModule, MailboxSidebarComponent, RouterOutlet],
 })
 export class MailboxComponent implements OnInit, OnDestroy {

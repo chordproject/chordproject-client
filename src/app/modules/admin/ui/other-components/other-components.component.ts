@@ -23,7 +23,6 @@ import { Subject, takeUntil } from 'rxjs';
     styleUrls: ['./other-components.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatSidenavModule,
         FuseVerticalNavigationComponent,

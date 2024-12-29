@@ -16,7 +16,6 @@ import { finalize } from 'rxjs';
 @Component({
     selector: 'loading-bar',
     templateUrl: './loading-bar.component.html',
-    standalone: true,
     imports: [
         MatIconModule,
         MatButtonModule,

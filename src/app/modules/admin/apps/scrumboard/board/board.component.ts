@@ -40,7 +40,6 @@ import { ScrumboardBoardAddListComponent } from './add-list/add-list.component';
     styleUrls: ['./board.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatButtonModule,
         RouterLink,

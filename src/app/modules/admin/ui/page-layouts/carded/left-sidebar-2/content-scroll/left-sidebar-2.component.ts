@@ -12,7 +12,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'carded-left-sidebar-2-content-scroll',
     templateUrl: './left-sidebar-2.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatIconModule,
         RouterLink,

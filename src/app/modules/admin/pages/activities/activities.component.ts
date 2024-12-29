@@ -17,7 +17,6 @@ import { Observable } from 'rxjs';
     templateUrl: './activities.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [MatIconModule, RouterLink, AsyncPipe, TitleCasePipe, DatePipe],
 })
 export class ActivitiesComponent implements OnInit {

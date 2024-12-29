@@ -10,7 +10,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'help-center-guides-guide',
     templateUrl: './guide.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [MatButtonModule, RouterLink, MatIconModule],
 })
 export class HelpCenterGuidesGuideComponent implements OnInit, OnDestroy {

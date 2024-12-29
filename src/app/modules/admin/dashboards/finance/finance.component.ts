@@ -24,7 +24,6 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './finance.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatButtonModule,
         MatIconModule,

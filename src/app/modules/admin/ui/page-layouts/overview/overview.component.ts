@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
     selector: 'overview',
     templateUrl: './overview.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [MatIconModule],
 })
 export class OverviewComponent {

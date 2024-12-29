@@ -18,7 +18,6 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './new-chat.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [MatButtonModule, MatIconModule],
 })
 export class NewChatComponent implements OnInit, OnDestroy {

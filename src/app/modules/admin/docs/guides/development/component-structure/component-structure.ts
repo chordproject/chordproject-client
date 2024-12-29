@@ -9,7 +9,6 @@ import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component'
 @Component({
     selector: 'component-structure',
     templateUrl: './component-structure.html',
-    standalone: true,
     imports: [
         MatIconModule,
         MatButtonModule,

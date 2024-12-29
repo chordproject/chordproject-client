@@ -79,7 +79,6 @@ import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types
         `,
     ],
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         FuseVerticalNavigationComponent,
         MatIconModule,

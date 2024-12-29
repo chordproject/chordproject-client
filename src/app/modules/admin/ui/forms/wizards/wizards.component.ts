@@ -20,7 +20,6 @@ import { MatStepperModule } from '@angular/material/stepper';
     selector: 'forms-wizards',
     templateUrl: './wizards.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatIconModule,
         FormsModule,

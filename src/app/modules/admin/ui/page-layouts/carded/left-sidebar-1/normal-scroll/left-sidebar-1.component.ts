@@ -9,7 +9,6 @@ import { DemoSidebarComponent } from 'app/modules/admin/ui/page-layouts/common/d
     selector: 'carded-left-sidebar-1-normal-scroll',
     templateUrl: './left-sidebar-1.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatSidenavModule,
         DemoSidebarComponent,

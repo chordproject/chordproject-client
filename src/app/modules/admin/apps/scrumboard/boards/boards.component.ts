@@ -20,7 +20,6 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './boards.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [CdkScrollable, RouterLink, MatIconModule],
 })
 export class ScrumboardBoardsComponent implements OnInit, OnDestroy {

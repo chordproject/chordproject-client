@@ -21,7 +21,6 @@ import { FuseValidators } from '@fuse/validators';
     templateUrl: './reset-password.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
-    standalone: true,
     imports: [
         FuseAlertComponent,
         FormsModule,

@@ -21,7 +21,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     templateUrl: './security.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,

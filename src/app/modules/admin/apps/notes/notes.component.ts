@@ -10,7 +10,6 @@ import { RouterOutlet } from '@angular/router';
     templateUrl: './notes.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [RouterOutlet],
 })
 export class NotesComponent {

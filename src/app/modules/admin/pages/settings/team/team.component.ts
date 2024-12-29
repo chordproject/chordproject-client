@@ -17,7 +17,6 @@ import { MatSelectModule } from '@angular/material/select';
     templateUrl: './team.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatFormFieldModule,
         MatIconModule,

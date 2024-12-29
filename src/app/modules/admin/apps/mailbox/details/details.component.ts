@@ -40,7 +40,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'mailbox-details',
     templateUrl: './details.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatButtonModule,
         RouterLink,

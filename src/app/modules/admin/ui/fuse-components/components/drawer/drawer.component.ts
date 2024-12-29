@@ -10,7 +10,6 @@ import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fu
 @Component({
     selector: 'drawer',
     templateUrl: './drawer.component.html',
-    standalone: true,
     imports: [
         MatIconModule,
         MatButtonModule,

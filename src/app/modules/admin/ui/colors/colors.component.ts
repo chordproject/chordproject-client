@@ -7,7 +7,6 @@ import { fuseAnimations } from '@fuse/animations';
     templateUrl: './colors.component.html',
     animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [MatRippleModule],
 })
 export class ColorsComponent {

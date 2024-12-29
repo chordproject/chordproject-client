@@ -17,7 +17,6 @@ import { QuillEditorComponent } from 'ngx-quill';
     selector: 'mailbox-compose',
     templateUrl: './compose.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatButtonModule,
         MatIconModule,

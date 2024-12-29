@@ -31,7 +31,6 @@ import { ThinLayoutComponent } from './layouts/vertical/thin/thin.component';
     templateUrl: './layout.component.html',
     styleUrls: ['./layout.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         EmptyLayoutComponent,
         CenteredLayoutComponent,

@@ -11,7 +11,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'simple-right-sidebar-1-page-scroll',
     templateUrl: './right-sidebar-1.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         CdkScrollable,
         MatSidenavModule,

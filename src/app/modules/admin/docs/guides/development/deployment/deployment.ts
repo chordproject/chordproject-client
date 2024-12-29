@@ -8,7 +8,6 @@ import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component'
 @Component({
     selector: 'deployment',
     templateUrl: './deployment.html',
-    standalone: true,
     imports: [
         MatIconModule,
         MatButtonModule,

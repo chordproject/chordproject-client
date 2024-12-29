@@ -14,7 +14,6 @@ import { MatSelectModule } from '@angular/material/select';
     selector: 'forms-layouts',
     templateUrl: './layouts.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatIconModule,
         FormsModule,

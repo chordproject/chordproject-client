@@ -83,7 +83,6 @@ import {
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: fuseAnimations,
-    standalone: true,
     imports: [
         MatProgressBarModule,
         MatFormFieldModule,

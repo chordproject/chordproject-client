@@ -22,7 +22,6 @@ import { MatSelectModule } from '@angular/material/select';
     selector: 'forms-fields',
     templateUrl: './fields.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatIconModule,
         FormsModule,

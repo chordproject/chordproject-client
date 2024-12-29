@@ -8,7 +8,6 @@ import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component'
 @Component({
     selector: 'theming',
     templateUrl: './theming.html',
-    standalone: true,
     imports: [
         MatIconModule,
         MatButtonModule,

@@ -28,7 +28,6 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './advanced-search.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,

@@ -7,7 +7,6 @@ import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fu
 @Component({
     selector: 'must-match',
     templateUrl: './must-match.component.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
 })
 export class MustMatchComponent {

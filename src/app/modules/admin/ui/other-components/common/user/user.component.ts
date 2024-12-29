@@ -7,7 +7,6 @@ import { OtherComponentsComponent } from 'app/modules/admin/ui/other-components/
 @Component({
     selector: 'user',
     templateUrl: './user.component.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
 })
 export class UserComponent {

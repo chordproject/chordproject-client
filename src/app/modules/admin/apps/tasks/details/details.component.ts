@@ -52,7 +52,6 @@ import { Subject, debounceTime, filter, takeUntil, tap } from 'rxjs';
     templateUrl: './details.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,

@@ -7,7 +7,6 @@ import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fu
 @Component({
     selector: 'scrollbar',
     templateUrl: './scrollbar.component.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule, FuseHighlightComponent],
 })
 export class ScrollbarComponent {

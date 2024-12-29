@@ -50,7 +50,6 @@ import { Subject, debounceTime, takeUntil } from 'rxjs';
     templateUrl: './details.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatButtonModule,
         MatTooltipModule,

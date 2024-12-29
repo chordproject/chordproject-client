@@ -9,7 +9,6 @@ import { AuthService } from 'app/core/auth/auth.service';
     templateUrl: './sign-out.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
-    standalone: true,
     imports: [RouterLink, I18nPluralPipe],
 })
 export class SignOutSplitScreenReversedComponent {

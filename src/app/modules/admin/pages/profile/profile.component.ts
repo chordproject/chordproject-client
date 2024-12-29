@@ -20,7 +20,6 @@ import { FuseCardComponent } from '@fuse/components/card';
     templateUrl: './profile.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         RouterLink,
         FuseCardComponent,

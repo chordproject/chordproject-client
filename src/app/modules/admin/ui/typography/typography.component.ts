@@ -6,7 +6,6 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     selector: 'typography',
     templateUrl: './typography.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [FuseHighlightComponent, RouterLink],
 })
 export class TypographyComponent {

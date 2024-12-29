@@ -16,7 +16,6 @@ import { FuseComponentsComponent } from 'app/modules/admin/ui/fuse-components/fu
             }
         `,
     ],
-    standalone: true,
     imports: [
         MatIconModule,
         MatButtonModule,

@@ -20,7 +20,6 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './fuse-components.component.html',
     styleUrls: ['./fuse-components.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatSidenavModule,
         FuseVerticalNavigationComponent,

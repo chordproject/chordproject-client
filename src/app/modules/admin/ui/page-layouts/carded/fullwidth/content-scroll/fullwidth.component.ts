@@ -8,7 +8,6 @@ import { RouterLink } from '@angular/router';
     selector: 'carded-fullwidth-content-scroll',
     templateUrl: './fullwidth.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [MatIconModule, RouterLink, MatButtonModule, CdkScrollable],
 })
 export class CardedFullwidthContentScrollComponent {

@@ -23,7 +23,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'mailbox-list',
     templateUrl: './list.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatButtonModule,
         MatIconModule,

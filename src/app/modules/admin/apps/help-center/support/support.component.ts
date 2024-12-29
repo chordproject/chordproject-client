@@ -23,7 +23,6 @@ import { HelpCenterService } from 'app/modules/admin/apps/help-center/help-cente
     templateUrl: './support.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
-    standalone: true,
     imports: [
         MatButtonModule,
         RouterLink,

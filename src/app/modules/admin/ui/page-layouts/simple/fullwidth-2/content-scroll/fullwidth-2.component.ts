@@ -9,7 +9,6 @@ import { RouterLink } from '@angular/router';
     selector: 'simple-fullwidth-2-content-scroll',
     templateUrl: './fullwidth-2.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatIconModule,
         RouterLink,

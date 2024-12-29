@@ -25,7 +25,6 @@ import { MatIconModule } from '@angular/material/icon';
     templateUrl: './add-list.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         MatButtonModule,
         NgClass,

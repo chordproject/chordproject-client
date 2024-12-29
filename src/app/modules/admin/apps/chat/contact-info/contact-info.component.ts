@@ -14,7 +14,6 @@ import { Chat } from 'app/modules/admin/apps/chat/chat.types';
     templateUrl: './contact-info.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [MatButtonModule, MatIconModule],
 })
 export class ContactInfoComponent {

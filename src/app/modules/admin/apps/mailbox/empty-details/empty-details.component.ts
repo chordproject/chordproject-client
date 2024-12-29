@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material/icon';
     selector: 'mailbox-empty-details',
     templateUrl: './empty-details.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [MatIconModule],
 })
 export class MailboxEmptyDetailsComponent {

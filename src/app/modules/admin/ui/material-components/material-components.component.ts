@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
     selector: 'material-components',
     templateUrl: './material-components.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [MatButtonModule, MatIconModule],
 })
 export class MaterialComponentsComponent {

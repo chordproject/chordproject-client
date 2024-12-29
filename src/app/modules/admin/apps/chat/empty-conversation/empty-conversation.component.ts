@@ -10,7 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
     templateUrl: './empty-conversation.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [MatIconModule],
 })
 export class EmptyConversationComponent {

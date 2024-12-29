@@ -8,7 +8,6 @@ import { RouterLink } from '@angular/router';
     selector: 'simple-fullwidth-1-page-scroll',
     templateUrl: './fullwidth-1.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [CdkScrollable, MatIconModule, RouterLink, MatButtonModule],
 })
 export class SimpleFullwidth1PageScrollComponent {

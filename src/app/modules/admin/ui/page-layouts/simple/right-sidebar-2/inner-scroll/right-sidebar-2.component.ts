@@ -12,7 +12,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'simple-right-sidebar-2-inner-scroll',
     templateUrl: './right-sidebar-2.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatSidenavModule,
         DemoSidebarComponent,

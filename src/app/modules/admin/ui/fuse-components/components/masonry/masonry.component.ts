@@ -11,7 +11,6 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
     selector: 'masonry',
     templateUrl: './masonry.component.html',
-    standalone: true,
     imports: [
         MatIconModule,
         MatButtonModule,

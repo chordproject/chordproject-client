@@ -12,7 +12,6 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'help-center',
     templateUrl: './help-center.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatFormFieldModule,
         MatInputModule,

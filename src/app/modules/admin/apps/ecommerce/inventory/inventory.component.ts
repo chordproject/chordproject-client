@@ -10,7 +10,6 @@ import { RouterOutlet } from '@angular/router';
     templateUrl: './inventory.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [RouterOutlet],
 })
 export class InventoryComponent {

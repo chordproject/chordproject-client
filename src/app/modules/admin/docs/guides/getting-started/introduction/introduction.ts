@@ -6,7 +6,6 @@ import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component'
 @Component({
     selector: 'introduction',
     templateUrl: './introduction.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule],
 })
 export class IntroductionComponent {

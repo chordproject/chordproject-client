@@ -20,7 +20,6 @@ import { AuthService } from 'app/core/auth/auth.service';
     templateUrl: './coming-soon.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
-    standalone: true,
     imports: [
         FuseAlertComponent,
         FormsModule,

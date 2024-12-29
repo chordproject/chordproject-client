@@ -6,7 +6,6 @@ import { OtherComponentsComponent } from 'app/modules/admin/ui/other-components/
 @Component({
     selector: 'apex-charts',
     templateUrl: './apex-charts.component.html',
-    standalone: true,
     imports: [MatIconModule, MatButtonModule],
 })
 export class ApexChartsComponent {

@@ -7,7 +7,6 @@ import { RouterLink } from '@angular/router';
     selector: 'simple-fullwidth-1-normal-scroll',
     templateUrl: './fullwidth-1.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [MatIconModule, RouterLink, MatButtonModule],
 })
 export class SimpleFullwidth1NormalScrollComponent {

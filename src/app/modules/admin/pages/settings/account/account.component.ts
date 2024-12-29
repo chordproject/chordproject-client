@@ -24,7 +24,6 @@ import { MatSelectModule } from '@angular/material/select';
     templateUrl: './account.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         FormsModule,
         ReactiveFormsModule,

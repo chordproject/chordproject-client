@@ -9,7 +9,6 @@ import { GuidesComponent } from 'app/modules/admin/docs/guides/guides.component'
 @Component({
     selector: 'theme-layouts',
     templateUrl: './theme-layouts.html',
-    standalone: true,
     imports: [
         MatIconModule,
         MatButtonModule,

@@ -22,7 +22,6 @@ import {
     selector: 'icons',
     templateUrl: './icons.component.html',
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
     imports: [
         MatIconModule,
         FuseHighlightComponent,

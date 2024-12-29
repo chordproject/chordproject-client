@@ -26,7 +26,6 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
     templateUrl: './confirmation-dialog.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
     imports: [
         RouterLink,
         FormsModule,
