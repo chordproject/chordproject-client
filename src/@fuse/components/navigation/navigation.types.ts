@@ -38,7 +38,11 @@ export interface FuseNavigationItem {
     meta?: any;
 }
 
-export type FuseVerticalNavigationAppearance = 'thin';
+export type FuseVerticalNavigationAppearance =
+    | 'default'
+    | 'compact'
+    | 'dense'
+    | 'thin';
 
 export type FuseVerticalNavigationMode = 'over' | 'side';
 
