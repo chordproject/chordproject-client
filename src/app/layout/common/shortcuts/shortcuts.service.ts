@@ -30,7 +30,7 @@ export class ShortcutsService {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Get all messages
+     * Get all shortcuts
      */
     getAll(): Observable<Shortcut[]> {
         return this._httpClient.get<Shortcut[]>('api/common/shortcuts').pipe(

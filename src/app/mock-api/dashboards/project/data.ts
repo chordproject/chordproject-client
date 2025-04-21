@@ -1,8 +1,4 @@
 /* eslint-disable */
-import { DateTime } from 'luxon';
-
-/* Get the current instant */
-const now = DateTime.now();
 
 export const project = {
     githubIssues: {
@@ -151,24 +147,7 @@ export const project = {
     weeklyExpenses: {
         amount: 17663,
         labels: [
-            now.minus({ days: 47 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 40 }).toFormat('dd MMM'),
-            now.minus({ days: 39 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 32 }).toFormat('dd MMM'),
-            now.minus({ days: 31 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 24 }).toFormat('dd MMM'),
-            now.minus({ days: 23 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 16 }).toFormat('dd MMM'),
-            now.minus({ days: 15 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 8 }).toFormat('dd MMM'),
-            now.minus({ days: 7 }).toFormat('dd MMM') +
-                ' - ' +
-                now.toFormat('dd MMM'),
+         
         ],
         series: [
             {
@@ -180,18 +159,7 @@ export const project = {
     monthlyExpenses: {
         amount: 54663,
         labels: [
-            now.minus({ days: 31 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 24 }).toFormat('dd MMM'),
-            now.minus({ days: 23 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 16 }).toFormat('dd MMM'),
-            now.minus({ days: 15 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 8 }).toFormat('dd MMM'),
-            now.minus({ days: 7 }).toFormat('dd MMM') +
-                ' - ' +
-                now.toFormat('dd MMM'),
+            
         ],
         series: [
             {
@@ -203,36 +171,7 @@ export const project = {
     yearlyExpenses: {
         amount: 648813,
         labels: [
-            now.minus({ days: 79 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 72 }).toFormat('dd MMM'),
-            now.minus({ days: 71 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 64 }).toFormat('dd MMM'),
-            now.minus({ days: 63 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 56 }).toFormat('dd MMM'),
-            now.minus({ days: 55 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 48 }).toFormat('dd MMM'),
-            now.minus({ days: 47 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 40 }).toFormat('dd MMM'),
-            now.minus({ days: 39 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 32 }).toFormat('dd MMM'),
-            now.minus({ days: 31 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 24 }).toFormat('dd MMM'),
-            now.minus({ days: 23 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 16 }).toFormat('dd MMM'),
-            now.minus({ days: 15 }).toFormat('dd MMM') +
-                ' - ' +
-                now.minus({ days: 8 }).toFormat('dd MMM'),
-            now.minus({ days: 7 }).toFormat('dd MMM') +
-                ' - ' +
-                now.toFormat('dd MMM'),
+           
         ],
         series: [
             {
