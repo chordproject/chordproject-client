@@ -7,7 +7,7 @@
     [appearance]="'thin'"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
-    [navigation]="navigation.compact"
+    [navigation]="navigation.default"
     [opened]="!isScreenSmall"
 >
     <!-- Navigation header hook -->
@@ -17,6 +17,7 @@
             <img class="w-8" src="images/logo/logo.svg" alt="Logo image" />
         </div>
     </ng-container>
+    
 </fuse-vertical-navigation>
 
 <!-- Wrapper -->
@@ -38,7 +39,6 @@
             <languages></languages>
             <fuse-fullscreen class="hidden md:block"></fuse-fullscreen>
             <search [appearance]="'bar'"></search>
-            <shortcuts></shortcuts>
             <user></user>
         </div>
     </div>

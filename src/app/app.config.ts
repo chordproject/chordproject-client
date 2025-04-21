@@ -30,15 +30,19 @@ export const appConfig: ApplicationConfig = {
             config: {
                 availableLangs: [
                     {
+                        id: 'es',
+                        label: 'Español'
+                    },
+                    {
                         id: 'en',
                         label: 'English',
                     },
                     {
-                        id: 'tr',
-                        label: 'Turkish',
+                        id: 'fr',
+                        label: 'Français'
                     },
                 ],
-                defaultLang: 'en',
+                defaultLang: 'es',
                 fallbackLang: 'en',
                 reRenderOnLangChange: true,
                 prodMode: !isDevMode(),
@@ -62,7 +66,7 @@ export const appConfig: ApplicationConfig = {
                 service: MockApiService,
             },
             fuse: {
-                layout: 'classy',
+                layout: 'thin',
                 scheme: 'light',
                 screens: {
                     sm: '600px',

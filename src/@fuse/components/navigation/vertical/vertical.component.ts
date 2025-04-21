@@ -93,7 +93,7 @@ export class FuseVerticalNavigationComponent
     private _fuseNavigationService = inject(FuseNavigationService);
     private _fuseUtilsService = inject(FuseUtilsService);
 
-    @Input() appearance: FuseVerticalNavigationAppearance = 'default';
+    @Input() appearance: FuseVerticalNavigationAppearance = 'thin';
     @Input() autoCollapse: boolean = true;
     @Input() inner: boolean = false;
     @Input() mode: FuseVerticalNavigationMode = 'side';

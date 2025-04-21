@@ -90,26 +90,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Set the layout on the config
-     *
-     * @param layout
-     */
-    setLayout(layout: string): void {
-        // Clear the 'layout' query param to allow layout changes
-        this._router
-            .navigate([], {
-                queryParams: {
-                    layout: null,
-                },
-                queryParamsHandling: 'merge',
-            })
-            .then(() => {
-                // Set the config
-                this._fuseConfigService.config = { layout };
-            });
-    }
-
-    /**
      * Set the scheme on the config
      *
      * @param scheme
