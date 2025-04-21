@@ -8,9 +8,6 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import {
-    FuseNavigationService,
-} from '@fuse/components/navigation';
 import { AvailableLangs, TranslocoService } from '@jsverse/transloco';
 
 @Component({

@@ -72,6 +72,52 @@
 
             <hr class="my-8" />
 
+            <!-- Language -->
+            <div class="text-secondary text-md font-semibold">LANGUAGE</div>
+            <div class="mt-6 grid grid-cols-3 justify-items-start gap-3">
+                <!-- ES -->
+                <div
+                    class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
+                    [class.ring-2]="activeLang === 'es'"
+                    (click)="setActiveLang('es')"
+                >
+                    <div
+                        class="ml-2 flex items-center font-medium leading-5"
+                        [class.text-secondary]="activeLang !== 'es'"
+                    >
+                        Español
+                    </div>
+                </div>
+                <!-- FR -->
+                <div
+                    class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
+                    [class.ring-2]="activeLang === 'fr'"
+                    (click)="setActiveLang('fr')"
+                >
+                    <div
+                        class="ml-2 flex items-center font-medium leading-5"
+                        [class.text-secondary]="activeLang !== 'fr'"
+                    >
+                        Français
+                    </div>
+                </div>
+                <!-- EN -->
+                <div
+                    class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
+                    [class.ring-2]="activeLang === 'en'"
+                    (click)="setActiveLang('en')"
+                >
+                    <div
+                        class="ml-2 flex items-center font-medium leading-5"
+                        [class.text-secondary]="activeLang !== 'en'"
+                    >
+                        English
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-8" />
+
             <!-- Scheme -->
             <div class="text-secondary text-md font-semibold">SCHEME</div>
             <div class="mt-6 grid grid-cols-3 justify-items-start gap-3">

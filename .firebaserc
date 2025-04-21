@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "homenajesus-app"
+  },
+  "targets": {
+    "homenajesus-app": {
+      "hosting": {
+        "angular": [
+          "homenajesus-ng"
+        ]
+      }
+    }
+  }
+}

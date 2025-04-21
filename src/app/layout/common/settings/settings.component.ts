@@ -12,6 +12,7 @@ import {
     Theme,
     Themes,
 } from '@fuse/services/config';
+import { TranslocoService } from '@jsverse/transloco';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -49,14 +50,15 @@ export class SettingsComponent implements OnInit, OnDestroy {
     scheme: 'dark' | 'light';
     theme: string;
     themes: Themes;
+    activeLang: string;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
      */
     constructor(
-        private _router: Router,
-        private _fuseConfigService: FuseConfigService
+        private _fuseConfigService: FuseConfigService,
+         private _translocoService: TranslocoService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -74,6 +76,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
                 // Store the config
                 this.config = config;
             });
+
+            // Subscribe to language changes
+        this._translocoService.langChanges$.subscribe((activeLang) => {
+            // Get the active lang
+            this.activeLang = activeLang;
+        });
     }
 
     /**
@@ -105,5 +113,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
      */
     setTheme(theme: Theme): void {
         this._fuseConfigService.config = { theme };
+    }
+
+    setActiveLang(lang: string): void {
+        // Set the active lang
+        this._translocoService.setActiveLang(lang);
     }
 }

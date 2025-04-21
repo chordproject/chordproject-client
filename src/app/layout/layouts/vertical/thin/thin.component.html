@@ -17,14 +17,21 @@
             <img class="w-8" src="images/logo/logo.svg" alt="Logo image" />
         </div>
     </ng-container>
-    
+
+    <!-- Navigation footer hook -->
+    <ng-container fuseVerticalNavigationFooter>
+        <!-- User -->
+        <div class="flex w-full items-center border-t px-6 py-8">
+            <user [showAvatar]="false"></user>
+        </div>
+    </ng-container>
 </fuse-vertical-navigation>
 
 <!-- Wrapper -->
 <div class="flex w-full min-w-0 flex-auto flex-col">
     <!-- Header -->
     <div
-        class="bg-card relative z-49 flex h-16 w-full flex-0 items-center px-4 shadow dark:border-b dark:bg-transparent dark:shadow-none md:px-6 print:hidden"
+        class="bg-card relative z-49 flex h-16 w-full flex-0 items-center px-4 shadow md:px-6 dark:border-b dark:bg-transparent dark:shadow-none print:hidden"
     >
         <!-- Navigation toggle button -->
         <button
@@ -34,12 +41,26 @@
         >
             <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
         </button>
+        <!-- Logo -->
+        <div class="flex h-20 items-center p-0">
+            <!-- Light version -->
+            <img
+                class="w-50 dark:hidden"
+                src="images/logo/logo-text.svg"
+                alt="Logo image"
+            />
+            <!-- Dark version -->
+            <img
+                class="hidden w-50 dark:flex"
+                src="images/logo/logo-text-on-dark.svg"
+                alt="Logo image"
+            />
+        </div>
         <!-- Components -->
         <div class="ml-auto flex items-center space-x-0.5 pl-2 sm:space-x-2">
-            <languages></languages>
             <fuse-fullscreen class="hidden md:block"></fuse-fullscreen>
             <search [appearance]="'bar'"></search>
-            <user></user>
+            <theme-selector></theme-selector>
         </div>
     </div>
 
@@ -54,7 +75,7 @@
 
     <!-- Footer -->
     <div
-        class="bg-card relative z-49 flex h-14 w-full flex-0 items-center justify-start border-t px-4 dark:bg-transparent md:px-6 print:hidden"
+        class="bg-card relative z-49 flex h-14 w-full flex-0 items-center justify-start border-t px-4 md:px-6 dark:bg-transparent print:hidden"
     >
         <span class="text-secondary font-medium"
             >Fuse &copy; {{ currentYear }}</span
