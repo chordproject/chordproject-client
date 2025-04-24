@@ -3,6 +3,7 @@ import { initialDataResolver } from 'app/app.resolvers';
 import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
+import { SettingsComponent } from './layout/common/settings/settings.component';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -47,6 +48,7 @@ export const appRoutes: Route[] = [
             layout: 'empty'
         },
         children: [
+            {path: 'settings', component: SettingsComponent},
             {path: 'sign-out', loadChildren: () => import('app/modules/auth/sign-out/sign-out.routes')},
             {path: 'unlock-session', loadChildren: () => import('app/modules/auth/unlock-session/unlock-session.routes')}
         ]
