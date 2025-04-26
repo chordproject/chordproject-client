@@ -9,7 +9,6 @@ import { NotesMockApi } from 'app/mock-api/apps/notes/api';
 import { ScrumboardMockApi } from 'app/mock-api/apps/scrumboard/api';
 import { TasksMockApi } from 'app/mock-api/apps/tasks/api';
 import { AuthMockApi } from 'app/mock-api/common/auth/api';
-import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
 import { SearchMockApi } from 'app/mock-api/common/search/api';
 import { ShortcutsMockApi } from 'app/mock-api/common/shortcuts/api';
 import { UserMockApi } from 'app/mock-api/common/user/api';
@@ -34,7 +33,6 @@ export class MockApiService {
     helpCenterMockApi = inject(HelpCenterMockApi);
     iconsMockApi = inject(IconsMockApi);
     mailboxMockApi = inject(MailboxMockApi);
-    navigationMockApi = inject(NavigationMockApi);
     notesMockApi = inject(NotesMockApi);
     projectMockApi = inject(ProjectMockApi);
     searchMockApi = inject(SearchMockApi);

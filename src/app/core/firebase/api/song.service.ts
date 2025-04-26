@@ -1,53 +1,29 @@
-import { Injectable } from '@angular/core';
-import { inject } from '@angular/core';
-import { 
-    Firestore, 
-    collection, 
-    doc, 
-    setDoc, 
-    deleteDoc, 
-    getDoc, 
-    getDocs, 
-    query, 
-    where, 
-    orderBy, 
-    limit, 
-    startAfter, 
-    serverTimestamp, 
-    QueryConstraint 
-} from 'firebase/firestore';
-import { FirebaseService } from '../firebase.service';
-import { Observable, from, throwError, combineLatest } from 'rxjs';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Auth, User } from 'firebase/auth';
-
-export interface Song {
-    uid: string;
-    title: string;
-    artists?: string[];
-    lyrics?: string;
-    songKey?: string;
-    uniqueChords?: string[];
-    creationDate?: any;
-    source?: string;
-    authorId?: string;
-    videoId?: string;
-    liked?: boolean;
-}
-
-export interface PartialSong {
-    uid: string;
-    title: string;
-    songKey?: string;
-    artists?: string[];
-    lyrics?: string;
-    uniqueChords?: string[];
-    order?: number;
-}
+import { PartialSong } from 'app/models/partialsong';
+import { Song } from 'app/models/song';
+import { Auth } from 'firebase/auth';
+import {
+    Firestore,
+    QueryConstraint,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    limit,
+    orderBy,
+    query,
+    serverTimestamp,
+    setDoc,
+    where,
+} from 'firebase/firestore';
+import { Observable, combineLatest, from, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { FirebaseService } from '../firebase.service';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class SongService {
     private _firestore: Firestore;
@@ -61,39 +37,31 @@ export class SongService {
         this._snackBar = inject(MatSnackBar);
     }
 
-    /**
-     * Get a song by ID
-     */
     get(id: string): Observable<Song> {
-        return from(getDoc(doc(this._firestore, 'songs', id)))
-            .pipe(
-                map(docSnap => {
-                    if (docSnap.exists()) {
-                        return { uid: docSnap.id, ...docSnap.data() } as Song;
-                    } else {
-                        throw new Error(`Song with ID ${id} not found`);
-                    }
-                }),
-                catchError(error => this.handleError(error))
-            );
+        return from(getDoc(doc(this._firestore, 'songs', id))).pipe(
+            map((docSnap) => {
+                if (docSnap.exists()) {
+                    return { uid: docSnap.id, ...docSnap.data() } as Song;
+                } else {
+                    throw new Error(`Song with ID ${id} not found`);
+                }
+            }),
+            catchError((error) => this.handleError(error))
+        );
     }
 
-    /**
-     * Get songs by IDs
-     */
     getAll(ids: string[]): Observable<PartialSong[]> {
         if (!ids || ids.length === 0) {
             return from([[]]);
         }
 
-        // Firebase limits "in" queries to 30 items, so chunk the requests
         const chunkSize = 30;
         const idChunks = Array.from(
-            { length: Math.ceil(ids.length / chunkSize) }, 
+            { length: Math.ceil(ids.length / chunkSize) },
             (_, i) => ids.slice(i * chunkSize, (i + 1) * chunkSize)
         );
 
-        const observables = idChunks.map(chunk => {
+        const observables = idChunks.map((chunk) => {
             return from(
                 getDocs(
                     query(
@@ -102,63 +70,57 @@ export class SongService {
                     )
                 )
             ).pipe(
-                map(snapshot => 
-                    snapshot.docs.map(doc => ({
-                        uid: doc.id,
-                        title: doc.data().title,
-                        songKey: doc.data().songKey
-                    } as PartialSong))
+                map((snapshot) =>
+                    snapshot.docs.map(
+                        (doc) =>
+                            ({
+                                uid: doc.id,
+                                title: doc.data().title,
+                                songKey: doc.data().songKey,
+                            }) as PartialSong
+                    )
                 )
             );
         });
 
         return combineLatest(observables).pipe(
-            map(results => results.flat()),
-            catchError(error => this.handleError(error))
+            map((results) => results.flat()),
+            catchError((error) => this.handleError(error))
         );
     }
 
-    /**
-     * Get a list of songs
-     */
-    getList(
-        lastTitle?: string,
-        searchTerm?: string,
-        pageSize: number = 30,
-        sortOrder: 'asc' | 'desc' = 'asc'
-    ): Observable<PartialSong[]> {
+    getList(searchTerm?: string): Observable<PartialSong[]> {
         const songsRef = collection(this._firestore, 'songs');
-        const constraints: QueryConstraint[] = [orderBy('title', sortOrder), limit(pageSize)];
-
-        if (lastTitle) {
-            constraints.push(startAfter(lastTitle));
-        }
+        const constraints: QueryConstraint[] = [orderBy('title')];
 
         if (searchTerm) {
             const end = searchTerm + '\uf8ff';
-            constraints.push(where('title', '>=', searchTerm), where('title', '<=', end));
+            constraints.push(
+                where('title', '>=', searchTerm),
+                where('title', '<=', end)
+            );
         }
 
         const q = query(songsRef, ...constraints);
 
         return from(getDocs(q)).pipe(
-            map(snapshot => 
-                snapshot.docs.map(doc => ({
-                    uid: doc.id,
-                    title: doc.data().title,
-                    artists: doc.data().artists,
-                    lyrics: doc.data().lyrics,
-                    songKey: doc.data().songKey,
-                    uniqueChords: doc.data().uniqueChords
-                } as PartialSong))
+            map((snapshot) =>
+                snapshot.docs.map(
+                    (doc) =>
+                        ({
+                            uid: doc.id,
+                            title: doc.data().title,
+                            artists: doc.data().artists,
+                            lyrics: doc.data().lyrics,
+                            songKey: doc.data().songKey,
+                            uniqueChords: doc.data().uniqueChords,
+                        }) as PartialSong
+                )
             ),
-            catchError(error => this.handleError(error))
+            catchError((error) => this.handleError(error))
         );
     }
 
-    /**
-     * Get latest songs
-     */
     getLatest(pageSize: number = 5): Observable<PartialSong[]> {
         const q = query(
             collection(this._firestore, 'songs'),
@@ -167,23 +129,23 @@ export class SongService {
         );
 
         return from(getDocs(q)).pipe(
-            map(snapshot => 
-                snapshot.docs.map(doc => ({
-                    uid: doc.id,
-                    title: doc.data().title,
-                    artists: doc.data().artists,
-                    lyrics: doc.data().lyrics,
-                    songKey: doc.data().songKey,
-                    uniqueChords: doc.data().uniqueChords
-                } as PartialSong))
+            map((snapshot) =>
+                snapshot.docs.map(
+                    (doc) =>
+                        ({
+                            uid: doc.id,
+                            title: doc.data().title,
+                            artists: doc.data().artists,
+                            lyrics: doc.data().lyrics,
+                            songKey: doc.data().songKey,
+                            uniqueChords: doc.data().uniqueChords,
+                        }) as PartialSong
+                )
             ),
-            catchError(error => this.handleError(error))
+            catchError((error) => this.handleError(error))
         );
     }
 
-    /**
-     * Save a song
-     */
     async save(song: Song): Promise<string> {
         if (!this.verifyAuthentication()) {
             return null;
@@ -196,11 +158,11 @@ export class SongService {
 
         try {
             const user = this._auth.currentUser;
-            
+
             if (!song.uid) {
                 song.uid = doc(collection(this._firestore, 'songs')).id;
                 song.creationDate = serverTimestamp();
-                song.source = 'homenajesus'; // Set appropriate source
+                song.source = 'homenajesus';
                 song.videoId = '';
             }
 
@@ -215,9 +177,6 @@ export class SongService {
         }
     }
 
-    /**
-     * Delete a song
-     */
     async delete(id: string): Promise<boolean> {
         if (!this.verifyAuthentication()) {
             return false;
@@ -233,9 +192,6 @@ export class SongService {
         }
     }
 
-    /**
-     * Check if user is authenticated
-     */
     private verifyAuthentication(): boolean {
         const user = this._auth.currentUser;
         if (!user) {
@@ -245,9 +201,6 @@ export class SongService {
         return true;
     }
 
-    /**
-     * Show snackbar message
-     */
     private showSnackbar(message: string, duration: number = 3000): void {
         this._snackBar.open(message, 'Close', {
             duration: duration,
@@ -256,18 +209,19 @@ export class SongService {
         });
     }
 
-    /**
-     * Handle errors
-     */
     private handleError(error: any): Observable<never> {
         console.error('Firebase service error:', error);
         let errorMessage = 'An unexpected error occurred';
-        
+
         if (error.message) {
             errorMessage = error.message;
         }
-        
+
         this.showSnackbar(errorMessage);
         return throwError(() => new Error(errorMessage));
+    }
+
+    getTags() {
+        return null;
     }
 }
