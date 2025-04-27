@@ -18,7 +18,7 @@ const songResolver = (
     const songService = inject(SongService);
     const router = inject(Router);
 
-    return songService.get(route.paramMap.get('id')).pipe(
+    return songService.get(route.paramMap.get('uid')).pipe(
         // Error here means the requested song is not available
         catchError((error) => {
             // Log the error
@@ -38,6 +38,8 @@ const songResolver = (
 
 const canDeactivateSongsDetails = (
     component: SongsDetailsComponent,
+    _currentRoute: ActivatedRouteSnapshot,
+    _currentState: RouterStateSnapshot,
     nextState: RouterStateSnapshot
 ) => {
     // Get the next route
@@ -46,21 +48,10 @@ const canDeactivateSongsDetails = (
         nextRoute = nextRoute.firstChild;
     }
 
-    // If the next state doesn't contain '/songs'
-    // it means we are navigating away from the
-    // songs app
-    if (!nextState.url.includes('/songs')) {
-        // Let it navigate
+    if (nextRoute.paramMap.get('uid')) {
         return true;
     }
 
-    // If we are navigating to another song...
-    if (nextRoute.paramMap.get('id')) {
-        // Just navigate
-        return true;
-    }
-
-    // Otherwise, close the drawer first, and then navigate
     return component.closeDrawer().then(() => true);
 };
 
@@ -80,7 +71,7 @@ export default [
                 },
                 children: [
                     {
-                        path: ':id',
+                        path: ':uid',
                         component: SongsDetailsComponent,
                         resolve: {
                             song: songResolver,

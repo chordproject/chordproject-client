@@ -18,7 +18,13 @@ import {
     setDoc,
     where,
 } from 'firebase/firestore';
-import { Observable, combineLatest, from, throwError } from 'rxjs';
+import {
+    BehaviorSubject,
+    Observable,
+    combineLatest,
+    from,
+    throwError,
+} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { FirebaseService } from '../firebase.service';
 
@@ -29,6 +35,12 @@ export class SongService {
     private _firestore: Firestore;
     private _auth: Auth;
     private _snackBar: MatSnackBar;
+
+    private _song: BehaviorSubject<Song | null> = new BehaviorSubject(null);
+
+    get song$(): Observable<Song> {
+        return this._song.asObservable();
+    }
 
     constructor() {
         const firebase = inject(FirebaseService);
@@ -41,7 +53,9 @@ export class SongService {
         return from(getDoc(doc(this._firestore, 'songs', id))).pipe(
             map((docSnap) => {
                 if (docSnap.exists()) {
-                    return { uid: docSnap.id, ...docSnap.data() } as Song;
+                    const song = docSnap.data() as Song;
+                    this._song.next(song);
+                    return song;
                 } else {
                     throw new Error(`Song with ID ${id} not found`);
                 }
@@ -71,14 +85,7 @@ export class SongService {
                 )
             ).pipe(
                 map((snapshot) =>
-                    snapshot.docs.map(
-                        (doc) =>
-                            ({
-                                uid: doc.id,
-                                title: doc.data().title,
-                                songKey: doc.data().songKey,
-                            }) as PartialSong
-                    )
+                    snapshot.docs.map((doc) => doc.data() as PartialSong)
                 )
             );
         });
@@ -105,17 +112,7 @@ export class SongService {
 
         return from(getDocs(q)).pipe(
             map((snapshot) =>
-                snapshot.docs.map(
-                    (doc) =>
-                        ({
-                            uid: doc.id,
-                            title: doc.data().title,
-                            artists: doc.data().artists,
-                            lyrics: doc.data().lyrics,
-                            songKey: doc.data().songKey,
-                            uniqueChords: doc.data().uniqueChords,
-                        }) as PartialSong
-                )
+                snapshot.docs.map((doc) => doc.data() as PartialSong)
             ),
             catchError((error) => this.handleError(error))
         );
@@ -130,17 +127,7 @@ export class SongService {
 
         return from(getDocs(q)).pipe(
             map((snapshot) =>
-                snapshot.docs.map(
-                    (doc) =>
-                        ({
-                            uid: doc.id,
-                            title: doc.data().title,
-                            artists: doc.data().artists,
-                            lyrics: doc.data().lyrics,
-                            songKey: doc.data().songKey,
-                            uniqueChords: doc.data().uniqueChords,
-                        }) as PartialSong
-                )
+                snapshot.docs.map((doc) => doc.data() as PartialSong)
             ),
             catchError((error) => this.handleError(error))
         );

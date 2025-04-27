@@ -15,14 +15,7 @@ import {
     ViewContainerRef,
     ViewEncapsulation,
 } from '@angular/core';
-import {
-    FormsModule,
-    ReactiveFormsModule,
-    UntypedFormArray,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-    Validators,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule, MatRippleModule } from '@angular/material/core';
@@ -38,9 +31,9 @@ import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { SongsListComponent } from '../list/list.component';
 import { Tag } from 'app/models/tag';
+import { Subject, takeUntil } from 'rxjs';
+import { SongsListComponent } from '../list/list.component';
 
 @Component({
     selector: 'songs-details',
@@ -76,7 +69,6 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     tagsEditMode: boolean = false;
     filteredTags: Tag[];
     song: Song;
-    songForm: UntypedFormGroup;
     songs: Song[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -86,7 +78,6 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _songsListComponent: SongsListComponent,
         private _songsService: SongService,
-        private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
         private _router: Router,
@@ -98,19 +89,19 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         // Open the drawer
         this._songsListComponent.matDrawer.open();
 
-        // Create the song form
-        this.songForm = this._formBuilder.group({
-            id: [''],
-            name: ['', [Validators.required]],
-            emails: this._formBuilder.array([]),
-            phoneNumbers: this._formBuilder.array([]),
-            title: [''],
-            company: [''],
-            birthday: [null],
-            address: [null],
-            notes: [null],
-            tags: [[]],
-        });
+        // // Create the song form
+        // this.songForm = this._formBuilder.group({
+        //     id: [''],
+        //     name: ['', [Validators.required]],
+        //     emails: this._formBuilder.array([]),
+        //     phoneNumbers: this._formBuilder.array([]),
+        //     title: [''],
+        //     company: [''],
+        //     birthday: [null],
+        //     address: [null],
+        //     notes: [null],
+        //     tags: [[]],
+        // });
 
         // Get the songs
         // this._songsService.songs$
@@ -122,93 +113,22 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         //         this._changeDetectorRef.markForCheck();
         //     });
 
-        // // Get the song
-        // this._songsService.song$
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((song: Song) => {
-        //         // Open the drawer in case it is closed
-        //         this._songsListComponent.matDrawer.open();
+        // Get the song
+        this._songsService.song$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((song: Song) => {
+                // Open the drawer in case it is closed
+                this._songsListComponent.matDrawer.open();
 
-        //         // Get the song
-        //         this.song = song;
+                // Get the song
+                this.song = song;
 
-        //         // Clear the emails and phoneNumbers form arrays
-        //         (this.songForm.get('emails') as UntypedFormArray).clear();
-        //         (
-        //             this.songForm.get('phoneNumbers') as UntypedFormArray
-        //         ).clear();
+                // Toggle the edit mode off
+                this.toggleEditMode(false);
 
-        //         // Patch values to the form
-        //         this.songForm.patchValue(song);
-
-        //         // Setup the emails form array
-        //         const emailFormGroups = [];
-
-        //         if (song.emails.length > 0) {
-        //             // Iterate through them
-        //             song.emails.forEach((email) => {
-        //                 // Create an email form group
-        //                 emailFormGroups.push(
-        //                     this._formBuilder.group({
-        //                         email: [email.email],
-        //                         label: [email.label],
-        //                     })
-        //                 );
-        //             });
-        //         } else {
-        //             // Create an email form group
-        //             emailFormGroups.push(
-        //                 this._formBuilder.group({
-        //                     email: [''],
-        //                     label: [''],
-        //                 })
-        //             );
-        //         }
-
-        //         // Add the email form groups to the emails form array
-        //         emailFormGroups.forEach((emailFormGroup) => {
-        //             (this.songForm.get('emails') as UntypedFormArray).push(
-        //                 emailFormGroup
-        //             );
-        //         });
-
-        //         // Setup the phone numbers form array
-        //         const phoneNumbersFormGroups = [];
-
-        //         if (song.phoneNumbers.length > 0) {
-        //             // Iterate through them
-        //             song.phoneNumbers.forEach((phoneNumber) => {
-        //                 // Create an email form group
-        //                 phoneNumbersFormGroups.push(
-        //                     this._formBuilder.group({
-        //                         phoneNumber: [phoneNumber.phoneNumber],
-        //                         label: [phoneNumber.label],
-        //                     })
-        //                 );
-        //             });
-        //         } else {
-        //             // Create a phone number form group
-        //             phoneNumbersFormGroups.push(
-        //                 this._formBuilder.group({
-        //                     phoneNumber: [''],
-        //                     label: [''],
-        //                 })
-        //             );
-        //         }
-
-        //         // Add the phone numbers form groups to the phone numbers form array
-        //         phoneNumbersFormGroups.forEach((phoneNumbersFormGroup) => {
-        //             (
-        //                 this.songForm.get('phoneNumbers') as UntypedFormArray
-        //             ).push(phoneNumbersFormGroup);
-        //         });
-
-        //         // Toggle the edit mode off
-        //         this.toggleEditMode(false);
-
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     });
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
 
         // // Get the tags
         // this._songsService.tags$
@@ -251,14 +171,11 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     updateSong(): void {
         // // Get the song object
         // const song = this.songForm.getRawValue();
-
         // // Go through the song object and clear empty values
         // song.emails = song.emails.filter((email) => email.email);
-
         // song.phoneNumbers = song.phoneNumbers.filter(
         //     (phoneNumber) => phoneNumber.phoneNumber
         // );
-
         // // Update the song on the server
         // this._songsService
         //     .updateSong(song.id, song)
@@ -427,23 +344,18 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         // if (event.key !== 'Enter') {
         //     return;
         // }
-
         // // If there is no tag available...
         // if (this.filteredTags.length === 0) {
         //     // Create the tag
         //     this.createTag(event.target.value);
-
         //     // Clear the input
         //     event.target.value = '';
-
         //     // Return
         //     return;
         // }
-
         // // If there is a tag...
         // const tag = this.filteredTags[0];
         // const isTagApplied = this.song.tags.find((id) => id === tag.id);
-
         // // If the found tag is already applied to the song...
         // if (isTagApplied) {
         //     // Remove the tag from the song
@@ -458,7 +370,6 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         // const tag = {
         //     title,
         // };
-
         // // Create tag on the server
         // this._songsService.createTag(tag).subscribe((response) => {
         //     // Add the tag to the song
@@ -469,13 +380,11 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     updateTagTitle(tag: Tag, event): void {
         // // Update the title on the tag
         // tag.title = event.target.value;
-
         // // Update the tag on the server
         // this._songsService
         //     .updateTag(tag.id, tag)
         //     .pipe(debounceTime(300))
         //     .subscribe();
-
         // // Mark for check
         // this._changeDetectorRef.markForCheck();
     }
@@ -483,7 +392,6 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     deleteTag(tag: Tag): void {
         // // Delete the tag from the server
         // this._songsService.deleteTag(tag.id).subscribe();
-
         // // Mark for check
         // this._changeDetectorRef.markForCheck();
     }
@@ -491,10 +399,8 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     addTagToSong(tag: Tag): void {
         // // Add the tag
         // this.song.tags.unshift(tag.id);
-
         // // Update the song form
         // this.songForm.get('tags').patchValue(this.song.tags);
-
         // // Mark for check
         // this._changeDetectorRef.markForCheck();
     }
@@ -505,10 +411,8 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         //     this.song.tags.findIndex((item) => item === tag.id),
         //     1
         // );
-
         // // Update the song form
         // this.songForm.get('tags').patchValue(this.song.tags);
-
         // // Mark for check
         // this._changeDetectorRef.markForCheck();
     }

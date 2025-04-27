@@ -1,16 +1,43 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation, Inject, OnDestroy, ViewChild } from '@angular/core';
-import { UntypedFormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { SongService } from 'app/core/firebase/api/song.service';
-import { Observable, Subject, takeUntil, switchMap, startWith, filter, fromEvent } from 'rxjs';
-import {  AsyncPipe, DOCUMENT, I18nPluralPipe, NgClass } from '@angular/common';
-import { Router,  ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { AsyncPipe, DOCUMENT, I18nPluralPipe } from '@angular/common';
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Inject,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation,
+} from '@angular/core';
+import {
+    FormsModule,
+    ReactiveFormsModule,
+    UntypedFormControl,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
+import {
+    ActivatedRoute,
+    Router,
+    RouterLink,
+    RouterOutlet,
+} from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { SongItemComponent } from 'app/components/song-item/song-item.component';
+import { SongService } from 'app/core/firebase/api/song.service';
 import { PartialSong } from 'app/models/partialsong';
+import {
+    filter,
+    fromEvent,
+    Observable,
+    startWith,
+    Subject,
+    switchMap,
+    takeUntil,
+} from 'rxjs';
 
 @Component({
     selector: 'songs-list',
@@ -26,10 +53,10 @@ import { PartialSong } from 'app/models/partialsong';
         FormsModule,
         ReactiveFormsModule,
         MatButtonModule,
-        NgClass,
         RouterLink,
         AsyncPipe,
         I18nPluralPipe,
+        SongItemComponent,
     ],
 })
 export class SongsListComponent implements OnInit, OnDestroy {
@@ -64,21 +91,21 @@ export class SongsListComponent implements OnInit, OnDestroy {
             })
         );
 
-        this.songs$.pipe(takeUntil(this._unsubscribeAll)).subscribe(songs => {
+        this.songs$.pipe(takeUntil(this._unsubscribeAll)).subscribe((songs) => {
             this.songsCount = songs.length;
             this._changeDetectorRef.markForCheck();
-        });        
+        });
 
-        // // Get the song
-        // this._songService.song$
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((song: Song) => {
-        //         // Update the selected song
-        //         this.selectedSong = song;
+        // Get the song
+        this._songService.song$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((song: PartialSong) => {
+                // Update the selected song
+                this.selectedSong = song;
 
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     });
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
 
         // // Subscribe to search input field value changes
         // this.searchInputControl.valueChanges
@@ -153,13 +180,12 @@ export class SongsListComponent implements OnInit, OnDestroy {
         //     this._router.navigate(['./', newSong.id], {
         //         relativeTo: this._activatedRoute,
         //     });
-
         //     // Mark for check
         //     this._changeDetectorRef.markForCheck();
         // });
     }
 
     trackByFn(index: number, item: PartialSong): any {
-                return item.uid || index;
-            }
+        return item.uid || index;
+    }
 }
