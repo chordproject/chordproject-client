@@ -1,0 +1,45 @@
+<div
+    #viewerContent
+    [class.show-columns]="isPreview ? false : viewSettings?.showColumns"
+    [class.lyrics-font-style-italic]="viewSettings?.lyricsFontStyle?.isItalic"
+    [class.chords-font-style-italic]="viewSettings?.chordsFontStyle?.isItalic"
+    [class.comments-font-style-italic]="
+        viewSettings?.commentsFontStyle?.isItalic
+    "
+    [class.lyrics-font-weight-bold]="viewSettings?.lyricsFontStyle?.isBold"
+    [class.chords-font-weight-bold]="viewSettings?.chordsFontStyle?.isBold"
+    [class.comments-font-weight-bold]="viewSettings?.commentsFontStyle?.isBold"
+    [class]="
+        'lyrics-font-size-' +
+        viewSettings?.lyricsFontStyle?.size +
+        ' ' +
+        'chords-font-size-' +
+        viewSettings?.chordsFontStyle?.size +
+        ' ' +
+        'comments-font-size-' +
+        viewSettings?.commentsFontStyle?.size +
+        ' ' +
+        'lyrics-color-' +
+        viewSettings?.lyricsFontStyle?.color +
+        ' ' +
+        'chords-color-' +
+        viewSettings?.chordsFontStyle?.color +
+        ' ' +
+        'comments-color-' +
+        viewSettings?.commentsFontStyle?.color
+    "
+>
+    <div
+        *ngIf="!isLoading"
+        [innerHtml]="songHtml | safeHtml"
+        [style.font-size.%]="fontSize"
+        class="content 
+            [&_.chorus-section]:bg-gradient-to-r 
+            [&_.chorus-section]:from-[#edf1f7] 
+            [&_.chorus-section]:to-[#fff] 
+            dark:[&_.chorus-section]:from-[#151a30] 
+            dark:[&_.chorus-section]:to-[#222b45] 
+            [&_.lyrics]:text-black 
+            dark:[&_.lyrics]:text-white"
+    ></div>
+</div>

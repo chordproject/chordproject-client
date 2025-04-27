@@ -101,15 +101,25 @@ export class SongService {
         const constraints: QueryConstraint[] = [orderBy('title')];
 
         if (searchTerm) {
-            const end = searchTerm + '\uf8ff';
-            constraints.push(
-                where('title', '>=', searchTerm),
-                where('title', '<=', end)
+            const q = query(songsRef, ...constraints);
+            return from(getDocs(q)).pipe(
+                map((snapshot) =>
+                    snapshot.docs
+                        .map((doc) => doc.data() as PartialSong)
+                        .filter(
+                            (song) =>
+                                song.title &&
+                                song.title
+                                    .toLowerCase()
+                                    .includes(searchTerm.toLowerCase())
+                        )
+                ),
+                catchError((error) => this.handleError(error))
             );
         }
 
+        // Si no hay searchTerm, consulta normal ordenada por título
         const q = query(songsRef, ...constraints);
-
         return from(getDocs(q)).pipe(
             map((snapshot) =>
                 snapshot.docs.map((doc) => doc.data() as PartialSong)

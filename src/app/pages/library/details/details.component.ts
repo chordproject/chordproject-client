@@ -1,7 +1,6 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { DatePipe, NgClass } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -29,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { ViewerComponent } from 'app/components/viewer/viewer.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
 import { Tag } from 'app/models/tag';
@@ -51,13 +51,12 @@ import { SongsListComponent } from '../list/list.component';
         MatFormFieldModule,
         MatInputModule,
         MatCheckboxModule,
-        NgClass,
         MatSelectModule,
         MatOptionModule,
         MatDatepickerModule,
         TextFieldModule,
         FuseFindByKeyPipe,
-        DatePipe,
+        ViewerComponent,
     ],
 })
 export class SongsDetailsComponent implements OnInit, OnDestroy {
@@ -88,30 +87,6 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         // Open the drawer
         this._songsListComponent.matDrawer.open();
-
-        // // Create the song form
-        // this.songForm = this._formBuilder.group({
-        //     id: [''],
-        //     name: ['', [Validators.required]],
-        //     emails: this._formBuilder.array([]),
-        //     phoneNumbers: this._formBuilder.array([]),
-        //     title: [''],
-        //     company: [''],
-        //     birthday: [null],
-        //     address: [null],
-        //     notes: [null],
-        //     tags: [[]],
-        // });
-
-        // Get the songs
-        // this._songsService.songs$
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe((songs: Song[]) => {
-        //         this.songs = songs;
-
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     });
 
         // Get the song
         this._songsService.song$

@@ -64,7 +64,6 @@ export class SongsListComponent implements OnInit, OnDestroy {
 
     songs$: Observable<PartialSong[]>;
     songsCount: number = 0;
-    songsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
     selectedSong: PartialSong;
@@ -106,17 +105,6 @@ export class SongsListComponent implements OnInit, OnDestroy {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-
-        // // Subscribe to search input field value changes
-        // this.searchInputControl.valueChanges
-        //     .pipe(
-        //         takeUntil(this._unsubscribeAll),
-        //         switchMap((query) =>
-        //             // Search
-        //             this._songService.searchSongs(query)
-        //         )
-        //     )
-        //     .subscribe();
 
         // Subscribe to MatDrawer opened change
         this.matDrawer.openedChange.subscribe((opened) => {
