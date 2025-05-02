@@ -108,10 +108,12 @@
                                     [ngClass]="{
                                         'dark:hover:bg-hover hover:bg-gray-100':
                                             !selectedSong ||
-                                            selectedSong.uid !== song.uid,
+                                            selectedSong.uid !== song.uid ||
+                                            !matDrawer.opened,
                                         'bg-primary-50 dark:bg-hover':
                                             selectedSong &&
-                                            selectedSong.uid === song.uid,
+                                            selectedSong.uid === song.uid &&
+                                            matDrawer.opened,
                                     }"
                                 ></chp-song-item>
                             }

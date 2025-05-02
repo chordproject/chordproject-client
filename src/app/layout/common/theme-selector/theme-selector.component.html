@@ -2,9 +2,7 @@
 <button mat-icon-button (click)="toggleTheme()">
     <mat-icon
         [svgIcon]="
-            config.scheme === 'dark'
-                ? 'heroicons_outline:sun'
-                : 'heroicons_outline:moon'
+            isDarkMode ? 'heroicons_outline:sun' : 'heroicons_outline:moon'
         "
     ></mat-icon>
 </button>

@@ -1,0 +1,1 @@
+- No agregar comentarios obvios

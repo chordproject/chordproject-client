@@ -74,5 +74,7 @@
     }
 
     <!-- Edit mode -->
-    @if (editMode) {}
+    @if (editMode) {
+        <chp-editor [(content)]="song.content" tabindex="0"></chp-editor>
+    }
 </div>

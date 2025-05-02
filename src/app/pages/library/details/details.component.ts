@@ -34,6 +34,7 @@ import { Song } from 'app/models/song';
 import { Tag } from 'app/models/tag';
 import { Subject, takeUntil } from 'rxjs';
 import { SongsListComponent } from '../list/list.component';
+import { EditorComponent } from 'app/components/editor/editor/editor.component';
 
 @Component({
     selector: 'songs-details',
@@ -57,6 +58,7 @@ import { SongsListComponent } from '../list/list.component';
         TextFieldModule,
         FuseFindByKeyPipe,
         ViewerComponent,
+        EditorComponent
     ],
 })
 export class SongsDetailsComponent implements OnInit, OnDestroy {
@@ -92,15 +94,9 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         this._songsService.song$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((song: Song) => {
-                // Open the drawer in case it is closed
                 this._songsListComponent.matDrawer.open();
-
-                // Get the song
                 this.song = song;
-
-                // Toggle the edit mode off
                 this.toggleEditMode(false);
-
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
