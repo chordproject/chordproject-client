@@ -76,5 +76,38 @@
     <!-- Edit mode -->
     @if (editMode) {
         <chp-editor [(content)]="song.content" tabindex="0"></chp-editor>
+        <!-- Actions -->
+        <div
+            class="mt-2 flex border-t bg-gray-50 py-4 pl-3 pr-5 sm:pl-4 sm:pr-6 dark:bg-transparent"
+        >
+            <!-- Delete -->
+            <button
+                mat-button
+                [color]="'warn'"
+                [matTooltip]="'Delete'"
+                (click)="deleteSong()"
+            >
+                Delete
+            </button>
+            <!-- Cancel -->
+            <button
+                class="ml-auto"
+                mat-button
+                [matTooltip]="'Cancel'"
+                (click)="toggleEditMode(false)"
+            >
+                Cancel
+            </button>
+            <!-- Save -->
+            <button
+                class="ml-2"
+                mat-flat-button
+                [color]="'primary'"
+                [matTooltip]="'Save'"
+                (click)="updateSong()"
+            >
+                Save
+            </button>
+        </div>
     }
 </div>

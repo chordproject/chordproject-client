@@ -1,17 +1,57 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'landing-home',
+    selector: 'app-home',
     templateUrl: './home.component.html',
-    encapsulation: ViewEncapsulation.None,
-    imports: [MatButtonModule, RouterLink, MatIconModule],
+    standalone: true,
+    imports: [TranslocoModule, NgFor, NgIf, MatButtonModule, MatIconModule],
 })
-export class LandingHomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
+    features: string[] = [];
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    constructor(private _translocoService: TranslocoService) {}
+
+    ngOnInit(): void {
+        // Inicializar las características basadas en el idioma actual
+        this.updateFeatures(this._translocoService.getActiveLang());
+
+        // Escuchar cambios de idioma y actualizar el array de características
+        this._translocoService.langChanges$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((lang) => {
+                this.updateFeatures(lang);
+            });
+    }
+
+    ngOnDestroy(): void {
+        // Cancelar todas las suscripciones para evitar memory leaks
+        this._unsubscribeAll.next(null);
+        this._unsubscribeAll.complete();
+    }
+
     /**
-     * Constructor
+     * Actualiza el array de características basado en el idioma
      */
-    constructor() {}
+    private updateFeatures(lang: string): void {
+        // Usar selectTranslateObject para obtener las traducciones completas
+        this._translocoService
+            .selectTranslateObject('home', {}, lang)
+            .subscribe((homeTranslations) => {
+                // Verificar si existe la estructura home.features
+                if (
+                    homeTranslations &&
+                    Array.isArray(homeTranslations.features)
+                ) {
+                    this.features = homeTranslations.features;
+                } else {
+                    this.features = [];
+                }
+            });
+    }
 }

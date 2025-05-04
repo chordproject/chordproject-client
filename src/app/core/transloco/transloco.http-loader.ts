@@ -7,15 +7,6 @@ import { Observable } from 'rxjs';
 export class TranslocoHttpLoader implements TranslocoLoader {
     private _httpClient = inject(HttpClient);
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Get translation
-     *
-     * @param lang
-     */
     getTranslation(lang: string): Observable<Translation> {
         return this._httpClient.get<Translation>(`./i18n/${lang}.json`);
     }

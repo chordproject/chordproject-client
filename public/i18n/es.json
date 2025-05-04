@@ -1,2 +1,18 @@
 {
+    "home": {
+        "about_title": "Acerca de este proyecto",
+        "about_description": "Una plataforma sin publicidad diseñada para optimizar la forma en que administras, descubres y reproduces tus canciones favoritas. Accede a un extenso repertorio de canciones con acordes, contribuye con tus propias creaciones y organízalas en cancioneros personalizados.",
+        "overview_title": "Descripción general",
+        "overview_description": "Esta aplicación está diseñada para administrar <strong>canciones</strong> (con <strong>acordes</strong>) y <strong>cancioneros</strong>.",
+        "features": [
+            "Analiza y formatea música marcada (letras y acordes) utilizando la notación <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>.",
+            "Te permite leer, editar o imprimir canciones con diagramas de acordes.",
+            "Garantiza que los acordes estén siempre posicionados correctamente, independientemente del tamaño de fuente o pantalla.",
+            "Almacena canciones en línea, con actualizaciones reflejadas instantáneamente en todos los dispositivos.",
+            "Incluye un visor con herramientas para actuaciones en vivo, como desplazamiento automático, ajuste de tamaño de fuente, <strong>transposición</strong> y más.",
+            "Permite organizar canciones en <strong>cancioneros</strong> personalizables."
+        ],
+        "platform_description": "<mark>Homenajesus.com</mark> es una plataforma para música cristiana, particularmente para la Santa Misa. Sin embargo, esta aplicación también se puede utilizar para cualquier canción en formato ChordPro en <mark>ChordProject.com</mark>.",
+        "visit_button": "Visitar ChordProject"
+    }
 }

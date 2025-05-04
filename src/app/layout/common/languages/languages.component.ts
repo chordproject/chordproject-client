@@ -23,20 +23,8 @@ export class LanguagesComponent implements OnInit, OnDestroy {
     activeLang: string;
     flagCodes: any;
 
-    /**
-     * Constructor
-     */
-    constructor(
-        private _translocoService: TranslocoService
-    ) {}
+    constructor(private _translocoService: TranslocoService) {}
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * On init
-     */
     ngOnInit(): void {
         // Get the available languages from transloco
         this.availableLangs = this._translocoService.getAvailableLangs();
@@ -49,37 +37,18 @@ export class LanguagesComponent implements OnInit, OnDestroy {
 
         // Set the country iso codes for languages for flags
         this.flagCodes = {
-            'es': 'es',
-            'fr': 'fr',
-            'en': 'en',
+            es: 'es',
+            fr: 'fr',
+            en: 'en',
         };
     }
 
-    /**
-     * On destroy
-     */
     ngOnDestroy(): void {}
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Set the active lang
-     *
-     * @param lang
-     */
     setActiveLang(lang: string): void {
-        // Set the active lang
         this._translocoService.setActiveLang(lang);
     }
 
-    /**
-     * Track by function for ngFor loops
-     *
-     * @param index
-     * @param item
-     */
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }

@@ -6,16 +6,16 @@ import { Observable, of, ReplaySubject, tap } from 'rxjs';
 const defaultNavigation: FuseNavigationItem[] = [
     {
         id: 'home',
-        title: 'Inicio',
-        tooltip: 'Inicio',
+        title: 'Home',
+        tooltip: 'Home',
         type: 'basic',
         icon: 'heroicons_outline:home',
         link: '/home',
     },
     {
         id: 'library',
-        title: 'Libreria',
-        tooltip: 'Libreria',
+        title: 'Library',
+        tooltip: 'Library',
         type: 'basic',
         icon: 'heroicons_outline:musical-note',
         link: '/library',
@@ -30,8 +30,8 @@ const defaultNavigation: FuseNavigationItem[] = [
     },
     {
         id: 'songbooks',
-        title: 'Cancioneros',
-        tooltip: 'Cancioneros',
+        title: 'Songbooks',
+        tooltip: 'Songbooks',
         type: 'aside',
         icon: 'heroicons_outline:book-open',
         children: [],

@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { LandingHomeComponent } from './home.component';
+import { HomeComponent } from './home.component';
 
 export default [
     {
         path: '',
-        component: LandingHomeComponent,
+        component: HomeComponent,
     },
 ] as Routes;

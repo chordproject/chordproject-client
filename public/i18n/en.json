@@ -1,2 +1,18 @@
 {
+    "home": {
+        "about_title": "About this project",
+        "about_description": "An ad-free platform designed to streamline the way you manage, discover, and play your favorite songs. Access an extensive repertoire of chorded songs, contribute your own creations, and organize them into personalized songbooks.",
+        "overview_title": "Overview",
+        "overview_description": "This application is designed for managing <strong>songs</strong> (with <strong>chords</strong>) and <strong>songbooks</strong>.",
+        "features": [
+            "Parses and formats marked-up music (lyrics and chords) using <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> notation.",
+            "Allows you to read, edit, or print songs with chord diagrams.",
+            "Ensures chords are always correctly positioned, regardless of font or screen size.",
+            "Stores songs online, with updates reflected instantly across all devices.",
+            "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, <strong>transposition</strong>, and more.",
+            "Enables organizing songs into customizable <strong>songbooks</strong>."
+        ],
+        "platform_description": "<mark>Homenajesus.com</mark> is a platform for Christian music, particularly for the Holy Mass. However, this application can also be used for any song in ChordPro format at <mark>ChordProject.com</mark>.",
+        "visit_button": "Visit ChordProject"
+    }
 }

@@ -2,27 +2,28 @@
     <div class="w-full max-w-3xl">
         <div class="prose prose-sm mx-auto max-w-none">
             <img class="w-20" src="images/logo/logo.svg" alt="Logo image" />
-            <h1>Landing Module</h1>
-            <p>
-                This can be the landing or the welcome page of your application.
-                If you have an SSR (Server Side Rendering) setup, or if you
-                don't need to have Search engine visibility and optimizations,
-                you can even use this page as your primary landing page.
-            </p>
-            <p>
-                This is a separate "module", it has its own directory and
-                routing setup and also it's completely separated from the actual
-                application. 
-            </p>
+
+            <h1>{{ 'home.about_title' | transloco }}</h1>
+            <p>{{ 'home.about_description' | transloco }}</p>
+            <h2>{{ 'home.overview_title' | transloco }}</h2>
+            <p [innerHTML]="'home.overview_description' | transloco"></p>
+
+            <ul>
+                <li *ngFor="let item of features" [innerHTML]="item"></li>
+            </ul>
+
+            <p [innerHTML]="'home.platform_description' | transloco"></p>
         </div>
         <div>
             <a
                 class="mt-8"
                 mat-flat-button
                 [color]="'primary'"
-                [routerLink]="'/dashboards/project'"
+                href="https://chordproject.com"
+                target="_blank"
+                rel="noopener noreferrer"
             >
-                <span>Launch the App</span>
+                <span>{{ 'home.visit_button' | transloco }}</span>
                 <mat-icon
                     class="ml-2 icon-size-5"
                     [svgIcon]="'heroicons_mini:arrow-long-right'"
