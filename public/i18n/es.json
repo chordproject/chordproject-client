@@ -1,7 +1,7 @@
 {
     "home": {
         "about_title": "Acerca de este proyecto",
-        "about_description": "Una plataforma sin publicidad diseñada para optimizar la forma en que administras, descubres y reproduces tus canciones favoritas. Accede a un extenso repertorio de canciones con acordes, contribuye con tus propias creaciones y organízalas en cancioneros personalizados.",
+        "about_description": "<mark>Homenajesus.com</mark> es un cancionero digital de la música cristiana. Creado para apoyar a los ministerios de música en la preparación de la Santa Misa y otros tiempos litúrgicos. También es una herramienta ideal para animar en vivo estas celebraciones. A diferencia de un cancionero impreso, esta plataforma es dinámica. Se adapta, evoluciona, crece, tal como la vida misma.",
         "overview_title": "Descripción general",
         "overview_description": "Esta aplicación está diseñada para administrar <strong>canciones</strong> (con <strong>acordes</strong>) y <strong>cancioneros</strong>.",
         "features": [
@@ -12,7 +12,7 @@
             "Incluye un visor con herramientas para actuaciones en vivo, como desplazamiento automático, ajuste de tamaño de fuente, <strong>transposición</strong> y más.",
             "Permite organizar canciones en <strong>cancioneros</strong> personalizables."
         ],
-        "platform_description": "<mark>Homenajesus.com</mark> es una plataforma para música cristiana, particularmente para la Santa Misa. Sin embargo, esta aplicación también se puede utilizar para cualquier canción en formato ChordPro en <mark>ChordProject.com</mark>.",
+        "platform_description": "Moderamos <strong>Homenajesus</strong> para que sea una plataforma de música cristiana. Si te gustaría usarla también para otros géneros, te creamos <mark>ChordProject.com</mark>.",
         "visit_button": "Visitar ChordProject"
     }
 }

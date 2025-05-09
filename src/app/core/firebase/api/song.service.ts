@@ -128,7 +128,7 @@ export class SongService {
         );
     }
 
-    getLatest(pageSize: number = 5): Observable<PartialSong[]> {
+    getLatest(pageSize: number = 10): Observable<PartialSong[]> {
         const q = query(
             collection(this._firestore, 'songs'),
             orderBy('creationDate', 'desc'),
