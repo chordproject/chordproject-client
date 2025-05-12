@@ -1,0 +1,69 @@
+<div
+    class="flex w-full min-w-0 flex-col sm:absolute sm:inset-0 sm:overflow-hidden"
+>
+    <div
+        class="fixed top-1/2 z-[1050] [right:-5px] md:hidden"
+        [class.left]="!showPrimaryArea"
+    >
+        <button
+            mat-stroked-button
+            (click)="togglePreview()"
+            style="
+                background: transparent !important;
+                border-color: #cbd5e1 !important; /* gray-300 */
+                border-width: 2px !important;
+                border-radius: 12px !important;
+                box-shadow: none !important;
+                width: 48px !important;
+                height: 48px !important;
+                min-width: 0 !important;
+                padding: 0 !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            "
+        >
+            <mat-icon
+                [svgIcon]="
+                    showPrimaryArea
+                        ? 'heroicons_solid:arrow-uturn-left'
+                        : 'heroicons_solid:arrow-uturn-right'
+                "
+                class="text-gray-300"
+            >
+            </mat-icon>
+        </button>
+    </div>
+    <as-split
+        direction="horizontal"
+        useTransition="true"
+        gutterSize="30"
+        [style.--_as-gutter-background-color]="
+            isDarkMode ? '#1e293b' : '#e2e8f0'
+        "
+    >
+        <as-split-area
+            [size]="60"
+            [visible]="!isMobile || showPrimaryArea"
+            minSize="30"
+        >
+            <mat-card class="flex h-full flex-col">
+                <mat-card-header>Tools</mat-card-header>
+                <mat-card-content>
+                    <chp-editor
+                        [(content)]="songContent"
+                        tabindex="0"
+                    ></chp-editor>
+                </mat-card-content>
+            </mat-card>
+        </as-split-area>
+        <as-split-area
+            [size]="40"
+            [visible]="!isMobile || !showPrimaryArea"
+            minSize="30"
+        >
+            <chp-viewer #viewer [content]="songContent" isPreview="true">
+            </chp-viewer>
+        </as-split-area>
+    </as-split>
+</div>

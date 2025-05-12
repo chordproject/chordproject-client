@@ -1,21 +1,26 @@
 <div class="flex min-w-0 flex-auto flex-col">
     <!-- Header -->
     <div
-        class="relative overflow-hidden px-4 pb-28 pt-8 sm:px-16 sm:pb-48 sm:pt-20">
+        class="relative overflow-hidden px-4 pb-28 pt-8 sm:px-16 sm:pb-48 sm:pt-20"
+    >
         <!-- Background -->
         <div
-            class="bg-logo-light dark:bg-logo-dark absolute left-[5%] top-[-30%] h-[200%] w-[90%]"
-            style="transform: rotate(-16deg)"></div>
+            class="absolute left-[5%] top-[-30%] h-[200%] w-[90%] bg-logo-light dark:bg-logo-dark"
+            style="transform: rotate(-16deg)"
+        ></div>
         <div class="relative z-10 flex flex-col items-center">
             <mat-form-field
                 class="fuse-mat-rounded fuse-mat-bold mt-10 w-full max-w-80 sm:mt-20 sm:max-w-120"
-                [subscriptSizing]="'dynamic'">
+                [subscriptSizing]="'dynamic'"
+            >
                 <input
                     matInput
-                    [placeholder]="'Enter a question, topic or keyword'" />
+                    [placeholder]="'Enter a title, lyrics or keyword'"
+                />
                 <mat-icon
                     matPrefix
-                    [svgIcon]="'heroicons_outline:magnifying-glass'"></mat-icon>
+                    [svgIcon]="'heroicons_outline:magnifying-glass'"
+                ></mat-icon>
             </mat-form-field>
         </div>
     </div>
@@ -23,23 +28,32 @@
     <div class="flex flex-col items-center px-6 pb-6 sm:px-10 sm:pb-10">
         <!-- Cards -->
         <div
-            class="-mt-16 grid w-full max-w-sm grid-cols-1 gap-y-8 sm:-mt-24 md:max-w-7xl md:grid-cols-2 md:gap-x-6 md:gap-y-0">
+            class="-mt-16 grid w-full max-w-sm grid-cols-1 gap-y-8 sm:-mt-24 md:max-w-7xl md:grid-cols-2 md:gap-x-6 md:gap-y-0"
+        >
             <!-- Recent card -->
             <div
-                class="bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg">
-                <div
-                    class="flex flex-col items-center p-8 text-center">
+                class="bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg"
+            >
+                <div class="flex flex-col items-center p-8 text-center">
                     <div class="text-2xl font-semibold">Recently Added</div>
                 </div>
                 <div
-                    class="flex flex-auto flex-col bg-gray-50 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400">
+                    class="flex flex-auto flex-col bg-gray-50 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400"
+                >
                     <ng-container *ngIf="latestSongs$ | async as songs">
-                        <div *ngIf="songs.length > 0; else noRecentSongs" class="w-full">
+                        <div
+                            *ngIf="songs.length > 0; else noRecentSongs"
+                            class="w-full"
+                        >
                             <chp-song-item
                                 *ngFor="let song of songs; trackBy: trackByFn"
                                 [song]="song"
                                 [routerLink]="['/library/songs', song.uid]"
-                                class="block w-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                                [ngClass]="{
+                                    'dark:hover:bg-hover hover:bg-primary-100': true,
+                                }"
+                                class="block w-full"
+                            >
                             </chp-song-item>
                         </div>
                         <ng-template #noRecentSongs>
@@ -50,25 +64,45 @@
             </div>
             <!-- About card -->
             <div
-                class="bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg">
-                <div
-                    class="flex flex-col items-center p-8 text-center">
-                    <div class="text-2xl font-semibold">{{ 'home.about_title' | transloco }}</div>
+                class="bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg"
+            >
+                <div class="flex flex-col items-center p-8 text-center">
+                    <div class="text-2xl font-semibold">
+                        {{ 'home.about_title' | transloco }}
+                    </div>
                 </div>
                 <div
-                    class="flex flex-auto flex-col bg-gray-50 px-8 py-4 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400">
-                    <div class="flex h-full w-full flex-col items-center justify-center">
+                    class="flex flex-auto flex-col bg-gray-50 px-8 py-4 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400"
+                >
+                    <div
+                        class="flex h-full w-full flex-col items-center justify-center"
+                    >
                         <div class="w-full max-w-3xl">
                             <div class="prose prose-sm mx-auto max-w-none">
-                                <p [innerHTML]="'home.about_description' | transloco"></p>
+                                <p
+                                    [innerHTML]="
+                                        'home.about_description' | transloco
+                                    "
+                                ></p>
                                 <h2>{{ 'home.overview_title' | transloco }}</h2>
-                                <p [innerHTML]="'home.overview_description' | transloco"></p>
+                                <p
+                                    [innerHTML]="
+                                        'home.overview_description' | transloco
+                                    "
+                                ></p>
 
                                 <ul>
-                                    <li *ngFor="let item of features" [innerHTML]="item"></li>
+                                    <li
+                                        *ngFor="let item of features"
+                                        [innerHTML]="item"
+                                    ></li>
                                 </ul>
 
-                                <p [innerHTML]="'home.platform_description' | transloco"></p>
+                                <p
+                                    [innerHTML]="
+                                        'home.platform_description' | transloco
+                                    "
+                                ></p>
                             </div>
                             <div>
                                 <a
@@ -77,11 +111,17 @@
                                     [color]="'primary'"
                                     href="https://chordproject.com"
                                     target="_blank"
-                                    rel="noopener noreferrer">
-                                    <span>{{ 'home.visit_button' | transloco }}</span>
+                                    rel="noopener noreferrer"
+                                >
+                                    <span>{{
+                                        'home.visit_button' | transloco
+                                    }}</span>
                                     <mat-icon
                                         class="ml-2 icon-size-5"
-                                        [svgIcon]="'heroicons_mini:arrow-long-right'"></mat-icon>
+                                        [svgIcon]="
+                                            'heroicons_mini:arrow-long-right'
+                                        "
+                                    ></mat-icon>
                                 </a>
                             </div>
                         </div>

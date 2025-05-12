@@ -106,15 +106,16 @@
                                     [song]="song"
                                     [routerLink]="['./', song.uid]"
                                     [ngClass]="{
-                                        'dark:hover:bg-hover hover:bg-gray-100':
+                                        'dark:hover:bg-hover hover:bg-primary-100':
                                             !selectedSong ||
                                             selectedSong.uid !== song.uid ||
                                             !matDrawer.opened,
-                                        'bg-primary-50 dark:bg-hover':
+                                        'bg-primary-100 dark:bg-hover':
                                             selectedSong &&
                                             selectedSong.uid === song.uid &&
                                             matDrawer.opened,
                                     }"
+                                    [selected]="selectedSong?.uid === song.uid"
                                 ></chp-song-item>
                             }
                         } @else {

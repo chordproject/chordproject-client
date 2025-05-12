@@ -78,7 +78,7 @@ export const appConfig: ApplicationConfig = {
                     lg: '1280px',
                     xl: '1440px',
                 },
-                theme: 'theme-default',
+                theme: 'theme-brand',
                 themes: [
                     {
                         id: 'theme-default',

@@ -1,7 +1,7 @@
 {
     "home": {
         "about_title": "Acerca de este proyecto",
-        "about_description": "<mark>Homenajesus.com</mark> es un cancionero digital de la música cristiana. Creado para apoyar a los ministerios de música en la preparación de la Santa Misa y otros tiempos litúrgicos. También es una herramienta ideal para animar en vivo estas celebraciones. A diferencia de un cancionero impreso, esta plataforma es dinámica. Se adapta, evoluciona, crece, tal como la vida misma.",
+        "about_description": "<mark>Homenajesus.com</mark> es un cancionero digital de música cristiana. Creado para apoyar a los ministerios de música en la preparación de la Santa Misa y otros tiempos litúrgicos. También es una herramienta ideal para animar en vivo estas celebraciones. A diferencia de un cancionero impreso, esta plataforma es dinámica. Se adapta, evoluciona, crece, tal como la vida misma.",
         "overview_title": "Descripción general",
         "overview_description": "Esta aplicación está diseñada para administrar <strong>canciones</strong> (con <strong>acordes</strong>) y <strong>cancioneros</strong>.",
         "features": [

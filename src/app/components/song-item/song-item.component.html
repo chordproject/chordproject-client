@@ -8,6 +8,9 @@
         >
             <a
                 class="truncate text-base font-bold dark:group-hover:text-primary-900 dark:group-[.bg-primary-50]:text-primary-900"
+                [ngClass]="{
+                    'text-primary-900': selected
+                }"
                 >{{ song.title }}</a
             >
             <span *ngIf="song.artists && song.artists.length > 0"

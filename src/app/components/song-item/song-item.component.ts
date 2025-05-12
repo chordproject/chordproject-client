@@ -11,4 +11,5 @@ import { PartialSong } from 'app/models/partialsong';
 export class SongItemComponent {
     @Input() song: PartialSong;
     @Input() ngClass: any;
+    @Input() selected: boolean; 
 }

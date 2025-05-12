@@ -13,8 +13,5 @@ import { RouterOutlet } from '@angular/router';
     imports: [RouterOutlet],
 })
 export class LibraryComponent {
-    /**
-     * Constructor
-     */
     constructor() {}
 }

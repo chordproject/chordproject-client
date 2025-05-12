@@ -1,27 +1,22 @@
-# Fuse - Admin template and Starter project for Angular
+# Homenajesus
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli)
+Homenajesus.com is a digital songbook of Christian music. Created to support music ministries in the preparation of the Holy Mass and other liturgical times. It is also an ideal tool to animate these celebrations live. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.
 
-## Development server
+## Overview
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+This application is designed for managing **songs** (with **chords**) and **songbooks**.
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Parses and formats marked-up music (lyrics and chords) using [ChordPro](https://chordpro.org) notation.
+- Allows you to read, edit, or print songs with chord diagrams.
+- Ensures chords are always correctly positioned, regardless of font or screen size.
+- Stores songs online, with updates reflected instantly across all devices.
+- Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, **transposition**, and more.
+- Enables organizing songs into customizable **songbooks**.
 
-## Build
+## Platform Description
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+We moderate **Homenajesus** to be a Christian music platform. If you would also like to use it for other genres, we created **ChordProject.com** for you.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+[Visit ChordProject](https://chordproject.com)

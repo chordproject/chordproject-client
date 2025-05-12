@@ -28,13 +28,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { ViewerComponent } from 'app/components/viewer/viewer.component';
+import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
 import { Tag } from 'app/models/tag';
 import { Subject, takeUntil } from 'rxjs';
 import { SongsListComponent } from '../list/list.component';
-import { EditorComponent } from 'app/components/editor/editor/editor.component';
+import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 
 @Component({
     selector: 'songs-details',
@@ -57,8 +57,8 @@ import { EditorComponent } from 'app/components/editor/editor/editor.component';
         MatDatepickerModule,
         TextFieldModule,
         FuseFindByKeyPipe,
-        ViewerComponent,
-        EditorComponent
+        ChpViewerComponent,
+        ChpEditorComponent
     ],
 })
 export class SongsDetailsComponent implements OnInit, OnDestroy {

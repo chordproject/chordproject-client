@@ -18,7 +18,7 @@ import { Song } from 'chordproject-parser';
     styleUrls: ['./viewer.component.scss'],
     imports: [CommonModule, SafeHtmlPipe],
 })
-export class ViewerComponent implements AfterViewInit {
+export class ChpViewerComponent implements AfterViewInit {
     @ViewChild('viewerContent') contentElementRef: ElementRef;
 
     @Input() isPreview = false;

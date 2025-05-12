@@ -2,6 +2,7 @@
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
     Component,
+    ElementRef,
     EventEmitter,
     Inject,
     Input,
@@ -9,6 +10,8 @@ import {
     OnInit,
     Output,
     PLATFORM_ID,
+    ViewChild,
+    AfterViewInit,
 } from '@angular/core';
 import { FuseConfigService } from '@fuse/services/config';
 import * as ChordProjectEditor from 'chordproject-editor';
@@ -18,9 +21,13 @@ import { Subject, takeUntil } from 'rxjs';
     selector: 'chp-editor',
     templateUrl: './editor.component.html',
 })
-export class EditorComponent implements OnInit, OnDestroy {
+export class ChpEditorComponent
+    implements OnInit, OnDestroy, AfterViewInit
+{
     @Output() contentChange = new EventEmitter<string>();
     @Input() style: any = {};
+
+    @ViewChild('editorDiv', { static: false }) editorDiv!: ElementRef;
 
     _autoUpdateContent = true;
     _editor: any;
@@ -28,7 +35,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     _content = '';
     oldContent: any;
     timeoutSaving: any;
-    darkTheme: boolean = false;
+    isDarkMode: boolean = false;
+    private _initialized = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -38,7 +46,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     ) {
         // Check initial dark mode state immediately
         if (isPlatformBrowser(this._platformId)) {
-            this.darkTheme = this._document.body.classList.contains('dark');
+            this.isDarkMode = this._document.body.classList.contains('dark');
         }
     }
 
@@ -60,11 +68,23 @@ export class EditorComponent implements OnInit, OnDestroy {
                 }
 
                 // Only call themeChanged if the theme actually changed
-                if (this.darkTheme !== newDarkTheme) {
-                    this.darkTheme = newDarkTheme;
+                if (this.isDarkMode !== newDarkTheme) {
+                    this.isDarkMode = newDarkTheme;
                     this.themeChanged();
                 }
             });
+    }
+
+    ngAfterViewInit(): void {
+        // Solo inicializa una vez
+        if (!this._initialized) {
+            this.initEditor();
+            this._initialized = true;
+            // Si ya tienes contenido pendiente, lo aplicas aquí
+            if (this._content) {
+                this.setContent(this._content);
+            }
+        }
     }
 
     ngOnDestroy(): void {
@@ -73,7 +93,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
 
     initEditor(): void {
-        ChordProjectEditor.Main.init();
+        // Usa el elemento real del DOM
+        ChordProjectEditor.Main.init(this.editorDiv.nativeElement);
         this._editor = ChordProjectEditor.Main.getEditor();
         this._editor.on('change', () => this.updateContent());
         this._editor.on('paste', () => this.updateContent());
@@ -110,11 +131,12 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     @Input()
     set content(content: string) {
-        if (!this._editor) {
-            this.initEditor();
+        this._content = content ?? '';
+        // Si el editor ya está inicializado, actualiza el contenido
+        if (this._editor) {
+            this.setContent(this._content);
         }
-
-        this.setContent(content);
+        // Si no, el contenido se aplicará en ngAfterViewInit
     }
 
     setContent(content: string): void {
@@ -161,7 +183,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         }
 
         let theme = 'default';
-        if (this.darkTheme) {
+        if (this.isDarkMode) {
             theme = 'dark';
         }
 
