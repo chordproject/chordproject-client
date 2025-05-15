@@ -1,6 +1,6 @@
-# Homenajesus
+# HomenaJesus
 
-Homenajesus.com is a digital songbook of Christian music. Created to support music ministries in the preparation of the Holy Mass and other liturgical times. It is also an ideal tool to animate these celebrations live. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.
+HomenaJesus.com is a digital songbook of Christian music. Created to support music ministries in the preparation of the Holy Mass and other liturgical times. It is also an ideal tool to animate these celebrations live. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.
 
 ## Overview
 
@@ -17,6 +17,6 @@ This application is designed for managing **songs** (with **chords**) and **song
 
 ## Platform Description
 
-We moderate **Homenajesus** to be a Christian music platform. If you would also like to use it for other genres, we created **ChordProject.com** for you.
+We moderate **HomenaJesus** to be a Christian music platform. If you would also like to use it for other genres, we created **ChordProject.com** for you.
 
 [Visit ChordProject](https://chordproject.com)

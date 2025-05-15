@@ -100,30 +100,41 @@ export class SongService {
         const songsRef = collection(this._firestore, 'songs');
         const constraints: QueryConstraint[] = [orderBy('title')];
 
-        if (searchTerm) {
-            const q = query(songsRef, ...constraints);
-            return from(getDocs(q)).pipe(
-                map((snapshot) =>
-                    snapshot.docs
-                        .map((doc) => doc.data() as PartialSong)
-                        .filter(
-                            (song) =>
-                                song.title &&
-                                song.title
-                                    .toLowerCase()
-                                    .includes(searchTerm.toLowerCase())
-                        )
-                ),
-                catchError((error) => this.handleError(error))
-            );
-        }
-
-        // Si no hay searchTerm, consulta normal ordenada por título
         const q = query(songsRef, ...constraints);
         return from(getDocs(q)).pipe(
-            map((snapshot) =>
-                snapshot.docs.map((doc) => doc.data() as PartialSong)
-            ),
+            map((snapshot) => {
+                let songs = snapshot.docs.map(
+                    (doc) => doc.data() as PartialSong
+                );
+                if (searchTerm) {
+                    songs = songs.filter(
+                        (song) =>
+                            song.title &&
+                            song.title
+                                .toLowerCase()
+                                .includes(searchTerm.toLowerCase())
+                    );
+                }
+                // Ordenar ignorando acentos
+                songs = songs.sort((a, b) =>
+                    a.title.localeCompare(b.title, 'es', {
+                        sensitivity: 'base',
+                    })
+                );
+                // Agregar campo auxiliar para agrupación por inicial normalizada
+                songs = songs.map((song) => ({
+                    ...song,
+                    normalizedInitial: song.title
+                        ? song.title
+                              .trim()
+                              .charAt(0)
+                              .normalize('NFD')
+                              .replace(/[\u0300-\u036f]/g, '')
+                              .toUpperCase()
+                        : '',
+                }));
+                return songs;
+            }),
             catchError((error) => this.handleError(error))
         );
     }

@@ -7,17 +7,20 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute } from '@angular/router';
 import { FuseConfigService } from '@fuse/services/config';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { AngularSplitModule } from 'angular-split';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
+import { SongService } from 'app/core/firebase/api/song.service';
+import { Song } from 'app/models/song';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'editor',
-    templateUrl: './editor-page.component.html',
+    selector: 'create',
+    templateUrl: './create.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
@@ -28,8 +31,9 @@ import { Subject, takeUntil } from 'rxjs';
         ChpEditorComponent,
     ],
 })
-export class EditorPageComponent implements OnInit, OnDestroy {
-    songContent = 'dasdsa';
+export class CreateComponent implements OnInit, OnDestroy {
+    songContent = '';
+    song: Song;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     isDarkMode: boolean;
     isMobile: boolean;
@@ -38,7 +42,9 @@ export class EditorPageComponent implements OnInit, OnDestroy {
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _fuseConfigService: FuseConfigService
+        private _fuseConfigService: FuseConfigService,
+        private _songService: SongService,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
@@ -65,6 +71,20 @@ export class EditorPageComponent implements OnInit, OnDestroy {
                 }
                 this._changeDetectorRef.markForCheck();
             });
+
+        const uid = this.route.snapshot.paramMap.get('uid');
+        if (uid) {
+            this.loadSong(uid);
+        }
+    }
+
+    loadSong(uid: string): void {
+        this._songService.get(uid).subscribe((data) => {
+            this.song = data;
+            this.song.uid = uid;
+            this.songContent = data.content;
+            this._changeDetectorRef.markForCheck();
+        });
     }
 
     togglePreview(): void {

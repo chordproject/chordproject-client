@@ -109,8 +109,8 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/pages/library/library.routes'),
             },
             {
-                path: 'editor',
-                loadChildren: () => import('app/pages/editor/editor-page.routes'),
+                path: 'create',
+                loadChildren: () => import('app/pages/create/create.routes'),
             },
         ],
     },

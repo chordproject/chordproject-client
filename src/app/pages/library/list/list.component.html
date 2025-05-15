@@ -92,13 +92,13 @@
                                 <!-- Group -->
                                 @if (
                                     i === 0 ||
-                                    song.title.charAt(0) !==
-                                        songs[i - 1].title.charAt(0)
+                                    song.normalizedInitial !==
+                                        songs[i - 1].normalizedInitial
                                 ) {
                                     <div
                                         class="text-secondary sticky top-0 z-10 -mt-px border-b border-t bg-gray-50 px-6 py-1 font-medium uppercase md:px-8 dark:bg-gray-900"
                                     >
-                                        {{ song.title.charAt(0) }}
+                                        {{ song.normalizedInitial }}
                                     </div>
                                 }
                                 <!-- Song -->

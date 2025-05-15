@@ -1,17 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
+    AfterViewInit,
     Component,
     ElementRef,
     EventEmitter,
     Inject,
     Input,
+    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     PLATFORM_ID,
+    SimpleChanges,
     ViewChild,
-    AfterViewInit,
 } from '@angular/core';
 import { FuseConfigService } from '@fuse/services/config';
 import * as ChordProjectEditor from 'chordproject-editor';
@@ -22,7 +24,7 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './editor.component.html',
 })
 export class ChpEditorComponent
-    implements OnInit, OnDestroy, AfterViewInit
+    implements OnInit, OnDestroy, AfterViewInit, OnChanges
 {
     @Output() contentChange = new EventEmitter<string>();
     @Input() style: any = {};
@@ -84,6 +86,13 @@ export class ChpEditorComponent
             if (this._content) {
                 this.setContent(this._content);
             }
+        }
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['content'] && !changes['content'].firstChange) {
+            // Actualiza el valor interno del editor aquí
+            this.setEditorContent(changes['content'].currentValue);
         }
     }
 
@@ -150,6 +159,15 @@ export class ChpEditorComponent
         ) {
             this._content = content;
             this._editor.setValue(content);
+            this._editor.clearSelection();
+            this._editor.resize(true);
+        }
+    }
+
+    setEditorContent(value: string) {
+        // Lógica para actualizar el contenido del editor visualmente
+        if (this._editor) {
+            this._editor.setValue(value);
             this._editor.clearSelection();
             this._editor.resize(true);
         }

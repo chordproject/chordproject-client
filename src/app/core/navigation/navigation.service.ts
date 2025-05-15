@@ -21,12 +21,12 @@ const defaultNavigation: FuseNavigationItem[] = [
         link: '/library',
     },
     {
-        id: 'editor',
-        title: 'Editor',
-        tooltip: 'Editor',
+        id: 'create',
+        title: 'Create',
+        tooltip: 'Create',
         type: 'basic',
         icon: 'heroicons_outline:code-bracket',
-        link: '/editor',
+        link: '/create',
     },
     {
         id: 'songbooks',

@@ -1,7 +1,7 @@
 {
     "home": {
         "about_title": "About this project",
-        "about_description": "<mark>Homenajesus.com</mark> is a digital songbook of Christian music. Created to support music ministries in the preparation of the Holy Mass and other liturgical times. It is also an ideal tool to animate these celebrations live. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.",
+        "about_description": "<mark>HomenaJesus.com</mark> is a digital songbook of Christian music. Created to support music ministries in the preparation of the Holy Mass and other liturgical times. It is also an ideal tool to animate these celebrations live. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.",
         "overview_title": "Overview",
         "overview_description": "This application is designed for managing <strong>songs</strong> (with <strong>chords</strong>) and <strong>songbooks</strong>.",
         "features": [
@@ -12,7 +12,7 @@
             "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, <strong>transposition</strong>, and more.",
             "Enables organizing songs into customizable <strong>songbooks</strong>."
         ],
-        "platform_description": "We moderate <strong>Homenajesus</strong> to be a Christian music platform. If you would also like to use it for other genres, we created <mark>ChordProject.com</mark> for you.",
+        "platform_description": "We moderate <strong>HomenaJesus</strong> to be a Christian music platform. If you would also like to use it for other genres, we created <mark>ChordProject.com</mark> for you.",
         "visit_button": "Visit ChordProject"
     }
 }
