@@ -46,16 +46,19 @@
             [size]="60"
             [visible]="!isMobile || showPrimaryArea"
             minSize="30"
+            class="border"
+            [style.borderColor]="'var(--fuse-border)'"
         >
             <mat-card class="flex h-full flex-col">
-                <mat-card-header
-                    ><chp-editor-header
+                <mat-card-header class="!p-0">
+                    <chp-editor-header
+                        class="w-full"
                         (saveSongEvent)="saveSong()"
                         (removeSongEvent)="removeSong()"
                         (helpEvent)="showHelp()"
-                    ></chp-editor-header
-                ></mat-card-header>
-                <mat-card-content>
+                    ></chp-editor-header>
+                </mat-card-header>
+                <mat-card-content class="!p-0 pt-2.5">
                     <chp-editor
                         [(content)]="songContent"
                         tabindex="0"
@@ -67,6 +70,8 @@
             [size]="40"
             [visible]="!isMobile || !showPrimaryArea"
             minSize="30"
+            class="border"
+            [style.borderColor]="'var(--fuse-border)'"
         >
             <chp-viewer #viewer [content]="songContent" isPreview="true">
             </chp-viewer>
