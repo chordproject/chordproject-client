@@ -1,1 +1,2 @@
 - No agregar comentarios obvios
+- los mensajes de commits para git deben ser cortos

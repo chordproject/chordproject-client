@@ -1,0 +1,18 @@
+{
+    "home": {
+        "about_title": "À propos de ce projet",
+        "about_description": "<mark>HomenaJesus.com</mark> est un recueil de chants de musique chrétienne. Créé pour soutenir les ministères de musique dans la préparation de la Sainte Messe et d'autres temps liturgiques. C'est aussi un outil idéal pour animer ces célébrations en direct. Contrairement à un recueil de chants imprimé, cette plateforme est dynamique. Elle s'adapte, évolue, grandit, tout comme la vie elle-même.",
+        "overview_title": "Aperçu",
+        "overview_description": "Cette application est conçue pour gérer des <strong>chansons</strong> (avec <strong>accords</strong>) et des <strong>recueils de chansons</strong>.",
+        "features": [
+            "Analyse et formate la musique balisée (paroles et accords) en utilisant la notation <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>.",
+            "Vous permet de lire, éditer ou imprimer des chansons avec des diagrammes d'accords.",
+            "Assure que les accords sont toujours correctement positionnés, quelle que soit la taille de la police ou de l'écran.",
+            "Stocke les chansons en ligne, avec des mises à jour reflétées instantanément sur tous les appareils.",
+            "Comprend un visualiseur avec des outils pour les performances en direct, comme le défilement automatique, l'ajustement de la taille de la police, la <strong>transposition</strong>, et plus encore.",
+            "Permet d'organiser les chansons dans des <strong>recueils</strong> personnalisables."
+        ],
+        "platform_description": "Nous modérons <strong>HomenaJesus</strong> pour qu'il soit une plateforme de musique chrétienne. Si vous souhaitez l'utiliser également pour d'autres genres, nous avons créé pour vous <mark>ChordProject.com</mark>.",
+        "visit_button": "Visiter ChordProject"
+    }
+}

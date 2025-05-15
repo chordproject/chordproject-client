@@ -98,8 +98,8 @@ const config = {
                 'spin-slow': 'spin 3s linear infinite',
             },
             backgroundImage: {
-                'logo-light': "url('/images/logo/logo-text-light.svg')",
-                'logo-dark': "url('/images/logo/logo-text-dark.svg')",
+                'logo-light': "url('/chp/logo/logo-text-light.svg')",
+                'logo-dark': "url('/chp/logo/logo-text-dark.svg')",
             },
             colors: {
                 gray: colors.slate,
