@@ -1,8 +1,11 @@
 import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     Input,
+    OnDestroy,
+    OnInit,
     TemplateRef,
     ViewEncapsulation,
     inject,
@@ -24,24 +27,35 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatIconModule,
     ],
 })
-export class FuseFullscreenComponent {
+export class FuseFullscreenComponent implements OnInit, OnDestroy {
+    isFullscreen = false;
     private _document = inject(DOCUMENT);
+    private _cdr = inject(ChangeDetectorRef);
+    private _fullscreenChangeHandler = () => {
+        this.isFullscreen = !!document.fullscreenElement;
+        this._cdr.markForCheck();
+    };
 
     @Input() iconTpl: TemplateRef<any>;
     @Input() tooltip: string;
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+    ngOnInit() {
+        document.addEventListener(
+            'fullscreenchange',
+            this._fullscreenChangeHandler
+        );
+        this.isFullscreen = !!document.fullscreenElement;
+    }
 
-    /**
-     * Toggle the fullscreen mode
-     */
+    ngOnDestroy() {
+        document.removeEventListener(
+            'fullscreenchange',
+            this._fullscreenChangeHandler
+        );
+    }
+
     toggleFullscreen(): void {
-        if (!this._document.fullscreenEnabled) {
-            console.log('Fullscreen is not available in this browser.');
-            return;
-        }
+        if (!document.fullscreenEnabled) return;
 
         // Check if the fullscreen is already open
         const fullScreen = this._document.fullscreenElement;

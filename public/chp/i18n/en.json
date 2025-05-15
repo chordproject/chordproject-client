@@ -1,18 +1,17 @@
 {
     "home": {
         "about_title": "About this project",
-        "about_description": "<mark>HomenaJesus.com</mark> is a digital songbook of Christian music. Created to support music ministries in the preparation of the Holy Mass and other liturgical times. It is also an ideal tool to animate these celebrations live. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.",
+        "about_description": "<mark>ChordProject</mark> is a digital songbook that allows music enthusiasts to create, edit, organize, and discover new songs using the <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format. You can also share your own songs with other users and use the platform as an ideal tool for rehearsals or live performances. Unlike a printed songbook, this platform is dynamic, evolving and growing with you.",
         "overview_title": "Overview",
-        "overview_description": "This application is designed for managing <strong>songs</strong> (with <strong>chords</strong>) and <strong>songbooks</strong>.",
+        "overview_description": "This application is designed to manage <strong>songs</strong> (with <strong>chords</strong>) and <strong>songbooks</strong>.",
         "features": [
-            "Parses and formats marked-up music (lyrics and chords) using <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> notation.",
+            "Lets you write and view songs with chords clearly and neatly using the ChordPro format.",
             "Allows you to read, edit, or print songs with chord diagrams.",
             "Ensures chords are always correctly positioned, regardless of font or screen size.",
-            "Stores songs online, with updates reflected instantly across all devices.",
+            "Stores songs online, with updates instantly reflected on all devices.",
             "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, <strong>transposition</strong>, and more.",
-            "Enables organizing songs into customizable <strong>songbooks</strong>."
+            "Lets you organize songs into customizable <strong>songbooks</strong>."
         ],
-        "platform_description": "We moderate <strong>HomenaJesus</strong> to be a Christian music platform. If you would also like to use it for other genres, we created <mark>ChordProject.com</mark> for you.",
-        "visit_button": "Visit ChordProject"
+        "platform_description": "ChordProject has a sister site, <mark><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">homenajesus.com</a></mark>, dedicated exclusively to <strong>Christian music</strong>, while <a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">chordproject.com</a> is for general use."
     }
 }

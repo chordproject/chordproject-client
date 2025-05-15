@@ -1,18 +1,17 @@
 {
     "home": {
         "about_title": "À propos de ce projet",
-        "about_description": "<mark>HomenaJesus.com</mark> est un recueil de chants de musique chrétienne. Créé pour soutenir les ministères de musique dans la préparation de la Sainte Messe et d'autres temps liturgiques. C'est aussi un outil idéal pour animer ces célébrations en direct. Contrairement à un recueil de chants imprimé, cette plateforme est dynamique. Elle s'adapte, évolue, grandit, tout comme la vie elle-même.",
+        "about_description": "<mark>ChordProject</mark> est un carnet de chansons numérique qui permet aux musiciens passionnés de créer, éditer, organiser et découvrir de nouveaux chants en utilisant le format <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>. Vous pouvez également partager vos propres chansons avec d'autres utilisateurs et utiliser la plateforme comme un outil idéal pour les répétitions ou les prestations en direct. Contrairement à un carnet de chansons imprimé, cette plateforme est dynamique, elle évolue et grandit avec vous.",
         "overview_title": "Aperçu",
-        "overview_description": "Cette application est conçue pour gérer des <strong>chansons</strong> (avec <strong>accords</strong>) et des <strong>recueils de chansons</strong>.",
+        "overview_description": "Cette application est conçue pour gérer des <strong>chansons</strong> (avec <strong>accords</strong>) et des <strong>carnets de chansons</strong>.",
         "features": [
-            "Analyse et formate la musique balisée (paroles et accords) en utilisant la notation <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>.",
-            "Vous permet de lire, éditer ou imprimer des chansons avec des diagrammes d'accords.",
-            "Assure que les accords sont toujours correctement positionnés, quelle que soit la taille de la police ou de l'écran.",
-            "Stocke les chansons en ligne, avec des mises à jour reflétées instantanément sur tous les appareils.",
-            "Comprend un visualiseur avec des outils pour les performances en direct, comme le défilement automatique, l'ajustement de la taille de la police, la <strong>transposition</strong>, et plus encore.",
-            "Permet d'organiser les chansons dans des <strong>recueils</strong> personnalisables."
+            "Permet d'écrire et de visualiser des chansons avec des accords de manière claire et ordonnée en utilisant le format ChordPro.",
+            "Permet de lire, éditer ou imprimer des chansons avec des diagrammes d'accords.",
+            "Garantit que les accords sont toujours correctement positionnés, quelle que soit la taille de la police ou de l'écran.",
+            "Stocke les chansons en ligne, avec des mises à jour instantanément reflétées sur tous les appareils.",
+            "Inclut un visualiseur avec des outils pour les performances en direct, comme le défilement automatique, l'ajustement de la taille de la police, la <strong>transposition</strong> et plus encore.",
+            "Permet d'organiser les chansons dans des <strong>carnets de chansons</strong> personnalisables."
         ],
-        "platform_description": "Nous modérons <strong>HomenaJesus</strong> pour qu'il soit une plateforme de musique chrétienne. Si vous souhaitez l'utiliser également pour d'autres genres, nous avons créé pour vous <mark>ChordProject.com</mark>.",
-        "visit_button": "Visiter ChordProject"
+        "platform_description": "ChordProject a un site frère, <mark><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">homenajesus.com</a></mark>, dédié exclusivement à la <strong>musique chrétienne</strong>, tandis que <a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">chordproject.com</a> est destiné à un usage général."
     }
 }
