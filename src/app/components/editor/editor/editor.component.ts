@@ -29,7 +29,7 @@ export class ChpEditorComponent
     @Output() contentChange = new EventEmitter<string>();
     @Input() style: any = {};
 
-    @ViewChild('editorDiv', { static: false }) editorDiv!: ElementRef;
+    @ViewChild('editorDiv', { static: true }) editorDiv!: ElementRef;
 
     _autoUpdateContent = true;
     _editor: any;
@@ -78,21 +78,24 @@ export class ChpEditorComponent
     }
 
     ngAfterViewInit(): void {
-        // Solo inicializa una vez
-        if (!this._initialized) {
-            this.initEditor();
-            this._initialized = true;
-            // Si ya tienes contenido pendiente, lo aplicas aquí
-            if (this._content) {
-                this.setContent(this._content);
-            }
+        // Inicializar el editor inmediatamente cuando el componente se monte
+        this.initEditor();
+
+        // Si ya hay contenido, aplicarlo
+        if (this._content) {
+            // Dar un pequeño tiempo para que el editor se monte completamente
+            setTimeout(() => {
+                this.setEditorContent(this._content);
+            }, 100);
         }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes['content'] && !changes['content'].firstChange) {
-            // Actualiza el valor interno del editor aquí
-            this.setEditorContent(changes['content'].currentValue);
+        if (changes['content']) {
+            const newContent = changes['content'].currentValue;
+            if (this._editor && newContent !== undefined) {
+                this.setEditorContent(newContent);
+            }
         }
     }
 
@@ -102,14 +105,26 @@ export class ChpEditorComponent
     }
 
     initEditor(): void {
-        // Usa el elemento real del DOM
-        ChordProjectEditor.Main.init(this.editorDiv.nativeElement);
-        this._editor = ChordProjectEditor.Main.getEditor();
-        this._editor.on('change', () => this.updateContent());
-        this._editor.on('paste', () => this.updateContent());
+        if (this._editor) {
+            return; // El editor ya está inicializado
+        }
 
-        // Apply current theme when editor is initialized
-        this.themeChanged();
+        try {
+            // Inicializar el editor con el elemento DOM
+            ChordProjectEditor.Main.init(this.editorDiv.nativeElement);
+            this._editor = ChordProjectEditor.Main.getEditor();
+
+            // Configurar eventos
+            this._editor.on('change', () => this.updateContent());
+            this._editor.on('paste', () => this.updateContent());
+
+            // Aplicar el tema actual
+            this.themeChanged();
+
+            this._initialized = true;
+        } catch (error) {
+            console.error('Error al inicializar el editor:', error);
+        }
     }
 
     updateContent(): void {
@@ -143,7 +158,7 @@ export class ChpEditorComponent
         this._content = content ?? '';
         // Si el editor ya está inicializado, actualiza el contenido
         if (this._editor) {
-            this.setContent(this._content);
+            this.setEditorContent(this._content);
         }
         // Si no, el contenido se aplicará en ngAfterViewInit
     }
@@ -164,12 +179,25 @@ export class ChpEditorComponent
         }
     }
 
-    setEditorContent(value: string) {
-        // Lógica para actualizar el contenido del editor visualmente
-        if (this._editor) {
-            this._editor.setValue(value);
+    setEditorContent(value: string): void {
+        if (!this._editor) {
+            console.warn(
+                'Editor no inicializado. Contenido no aplicado:',
+                value
+            );
+            this._content = value || '';
+            return;
+        }
+
+        try {
+            this._editor.setValue(value || '');
             this._editor.clearSelection();
             this._editor.resize(true);
+        } catch (error) {
+            console.error(
+                'Error al establecer el contenido en el editor:',
+                error
+            );
         }
     }
 

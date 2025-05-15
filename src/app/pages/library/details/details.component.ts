@@ -28,13 +28,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
 import { Tag } from 'app/models/tag';
 import { Subject, takeUntil } from 'rxjs';
 import { SongsListComponent } from '../list/list.component';
-import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 
 @Component({
     selector: 'songs-details',
@@ -58,7 +58,7 @@ import { ChpEditorComponent } from 'app/components/editor/editor/editor.componen
         TextFieldModule,
         FuseFindByKeyPipe,
         ChpViewerComponent,
-        ChpEditorComponent
+        ChpEditorComponent,
     ],
 })
 export class SongsDetailsComponent implements OnInit, OnDestroy {
@@ -73,6 +73,7 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     songs: Song[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    songContent: string = '';
 
     constructor(
         private _activatedRoute: ActivatedRoute,
@@ -96,6 +97,7 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
             .subscribe((song: Song) => {
                 this._songsListComponent.matDrawer.open();
                 this.song = song;
+                this.songContent = song?.content || '';
                 this.toggleEditMode(false);
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -129,10 +131,25 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     }
 
     toggleEditMode(editMode: boolean | null = null): void {
+        // Actualizar el estado según el parámetro
         if (editMode === null) {
             this.editMode = !this.editMode;
         } else {
             this.editMode = editMode;
+        }
+
+        // Si estamos entrando en modo edición
+        if (this.editMode && this.song) {
+            // Asegurarnos de que songContent contiene el contenido actual
+            this.songContent = this.song.content || '';
+
+            // Forzar la detección de cambios
+            this._changeDetectorRef.detectChanges();
+
+            // Dar tiempo para que Angular aktualice la vista antes de intentar modificar el DOM
+            setTimeout(() => {
+                this._changeDetectorRef.detectChanges();
+            }, 100);
         }
 
         // Mark for check
@@ -140,6 +157,8 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     }
 
     updateSong(): void {
+        // Copia el contenido editado antes de guardar
+        this.song.content = this.songContent;
         // // Get the song object
         // const song = this.songForm.getRawValue();
         // // Go through the song object and clear empty values
