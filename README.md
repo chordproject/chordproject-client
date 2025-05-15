@@ -1,6 +1,6 @@
-# HomenaJesus
+# ChordProject Client
 
-HomenaJesus.com is a digital songbook of Christian music. Created to support music ministries in the preparation of the Holy Mass and other liturgical times. It is also an ideal tool to animate these celebrations live. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.
+Web client for ChordProject, an Angular app to create, edit, and organize songs using ChordPro notation. Features live sync, chord diagrams, auto-scroll, transposition, and customizable songbooks for live performance and personal use. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.
 
 ## Overview
 
@@ -17,6 +17,6 @@ This application is designed for managing **songs** (with **chords**) and **song
 
 ## Platform Description
 
-We moderate **HomenaJesus** to be a Christian music platform. If you would also like to use it for other genres, we created **ChordProject.com** for you.
+ChordProject has a sister site, [homenajesus.com](https://homenajesus.com), dedicated exclusively to Christian music, while [chordproject.com](https://chordproject.com) is for general use.
 
-[Visit ChordProject](https://chordproject.com)
+[Visit HomenaJesus](https://homenajesus.com)
