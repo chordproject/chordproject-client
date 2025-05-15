@@ -48,7 +48,13 @@
             minSize="30"
         >
             <mat-card class="flex h-full flex-col">
-                <mat-card-header>Tools</mat-card-header>
+                <mat-card-header
+                    ><chp-editor-header
+                        (saveSongEvent)="saveSong()"
+                        (removeSongEvent)="removeSong()"
+                        (helpEvent)="showHelp()"
+                    ></chp-editor-header
+                ></mat-card-header>
                 <mat-card-content>
                     <chp-editor
                         [(content)]="songContent"

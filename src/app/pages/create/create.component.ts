@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FuseConfigService } from '@fuse/services/config';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { AngularSplitModule } from 'angular-split';
+import { EditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
 import { SongService } from 'app/core/firebase/api/song.service';
@@ -29,6 +30,7 @@ import { Subject, takeUntil } from 'rxjs';
         MatIconModule,
         ChpViewerComponent,
         ChpEditorComponent,
+        EditorHeaderComponent,
     ],
 })
 export class CreateComponent implements OnInit, OnDestroy {
@@ -89,6 +91,21 @@ export class CreateComponent implements OnInit, OnDestroy {
 
     togglePreview(): void {
         this.showPrimaryArea = !this.showPrimaryArea;
+    }
+
+    saveSong(): void {
+        // Implement save functionality
+        console.log('Saving song...');
+    }
+
+    removeSong(): void {
+        // Implement delete functionality
+        console.log('Removing song...');
+    }
+
+    showHelp(): void {
+        // Implement help functionality
+        console.log('Showing help...');
     }
 
     ngOnDestroy(): void {

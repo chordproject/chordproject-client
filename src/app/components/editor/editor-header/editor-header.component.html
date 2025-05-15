@@ -1,0 +1,30 @@
+<div
+    class="flex flex-0 items-center justify-between border-b bg-gray-50 px-4 py-3 dark:bg-transparent"
+>
+    <div class="flex items-center">
+        <button
+            mat-icon-button
+            matTooltip="Save"
+            class="mr-2"
+            (click)="saveSong()"
+        >
+            <mat-icon
+                [svgIcon]="'heroicons_outline:document-arrow-down'"
+            ></mat-icon>
+        </button>
+        <button
+            mat-icon-button
+            matTooltip="Delete"
+            class="mr-2"
+            (click)="removeSong()"
+        >
+            <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Help" (click)="showHelp()">
+            <mat-icon
+                [svgIcon]="'heroicons_outline:question-mark-circle'"
+            ></mat-icon>
+        </button>
+    </div>
+</div>
+<mat-divider></mat-divider>
