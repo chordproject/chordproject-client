@@ -1,26 +1,18 @@
 import { inject } from '@angular/core';
-import { CanActivateChildFn, CanActivateFn, Router } from '@angular/router';
-import { AuthService } from 'app/core/auth/auth.service';
-import { of, switchMap } from 'rxjs';
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
+import { FirebaseAuthService } from 'app/core/firebase/auth/firebase-auth.service';
+import { map, Observable } from 'rxjs';
 
-export const NoAuthGuard: CanActivateFn | CanActivateChildFn = (
-    route,
-    state
-) => {
-    const router: Router = inject(Router);
+export const NoAuthGuard: CanActivateFn = (): Observable<boolean | UrlTree> => {
+    const authService = inject(FirebaseAuthService);
+    const router = inject(Router);
 
-    // Check the authentication status
-    return inject(AuthService)
-        .check()
-        .pipe(
-            switchMap((authenticated) => {
-                // If the user is authenticated...
-                if (authenticated) {
-                    return of(router.parseUrl(''));
-                }
-
-                // Allow the access
-                return of(true);
-            })
-        );
+    return authService.authenticated$.pipe(
+        map((authenticated) => {
+            if (authenticated) {
+                return router.parseUrl('/home');
+            }
+            return true;
+        })
+    );
 };

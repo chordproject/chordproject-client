@@ -30,11 +30,14 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
-                path: 'confirmation-required',
+                path: 'sign-in',
                 loadChildren: () =>
-                    import(
-                        'app/modules/auth/confirmation-required/confirmation-required.routes'
-                    ),
+                    import('app/modules/auth/sign-in/sign-in.routes'),
+            },
+            {
+                path: 'sign-up',
+                loadChildren: () =>
+                    import('app/modules/auth/sign-up/sign-up.routes'),
             },
             {
                 path: 'forgot-password',
@@ -49,16 +52,6 @@ export const appRoutes: Route[] = [
                     import(
                         'app/modules/auth/reset-password/reset-password.routes'
                     ),
-            },
-            {
-                path: 'sign-in',
-                loadChildren: () =>
-                    import('app/modules/auth/sign-in/sign-in.routes'),
-            },
-            {
-                path: 'sign-up',
-                loadChildren: () =>
-                    import('app/modules/auth/sign-up/sign-up.routes'),
             },
         ],
     },
@@ -78,13 +71,6 @@ export const appRoutes: Route[] = [
                 path: 'sign-out',
                 loadChildren: () =>
                     import('app/modules/auth/sign-out/sign-out.routes'),
-            },
-            {
-                path: 'unlock-session',
-                loadChildren: () =>
-                    import(
-                        'app/modules/auth/unlock-session/unlock-session.routes'
-                    ),
             },
         ],
     },
@@ -112,6 +98,13 @@ export const appRoutes: Route[] = [
                 path: 'create',
                 loadChildren: () => import('app/pages/create/create.routes'),
             },
+            // {
+            //     path: 'songbook/:id',
+            //     loadChildren: () =>
+            //         import('app/pages/songbook/songbook.routes'),
+            // },
         ],
     },
+    // Fallback redirect to 404
+    { path: '**', redirectTo: 'pages/error/404' },
 ];

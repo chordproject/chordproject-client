@@ -6,11 +6,11 @@ import {
     provideEnvironmentInitializer,
 } from '@angular/core';
 import { authInterceptor } from 'app/core/auth/auth.interceptor';
-import { AuthService } from 'app/core/auth/auth.service';
+import { FirebaseAuthService } from '../firebase/auth/firebase-auth.service';
 
 export const provideAuth = (): Array<Provider | EnvironmentProviders> => {
     return [
         provideHttpClient(withInterceptors([authInterceptor])),
-        provideEnvironmentInitializer(() => inject(AuthService)),
+        provideEnvironmentInitializer(() => inject(FirebaseAuthService)),
     ];
 };

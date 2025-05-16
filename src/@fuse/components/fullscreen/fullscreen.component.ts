@@ -1,4 +1,4 @@
-import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -20,12 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     exportAs: 'fuseFullscreen',
-    imports: [
-        MatButtonModule,
-        MatTooltipModule,
-        NgTemplateOutlet,
-        MatIconModule,
-    ],
+    imports: [MatButtonModule, MatTooltipModule, MatIconModule],
 })
 export class FuseFullscreenComponent implements OnInit, OnDestroy {
     isFullscreen = false;

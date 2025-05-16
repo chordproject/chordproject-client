@@ -5,9 +5,9 @@ import {
     HttpRequest,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthService } from 'app/core/auth/auth.service';
-import { AuthUtils } from 'app/core/auth/auth.utils';
+import { Router } from '@angular/router';
 import { Observable, catchError, throwError } from 'rxjs';
+import { FirebaseAuthService } from '../firebase/auth/firebase-auth.service';
 
 /**
  * Intercept
@@ -19,7 +19,8 @@ export const authInterceptor = (
     req: HttpRequest<unknown>,
     next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
-    const authService = inject(AuthService);
+    const authService = inject(FirebaseAuthService);
+    const router = inject(Router);
 
     // Clone the request object
     let newReq = req.clone();
@@ -32,17 +33,6 @@ export const authInterceptor = (
     // for the protected API routes which our response interceptor will
     // catch and delete the access token from the local storage while logging
     // the user out from the app.
-    if (
-        authService.accessToken &&
-        !AuthUtils.isTokenExpired(authService.accessToken)
-    ) {
-        newReq = req.clone({
-            headers: req.headers.set(
-                'Authorization',
-                'Bearer ' + authService.accessToken
-            ),
-        });
-    }
 
     // Response
     return next(newReq).pipe(
@@ -53,7 +43,7 @@ export const authInterceptor = (
                 authService.signOut();
 
                 // Reload the app
-                location.reload();
+                router.navigate(['/sign-in']);
             }
 
             return throwError(error);

@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
     ApplicationConfig,
     inject,
@@ -11,16 +11,17 @@ import { provideFuse } from '@fuse';
 import { TranslocoService, provideTransloco } from '@jsverse/transloco';
 import { appRoutes } from 'app/app.routes';
 import { provideAuth } from 'app/core/auth/auth.provider';
-import { provideIcons } from 'app/core/icons/icons.provider';
 import { provideFirebase } from 'app/core/firebase/firebase.provider';
+import { provideIcons } from 'app/core/icons/icons.provider';
 import { MockApiService } from 'app/mock-api';
 import { firstValueFrom } from 'rxjs';
+import { authInterceptor } from './core/auth/auth.interceptor';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideAnimations(),
-        provideHttpClient(),
+        provideHttpClient(withInterceptors([authInterceptor])),
         provideRouter(
             appRoutes,
             withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
@@ -32,7 +33,7 @@ export const appConfig: ApplicationConfig = {
                 availableLangs: [
                     {
                         id: 'es',
-                        label: 'Español'
+                        label: 'Español',
                     },
                     {
                         id: 'en',
@@ -40,7 +41,7 @@ export const appConfig: ApplicationConfig = {
                     },
                     {
                         id: 'fr',
-                        label: 'Français'
+                        label: 'Français',
                     },
                 ],
                 defaultLang: 'es',
