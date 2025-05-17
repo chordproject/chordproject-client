@@ -1,185 +1,151 @@
-<div
-    class="settings-cog fixed right-0 z-90 flex h-10 w-10 cursor-pointer items-center justify-center rounded-l-lg bg-red-600 bg-opacity-90 shadow-lg print:hidden"
-    [class.lg:right-0]="
-        config.layout === 'centered' || config.layout === 'material'
-    "
-    [class.lg:right-16]="
-        config.layout !== 'centered' && config.layout !== 'material'
-    "
-    style="top: 275px"
-    (click)="settingsDrawer.toggle()"
->
-    <mat-icon
-        class="animate-spin-slow text-white icon-size-5"
-        [svgIcon]="'heroicons_solid:cog-8-tooth'"
-    ></mat-icon>
-</div>
-
-<fuse-drawer
-    class="z-999 w-screen min-w-screen sm:w-100 sm:min-w-100"
-    fixed
-    [mode]="'over'"
-    [name]="'settingsDrawer'"
-    [position]="'right'"
-    #settingsDrawer
->
-    <div class="bg-card flex w-full flex-col overflow-auto">
-        <div
-            class="flex h-20 min-h-20 flex-row items-center bg-primary px-6 text-white"
-        >
+<div class="flex w-full flex-col overflow-auto">
+    <div
+        class="flex h-20 min-h-20 flex-row items-center bg-primary px-6 text-white"
+    >
+        <mat-icon
+            class="text-current icon-size-7"
+            [svgIcon]="'heroicons_solid:cog-8-tooth'"
+        ></mat-icon>
+        <div class="ml-3 text-2xl font-semibold tracking-tight">Settings</div>
+        <button class="ml-auto" mat-icon-button (click)="closeSettings.emit()">
             <mat-icon
-                class="text-current icon-size-7"
-                [svgIcon]="'heroicons_solid:cog-8-tooth'"
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x-mark'"
             ></mat-icon>
-            <div class="ml-3 text-2xl font-semibold tracking-tight">
-                Settings
-            </div>
-            <button
-                class="ml-auto"
-                mat-icon-button
-                (click)="settingsDrawer.close()"
-            >
-                <mat-icon
-                    class="text-current"
-                    [svgIcon]="'heroicons_outline:x-mark'"
-                ></mat-icon>
-            </button>
+        </button>
+    </div>
+
+    <div class="flex flex-col p-6">
+        <!-- Theme -->
+        <div class="text-secondary text-md font-semibold">THEME</div>
+        <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            @for (theme of config.themes; track theme) {
+                <div
+                    class="bg-hover flex cursor-pointer items-center justify-center rounded-full px-4 py-3 ring-inset ring-primary"
+                    [class.ring-2]="config.theme === theme.id"
+                    [ngClass]="theme.id"
+                    (click)="setTheme(theme.id)"
+                >
+                    <div class="h-3 w-3 flex-0 rounded-full bg-primary"></div>
+                    <div
+                        class="ml-2.5 truncate font-medium leading-5"
+                        [class.text-secondary]="config.theme !== theme.id"
+                    >
+                        {{ theme.name }}
+                    </div>
+                </div>
+            }
         </div>
 
-        <div class="flex flex-col p-6">
-            <!-- Theme -->
-            <div class="text-secondary text-md font-semibold">THEME</div>
-            <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                @for (theme of config.themes; track theme) {
-                    <div
-                        class="bg-hover flex cursor-pointer items-center justify-center rounded-full px-4 py-3 ring-inset ring-primary"
-                        [class.ring-2]="config.theme === theme.id"
-                        [ngClass]="theme.id"
-                        (click)="setTheme(theme.id)"
-                    >
-                        <div
-                            class="h-3 w-3 flex-0 rounded-full bg-primary"
-                        ></div>
-                        <div
-                            class="ml-2.5 truncate font-medium leading-5"
-                            [class.text-secondary]="config.theme !== theme.id"
-                        >
-                            {{ theme.name }}
-                        </div>
-                    </div>
-                }
-            </div>
+        <hr class="my-8" />
 
-            <hr class="my-8" />
-
-            <!-- Language -->
-            <div class="text-secondary text-md font-semibold">LANGUAGE</div>
-            <div class="mt-6 grid grid-cols-3 justify-items-start gap-3">
-                <!-- ES -->
+        <!-- Language -->
+        <div class="text-secondary text-md font-semibold">LANGUAGE</div>
+        <div class="mt-6 grid grid-cols-3 justify-items-start gap-3">
+            <!-- ES -->
+            <div
+                class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
+                [class.ring-2]="activeLang === 'es'"
+                (click)="setActiveLang('es')"
+            >
                 <div
-                    class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
-                    [class.ring-2]="activeLang === 'es'"
-                    (click)="setActiveLang('es')"
+                    class="ml-2 flex items-center font-medium leading-5"
+                    [class.text-secondary]="activeLang !== 'es'"
                 >
-                    <div
-                        class="ml-2 flex items-center font-medium leading-5"
-                        [class.text-secondary]="activeLang !== 'es'"
-                    >
-                        Español
-                    </div>
-                </div>
-                <!-- FR -->
-                <div
-                    class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
-                    [class.ring-2]="activeLang === 'fr'"
-                    (click)="setActiveLang('fr')"
-                >
-                    <div
-                        class="ml-2 flex items-center font-medium leading-5"
-                        [class.text-secondary]="activeLang !== 'fr'"
-                    >
-                        Français
-                    </div>
-                </div>
-                <!-- EN -->
-                <div
-                    class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
-                    [class.ring-2]="activeLang === 'en'"
-                    (click)="setActiveLang('en')"
-                >
-                    <div
-                        class="ml-2 flex items-center font-medium leading-5"
-                        [class.text-secondary]="activeLang !== 'en'"
-                    >
-                        English
-                    </div>
+                    Español
                 </div>
             </div>
-
-            <hr class="my-8" />
-
-            <!-- Scheme -->
-            <div class="text-secondary text-md font-semibold">SCHEME</div>
-            <div class="mt-6 grid grid-cols-3 justify-items-start gap-3">
-                <!-- Auto -->
+            <!-- FR -->
+            <div
+                class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
+                [class.ring-2]="activeLang === 'fr'"
+                (click)="setActiveLang('fr')"
+            >
                 <div
-                    class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
-                    [class.ring-2]="config.scheme === 'auto'"
-                    matTooltip="Automatically sets the scheme based on user's operating system's color scheme preference using 'prefer-color-scheme' media query."
-                    (click)="setScheme('auto')"
+                    class="ml-2 flex items-center font-medium leading-5"
+                    [class.text-secondary]="activeLang !== 'fr'"
                 >
-                    <div class="flex items-center overflow-hidden rounded-full">
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:bolt'"
-                        ></mat-icon>
-                    </div>
-                    <div
-                        class="ml-2 flex items-center font-medium leading-5"
-                        [class.text-secondary]="config.scheme !== 'auto'"
-                    >
-                        Auto
-                    </div>
+                    Français
                 </div>
-                <!-- Dark -->
+            </div>
+            <!-- EN -->
+            <div
+                class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
+                [class.ring-2]="activeLang === 'en'"
+                (click)="setActiveLang('en')"
+            >
                 <div
-                    class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
-                    [class.ring-2]="config.scheme === 'dark'"
-                    (click)="setScheme('dark')"
+                    class="ml-2 flex items-center font-medium leading-5"
+                    [class.text-secondary]="activeLang !== 'en'"
                 >
-                    <div class="flex items-center overflow-hidden rounded-full">
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:moon'"
-                        ></mat-icon>
-                    </div>
-                    <div
-                        class="ml-2 flex items-center font-medium leading-5"
-                        [class.text-secondary]="config.scheme !== 'dark'"
-                    >
-                        Dark
-                    </div>
+                    English
                 </div>
-                <!-- Light -->
+            </div>
+        </div>
+
+        <hr class="my-8" />
+
+        <!-- Scheme -->
+        <div class="text-secondary text-md font-semibold">SCHEME</div>
+        <div class="mt-6 grid grid-cols-3 justify-items-start gap-3">
+            <!-- Auto -->
+            <div
+                class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
+                [class.ring-2]="config.scheme === 'auto'"
+                matTooltip="Automatically sets the scheme based on user's operating system's color scheme preference using 'prefer-color-scheme' media query."
+                (click)="setScheme('auto')"
+            >
+                <div class="flex items-center overflow-hidden rounded-full">
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:bolt'"
+                    ></mat-icon>
+                </div>
                 <div
-                    class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
-                    [class.ring-2]="config.scheme === 'light'"
-                    (click)="setScheme('light')"
+                    class="ml-2 flex items-center font-medium leading-5"
+                    [class.text-secondary]="config.scheme !== 'auto'"
                 >
-                    <div class="flex items-center overflow-hidden rounded-full">
-                        <mat-icon
-                            class="icon-size-5"
-                            [svgIcon]="'heroicons_solid:sun'"
-                        ></mat-icon>
-                    </div>
-                    <div
-                        class="ml-2 flex items-center font-medium leading-5"
-                        [class.text-secondary]="config.scheme !== 'light'"
-                    >
-                        Light
-                    </div>
+                    Auto
+                </div>
+            </div>
+            <!-- Dark -->
+            <div
+                class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
+                [class.ring-2]="config.scheme === 'dark'"
+                (click)="setScheme('dark')"
+            >
+                <div class="flex items-center overflow-hidden rounded-full">
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:moon'"
+                    ></mat-icon>
+                </div>
+                <div
+                    class="ml-2 flex items-center font-medium leading-5"
+                    [class.text-secondary]="config.scheme !== 'dark'"
+                >
+                    Dark
+                </div>
+            </div>
+            <!-- Light -->
+            <div
+                class="bg-hover flex cursor-pointer items-center rounded-full py-3 pl-5 pr-6 ring-inset ring-primary"
+                [class.ring-2]="config.scheme === 'light'"
+                (click)="setScheme('light')"
+            >
+                <div class="flex items-center overflow-hidden rounded-full">
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:sun'"
+                    ></mat-icon>
+                </div>
+                <div
+                    class="ml-2 flex items-center font-medium leading-5"
+                    [class.text-secondary]="config.scheme !== 'light'"
+                >
+                    Light
                 </div>
             </div>
         </div>
     </div>
-</fuse-drawer>
+</div>

@@ -1,9 +1,15 @@
 import { NgClass } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewEncapsulation,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FuseDrawerComponent } from '@fuse/components/drawer';
 import {
     FuseConfig,
     FuseConfigService,
@@ -18,35 +24,14 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
     selector: 'settings',
     templateUrl: './settings.component.html',
-    styles: [
-        `
-            settings {
-                position: static;
-                display: block;
-                flex: none;
-                width: auto;
-            }
-
-            @media (screen and min-width: 1280px) {
-                empty-layout + settings .settings-cog {
-                    right: 0 !important;
-                }
-            }
-        `,
-    ],
     encapsulation: ViewEncapsulation.None,
-    imports: [
-        MatIconModule,
-        FuseDrawerComponent,
-        MatButtonModule,
-        NgClass,
-        MatTooltipModule,
-    ],
+    imports: [MatIconModule, MatButtonModule, NgClass, MatTooltipModule],
 })
 export class SettingsComponent implements OnInit, OnDestroy {
+    @Output() closeSettings = new EventEmitter<void>();
+
     config: FuseConfig;
-    layout: string;
-    scheme: 'dark' | 'light';
+    scheme: 'auto' | 'dark' | 'light';
     theme: string;
     themes: Themes;
     activeLang: string;
@@ -54,7 +39,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     constructor(
         private _fuseConfigService: FuseConfigService,
-         private _translocoService: TranslocoService
+        private _translocoService: TranslocoService
     ) {}
 
     ngOnInit(): void {
@@ -66,7 +51,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
                 this.config = config;
             });
 
-            // Subscribe to language changes
+        // Subscribe to language changes
         this._translocoService.langChanges$.subscribe((activeLang) => {
             // Get the active lang
             this.activeLang = activeLang;
@@ -88,7 +73,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
 
     setActiveLang(lang: string): void {
-        // Set the active lang
         this._translocoService.setActiveLang(lang);
     }
 }
