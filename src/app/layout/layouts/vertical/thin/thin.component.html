@@ -7,7 +7,7 @@
     [appearance]="'thin'"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
-    [navigation]="navigation?.default"
+    [navigation]="navigation"
     [opened]="!isScreenSmall"
 >
     <!-- Navigation header hook -->
@@ -22,7 +22,7 @@
     <ng-container fuseVerticalNavigationFooter>
         <!-- User -->
         <div class="flex w-full items-center border-t px-6 py-8">
-            <user [showAvatar]="false"></user>
+            <user></user>
         </div>
     </ng-container>
 </fuse-vertical-navigation>
@@ -58,7 +58,7 @@
         </div>
         <!-- Components -->
         <div class="ml-auto flex items-center space-x-0.5 pl-2 sm:space-x-2">
-            <fuse-fullscreen class="hidden md:block"></fuse-fullscreen>
+            <fuse-fullscreen></fuse-fullscreen>
             <search [appearance]="'bar'"></search>
             <theme-selector></theme-selector>
             <a
@@ -82,14 +82,6 @@
         }
     </div>
 
-    <!-- Footer : TODO: botones en movil -->
-    <!-- <div
-        class="bg-card relative z-49 flex h-14 w-full flex-0 items-center justify-start border-t px-4 md:px-6 dark:bg-transparent print:hidden"
-    >
-        <span class="text-secondary font-medium"
-            >Fuse &copy; {{ currentYear }}</span
-        >
-    </div> -->
 </div>
 
 <fuse-drawer

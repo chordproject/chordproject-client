@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { FirebaseAuthService } from 'app/core/firebase/auth/firebase-auth.service';
+import { AuthService } from 'app/core/firebase/auth/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -17,7 +17,7 @@ export class AuthSignOutComponent implements OnInit, OnDestroy {
 
     constructor(
         private _router: Router,
-        private _authService: FirebaseAuthService
+        private _authService: AuthService
     ) {}
 
     ngOnInit(): void {

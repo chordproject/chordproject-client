@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
-import { FirebaseAuthService } from 'app/core/firebase/auth/firebase-auth.service';
+import { AuthService } from 'app/core/firebase/auth/auth.service';
 import { map, Observable } from 'rxjs';
 
 export const NoAuthGuard: CanActivateFn = (): Observable<boolean | UrlTree> => {
-    const authService = inject(FirebaseAuthService);
+    const authService = inject(AuthService);
     const router = inject(Router);
 
     return authService.authenticated$.pipe(

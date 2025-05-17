@@ -7,7 +7,7 @@ import {
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, catchError, throwError } from 'rxjs';
-import { FirebaseAuthService } from '../firebase/auth/firebase-auth.service';
+import { AuthService } from '../firebase/auth/auth.service';
 
 /**
  * Intercept
@@ -19,7 +19,7 @@ export const authInterceptor = (
     req: HttpRequest<unknown>,
     next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> => {
-    const authService = inject(FirebaseAuthService);
+    const authService = inject(AuthService);
     const router = inject(Router);
 
     // Clone the request object

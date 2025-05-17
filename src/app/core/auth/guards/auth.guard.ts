@@ -1,13 +1,13 @@
 import { inject } from '@angular/core';
 import { CanActivateChildFn, CanActivateFn, Router } from '@angular/router';
-import { FirebaseAuthService } from 'app/core/firebase/auth/firebase-auth.service';
+import { AuthService } from 'app/core/firebase/auth/auth.service';
 import { of, switchMap } from 'rxjs';
 
 export const AuthGuard: CanActivateFn | CanActivateChildFn = (route, state) => {
     const router: Router = inject(Router);
 
     // Check the authentication status
-    return inject(FirebaseAuthService).authenticated$.pipe(
+    return inject(AuthService).authenticated$.pipe(
         switchMap((authenticated) => {
             // If the user is not authenticated...
             if (!authenticated) {

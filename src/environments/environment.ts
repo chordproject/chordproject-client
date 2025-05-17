@@ -1,5 +1,6 @@
 export const environment = {
     production: false,
+    source: 'chp',
     firebase: {
         apiKey: 'AIzaSyBHx-5saAvrOTM4XibdHEpKog_cbqOHIo0',
         authDomain: 'chordproject-sample.firebaseapp.com',

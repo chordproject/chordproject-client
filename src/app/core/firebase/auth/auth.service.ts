@@ -17,7 +17,7 @@ import { FirebaseService } from '../firebase.service';
 @Injectable({
     providedIn: 'root',
 })
-export class FirebaseAuthService {
+export class AuthService {
     private _auth: Auth;
     private _snackBar: MatSnackBar;
     private _user = new BehaviorSubject<User>(null);

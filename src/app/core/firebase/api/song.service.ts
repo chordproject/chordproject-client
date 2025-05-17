@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from 'app/core/user/user.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
-import { Auth } from 'firebase/auth';
+import { environment } from 'environments/environment';
 import {
     Firestore,
     QueryConstraint,
@@ -22,6 +23,7 @@ import {
     BehaviorSubject,
     Observable,
     combineLatest,
+    firstValueFrom,
     from,
     throwError,
 } from 'rxjs';
@@ -33,8 +35,8 @@ import { FirebaseService } from '../firebase.service';
 })
 export class SongService {
     private _firestore: Firestore;
-    private _auth: Auth;
     private _snackBar: MatSnackBar;
+    private _userService: UserService;
 
     private _song: BehaviorSubject<Song | null> = new BehaviorSubject(null);
 
@@ -45,8 +47,8 @@ export class SongService {
     constructor() {
         const firebase = inject(FirebaseService);
         this._firestore = firebase.firestore;
-        this._auth = firebase.auth;
         this._snackBar = inject(MatSnackBar);
+        this._userService = inject(UserService);
     }
 
     get(id: string): Observable<Song> {
@@ -155,26 +157,27 @@ export class SongService {
     }
 
     async save(song: Song): Promise<string> {
-        if (!this.verifyAuthentication()) {
+        if (!(await this.verifyAuthentication())) {
             return null;
         }
 
         if (!song.title) {
-            this.showSnackbar('Title is required');
+            this.showSnackbar('Title is required', 3000, 'warning');
             return null;
         }
 
         try {
-            const user = this._auth.currentUser;
+            const user = await firstValueFrom(this._userService.user$);
+            const userUid = user?.uid;
 
             if (!song.uid) {
                 song.uid = doc(collection(this._firestore, 'songs')).id;
                 song.creationDate = serverTimestamp();
-                song.source = 'homenajesus';
+                song.source = environment.source;
                 song.videoId = '';
             }
 
-            song.authorId = user.uid;
+            song.authorId = userUid;
 
             await setDoc(doc(this._firestore, 'songs', song.uid), { ...song });
             this.showSnackbar('Song saved successfully');
@@ -186,7 +189,7 @@ export class SongService {
     }
 
     async delete(id: string): Promise<boolean> {
-        if (!this.verifyAuthentication()) {
+        if (!(await this.verifyAuthentication())) {
             return false;
         }
 
@@ -200,20 +203,27 @@ export class SongService {
         }
     }
 
-    private verifyAuthentication(): boolean {
-        const user = this._auth.currentUser;
-        if (!user) {
-            this.showSnackbar('Authentication required');
+    private async verifyAuthentication(): Promise<boolean> {
+        const isAuthenticated = await firstValueFrom(
+            this._userService.isAuthenticated()
+        );
+        if (!isAuthenticated) {
+            this.showSnackbar('Authentication required', 3000, 'warning');
             return false;
         }
         return true;
     }
 
-    private showSnackbar(message: string, duration: number = 3000): void {
+    private showSnackbar(
+        message: string,
+        duration: number = 3000,
+        type?: string
+    ): void {
         this._snackBar.open(message, 'Close', {
-            duration: duration,
+            duration,
             horizontalPosition: 'center',
-            verticalPosition: 'bottom',
+            verticalPosition: 'top',
+            panelClass: type ? [type] : [],
         });
     }
 
@@ -225,7 +235,7 @@ export class SongService {
             errorMessage = error.message;
         }
 
-        this.showSnackbar(errorMessage);
+        this.showSnackbar(errorMessage, 3000, 'error');
         return throwError(() => new Error(errorMessage));
     }
 

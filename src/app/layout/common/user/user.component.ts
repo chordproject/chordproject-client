@@ -1,9 +1,7 @@
-import { BooleanInput } from '@angular/cdk/coercion';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    Input,
     OnDestroy,
     OnInit,
     ViewEncapsulation,
@@ -12,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { Subject, takeUntil } from 'rxjs';
@@ -24,14 +22,15 @@ import { ThinLayoutComponent } from '../../layouts/vertical/thin/thin.component'
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     exportAs: 'user',
-    imports: [MatButtonModule, MatMenuModule, MatIconModule, MatDividerModule],
+    imports: [
+        MatButtonModule,
+        MatMenuModule,
+        MatIconModule,
+        MatDividerModule,
+        RouterLink,
+    ],
 })
 export class UserComponent implements OnInit, OnDestroy {
-    /* eslint-disable @typescript-eslint/naming-convention */
-    static ngAcceptInputType_showAvatar: BooleanInput;
-    /* eslint-enable @typescript-eslint/naming-convention */
-
-    @Input() showAvatar: boolean = true;
     user: User;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();

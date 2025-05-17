@@ -19,16 +19,4 @@ export class EditorHeaderComponent {
     @Output() saveSongEvent = new EventEmitter<void>();
     @Output() removeSongEvent = new EventEmitter<void>();
     @Output() helpEvent = new EventEmitter<void>();
-
-    saveSong(): void {
-        this.saveSongEvent.emit();
-    }
-
-    removeSong(): void {
-        this.removeSongEvent.emit();
-    }
-
-    showHelp(): void {
-        this.helpEvent.emit();
-    }
 }

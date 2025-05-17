@@ -1,36 +1,43 @@
 <!-- Button -->
-<button mat-icon-button [matMenuTriggerFor]="userActions">
-    <span class="relative">
-        @if (showAvatar && user.avatar) {
-            <img class="h-7 w-7 rounded-full" [src]="user.avatar" />
-        }
-        @if (!showAvatar || !user.avatar) {
-            <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
-        }
-    </span>
-</button>
-
-<mat-menu [xPosition]="'before'" #userActions="matMenu">
-    <button mat-menu-item>
-        <span class="flex flex-col leading-none">
-            <span>Signed in as</span>
-            <span class="mt-1.5 text-md font-medium">{{ user?.email }}</span>
+@if (user) {
+    <button mat-icon-button [matMenuTriggerFor]="userActions">
+        <span class="relative">
+            @if (user.avatar) {
+                <img class="h-7 w-7 rounded-full" [src]="user.avatar" />
+            } @else {
+                <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
+            }
         </span>
     </button>
-    <mat-divider class="my-2"></mat-divider>
-    <button mat-menu-item>
-        <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
-        <span>Profile</span>
+
+    <mat-menu [xPosition]="'before'" #userActions="matMenu">
+        <button mat-menu-item>
+            <span class="flex flex-col leading-none">
+                <span>Signed in as</span>
+                <span class="mt-1.5 text-md font-medium">{{
+                    user?.email
+                }}</span>
+            </span>
+        </button>
+        <mat-divider class="my-2"></mat-divider>
+        <button mat-menu-item>
+            <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
+            <span>Profile</span>
+        </button>
+        <button mat-menu-item (click)="settings()">
+            <mat-icon [svgIcon]="'heroicons_outline:cog-8-tooth'"></mat-icon>
+            <span>Settings</span>
+        </button>
+        <mat-divider class="my-2"></mat-divider>
+        <button mat-menu-item (click)="signOut()">
+            <mat-icon
+                [svgIcon]="'heroicons_outline:arrow-right-on-rectangle'"
+            ></mat-icon>
+            <span>Sign out</span>
+        </button>
+    </mat-menu>
+} @else {
+    <button mat-icon-button [routerLink]="['/sign-in']">
+        <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
     </button>
-    <button mat-menu-item (click)="settings()">
-        <mat-icon [svgIcon]="'heroicons_outline:cog-8-tooth'"></mat-icon>
-        <span>Settings</span>
-    </button>
-    <mat-divider class="my-2"></mat-divider>
-    <button mat-menu-item (click)="signOut()">
-        <mat-icon
-            [svgIcon]="'heroicons_outline:arrow-right-on-rectangle'"
-        ></mat-icon>
-        <span>Sign out</span>
-    </button>
-</mat-menu>
+}

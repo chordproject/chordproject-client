@@ -15,7 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
-import { FirebaseAuthService } from 'app/core/firebase/auth/firebase-auth.service';
+import { AuthService } from 'app/core/firebase/auth/auth.service';
 
 @Component({
     selector: 'auth-forgot-password',
@@ -46,7 +46,7 @@ export class AuthForgotPasswordComponent implements OnInit {
 
     constructor(
         private _formBuilder: UntypedFormBuilder,
-        private _authService: FirebaseAuthService,
+        private _authService: AuthService,
         private _router: Router
     ) {}
 

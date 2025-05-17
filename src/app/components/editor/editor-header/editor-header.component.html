@@ -6,7 +6,7 @@
             mat-icon-button
             matTooltip="Save"
             class="mr-2"
-            (click)="saveSong()"
+            (click)="saveSongEvent.emit()"
         >
             <mat-icon
                 [svgIcon]="'heroicons_outline:document-arrow-down'"
@@ -16,11 +16,11 @@
             mat-icon-button
             matTooltip="Delete"
             class="mr-2"
-            (click)="removeSong()"
+            (click)="removeSongEvent.emit()"
         >
             <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
         </button>
-        <button mat-icon-button matTooltip="Help" (click)="showHelp()">
+        <button mat-icon-button matTooltip="Help" (click)="helpEvent.emit()">
             <mat-icon
                 [svgIcon]="'heroicons_outline:question-mark-circle'"
             ></mat-icon>

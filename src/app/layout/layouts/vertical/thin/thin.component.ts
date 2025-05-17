@@ -12,12 +12,12 @@ import { FuseDrawerComponent } from '@fuse/components/drawer';
 import { FuseFullscreenComponent } from '@fuse/components/fullscreen';
 import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
 import {
+    FuseNavigationItem,
     FuseNavigationService,
     FuseVerticalNavigationComponent,
 } from '@fuse/components/navigation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NavigationService } from 'app/core/navigation/navigation.service';
-import { Navigation } from 'app/core/navigation/navigation.types';
 import { SearchComponent } from 'app/layout/common/search/search.component';
 import { SettingsComponent } from 'app/layout/common/settings/settings.component';
 import { ThemeSelectorComponent } from 'app/layout/common/theme-selector/theme-selector.component';
@@ -44,7 +44,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class ThinLayoutComponent implements OnInit, OnDestroy {
     isScreenSmall: boolean;
-    navigation: Navigation;
+    navigation: FuseNavigationItem[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     @ViewChild('settingsDrawer') settingsDrawer: FuseDrawerComponent;
@@ -62,7 +62,7 @@ export class ThinLayoutComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this._navigationService.navigation$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((navigation: Navigation) => {
+            .subscribe((navigation: FuseNavigationItem[]) => {
                 this.navigation = navigation;
             });
 

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from 'app/core/user/user.types';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { FirebaseAuthService } from '../firebase/auth/firebase-auth.service';
+import { AuthService } from '../firebase/auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -9,10 +9,10 @@ export class UserService {
     private _isAuthenticatedSource = new BehaviorSubject<boolean>(
         this._authenticated
     );
-    private _firebaseAuthService = inject(FirebaseAuthService);
+    private _authService = inject(AuthService);
 
     constructor() {
-        this._firebaseAuthService.user$.subscribe(async (user) => {
+        this._authService.user$.subscribe(async (user) => {
             if (user) {
                 this._authenticated = true;
             } else {
@@ -27,14 +27,15 @@ export class UserService {
     }
 
     get user$(): Observable<User> {
-        return this._firebaseAuthService.user$.pipe(
+        return this._authService.user$.pipe(
             map((firebaseUser) =>
                 firebaseUser
                     ? {
-                          id: firebaseUser.uid,
+                          uid: firebaseUser.uid,
                           name: firebaseUser.displayName ?? '',
                           email: firebaseUser.email ?? '',
-                          // add other fields as needed
+                          emailVerified: firebaseUser.emailVerified ?? false,
+                          avatar: firebaseUser.photoURL ?? '',
                       }
                     : null
             )

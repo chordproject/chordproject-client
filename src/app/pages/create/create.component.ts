@@ -15,6 +15,7 @@ import { AngularSplitModule } from 'angular-split';
 import { EditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
+import { ParserService } from 'app/core/chordpro/parser.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
 import { Subject, takeUntil } from 'rxjs';
@@ -35,7 +36,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class CreateComponent implements OnInit, OnDestroy {
     songContent = '';
-    song: Song;
+    song: Song = new Song();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     isDarkMode: boolean;
     isMobile: boolean;
@@ -46,6 +47,7 @@ export class CreateComponent implements OnInit, OnDestroy {
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseConfigService: FuseConfigService,
         private _songService: SongService,
+        private parserService: ParserService,
         private route: ActivatedRoute
     ) {}
 
@@ -94,8 +96,56 @@ export class CreateComponent implements OnInit, OnDestroy {
     }
 
     saveSong(): void {
-        // Implement save functionality
-        console.log('Saving song...');
+        const parsedSong = this.parserService.parseSong(this.songContent);
+        this.song.title = parsedSong.title;
+        this.song.subtitle = parsedSong.subtitle;
+        this.song.lyricists = parsedSong.lyricists;
+        this.song.albums = parsedSong.albums;
+        this.song.arrangers = parsedSong.arrangers;
+        this.song.artists = parsedSong.artists;
+        this.song.composers = parsedSong.composers;
+        this.song.copyright = parsedSong.copyright;
+        this.song.capo = parsedSong.capo;
+        this.song.duration = parsedSong.duration;
+        this.song.tempo = parsedSong.tempo;
+        if (parsedSong.time) {
+            this.song.time = parsedSong.time.toString();
+        }
+
+        this.song.year = parsedSong.year;
+
+        if (parsedSong.key) {
+            this.song.songKey = parsedSong.key.toString();
+            this.song.hasInferredKey = false;
+        } else {
+            const possibleKey = parsedSong.getPossibleKey();
+            if (possibleKey) {
+                this.song.songKey = possibleKey.toString();
+            }
+            this.song.hasInferredKey = true;
+        }
+
+        this.song.lyrics = parsedSong.getLyrics().join('\n');
+        this.song.lastUpdateDate = new Date();
+        this.song.content = parsedSong.rawContent;
+
+        this.song.uniqueChords = parsedSong
+            .getUniqueChords()
+            .map((c) => c.toString());
+
+        if (this.song.songKey) {
+            const letter = this.song.songKey.includes('m') ? 'A' : 'C';
+            const defaultKeySong = this.parserService.transposeSong(
+                parsedSong,
+                letter
+            );
+            this.song.defaultKeyUniqueChords = defaultKeySong
+                .getUniqueChords()
+                .map((c) => c.toString());
+        }
+        this._songService.save(this.song).then((res) => {
+            this.song.uid = res;
+        });
     }
 
     removeSong(): void {
