@@ -1,56 +1,43 @@
-import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from 'app/core/user/user.types';
-import { map, Observable, ReplaySubject, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { FirebaseAuthService } from '../firebase/auth/firebase-auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    private _httpClient = inject(HttpClient);
-    private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
+    private _authenticated = false;
+    private _isAuthenticatedSource = new BehaviorSubject<boolean>(
+        this._authenticated
+    );
+    private _firebaseAuthService = inject(FirebaseAuthService);
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Accessors
-    // -----------------------------------------------------------------------------------------------------
+    constructor() {
+        this._firebaseAuthService.user$.subscribe(async (user) => {
+            if (user) {
+                this._authenticated = true;
+            } else {
+                this._authenticated = false;
+            }
+            this._isAuthenticatedSource.next(this._authenticated);
+        });
+    }
 
-    /**
-     * Setter & getter for user
-     *
-     * @param value
-     */
-    set user(value: User) {
-        // Store the value
-        this._user.next(value);
+    isAuthenticated(): Observable<boolean> {
+        return this._isAuthenticatedSource.asObservable();
     }
 
     get user$(): Observable<User> {
-        return this._user.asObservable();
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Get the current signed-in user data
-     */
-    get(): Observable<User> {
-        return this._httpClient.get<User>('api/common/user').pipe(
-            tap((user) => {
-                this._user.next(user);
-            })
-        );
-    }
-
-    /**
-     * Update the user
-     *
-     * @param user
-     */
-    update(user: User): Observable<any> {
-        return this._httpClient.patch<User>('api/common/user', { user }).pipe(
-            map((response) => {
-                this._user.next(response);
-            })
+        return this._firebaseAuthService.user$.pipe(
+            map((firebaseUser) =>
+                firebaseUser
+                    ? {
+                          id: firebaseUser.uid,
+                          name: firebaseUser.displayName ?? '',
+                          email: firebaseUser.email ?? '',
+                          // add other fields as needed
+                      }
+                    : null
+            )
         );
     }
 }

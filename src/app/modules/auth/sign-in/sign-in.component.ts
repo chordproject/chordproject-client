@@ -18,6 +18,7 @@ import { Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { FirebaseAuthService } from 'app/core/firebase/auth/firebase-auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'auth-sign-in',
@@ -47,6 +48,7 @@ export class AuthSignInComponent implements OnInit {
     };
     signInForm: UntypedFormGroup;
     showAlert: boolean = false;
+    private _subscription: Subscription;
 
     constructor(
         private _authService: FirebaseAuthService,
@@ -70,39 +72,33 @@ export class AuthSignInComponent implements OnInit {
         this.signInForm.disable();
         this.showAlert = false;
 
-        this._authService
+        this._subscription = this._authService
             .signInWithEmail(
                 this.signInForm.get('email').value,
                 this.signInForm.get('password').value
             )
-            .subscribe(
-                () => {
-                    // Re-enable the form
+            .subscribe({
+                next: () => {
                     this.signInForm.enable();
-
-                    // Hide the alert
                     this.showAlert = false;
-
-                    // Set the redirect url
                     const redirectURL = '/home';
-
-                    // Redirect to the previous url
                     this._router.navigateByUrl(redirectURL);
                 },
-                (error) => {
-                    // Re-enable the form
+                error: (error) => {
                     this.signInForm.enable();
-
-                    // Reset the form
                     this.signInForm.reset();
-
-                    // Show the alert
                     this.showAlert = true;
                     this.alert = {
                         type: 'error',
                         message: error.message,
                     };
-                }
-            );
+                },
+            });
+    }
+
+    ngOnDestroy(): void {
+        if (this._subscription) {
+            this._subscription.unsubscribe();
+        }
     }
 }

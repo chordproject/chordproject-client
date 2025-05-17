@@ -35,6 +35,13 @@
                 class="bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg"
             >
                 <div class="flex flex-col items-center p-8 text-center">
+                    <div class="absolute right-0 top-0 -m-6 h-24 w-24">
+                        <mat-icon
+                            class="text-blue-400 opacity-25 icon-size-24"
+                            [svgIcon]="'heroicons_outline:arrow-up-circle'"
+                        ></mat-icon>
+                    </div>
+
                     <div class="text-2xl font-semibold">Recently Added</div>
                 </div>
                 <div
@@ -66,6 +73,12 @@
             <div
                 class="bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg"
             >
+                <div class="absolute right-0 top-0 -m-6 h-24 w-24">
+                    <mat-icon
+                        class="text-blue-400 opacity-25 icon-size-24"
+                        [svgIcon]="'heroicons_outline:information-circle'"
+                    ></mat-icon>
+                </div>
                 <div class="flex flex-col items-center p-8 text-center">
                     <div class="text-2xl font-semibold">
                         {{ 'home.about_title' | transloco }}
