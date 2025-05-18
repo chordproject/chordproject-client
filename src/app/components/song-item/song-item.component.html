@@ -8,32 +8,36 @@
         >
             <a
                 class="truncate text-base font-bold dark:group-hover:text-primary-900 dark:group-[.bg-primary-50]:text-primary-900"
-                [ngClass]="{
-                    'text-primary-900': selected
-                }"
+                [ngClass]="{ 'text-primary-900': selected }"
                 >{{ song.title }}</a
             >
-            <span *ngIf="song.artists && song.artists.length > 0"
-                >&nbsp;-&nbsp;</span
-            >
+            @if (song.artists && song.artists.length > 0) {
+                <span>&nbsp;-&nbsp;</span>
+            }
             <div
                 class="text-secondary flex flex-wrap items-center gap-x-1 text-sm"
             >
-                <a *ngFor="let artist of song.artists; let last = last">
-                    {{ artist }}<span *ngIf="!last">,&nbsp;</span>
-                </a>
+                @for (artist of song.artists; track artist; let last = $last) {
+                    <a
+                        >{{ artist }}
+                        @if (!last) {
+                            <span>,&nbsp;</span>
+                        }
+                    </a>
+                }
             </div>
         </div>
         <div
             class="flex flex-shrink-0 basis-[40%] flex-nowrap gap-x-1 overflow-x-hidden truncate text-xs"
         >
-            <ng-container *ngIf="song.uniqueChords?.length > 0">
-                <span
-                    class="rounded bg-primary-100 px-2 py-0.5 font-mono text-primary-700"
-                    *ngFor="let chord of song.uniqueChords"
-                    >{{ chord }}</span
-                >
-            </ng-container>
+            @if (song.uniqueChords?.length > 0) {
+                @for (chord of song.uniqueChords; track chord) {
+                    <span
+                        class="rounded bg-primary-100 px-2 py-0.5 font-mono text-primary-700"
+                        >{{ chord }}</span
+                    >
+                }
+            }
         </div>
     </div>
     <div class="mt-1 truncate text-xs italic text-gray-500">

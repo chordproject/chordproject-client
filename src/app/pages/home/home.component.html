@@ -47,26 +47,25 @@
                 <div
                     class="flex flex-auto flex-col bg-gray-50 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400"
                 >
-                    <ng-container *ngIf="latestSongs$ | async as songs">
-                        <div
-                            *ngIf="songs.length > 0; else noRecentSongs"
-                            class="w-full"
-                        >
-                            <chp-song-item
-                                *ngFor="let song of songs; trackBy: trackByFn"
-                                [song]="song"
-                                [routerLink]="['/songs/read', song.uid]"
-                                [ngClass]="{
-                                    'dark:hover:bg-hover hover:bg-primary-100': true,
-                                }"
-                                class="block w-full"
-                            >
-                            </chp-song-item>
-                        </div>
-                        <ng-template #noRecentSongs>
+                    @if (latestSongs$ | async; as songs) {
+                        @if (songs.length > 0) {
+                            <div class="w-full">
+                                @for (song of songs; track song.uid) {
+                                    <chp-song-item
+                                        [song]="song"
+                                        [routerLink]="['/songs/read', song.uid]"
+                                        [ngClass]="{
+                                            'dark:hover:bg-hover hover:bg-primary-100': true,
+                                        }"
+                                        class="block w-full"
+                                    >
+                                    </chp-song-item>
+                                }
+                            </div>
+                        } @else {
                             <p>No recently added songs.</p>
-                        </ng-template>
-                    </ng-container>
+                        }
+                    }
                 </div>
             </div>
             <!-- About card -->
@@ -105,10 +104,9 @@
                                 ></p>
 
                                 <ul>
-                                    <li
-                                        *ngFor="let item of features"
-                                        [innerHTML]="item"
-                                    ></li>
+                                    @for (item of features; track $index) {
+                                        <li [innerHTML]="item"></li>
+                                    }
                                 </ul>
 
                                 <p

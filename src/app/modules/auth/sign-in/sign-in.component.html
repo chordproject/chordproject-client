@@ -9,16 +9,17 @@
                 Enter your email and password to sign in
             </div>
 
-            <fuse-alert
-                class="mt-8"
-                *ngIf="showAlert"
-                [appearance]="'outline'"
-                [showIcon]="false"
-                [type]="alert.type"
-                [@shake]="showAlert"
-            >
-                {{ alert.message }}
-            </fuse-alert>
+            @if (showAlert) {
+                <fuse-alert
+                    class="mt-8"
+                    [appearance]="'outline'"
+                    [showIcon]="false"
+                    [type]="alert.type"
+                    [@shake]="showAlert"
+                >
+                    {{ alert.message }}
+                </fuse-alert>
+            }
 
             <!-- Sign in form -->
             <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
@@ -31,16 +32,14 @@
                         [type]="'email'"
                         autocomplete="email"
                     />
-                    <mat-error
-                        *ngIf="signInForm.get('email').hasError('required')"
-                    >
-                        Email is required
-                    </mat-error>
-                    <mat-error
-                        *ngIf="signInForm.get('email').hasError('email')"
-                    >
-                        Please enter a valid email address
-                    </mat-error>
+                    @if (signInForm.get('email').hasError('required')) {
+                        <mat-error>Email is required</mat-error>
+                    }
+                    @if (signInForm.get('email').hasError('email')) {
+                        <mat-error
+                            >Please enter a valid email address</mat-error
+                        >
+                    }
                 </mat-form-field>
 
                 <!-- Password field -->

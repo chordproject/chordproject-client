@@ -9,16 +9,17 @@
                 Enter your email and password to create a free account
             </div>
 
-            <fuse-alert
-                class="mt-8"
-                *ngIf="showAlert"
-                [appearance]="'outline'"
-                [showIcon]="false"
-                [type]="alert.type"
-                [@shake]="showAlert"
-            >
-                {{ alert.message }}
-            </fuse-alert>
+            @if (showAlert) {
+                <fuse-alert
+                    class="mt-8"
+                    [appearance]="'outline'"
+                    [showIcon]="false"
+                    [type]="alert.type"
+                    [@shake]="showAlert"
+                >
+                    {{ alert.message }}
+                </fuse-alert>
+            }
 
             <!-- Sign Up form -->
             <form class="mt-8" [formGroup]="signUpForm" #signUpNgForm="ngForm">
@@ -31,11 +32,9 @@
                         type="text"
                         autocomplete="name"
                     />
-                    <mat-error
-                        *ngIf="signUpForm.get('name').hasError('required')"
-                    >
-                        Name is required
-                    </mat-error>
+                    @if (signUpForm.get('name').hasError('required')) {
+                        <mat-error>Name is required</mat-error>
+                    }
                 </mat-form-field>
 
                 <!-- Email field -->
@@ -47,16 +46,14 @@
                         type="email"
                         autocomplete="email"
                     />
-                    <mat-error
-                        *ngIf="signUpForm.get('email').hasError('required')"
-                    >
-                        Email is required
-                    </mat-error>
-                    <mat-error
-                        *ngIf="signUpForm.get('email').hasError('email')"
-                    >
-                        Please enter a valid email address
-                    </mat-error>
+                    @if (signUpForm.get('email').hasError('required')) {
+                        <mat-error>Email is required</mat-error>
+                    }
+                    @if (signUpForm.get('email').hasError('email')) {
+                        <mat-error
+                            >Please enter a valid email address</mat-error
+                        >
+                    }
                 </mat-form-field>
 
                 <!-- Password field -->
