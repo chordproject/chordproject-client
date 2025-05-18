@@ -28,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { ChpEditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
 import { SongService } from 'app/core/firebase/api/song.service';
@@ -59,6 +60,7 @@ import { SongsListComponent } from '../list/list.component';
         FuseFindByKeyPipe,
         ChpViewerComponent,
         ChpEditorComponent,
+        ChpEditorHeaderComponent,
     ],
 })
 export class SongsDetailsComponent implements OnInit, OnDestroy {

@@ -55,7 +55,7 @@
                             <chp-song-item
                                 *ngFor="let song of songs; trackBy: trackByFn"
                                 [song]="song"
-                                [routerLink]="['/create', song.uid]"
+                                [routerLink]="['/songs/read', song.uid]"
                                 [ngClass]="{
                                     'dark:hover:bg-hover hover:bg-primary-100': true,
                                 }"

@@ -66,9 +66,6 @@ export default [
             {
                 path: '',
                 component: SongsListComponent,
-                resolve: {
-                    songs: () => inject(SongService).getList(),
-                },
                 children: [
                     {
                         path: ':uid',

@@ -4,6 +4,7 @@
     <div class="flex items-center">
         <button
             mat-icon-button
+            [color]="'primary'"
             matTooltip="Save"
             class="mr-2"
             (click)="saveSongEvent.emit()"
@@ -14,17 +15,29 @@
         </button>
         <button
             mat-icon-button
+            [color]="'warn'"
             matTooltip="Delete"
             class="mr-2"
             (click)="removeSongEvent.emit()"
         >
             <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
         </button>
-        <button mat-icon-button matTooltip="Help" (click)="helpEvent.emit()">
-            <mat-icon
-                [svgIcon]="'heroicons_outline:question-mark-circle'"
-            ></mat-icon>
-        </button>
+        @if (!hideHelp) {
+            <button
+                mat-icon-button
+                matTooltip="Help"
+                (click)="helpEvent.emit()"
+            >
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:question-mark-circle'"
+                ></mat-icon>
+            </button>
+        }
     </div>
+    @if (!hideClose) {
+        <a mat-icon-button [matTooltip]="'Close'" (click)="closeEvent.emit()">
+            <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+        </a>
+    }
 </div>
 <mat-divider></mat-divider>

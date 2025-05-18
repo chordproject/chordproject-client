@@ -1,6 +1,7 @@
 <div
     class="flex w-full min-w-0 flex-col sm:absolute sm:inset-0 sm:overflow-hidden"
 >
+    <!-- Toggle between editor and viewer mode on mobile -->
     <div
         class="fixed top-1/2 z-[1050] [right:-5px] md:hidden"
         [class.left]="!showPrimaryArea"
@@ -49,22 +50,8 @@
             class="border"
             [style.borderColor]="'var(--fuse-border)'"
         >
-            <mat-card class="flex h-full flex-col">
-                <mat-card-header class="!p-0">
-                    <chp-editor-header
-                        class="w-full"
-                        (saveSongEvent)="saveSong()"
-                        (removeSongEvent)="removeSong()"
-                        (helpEvent)="showHelp()"
-                    ></chp-editor-header>
-                </mat-card-header>
-                <mat-card-content class="!p-0 pt-2.5">
-                    <chp-editor
-                        [(content)]="songContent"
-                        tabindex="0"
-                    ></chp-editor>
-                </mat-card-content>
-            </mat-card>
+            <ng-container [ngTemplateOutlet]="isReaderMode ? viewer : editor">
+            </ng-container>
         </as-split-area>
         <as-split-area
             [size]="40"
@@ -73,8 +60,30 @@
             class="border"
             [style.borderColor]="'var(--fuse-border)'"
         >
-            <chp-viewer #viewer [content]="songContent" isPreview="true">
-            </chp-viewer>
+            <ng-container [ngTemplateOutlet]="isReaderMode ? editor : viewer">
+            </ng-container>
         </as-split-area>
     </as-split>
 </div>
+
+<ng-template #editor>
+    <mat-card class="flex h-full flex-col">
+        <mat-card-header class="!p-0">
+            <chp-editor-header
+                class="w-full"
+                [hideClose]="true"
+                (saveSongEvent)="saveSong()"
+                (removeSongEvent)="removeSong()"
+                (helpEvent)="showHelp()"
+            >
+            </chp-editor-header>
+        </mat-card-header>
+        <mat-card-content class="!p-0 pt-2.5">
+            <chp-editor [(content)]="songContent" tabindex="0"></chp-editor>
+        </mat-card-content>
+    </mat-card>
+</ng-template>
+
+<ng-template #viewer>
+    <chp-viewer #viewer [content]="songContent" isPreview="true"></chp-viewer>
+</ng-template>

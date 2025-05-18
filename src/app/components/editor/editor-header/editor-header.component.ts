@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,8 +15,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatDividerModule,
     ],
 })
-export class EditorHeaderComponent {
+export class ChpEditorHeaderComponent {
+    @Input() hideClose = false;
+    @Input() hideHelp = false;
+
     @Output() saveSongEvent = new EventEmitter<void>();
     @Output() removeSongEvent = new EventEmitter<void>();
     @Output() helpEvent = new EventEmitter<void>();
+    @Output() closeEvent = new EventEmitter<void>();
 }

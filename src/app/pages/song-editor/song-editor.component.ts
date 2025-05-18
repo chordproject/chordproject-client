@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -12,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FuseConfigService } from '@fuse/services/config';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { AngularSplitModule } from 'angular-split';
-import { EditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
+import { ChpEditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
 import { ParserService } from 'app/core/chordpro/parser.service';
@@ -21,20 +22,22 @@ import { Song } from 'app/models/song';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-    selector: 'create',
-    templateUrl: './create.component.html',
+    selector: 'song-editor',
+    templateUrl: './song-editor.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
+        CommonModule,
         AngularSplitModule,
         MatCardModule,
         MatIconModule,
         ChpViewerComponent,
         ChpEditorComponent,
-        EditorHeaderComponent,
+        ChpEditorHeaderComponent,
     ],
 })
-export class CreateComponent implements OnInit, OnDestroy {
+export class SongEditorComponent implements OnInit, OnDestroy {
+    isReaderMode = false;
     songContent = '';
     song: Song = new Song();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -52,6 +55,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.isReaderMode = this.route.snapshot.data['mode'] === 'reader';
         this._fuseConfigService.config$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config) => {

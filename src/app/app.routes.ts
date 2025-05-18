@@ -3,6 +3,7 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { initialDataResolver } from './app.resolvers';
+import { SongEditorComponent } from './pages/song-editor/song-editor.component';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -93,8 +94,14 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/pages/library/library.routes'),
             },
             {
-                path: 'create',
-                loadChildren: () => import('app/pages/create/create.routes'),
+                path: 'songs/create',
+                component: SongEditorComponent,
+                data: { mode: 'create' },
+            },
+            {
+                path: 'songs/read/:uid',
+                component: SongEditorComponent,
+                data: { mode: 'reader' },
             },
             // {
             //     path: 'songbook/:id',

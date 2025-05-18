@@ -3,11 +3,11 @@
     @if (!editMode) {
         <!-- Header -->
         <div
-            class="relative w-full bg-accent-100 px-8 sm:px-12 dark:bg-accent-700"
+            class="relative w-full bg-accent-100 px-8 pr-4 sm:pl-12 dark:bg-accent-700"
         >
             <!-- Header flex row: title + action left, close right -->
             <div
-                class="mx-auto flex w-full max-w-3xl items-start justify-between pb-3 pt-3"
+                class="mx-auto flex w-full max-w-3xl items-center justify-between pb-3 pt-3"
             >
                 <!-- Left: Title + Action -->
                 <div class="flex min-w-0 items-center">
@@ -75,39 +75,14 @@
 
     <!-- Edit mode -->
     @if (editMode) {
-        <chp-editor [(content)]="songContent" tabindex="0"></chp-editor>
-        <!-- Actions -->
-        <div
-            class="mt-2 flex border-t bg-gray-50 py-4 pl-3 pr-5 sm:pl-4 sm:pr-6 dark:bg-transparent"
+        <chp-editor-header
+            class="w-full"
+            [hideHelp]="true"
+            (saveSongEvent)="updateSong()"
+            (removeSongEvent)="deleteSong()"
+            (closeEvent)="toggleEditMode(false)"
         >
-            <!-- Delete -->
-            <button
-                mat-button
-                [color]="'warn'"
-                [matTooltip]="'Delete'"
-                (click)="deleteSong()"
-            >
-                Delete
-            </button>
-            <!-- Cancel -->
-            <button
-                class="ml-auto"
-                mat-button
-                [matTooltip]="'Cancel'"
-                (click)="toggleEditMode(false)"
-            >
-                Cancel
-            </button>
-            <!-- Save -->
-            <button
-                class="ml-2"
-                mat-flat-button
-                [color]="'primary'"
-                [matTooltip]="'Save'"
-                (click)="updateSong()"
-            >
-                Save
-            </button>
-        </div>
+        </chp-editor-header>
+        <chp-editor [(content)]="songContent" tabindex="0"></chp-editor>
     }
 </div>

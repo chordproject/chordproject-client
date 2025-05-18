@@ -32,7 +32,7 @@ export class NavigationService {
             tooltip: 'Create',
             type: 'basic',
             icon: 'heroicons_outline:code-bracket',
-            link: '/create',
+            link: '/songs/create',
         },
     ];
 
