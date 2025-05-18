@@ -150,7 +150,7 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
             // Forzar la detección de cambios
             this._changeDetectorRef.detectChanges();
 
-            // Dar tiempo para que Angular aktualice la vista antes de intentar modificar el DOM
+            // Dar tiempo para que Angular actualice la vista antes de intentar modificar el DOM
             setTimeout(() => {
                 this._changeDetectorRef.detectChanges();
             }, 100);

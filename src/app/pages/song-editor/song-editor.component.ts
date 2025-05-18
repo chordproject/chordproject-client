@@ -5,13 +5,13 @@ import {
     Component,
     OnDestroy,
     OnInit,
+    ViewContainerRef,
     ViewEncapsulation,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseConfigService } from '@fuse/services/config';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { AngularSplitModule } from 'angular-split';
 import { ChpEditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
@@ -27,6 +27,7 @@ import { Subject, takeUntil } from 'rxjs';
     templateUrl: './song-editor.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
     imports: [
         CommonModule,
         AngularSplitModule,
@@ -48,17 +49,23 @@ export class SongEditorComponent implements OnInit, OnDestroy {
 
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
+        private _viewContainerRef: ViewContainerRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseConfigService: FuseConfigService,
         private _songService: SongService,
-        private _fuseConfirmationService: FuseConfirmationService,
         private editorService: EditorService,
         private route: ActivatedRoute,
         private router: Router
     ) {}
 
     ngOnInit(): void {
-        this.isReaderMode = this.route.snapshot.data['mode'] === 'reader';
+        const mode = this.route.snapshot.data['mode'];
+
+        if (mode === 'create') {
+            this.cleanupTemplateRefs();
+        }
+        this.isReaderMode = mode === 'reader';
+
         this._fuseConfigService.config$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config) => {
@@ -86,6 +93,24 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         const uid = this.route.snapshot.paramMap.get('uid');
         if (uid) {
             this.loadSong(uid);
+        }
+    }
+
+    // Evita el error de editor no visible si viene desde el editor de la librería
+    private cleanupTemplateRefs(): void {
+        const editors = document.querySelectorAll('chp-editor');
+
+        if (editors.length > 0) {
+            this._viewContainerRef.clear();
+
+            editors.forEach((editor) => {
+                const parent = editor.parentElement;
+                if (parent) parent.removeChild(editor);
+            });
+
+            setTimeout(() => {
+                this._changeDetectorRef.detectChanges();
+            }, 50);
         }
     }
 
@@ -123,7 +148,6 @@ export class SongEditorComponent implements OnInit, OnDestroy {
 
     showHelp(): void {
         // Implement help functionality
-        console.log('Showing help...');
     }
 
     ngOnDestroy(): void {
