@@ -1,9 +1,8 @@
-import { AsyncPipe, DOCUMENT, I18nPluralPipe } from '@angular/common';
+import { AsyncPipe, I18nPluralPipe } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    Inject,
     OnDestroy,
     OnInit,
     ViewChild,
@@ -29,21 +28,14 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { SongItemComponent } from 'app/components/song-item/song-item.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { PartialSong } from 'app/models/partialsong';
-import {
-    filter,
-    fromEvent,
-    Observable,
-    startWith,
-    Subject,
-    switchMap,
-    takeUntil,
-} from 'rxjs';
+import { merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'songs-list',
     templateUrl: './list.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
     imports: [
         MatSidenavModule,
         RouterOutlet,
@@ -73,14 +65,16 @@ export class SongsListComponent implements OnInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _songService: SongService,
-        @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
     ) {}
 
     ngOnInit(): void {
-        this.songs$ = this.searchInputControl.valueChanges.pipe(
-            startWith(''),
+        const refreshList$ = merge(
+            of(''), // inicial
+            this.searchInputControl.valueChanges,
+            this._songService.songsChanged$ // cuando se elimina una canción
+        ).pipe(
             switchMap((query: string) => {
                 if (!query) {
                     return this._songService.getList();
@@ -89,6 +83,8 @@ export class SongsListComponent implements OnInit, OnDestroy {
                 }
             })
         );
+
+        this.songs$ = refreshList$;
 
         this.songs$.pipe(takeUntil(this._unsubscribeAll)).subscribe((songs) => {
             this.songsCount = songs.length;
@@ -131,20 +127,6 @@ export class SongsListComponent implements OnInit, OnDestroy {
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
-
-        // Listen for shortcuts
-        fromEvent(this._document, 'keydown')
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                filter<KeyboardEvent>(
-                    (event) =>
-                        (event.ctrlKey === true || event.metaKey) && // Ctrl or Cmd
-                        event.key === '/' // '/'
-                )
-            )
-            .subscribe(() => {
-                this.createSong();
-            });
     }
 
     ngOnDestroy(): void {
@@ -159,18 +141,6 @@ export class SongsListComponent implements OnInit, OnDestroy {
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
-    }
-
-    createSong(): void {
-        // Create the song
-        // this._songService.createSong().subscribe((newSong) => {
-        //     // Go to the new song
-        //     this._router.navigate(['./', newSong.id], {
-        //         relativeTo: this._activatedRoute,
-        //     });
-        //     // Mark for check
-        //     this._changeDetectorRef.markForCheck();
-        // });
     }
 
     trackByFn(index: number, item: PartialSong): any {

@@ -22,6 +22,7 @@ import {
 import {
     BehaviorSubject,
     Observable,
+    Subject,
     combineLatest,
     firstValueFrom,
     from,
@@ -37,11 +38,15 @@ export class SongService {
     private _firestore: Firestore;
     private _snackBar: MatSnackBar;
     private _userService: UserService;
-
     private _song: BehaviorSubject<Song | null> = new BehaviorSubject(null);
+    private _songsChanged = new Subject<void>();
 
     get song$(): Observable<Song> {
         return this._song.asObservable();
+    }
+
+    get songsChanged$(): Observable<void> {
+        return this._songsChanged.asObservable();
     }
 
     constructor() {
@@ -196,6 +201,7 @@ export class SongService {
         try {
             await deleteDoc(doc(this._firestore, 'songs', id));
             this.showSnackbar('Song deleted successfully');
+            this._songsChanged.next();
             return true;
         } catch (error) {
             this.handleError(error);

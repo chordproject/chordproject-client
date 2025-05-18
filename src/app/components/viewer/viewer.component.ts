@@ -16,6 +16,7 @@ import { Song } from 'chordproject-parser';
     selector: 'chp-viewer',
     templateUrl: './viewer.component.html',
     styleUrls: ['./viewer.component.scss'],
+    standalone: true,
     imports: [CommonModule, SafeHtmlPipe],
 })
 export class ChpViewerComponent implements AfterViewInit {

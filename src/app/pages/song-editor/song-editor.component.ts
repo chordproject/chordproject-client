@@ -9,14 +9,15 @@ import {
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FuseConfigService } from '@fuse/services/config';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { AngularSplitModule } from 'angular-split';
 import { ChpEditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
-import { ParserService } from 'app/core/chordpro/parser.service';
+import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
 import { Subject, takeUntil } from 'rxjs';
@@ -50,8 +51,10 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseConfigService: FuseConfigService,
         private _songService: SongService,
-        private parserService: ParserService,
-        private route: ActivatedRoute
+        private _fuseConfirmationService: FuseConfirmationService,
+        private editorService: EditorService,
+        private route: ActivatedRoute,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -100,61 +103,22 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     saveSong(): void {
-        const parsedSong = this.parserService.parseSong(this.songContent);
-        this.song.title = parsedSong.title;
-        this.song.subtitle = parsedSong.subtitle;
-        this.song.lyricists = parsedSong.lyricists;
-        this.song.albums = parsedSong.albums;
-        this.song.arrangers = parsedSong.arrangers;
-        this.song.artists = parsedSong.artists;
-        this.song.composers = parsedSong.composers;
-        this.song.copyright = parsedSong.copyright;
-        this.song.capo = parsedSong.capo;
-        this.song.duration = parsedSong.duration;
-        this.song.tempo = parsedSong.tempo;
-        if (parsedSong.time) {
-            this.song.time = parsedSong.time.toString();
-        }
-
-        this.song.year = parsedSong.year;
-
-        if (parsedSong.key) {
-            this.song.songKey = parsedSong.key.toString();
-            this.song.hasInferredKey = false;
-        } else {
-            const possibleKey = parsedSong.getPossibleKey();
-            if (possibleKey) {
-                this.song.songKey = possibleKey.toString();
-            }
-            this.song.hasInferredKey = true;
-        }
-
-        this.song.lyrics = parsedSong.getLyrics().join('\n');
-        this.song.lastUpdateDate = new Date();
-        this.song.content = parsedSong.rawContent;
-
-        this.song.uniqueChords = parsedSong
-            .getUniqueChords()
-            .map((c) => c.toString());
-
-        if (this.song.songKey) {
-            const letter = this.song.songKey.includes('m') ? 'A' : 'C';
-            const defaultKeySong = this.parserService.transposeSong(
-                parsedSong,
-                letter
-            );
-            this.song.defaultKeyUniqueChords = defaultKeySong
-                .getUniqueChords()
-                .map((c) => c.toString());
-        }
+        const updatedSong = this.editorService.prepareSongFromContent(
+            this.songContent
+        );
+        this.song = { ...this.song, ...updatedSong };
         this._songService.save(this.song).then((res) => {
             this.song.uid = res;
         });
     }
 
     removeSong(): void {
-        // Implement delete functionality
-        console.log('Removing song...');
+        this.editorService.confirmAndDelete(this.song).subscribe((success) => {
+            if (success) {
+                this.router.navigate(['/library']);
+            }
+            this._changeDetectorRef.markForCheck();
+        });
     }
 
     showHelp(): void {

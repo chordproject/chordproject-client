@@ -31,6 +31,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ChpEditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
+import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
 import { Tag } from 'app/models/tag';
@@ -83,6 +84,7 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         private _songsListComponent: SongsListComponent,
         private _songsService: SongService,
         private _fuseConfirmationService: FuseConfirmationService,
+        private editorService: EditorService,
         private _renderer2: Renderer2,
         private _router: Router,
         private _overlay: Overlay,
@@ -159,86 +161,24 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     }
 
     updateSong(): void {
-        // Copia el contenido editado antes de guardar
-        this.song.content = this.songContent;
-        // // Get the song object
-        // const song = this.songForm.getRawValue();
-        // // Go through the song object and clear empty values
-        // song.emails = song.emails.filter((email) => email.email);
-        // song.phoneNumbers = song.phoneNumbers.filter(
-        //     (phoneNumber) => phoneNumber.phoneNumber
-        // );
-        // // Update the song on the server
-        // this._songsService
-        //     .updateSong(song.id, song)
-        //     .subscribe(() => {
-        //         // Toggle the edit mode off
-        //         this.toggleEditMode(false);
-        //     });
+        const updatedSong = this.editorService.prepareSongFromContent(
+            this.songContent
+        );
+        this.song = { ...this.song, ...updatedSong };
+        this._songsService.save(this.song).then(() => {
+            this.toggleEditMode(false);
+        });
     }
 
     deleteSong(): void {
-        // Open the confirmation dialog
-        const confirmation = this._fuseConfirmationService.open({
-            title: 'Delete song',
-            message:
-                'Are you sure you want to delete this song? This action cannot be undone!',
-            actions: {
-                confirm: {
-                    label: 'Delete',
-                },
-            },
+        this.editorService.confirmAndDelete(this.song).subscribe((success) => {
+            if (success) {
+                this._router.navigate(['../'], {
+                    relativeTo: this._activatedRoute,
+                });
+            }
+            this._changeDetectorRef.markForCheck();
         });
-
-        // Subscribe to the confirmation dialog closed action
-        // confirmation.afterClosed().subscribe((result) => {
-        //     // If the confirm button pressed...
-        //     if (result === 'confirmed') {
-        //         // Get the current song's id
-        //         const id = this.song.id;
-
-        //         // Get the next/previous song's id
-        //         const currentSongIndex = this.songs.findIndex(
-        //             (item) => item.id === id
-        //         );
-        //         const nextSongIndex =
-        //             currentSongIndex +
-        //             (currentSongIndex === this.songs.length - 1 ? -1 : 1);
-        //         const nextSongId =
-        //             this.songs.length === 1 && this.songs[0].id === id
-        //                 ? null
-        //                 : this.songs[nextSongIndex].id;
-
-        //         // Delete the song
-        //         this._songsService
-        //             .deleteSong(id)
-        //             .subscribe((isDeleted) => {
-        //                 // Return if the song wasn't deleted...
-        //                 if (!isDeleted) {
-        //                     return;
-        //                 }
-
-        //                 // Navigate to the next song if available
-        //                 if (nextSongId) {
-        //                     this._router.navigate(['../', nextSongId], {
-        //                         relativeTo: this._activatedRoute,
-        //                     });
-        //                 }
-        //                 // Otherwise, navigate to the parent
-        //                 else {
-        //                     this._router.navigate(['../'], {
-        //                         relativeTo: this._activatedRoute,
-        //                     });
-        //                 }
-
-        //                 // Toggle the edit mode off
-        //                 this.toggleEditMode(false);
-        //             });
-
-        //         // Mark for check
-        //         this._changeDetectorRef.markForCheck();
-        //     }
-        // });
     }
 
     openTagsPanel(): void {

@@ -25,6 +25,7 @@ import { Subscription } from 'rxjs';
     templateUrl: './sign-in.component.html',
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
+    standalone: true,
     imports: [
         RouterLink,
         FuseAlertComponent,

@@ -1,15 +1,15 @@
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { RouterLink } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { SongItemComponent } from 'app/components/song-item/song-item.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { PartialSong } from 'app/models/partialsong';
-import { SongItemComponent } from 'app/components/song-item/song-item.component';
-import { RouterLink } from '@angular/router';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-home',
@@ -17,8 +17,6 @@ import { RouterLink } from '@angular/router';
     standalone: true,
     imports: [
         TranslocoModule,
-        NgFor,
-        NgIf,
         AsyncPipe,
         MatFormFieldModule,
         MatInputModule,
