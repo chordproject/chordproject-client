@@ -3,12 +3,11 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { initialDataResolver } from './app.resolvers';
-import { SongEditorComponent } from './pages/song-editor/song-editor.component';
 
 export const appRoutes: Route[] = [
     { path: '', pathMatch: 'full', redirectTo: 'home' },
 
-   // Auth routes for guests
+    // Auth routes for guests
     {
         path: '',
         canActivate: [NoAuthGuard],
@@ -83,14 +82,9 @@ export const appRoutes: Route[] = [
                 loadChildren: () => import('app/pages/library/library.routes'),
             },
             {
-                path: 'songs/create',
-                component: SongEditorComponent,
-                data: { mode: 'create' },
-            },
-            {
-                path: 'songs/read/:uid',
-                component: SongEditorComponent,
-                data: { mode: 'reader' },
+                path: 'songs',
+                loadChildren: () =>
+                    import('app/pages/song-editor/song-editor.routes'),
             },
             // {
             //     path: 'songbook/:id',

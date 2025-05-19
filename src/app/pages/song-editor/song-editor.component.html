@@ -42,13 +42,12 @@
         [style.--_as-gutter-background-color]="
             isDarkMode ? '#1e293b' : '#e2e8f0'
         "
-        class="custom-scrollbar h-full"
     >
         <as-split-area
             [size]="60"
             [visible]="!isMobile || showPrimaryArea"
             minSize="30"
-            class="flex flex-col overflow-hidden border"
+            class="border"
             [style.borderColor]="'var(--fuse-border)'"
         >
             <ng-container [ngTemplateOutlet]="isReaderMode ? viewer : editor">
@@ -58,7 +57,7 @@
             [size]="40"
             [visible]="!isMobile || !showPrimaryArea"
             minSize="30"
-            class="flex flex-col overflow-hidden border"
+            class="border"
             [style.borderColor]="'var(--fuse-border)'"
         >
             <ng-container [ngTemplateOutlet]="isReaderMode ? editor : viewer">
@@ -79,40 +78,12 @@
             >
             </chp-editor-header>
         </mat-card-header>
-        <mat-card-content
-            class="custom-scrollbar flex-1 overflow-auto !p-0 pt-2.5"
-        >
+        <mat-card-content class="!p-0 pt-2.5">
             <chp-editor [(content)]="songContent" tabindex="0"></chp-editor>
         </mat-card-content>
     </mat-card>
 </ng-template>
 
 <ng-template #viewer>
-    <chp-viewer
-        #viewer
-        [content]="songContent"
-        isPreview="true"
-        class="custom-scrollbar h-full overflow-auto"
-    ></chp-viewer>
+    <chp-viewer #viewer [content]="songContent" isPreview="true"></chp-viewer>
 </ng-template>
-
-<style>
-    .custom-scrollbar {
-        scrollbar-width: thin;
-        scrollbar-color: var(--fuse-border) transparent;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: var(--fuse-border);
-        border-radius: 4px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-    }
-</style>

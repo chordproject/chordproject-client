@@ -22,5 +22,6 @@ export class ChpEditorHeaderComponent {
     @Output() saveSongEvent = new EventEmitter<void>();
     @Output() removeSongEvent = new EventEmitter<void>();
     @Output() helpEvent = new EventEmitter<void>();
+    @Output() openFullEditorEvent = new EventEmitter<void>();
     @Output() closeEvent = new EventEmitter<void>();
 }

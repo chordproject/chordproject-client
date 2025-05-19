@@ -2,3 +2,21 @@
 /*  @ Import/write your custom styles here.
 /*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
+.mat-drawer-inner-container,
+.mat-drawer-content,
+as-split-area {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--fuse-border) transparent !important;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+    }
+}

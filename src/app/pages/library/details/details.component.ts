@@ -365,8 +365,15 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
             ) > -1
         );
     }
+    
+    openFullEditor(): void {
+        if (this.song) {
+            this._router.navigate(['/songs/create', this.song.uid]);
+        }
+    }
 
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
+
 }

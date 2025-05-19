@@ -2,11 +2,11 @@ export const environment = {
     production: false,
     source: 'chp',
     firebase: {
-        apiKey: 'AIzaSyBHx-5saAvrOTM4XibdHEpKog_cbqOHIo0',
-        authDomain: 'chordproject-sample.firebaseapp.com',
-        projectId: 'chordproject-sample',
-        storageBucket: 'chordproject-sample.firebasestorage.app',
-        messagingSenderId: '904211707413',
-        appId: '1:904211707413:web:38b50ff0a410214ed7401c',
+        apiKey: 'AIzaSyApw72WL43CM9thOf71QEaUIL1CVl2M-gg',
+        authDomain: 'gochord-1.firebaseapp.com',
+        projectId: 'gochord-1',
+        storageBucket: 'gochord-1.appspot.com',
+        messagingSenderId: '877298403628',
+        appId: '1:877298403628:web:49c06ead01c01b0dcbc489'
     },
 };

@@ -34,9 +34,25 @@
         }
     </div>
     @if (!hideClose) {
-        <a mat-icon-button [matTooltip]="'Close'" (click)="closeEvent.emit()">
-            <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
-        </a>
+        <div class="flex items-center">
+            <button
+                mat-icon-button
+                [matTooltip]="'Open in full editor'"
+                class="mr-2"
+                (click)="openFullEditorEvent.emit()"
+            >
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:arrow-top-right-on-square'"
+                ></mat-icon>
+            </button>
+            <a
+                mat-icon-button
+                [matTooltip]="'Close'"
+                (click)="closeEvent.emit()"
+            >
+                <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+            </a>
+        </div>
     }
 </div>
 <mat-divider></mat-divider>

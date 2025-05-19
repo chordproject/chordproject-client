@@ -105,6 +105,7 @@
                                 <chp-song-item
                                     [song]="song"
                                     [routerLink]="['./', song.uid]"
+                                    (dblclick)="onDblClick(song)"
                                     [ngClass]="{
                                         'dark:hover:bg-hover hover:bg-primary-100':
                                             !selectedSong ||

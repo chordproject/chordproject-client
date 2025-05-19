@@ -143,6 +143,10 @@ export class SongsListComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.markForCheck();
     }
 
+    onDblClick(song: PartialSong): void {
+        this._router.navigate(['/songs/read', song.uid]);
+    }
+
     trackByFn(index: number, item: PartialSong): any {
         return item.uid || index;
     }
