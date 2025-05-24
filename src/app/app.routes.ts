@@ -86,11 +86,11 @@ export const appRoutes: Route[] = [
                 loadChildren: () =>
                     import('app/pages/song-editor/song-editor.routes'),
             },
-            // {
-            //     path: 'songbook/:id',
-            //     loadChildren: () =>
-            //         import('app/pages/songbook/songbook.routes'),
-            // },
+            {
+                path: 'songbook',
+                loadChildren: () =>
+                    import('app/pages/songbook/songbook.routes'),
+            },
         ],
     },
     // Fallback redirect to 404

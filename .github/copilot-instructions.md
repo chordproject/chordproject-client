@@ -1,2 +1,9 @@
 - No agregar comentarios obvios
 - los mensajes de commits para git deben ser cortos
+- los nuevos componentes deben tener su template en su propio archivo y siempre usar standalone, no crear Modulos ni archivos de estilos
+- los componentes deberian seguir patrones del codebase como :
+    - Implementación de OnDestroy con su método ngOnDestroy()
+    - Un método trackByFn para optimizar los ngFor
+    - Un Subject privado \_unsubscribeAll para manejar las suscripciones
+    - la inyeccion de dependencias debe hacerse en el constructor
+- Al realizar correcciones generales en el codebase, no se debe alterar nada al interior de la carpeta @fuse

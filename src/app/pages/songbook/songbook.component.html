@@ -1,0 +1,59 @@
+<chp-split-layout [leftTemplate]="songList" [rightTemplate]="viewer">
+</chp-split-layout>
+
+<ng-template #songList>
+    @if (songbook$ | async; as songbook) {
+        <div class="flex h-full flex-col dark:border-[#334155]">
+            <!-- Sección superior -->
+            <div
+                class="flex items-center border-b border-gray-200 bg-accent-50 p-6 dark:border-[#334155] dark:bg-[#273549]"
+            >
+                <h1 class="truncate text-3xl font-bold">
+                    {{ songbook.name }}
+                </h1>
+            </div>
+            <!-- Sección inferior -->
+            <div class="bg-card flex-1 overflow-hidden">
+                @if (songsList; as songs) {
+                    <div
+                        [cdkDropListDisabled]="!songbook.isReorderable"
+                        cdkDropList
+                        [cdkDropListData]="songsList"
+                        (cdkDropListDropped)="onDrop($event)"
+                        class="w-full space-y-0 overflow-hidden"
+                    >
+                        @for (song of songs; track trackByFn($index, song)) {
+                            <div class="w-full">
+                                <div
+                                    cdkDrag
+                                    class="flex w-full items-center gap-2 overflow-hidden"
+                                >
+                                    <chp-song-item
+                                        [song]="song"
+                                        (click)="selectSong(song)"
+                                        (dblclick)="onDblClick(song)"
+                                        class="w-full min-w-0 flex-1"
+                                        [selected]="
+                                            selectedSong?.uid === song.uid
+                                        "
+                                        [showDragHandle]="
+                                            songbook.isReorderable
+                                        "
+                                    >
+                                    </chp-song-item>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</ng-template>
+
+<ng-template #viewer>
+    @if (selectedSong) {
+        <chp-viewer [content]="selectedSong.content" isPreview="true">
+        </chp-viewer>
+    }
+</ng-template>

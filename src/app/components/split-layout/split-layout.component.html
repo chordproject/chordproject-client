@@ -1,0 +1,66 @@
+<div
+    class="flex w-full min-w-0 flex-col sm:absolute sm:inset-0 sm:overflow-hidden"
+>
+    <!-- Toggle between left and right content on mobile -->
+    <div
+        class="fixed top-1/2 z-[1050] [right:-5px] md:hidden"
+        [class.left]="!showPrimaryArea"
+    >
+        <button
+            mat-stroked-button
+            (click)="togglePreview()"
+            style="
+                background: transparent !important;
+                border-color: #cbd5e1 !important;
+                border-width: 2px !important;
+                border-radius: 12px !important;
+                box-shadow: none !important;
+                width: 48px !important;
+                height: 48px !important;
+                min-width: 0 !important;
+                padding: 0 !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            "
+        >
+            <mat-icon
+                [svgIcon]="
+                    showPrimaryArea
+                        ? 'heroicons_solid:arrow-uturn-left'
+                        : 'heroicons_solid:arrow-uturn-right'
+                "
+                class="text-gray-300"
+            >
+            </mat-icon>
+        </button>
+    </div>
+
+    <as-split
+        direction="horizontal"
+        useTransition="true"
+        gutterSize="30"
+        [style.--_as-gutter-background-color]="
+            isDarkMode ? '#273549' : '#f1f5f9'
+        "
+    >
+        <as-split-area
+            [size]="60"
+            [visible]="!isMobile || showPrimaryArea"
+            minSize="30"
+            class="border"
+            [style.borderColor]="isDarkMode ? '#334155' : 'var(--fuse-border)'"
+        >
+            <ng-container *ngTemplateOutlet="leftTemplate"> </ng-container>
+        </as-split-area>
+        <as-split-area
+            [size]="40"
+            [visible]="!isMobile || !showPrimaryArea"
+            minSize="30"
+            class="border"
+            [style.borderColor]="isDarkMode ? '#334155' : 'var(--fuse-border)'"
+        >
+            <ng-container *ngTemplateOutlet="rightTemplate"> </ng-container>
+        </as-split-area>
+    </as-split>
+</div>

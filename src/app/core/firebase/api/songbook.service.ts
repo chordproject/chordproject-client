@@ -1,6 +1,8 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PartialSong } from 'app/models/partialsong';
+import { Relation } from 'app/models/relation';
+import { Songbook } from 'app/models/songbook';
 import { Auth } from 'firebase/auth';
 import {
     Firestore,
@@ -13,29 +15,12 @@ import {
     serverTimestamp,
     setDoc,
     where,
+    writeBatch,
 } from 'firebase/firestore';
 import { Observable, from, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { FirebaseService } from '../firebase.service';
 import { SongService } from './song.service';
-
-export interface Songbook {
-    uid: string;
-    name: string;
-    description?: string;
-    parent?: string;
-    order?: number;
-    authorId?: string;
-    creationDate?: any;
-    source?: string;
-}
-
-export interface Relation {
-    uid: string;
-    songbookId: string;
-    songId: string;
-    order?: number;
-}
 
 @Injectable({
     providedIn: 'root',
@@ -43,15 +28,14 @@ export interface Relation {
 export class SongbookService {
     private _firestore: Firestore;
     private _auth: Auth;
-    private _snackBar: MatSnackBar;
-    private _songService: SongService;
 
-    constructor() {
-        const firebase = inject(FirebaseService);
-        this._firestore = firebase.firestore;
-        this._auth = firebase.auth;
-        this._snackBar = inject(MatSnackBar);
-        this._songService = inject(SongService);
+    constructor(
+        private _firebase: FirebaseService,
+        private _snackBar: MatSnackBar,
+        private _songService: SongService
+    ) {
+        this._firestore = this._firebase.firestore;
+        this._auth = this._firebase.auth;
     }
 
     get(id: string): Observable<Songbook> {
@@ -115,26 +99,38 @@ export class SongbookService {
 
         return from(getDocs(q)).pipe(
             switchMap((relationsSnapshot) => {
-                const relations = relationsSnapshot.docs.map(
-                    (doc) =>
-                        ({
-                            uid: doc.id,
-                            ...doc.data(),
-                        }) as Relation
-                );
-
-                if (relations.length === 0) {
+                if (relationsSnapshot.empty) {
                     return of([]);
                 }
 
+                const relations = relationsSnapshot.docs.map((doc) => {
+                    const data = doc.data();
+                    const relation = new Relation(data.songbookId, data.songId);
+
+                    if (data.author_uid) {
+                        relation.author_uid = data.author_uid;
+                    }
+                    if (data.order !== undefined) {
+                        relation.order = data.order;
+                    }
+
+                    return relation;
+                });
+
                 const songIds = relations.map((relation) => relation.songId);
+
                 return this._songService.getAll(songIds).pipe(
                     map((songs) => {
                         const songsWithOrder = songs.map((song) => {
                             const relation = relations.find(
                                 (rel) => rel.songId === song.uid
                             );
-                            return { ...song, order: relation?.order ?? null };
+
+                            return {
+                                ...song,
+                                order: relation?.order ?? null,
+                                author_uid: relation?.author_uid,
+                            };
                         });
 
                         return songsWithOrder.sort((a, b) => {
@@ -149,7 +145,11 @@ export class SongbookService {
                     })
                 );
             }),
-            catchError((error) => this.handleError(error))
+            catchError((error) => {
+                console.error('Error fetching songbook content:', error);
+                this.showSnackbar('Failed to load songbook content');
+                return of([]);
+            })
         );
     }
 
@@ -198,12 +198,15 @@ export class SongbookService {
             const relationId = doc(
                 collection(this._firestore, 'songbook_songs')
             ).id;
-            const relation: Relation = {
-                uid: relationId,
-                songbookId,
-                songId,
-                order,
-            };
+
+            const relation = new Relation(songbookId, songId);
+            if (order !== undefined) {
+                relation.order = order;
+            }
+
+            if (this._auth.currentUser) {
+                relation.author_uid = this._auth.currentUser.uid;
+            }
 
             await setDoc(
                 doc(this._firestore, 'songbook_songs', relationId),
@@ -252,6 +255,58 @@ export class SongbookService {
             this.handleError(error);
             return false;
         }
+    }
+
+    updateSongOrder(
+        songbookId: string,
+        songOrders: { songId: string; order: number }[]
+    ): Observable<boolean> {
+        if (!this.verifyAuthentication()) {
+            return of(false);
+        }
+
+        return from(
+            (async () => {
+                try {
+                    const q = query(
+                        collection(this._firestore, 'songbook_songs'),
+                        where('songbookId', '==', songbookId)
+                    );
+
+                    const snapshot = await getDocs(q);
+
+                    if (snapshot.empty) {
+                        this.showSnackbar('No songs found in songbook');
+                        return false;
+                    }
+
+                    const relationDocs = {};
+                    snapshot.docs.forEach((doc) => {
+                        const data = doc.data();
+                        relationDocs[data.songId] = doc.id;
+                    });
+
+                    const batch = writeBatch(this._firestore);
+
+                    for (const item of songOrders) {
+                        if (relationDocs[item.songId]) {
+                            const docRef = doc(
+                                this._firestore,
+                                'songbook_songs',
+                                relationDocs[item.songId]
+                            );
+                            batch.update(docRef, { order: item.order });
+                        }
+                    }
+
+                    await batch.commit();
+                    return true;
+                } catch (error) {
+                    this.handleError(error);
+                    return false;
+                }
+            })()
+        );
     }
 
     private verifyAuthentication(): boolean {

@@ -18,10 +18,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class ChpEditorHeaderComponent {
     @Input() hideClose = false;
     @Input() hideHelp = false;
+    @Input() hideToggleMode = false;
 
     @Output() saveSongEvent = new EventEmitter<void>();
     @Output() removeSongEvent = new EventEmitter<void>();
     @Output() helpEvent = new EventEmitter<void>();
     @Output() openFullEditorEvent = new EventEmitter<void>();
     @Output() closeEvent = new EventEmitter<void>();
+    @Output() toggleModeEvent = new EventEmitter<void>();
 }

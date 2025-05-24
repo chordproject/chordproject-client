@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -6,33 +5,26 @@ import {
     OnDestroy,
     OnInit,
     ViewContainerRef,
-    ViewEncapsulation,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FuseConfigService } from '@fuse/services/config';
-import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { AngularSplitModule } from 'angular-split';
 import { ChpEditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
+import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'song-editor',
-    templateUrl: './song-editor.component.html',
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
+    templateUrl: './song-editor.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
-        AngularSplitModule,
         MatCardModule,
-        MatIconModule,
+        ChpSplitLayoutComponent,
         ChpViewerComponent,
         ChpEditorComponent,
         ChpEditorHeaderComponent,
@@ -41,17 +33,14 @@ import { Subject, takeUntil } from 'rxjs';
 export class SongEditorComponent implements OnInit, OnDestroy {
     isReaderMode = false;
     songContent = '';
-    song: Song = new Song();
+    song$: Observable<Song>;
+    isMobile = false;
+    private _song: Song = new Song();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    isDarkMode: boolean;
-    isMobile: boolean;
-    showPrimaryArea = true;
 
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _viewContainerRef: ViewContainerRef,
-        private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _fuseConfigService: FuseConfigService,
         private _songService: SongService,
         private editorService: EditorService,
         private route: ActivatedRoute,
@@ -61,39 +50,33 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const mode = this.route.snapshot.data['mode'];
 
-        if (mode === 'create') {
-            this.cleanupTemplateRefs();
-        }
-        this.isReaderMode = mode === 'reader';
+        // Siempre limpiar las referencias, sin importar el modo
+        this.cleanupTemplateRefs();
 
-        this._fuseConfigService.config$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((config) => {
-                let newDarkTheme = config.scheme === 'dark';
-                if (config.scheme === 'auto') {
-                    newDarkTheme = document.body.classList.contains('dark');
-                }
-                if (this.isDarkMode !== newDarkTheme) {
-                    this.isDarkMode = newDarkTheme;
+        this.isReaderMode = mode === 'reader';
+        this.loadSong();
+    }
+
+    private loadSong(): void {
+        this.route.paramMap
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                switchMap((params) => {
+                    const uid = params.get('uid');
+                    if (uid) {
+                        return this._songService.get(uid);
+                    }
+                    return [];
+                })
+            )
+            .subscribe((data) => {
+                if (data) {
+                    this._song = data;
+                    this._song.uid = this.route.snapshot.paramMap.get('uid');
+                    this.songContent = data.content;
                     this._changeDetectorRef.markForCheck();
                 }
             });
-
-        this._fuseMediaWatcherService
-            .onMediaQueryChange$('(max-width: 959px)')
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((state) => {
-                this.isMobile = state.matches;
-                if (!this.isMobile) {
-                    this.showPrimaryArea = true;
-                }
-                this._changeDetectorRef.markForCheck();
-            });
-
-        const uid = this.route.snapshot.paramMap.get('uid');
-        if (uid) {
-            this.loadSong(uid);
-        }
     }
 
     // Evita el error de editor no visible si viene desde el editor de la librería
@@ -114,31 +97,23 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         }
     }
 
-    loadSong(uid: string): void {
-        this._songService.get(uid).subscribe((data) => {
-            this.song = data;
-            this.song.uid = uid;
-            this.songContent = data.content;
-            this._changeDetectorRef.markForCheck();
-        });
-    }
-
-    togglePreview(): void {
-        this.showPrimaryArea = !this.showPrimaryArea;
+    toggleMode(): void {
+        this.isReaderMode = !this.isReaderMode;
+        this.cleanupTemplateRefs();
     }
 
     saveSong(): void {
         const updatedSong = this.editorService.prepareSongFromContent(
             this.songContent
         );
-        this.song = { ...this.song, ...updatedSong };
-        this._songService.save(this.song).then((res) => {
-            this.song.uid = res;
+        this._song = { ...this._song, ...updatedSong };
+        this._songService.save(this._song).then((res) => {
+            this._song.uid = res;
         });
     }
 
     removeSong(): void {
-        this.editorService.confirmAndDelete(this.song).subscribe((success) => {
+        this.editorService.confirmAndDelete(this._song).subscribe((success) => {
             if (success) {
                 this.router.navigate(['/library']);
             }

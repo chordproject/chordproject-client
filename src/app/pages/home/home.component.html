@@ -45,7 +45,7 @@
                     <div class="text-2xl font-semibold">Recently Added</div>
                 </div>
                 <div
-                    class="flex flex-auto flex-col bg-gray-50 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400"
+                    class="flex flex-auto flex-col bg-gray-50 dark:border-t dark:bg-transparent"
                 >
                     @if (latestSongs$ | async; as songs) {
                         @if (songs.length > 0) {
@@ -54,9 +54,6 @@
                                     <chp-song-item
                                         [song]="song"
                                         [routerLink]="['/songs/read', song.uid]"
-                                        [ngClass]="{
-                                            'dark:hover:bg-hover hover:bg-primary-100': true,
-                                        }"
                                         class="block w-full"
                                     >
                                     </chp-song-item>

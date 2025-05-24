@@ -25,7 +25,7 @@ import {
     RouterOutlet,
 } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { SongItemComponent } from 'app/components/song-item/song-item.component';
+import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { PartialSong } from 'app/models/partialsong';
 import { merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
@@ -48,7 +48,7 @@ import { merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
         RouterLink,
         AsyncPipe,
         I18nPluralPipe,
-        SongItemComponent,
+        ChpSongItemComponent,
     ],
 })
 export class SongsListComponent implements OnInit, OnDestroy {

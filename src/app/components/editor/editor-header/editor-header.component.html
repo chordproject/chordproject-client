@@ -31,10 +31,7 @@
                     [svgIcon]="'heroicons_outline:question-mark-circle'"
                 ></mat-icon>
             </button>
-        }
-    </div>
-    @if (!hideClose) {
-        <div class="flex items-center">
+        } @else {
             <button
                 mat-icon-button
                 [matTooltip]="'Open in full editor'"
@@ -45,6 +42,21 @@
                     [svgIcon]="'heroicons_outline:arrow-top-right-on-square'"
                 ></mat-icon>
             </button>
+        }
+        @if (!hideToggleMode) {
+            <button
+                mat-icon-button
+                matTooltip="Toggle Mode"
+                (click)="toggleModeEvent.emit()"
+            >
+                <mat-icon
+                    [svgIcon]="'heroicons_outline:arrows-right-left'"
+                ></mat-icon>
+            </button>
+        }
+    </div>
+    @if (!hideClose) {
+        <div class="flex items-center">
             <a
                 mat-icon-button
                 [matTooltip]="'Close'"

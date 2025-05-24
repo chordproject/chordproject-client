@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { SongItemComponent } from 'app/components/song-item/song-item.component';
+import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -22,7 +22,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
         MatInputModule,
         MatButtonModule,
         MatIconModule,
-        SongItemComponent,
+        ChpSongItemComponent,
         RouterLink,
     ],
 })
