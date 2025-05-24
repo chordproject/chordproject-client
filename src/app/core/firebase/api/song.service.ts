@@ -6,7 +6,6 @@ import { Song } from 'app/models/song';
 import { environment } from 'environments/environment';
 import {
     Firestore,
-    QueryConstraint,
     collection,
     deleteDoc,
     doc,
@@ -103,28 +102,34 @@ export class SongService {
         );
     }
 
-    getList(searchTerm?: string): Observable<PartialSong[]> {
+    searchSongs(
+        searchTerm?: string,
+        limitResults?: number
+    ): Observable<PartialSong[]> {
         const songsRef = collection(this._firestore, 'songs');
-        const constraints: QueryConstraint[] = [orderBy('title')];
-
-        const q = query(songsRef, ...constraints);
+        const q = query(songsRef, orderBy('title'));
         return from(getDocs(q)).pipe(
             map((snapshot) => {
-                let songs = snapshot.docs.map(
-                    (doc) => doc.data() as PartialSong
-                );
+                const normalizar = (str: string) =>
+                    (str || '')
+                        .toLocaleLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '');
+                let songs = snapshot.docs.map((doc) => {
+                    const data = doc.data() || {};
+                    return data as PartialSong;
+                });
                 if (searchTerm) {
+                    const qNorm = normalizar(searchTerm);
                     songs = songs.filter(
                         (song) =>
-                            song.title &&
-                            song.title
-                                .toLowerCase()
-                                .includes(searchTerm.toLowerCase())
+                            normalizar(song.title).includes(qNorm) ||
+                            normalizar(song.lyrics).includes(qNorm)
                     );
                 }
                 // Ordenar ignorando acentos
                 songs = songs.sort((a, b) =>
-                    a.title.localeCompare(b.title, 'es', {
+                    (a.title || '').localeCompare(b.title || '', 'es', {
                         sensitivity: 'base',
                     })
                 );
@@ -140,6 +145,9 @@ export class SongService {
                               .toUpperCase()
                         : '',
                 }));
+                if (limitResults) {
+                    songs = songs.slice(0, limitResults);
+                }
                 return songs;
             }),
             catchError((error) => this.handleError(error))
@@ -246,6 +254,7 @@ export class SongService {
     }
 
     getTags() {
+        //TODO
         return null;
     }
 }

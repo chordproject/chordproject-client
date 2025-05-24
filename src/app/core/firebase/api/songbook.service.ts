@@ -17,7 +17,7 @@ import {
     where,
     writeBatch,
 } from 'firebase/firestore';
-import { Observable, from, of, throwError } from 'rxjs';
+import { Observable, combineLatest, from, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { FirebaseService } from '../firebase.service';
 import { SongService } from './song.service';
@@ -306,6 +306,93 @@ export class SongbookService {
                     return false;
                 }
             })()
+        );
+    }
+
+    searchSongbooks(
+        searchTerm?: string,
+        limitResults: number = 3
+    ): Observable<Songbook[]> {
+        const songbooksRef = collection(this._firebase.firestore, 'songbooks');
+        const q = query(songbooksRef, orderBy('name'));
+        return from(getDocs(q)).pipe(
+            map((snapshot) => {
+                const normalizar = (str: string) =>
+                    (str || '')
+                        .toLocaleLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '');
+                let songbooks = snapshot.docs.map((doc) => {
+                    const data = doc.data() || {};
+                    return {
+                        uid: data.uid,
+                        name: data.name,
+                    } as Songbook;
+                });
+                if (searchTerm) {
+                    const qNorm = normalizar(searchTerm);
+                    songbooks = songbooks.filter((sb) =>
+                        normalizar(sb.name).includes(qNorm)
+                    );
+                }
+                songbooks = songbooks.sort((a, b) =>
+                    (a.name || '').localeCompare(b.name || '', 'es', {
+                        sensitivity: 'base',
+                    })
+                );
+                if (limitResults) {
+                    songbooks = songbooks.slice(0, limitResults);
+                }
+                return songbooks;
+            }),
+            catchError((error) => this.handleError(error))
+        );
+    }
+
+    searchSongsInSongbooks(
+        searchTerm: string,
+        limitSongbooks: number = 3,
+        limitSongsPerSongbook: number = 3
+    ): Observable<{ songbook: Songbook; songs: PartialSong[] }[]> {
+        return this.getAll().pipe(
+            switchMap((songbooks) => {
+                if (!songbooks.length) return of([]);
+                const normalizar = (str: string) =>
+                    (str || '')
+                        .toLocaleLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '');
+                const qNorm = normalizar(searchTerm);
+
+                // Para cada cancionero, obtener sus canciones y filtrar por el término
+                return combineLatest(
+                    songbooks.map((songbook) =>
+                        this.getContent(songbook.uid).pipe(
+                            map((songs) => {
+                                const filteredSongs = songs.filter(
+                                    (song) =>
+                                        normalizar(song.title).includes(
+                                            qNorm
+                                        ) ||
+                                        normalizar(song.lyrics).includes(qNorm)
+                                );
+                                return {
+                                    songbook,
+                                    songs: filteredSongs.slice(
+                                        0,
+                                        limitSongsPerSongbook
+                                    ),
+                                };
+                            })
+                        )
+                    )
+                );
+            }),
+            map((results) =>
+                results
+                    .filter((item) => item.songs.length > 0)
+                    .slice(0, limitSongbooks)
+            )
         );
     }
 

@@ -3,6 +3,5 @@ export class PartialSong {
     artists?: string[];
     lyrics?: string;
     title?: string;
-    songKey: string;
     uniqueChords: string[];
 }

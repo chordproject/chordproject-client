@@ -31,60 +31,109 @@
                 [disableRipple]="true"
                 #matAutocomplete="matAutocomplete"
             >
-                @if (resultSets && !resultSets.length) {
+                @if (
+                    resultSets &&
+                    !resultSets.songs?.length &&
+                    !resultSets.songbooks?.length &&
+                    !resultSets.songsInSongbooks?.length
+                ) {
                     <mat-option
                         class="text-secondary pointer-events-none bg-transparent px-6 py-0 text-md"
                     >
                         No results found!
                     </mat-option>
                 }
-                @for (
-                    resultSet of resultSets;
-                    track trackByFn($index, resultSet)
-                ) {
+
+                <!-- Songs -->
+                @if (resultSets?.songs?.length) {
                     <mat-optgroup class="mt-2 flex items-center px-2">
                         <span
                             class="text-secondary text-sm font-semibold tracking-wider"
-                            >{{ resultSet.label.toUpperCase() }}</span
+                            >SONGS</span
+                        >
+                    </mat-optgroup>
+                    @for (song of resultSets.songs; track song.uid) {
+                        <mat-option
+                            class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-gray-100"
+                            [routerLink]="['/songs', song.uid]"
+                            [value]="song.title"
+                        >
+                            <div>
+                                <span class="font-semibold">{{
+                                    song.title
+                                }}</span>
+                                <div class="text-secondary truncate text-xs">
+                                    {{ song.lyrics }}
+                                </div>
+                            </div>
+                        </mat-option>
+                    }
+                }
+
+                <!-- Songbooks -->
+                @if (resultSets?.songbooks?.length) {
+                    <mat-optgroup class="mt-2 flex items-center px-2">
+                        <span
+                            class="text-secondary text-sm font-semibold tracking-wider"
+                            >SONGBOOKS</span
                         >
                     </mat-optgroup>
                     @for (
-                        result of resultSet.results;
-                        track trackByFn($index, result)
+                        songbook of resultSets.songbooks;
+                        track songbook.uid
                     ) {
                         <mat-option
                             class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-gray-100"
-                            [routerLink]="result.link"
-                            [value]="result.value"
+                            [routerLink]="['/songbooks', songbook.uid]"
+                            [value]="songbook.name"
                         >
-                            <!-- Contacts -->
-                            @if (resultSet.id === 'contacts') {
-                                <ng-container
-                                    *ngTemplateOutlet="
-                                        contactResult;
-                                        context: { $implicit: result }
-                                    "
-                                ></ng-container>
-                            }
-                            <!-- Pages -->
-                            @if (resultSet.id === 'pages') {
-                                <ng-container
-                                    *ngTemplateOutlet="
-                                        pageResult;
-                                        context: { $implicit: result }
-                                    "
-                                ></ng-container>
-                            }
-                            <!-- Tasks -->
-                            @if (resultSet.id === 'tasks') {
-                                <ng-container
-                                    *ngTemplateOutlet="
-                                        taskResult;
-                                        context: { $implicit: result }
-                                    "
-                                ></ng-container>
-                            }
+                            <div>
+                                <span class="font-semibold">{{
+                                    songbook.name
+                                }}</span>
+                            </div>
                         </mat-option>
+                    }
+                }
+
+                <!-- Songs in Songbooks -->
+                @if (resultSets?.songsInSongbooks?.length) {
+                    <mat-optgroup class="mt-2 flex items-center px-2">
+                        <span
+                            class="text-secondary text-sm font-semibold tracking-wider"
+                            >SONGS IN SONGBOOKS</span
+                        >
+                    </mat-optgroup>
+                    @for (
+                        group of resultSets.songsInSongbooks;
+                        track group.songbook.uid
+                    ) {
+                        <mat-option
+                            disabled
+                            class="text-secondary pointer-events-none bg-transparent px-6 py-0 text-xs"
+                        >
+                            <span class="italic">{{
+                                group.songbook.name
+                            }}</span>
+                        </mat-option>
+                        @for (song of group.songs; track song.uid) {
+                            <mat-option
+                                class="group relative mb-1 rounded-md px-8 py-0 text-md dark:hover:bg-hover hover:bg-gray-100"
+                                [routerLink]="['/songs', song.uid]"
+                                [value]="song.title"
+                            >
+                                <div>
+                                    <span class="font-semibold">{{
+                                        song.title
+                                    }}</span>
+                                    <div
+                                        class="text-secondary truncate text-xs"
+                                    >
+                                        {{ song.lyrics }}
+                                    </div>
+                                </div>
+                            </mat-option>
+                        }
                     }
                 }
             </mat-autocomplete>
@@ -121,114 +170,108 @@
             [disableRipple]="true"
             #matAutocomplete="matAutocomplete"
         >
-            @if (resultSets && !resultSets.length) {
+            @if (
+                resultSets &&
+                !resultSets.songs?.length &&
+                !resultSets.songbooks?.length &&
+                !resultSets.songsInSongbooks?.length
+            ) {
                 <mat-option
                     class="text-secondary pointer-events-none bg-transparent px-6 py-0 text-md"
                 >
                     No results found!
                 </mat-option>
             }
-            @for (resultSet of resultSets; track trackByFn($index, resultSet)) {
-                <mat-optgroup class="mt-2 flex items-center px-2">
+
+            <!-- Songs -->
+            @if (resultSets?.songs?.length) {
+                <mat-optgroup class="mt-2 flex items-center px-2" label="Songs">
                     <span
                         class="text-secondary text-sm font-semibold tracking-wider"
-                        >{{ resultSet.label.toUpperCase() }}</span
+                        >SONGS</span
+                    >
+                </mat-optgroup>
+                @for (song of resultSets.songs; track song.uid) {
+                    <mat-option
+                        class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-gray-100"
+                        [routerLink]="['/songs', song.uid]"
+                        [value]="song.title"
+                    >
+                        <div>
+                            <span class="font-semibold">{{ song.title }}</span>
+                            <div class="text-secondary truncate text-xs">
+                                {{ song.lyrics }}
+                            </div>
+                        </div>
+                    </mat-option>
+                }
+            }
+
+            <!-- Songbooks -->
+            @if (resultSets?.songbooks?.length) {
+                <mat-optgroup
+                    class="mt-2 flex items-center px-2"
+                    label="Songbooks"
+                >
+                    <span
+                        class="text-secondary text-sm font-semibold tracking-wider"
+                        >SONGBOOKS</span
+                    >
+                </mat-optgroup>
+                @for (songbook of resultSets.songbooks; track songbook.uid) {
+                    <mat-option
+                        class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-gray-100"
+                        [routerLink]="['/songbooks', songbook.uid]"
+                        [value]="songbook.name"
+                    >
+                        <div>
+                            <span class="font-semibold">{{
+                                songbook.name
+                            }}</span>
+                        </div>
+                    </mat-option>
+                }
+            }
+
+            <!-- Songs in Songbooks -->
+            @if (resultSets?.songsInSongbooks?.length) {
+                <mat-optgroup
+                    class="mt-2 flex items-center px-2"
+                    label="Songs in songbooks"
+                >
+                    <span
+                        class="text-secondary text-sm font-semibold tracking-wider"
+                        >SONGS IN SONGBOOKS</span
                     >
                 </mat-optgroup>
                 @for (
-                    result of resultSet.results;
-                    track trackByFn($index, result)
+                    group of resultSets.songsInSongbooks;
+                    track group.songbook.uid
                 ) {
                     <mat-option
-                        class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-gray-100"
-                        [routerLink]="result.link"
-                        [value]="result.value"
+                        disabled
+                        class="text-secondary pointer-events-none bg-transparent px-6 py-0 text-xs"
                     >
-                        <!-- Contacts -->
-                        @if (resultSet.id === 'contacts') {
-                            <ng-container
-                                *ngTemplateOutlet="
-                                    contactResult;
-                                    context: { $implicit: result }
-                                "
-                            ></ng-container>
-                        }
-                        <!-- Pages -->
-                        @if (resultSet.id === 'pages') {
-                            <ng-container
-                                *ngTemplateOutlet="
-                                    pageResult;
-                                    context: { $implicit: result }
-                                "
-                            ></ng-container>
-                        }
-                        <!-- Tasks -->
-                        @if (resultSet.id === 'tasks') {
-                            <ng-container
-                                *ngTemplateOutlet="
-                                    taskResult;
-                                    context: { $implicit: result }
-                                "
-                            ></ng-container>
-                        }
+                        <span class="italic">{{ group.songbook.name }}</span>
                     </mat-option>
+                    @for (song of group.songs; track song.uid) {
+                        <mat-option
+                            class="group relative mb-1 rounded-md px-8 py-0 text-md dark:hover:bg-hover hover:bg-gray-100"
+                            [routerLink]="['/songs', song.uid]"
+                            [value]="song.title"
+                        >
+                            <div>
+                                <span class="font-semibold">{{
+                                    song.title
+                                }}</span>
+                                <div class="text-secondary truncate text-xs">
+                                    {{ song.lyrics }}
+                                </div>
+                            </div>
+                        </mat-option>
+                    }
                 }
             }
         </mat-autocomplete>
     </div>
 }
-
-<!-- Contact result template -->
-<ng-template #contactResult let-result>
-    <div class="flex items-center">
-        <div
-            class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-100 dark:bg-primary-800"
-        >
-            @if (result.avatar) {
-                <img [src]="result.avatar" />
-            }
-            @if (!result.avatar) {
-                <mat-icon
-                    class="m-0 text-primary icon-size-5 dark:text-primary-400"
-                    [svgIcon]="'heroicons_outline:user-circle'"
-                ></mat-icon>
-            }
-        </div>
-        <div class="ml-3 truncate">
-            <span [innerHTML]="result.name"></span>
-        </div>
-    </div>
-</ng-template>
-
-<!-- Page result template -->
-<ng-template #pageResult let-result>
-    <div class="flex flex-col">
-        <div class="truncate leading-normal" [innerHTML]="result.title"></div>
-        <div class="text-secondary truncate text-sm leading-normal">
-            {{ result.link }}
-        </div>
-    </div>
-</ng-template>
-
-<!-- Task result template -->
-<ng-template #taskResult let-result>
-    <div class="flex items-center">
-        @if (result.completed) {
-            <mat-icon
-                class="mr-0 text-primary dark:text-primary-400"
-                [svgIcon]="'heroicons_outline:check-circle'"
-            ></mat-icon>
-        }
-        @if (!result.completed) {
-            <mat-icon
-                class="text-hint mr-0"
-                [svgIcon]="'heroicons_outline:check-circle'"
-            ></mat-icon>
-        }
-        <div
-            class="ml-3 truncate leading-normal"
-            [ngClass]="{ 'text-hint line-through': result.completed }"
-            [innerHTML]="result.title"
-        ></div>
-    </div>
-</ng-template>

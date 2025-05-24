@@ -77,9 +77,9 @@ export class SongsListComponent implements OnInit, OnDestroy {
         ).pipe(
             switchMap((query: string) => {
                 if (!query) {
-                    return this._songService.getList();
+                    return this._songService.searchSongs();
                 } else {
-                    return this._songService.getList(query);
+                    return this._songService.searchSongs(query);
                 }
             })
         );
