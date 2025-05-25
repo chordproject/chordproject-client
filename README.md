@@ -1,22 +1,35 @@
+<div align="center">
+[![Logo](./public/chp/logo.svg)](https://chordproject.com)
+[![Text Logo](./public/chp/logo-text-light.svg)](https://chordproject.com)
+
+[chordproject.com](https://chordproject.com)
+
+</div>
+
 # ChordProject Client
 
-Web client for ChordProject, an Angular app to create, edit, and organize songs using ChordPro notation. Features live sync, chord diagrams, auto-scroll, transposition, and customizable songbooks for live performance and personal use. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.
+Web client for ChordProject, an Angular application for creating, editing, and organizing songs using ChordPro notation. It features live sync, chord diagrams, auto-scroll, transposition, and customizable songbooks for live performance and personal use.
 
 ## Overview
 
-This application is designed for managing **songs** (with **chords**) and **songbooks**.
+This application is built to manage songs (with chords) and songbooks. It parses and formats marked-up music with [ChordPro](https://chordpro.org) notation.
 
 ## Features
 
-- Parses and formats marked-up music (lyrics and chords) using [ChordPro](https://chordpro.org) notation.
-- Allows you to read, edit, or print songs with chord diagrams.
-- Ensures chords are always correctly positioned, regardless of font or screen size.
-- Stores songs online, with updates reflected instantly across all devices.
-- Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, **transposition**, and more.
-- Enables organizing songs into customizable **songbooks**.
+- Live synchronization across devices.
+- Accurate chord positioning and formatting.
+- Integrated editor for reading, editing, and printing songs.
+- Customizable viewer with autoscroll, font size adjustment, and transposition.
+- Dynamic songbook management.
 
-## Platform Description
+## Platform Details
 
-ChordProject has a sister site, [homenajesus.com](https://homenajesus.com), dedicated exclusively to Christian music, while [chordproject.com](https://chordproject.com) is for general use.
+ChordProject caters to a broad audience. Its sister site, [homenajesus.com](https://homenajesus.com), specializes in Christian music, while [chordproject.com](https://chordproject.com) serves general use.
 
-[Visit HomenaJesus](https://homenajesus.com)
+[Visit Homenajesus](https://homenajesus.com)
+
+## Contribute
+
+1. Clone the repository.
+2. Install dependencies using npm.
+3. Run the development server with `ng serve`.
