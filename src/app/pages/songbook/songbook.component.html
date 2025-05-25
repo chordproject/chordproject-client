@@ -1,4 +1,4 @@
-<chp-split-layout [leftTemplate]="songList" [rightTemplate]="viewer">
+<chp-split-layout class="h-full w-full flex-auto" [leftTemplate]="songList" [rightTemplate]="viewer">
 </chp-split-layout>
 
 <ng-template #songList>
@@ -13,7 +13,7 @@
                 </h1>
             </div>
             <!-- Sección inferior -->
-            <div class="bg-card flex-1 overflow-hidden">
+            <div class="bg-card flex-1">
                 @if (songsList; as songs) {
                     <div
                         [cdkDropListDisabled]="!songbook.isReorderable"
@@ -24,24 +24,15 @@
                     >
                         @for (song of songs; track trackByFn($index, song)) {
                             <div class="w-full">
-                                <div
-                                    cdkDrag
-                                    class="flex w-full items-center gap-2 overflow-hidden"
+                                <chp-song-item
+                                    [song]="song"
+                                    (click)="selectSong(song)"
+                                    (dblclick)="onDblClick(song)"
+                                    class="w-full min-w-0 flex-1"
+                                    [selected]="selectedSong?.uid === song.uid"
+                                    [showDragHandle]="songbook.isReorderable"
                                 >
-                                    <chp-song-item
-                                        [song]="song"
-                                        (click)="selectSong(song)"
-                                        (dblclick)="onDblClick(song)"
-                                        class="w-full min-w-0 flex-1"
-                                        [selected]="
-                                            selectedSong?.uid === song.uid
-                                        "
-                                        [showDragHandle]="
-                                            songbook.isReorderable
-                                        "
-                                    >
-                                    </chp-song-item>
-                                </div>
+                                </chp-song-item>
                             </div>
                         }
                     </div>
@@ -53,7 +44,6 @@
 
 <ng-template #viewer>
     @if (selectedSong) {
-        <chp-viewer [content]="selectedSong.content" isPreview="true">
-        </chp-viewer>
+        <chp-viewer [content]="selectedSong.content" isPreview="true"> </chp-viewer>
     }
 </ng-template>

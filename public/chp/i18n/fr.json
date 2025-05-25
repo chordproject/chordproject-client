@@ -1,7 +1,7 @@
 {
     "home": {
         "about_title": "À propos de ce projet",
-        "about_description": "<mark>ChordProject</mark> est un carnet de chansons numérique qui permet aux musiciens passionnés de créer, éditer, organiser et découvrir de nouveaux chants en utilisant le format <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>. Vous pouvez également partager vos propres chansons avec d'autres utilisateurs et utiliser la plateforme comme un outil idéal pour les répétitions ou les prestations en direct. Contrairement à un carnet de chansons imprimé, cette plateforme est dynamique, elle évolue et grandit avec vous.",
+        "about_description": "<strong>ChordProject</strong> est un carnet de chansons numérique qui permet aux musiciens passionnés de créer, éditer, organiser et découvrir de nouveaux chants en utilisant le format <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>. Vous pouvez également partager vos propres chansons avec d'autres utilisateurs et utiliser la plateforme comme un outil idéal pour les répétitions ou les prestations en direct. Contrairement à un carnet de chansons imprimé, cette plateforme est dynamique, elle évolue et grandit avec vous.",
         "overview_title": "Aperçu",
         "overview_description": "Cette application est conçue pour gérer des <strong>chansons</strong> (avec <strong>accords</strong>) et des <strong>carnets de chansons</strong>.",
         "features": [
@@ -12,6 +12,6 @@
             "Inclut un visualiseur avec des outils pour les performances en direct, comme le défilement automatique, l'ajustement de la taille de la police, la <strong>transposition</strong> et plus encore.",
             "Permet d'organiser les chansons dans des <strong>carnets de chansons</strong> personnalisables."
         ],
-        "platform_description": "ChordProject a un site frère, <mark><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">homenajesus.com</a></mark>, dédié exclusivement à la <strong>musique chrétienne</strong>, tandis que <a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">chordproject.com</a> est destiné à un usage général."
+        "platform_description": "ChordProject a un site frère, <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, dédié exclusivement à la <strong>musique chrétienne</strong>, tandis que ChordProject est destiné à un usage général."
     }
 }

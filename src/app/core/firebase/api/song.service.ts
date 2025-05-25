@@ -18,15 +18,7 @@ import {
     setDoc,
     where,
 } from 'firebase/firestore';
-import {
-    BehaviorSubject,
-    Observable,
-    Subject,
-    combineLatest,
-    firstValueFrom,
-    from,
-    throwError,
-} from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, firstValueFrom, from, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { FirebaseService } from '../firebase.service';
 
@@ -76,23 +68,13 @@ export class SongService {
         }
 
         const chunkSize = 30;
-        const idChunks = Array.from(
-            { length: Math.ceil(ids.length / chunkSize) },
-            (_, i) => ids.slice(i * chunkSize, (i + 1) * chunkSize)
+        const idChunks = Array.from({ length: Math.ceil(ids.length / chunkSize) }, (_, i) =>
+            ids.slice(i * chunkSize, (i + 1) * chunkSize)
         );
 
         const observables = idChunks.map((chunk) => {
-            return from(
-                getDocs(
-                    query(
-                        collection(this._firestore, 'songs'),
-                        where('uid', 'in', chunk)
-                    )
-                )
-            ).pipe(
-                map((snapshot) =>
-                    snapshot.docs.map((doc) => doc.data() as PartialSong)
-                )
+            return from(getDocs(query(collection(this._firestore, 'songs'), where('uid', 'in', chunk)))).pipe(
+                map((snapshot) => snapshot.docs.map((doc) => doc.data() as PartialSong))
             );
         });
 
@@ -102,10 +84,7 @@ export class SongService {
         );
     }
 
-    searchSongs(
-        searchTerm?: string,
-        limitResults?: number
-    ): Observable<PartialSong[]> {
+    searchByTitle(searchTerm?: string, limitResults?: number): Observable<PartialSong[]> {
         const songsRef = collection(this._firestore, 'songs');
         const q = query(songsRef, orderBy('title'));
         return from(getDocs(q)).pipe(
@@ -115,21 +94,16 @@ export class SongService {
                         .toLocaleLowerCase()
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '');
-                let songs = snapshot.docs.map((doc) => {
-                    const data = doc.data() || {};
-                    return data as PartialSong;
-                });
+                let songs = snapshot.docs.map((doc) => doc.data() as PartialSong);
                 if (searchTerm) {
                     const qNorm = normalizar(searchTerm);
                     songs = songs.filter(
-                        (song) =>
-                            normalizar(song.title).includes(qNorm) ||
-                            normalizar(song.lyrics).includes(qNorm)
+                        (song) => song.title && normalizar(song.title).includes(qNorm)
                     );
                 }
                 // Ordenar ignorando acentos
                 songs = songs.sort((a, b) =>
-                    (a.title || '').localeCompare(b.title || '', 'es', {
+                    a.title.localeCompare(b.title, 'es', {
                         sensitivity: 'base',
                     })
                 );
@@ -154,17 +128,41 @@ export class SongService {
         );
     }
 
-    getLatest(pageSize: number = 10): Observable<PartialSong[]> {
-        const q = query(
-            collection(this._firestore, 'songs'),
-            orderBy('creationDate', 'desc'),
-            limit(pageSize)
+    searchByLyrics(searchTerm?: string, limitResults?: number): Observable<PartialSong[]> {
+        const songsRef = collection(this._firestore, 'songs');
+        const q = query(songsRef, orderBy('title'));
+        return from(getDocs(q)).pipe(
+            map((snapshot) => {
+                const normalizar = (str: string) =>
+                    (str || '')
+                        .toLocaleLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '');
+                let songs = snapshot.docs.map((doc) => doc.data() as PartialSong);
+                if (searchTerm) {
+                    const qNorm = normalizar(searchTerm);
+                    songs = songs.filter((song) => song.lyrics && normalizar(song.lyrics).includes(qNorm));
+                }
+                // Ordenar ignorando acentos
+                songs = songs.sort((a, b) =>
+                    (a.title || '').localeCompare(b.title || '', 'es', {
+                        sensitivity: 'base',
+                    })
+                );
+                if (limitResults) {
+                    songs = songs.slice(0, limitResults);
+                }
+                return songs;
+            }),
+            catchError((error) => this.handleError(error))
         );
+    }
+
+    getLatest(pageSize: number = 10): Observable<PartialSong[]> {
+        const q = query(collection(this._firestore, 'songs'), orderBy('creationDate', 'desc'), limit(pageSize));
 
         return from(getDocs(q)).pipe(
-            map((snapshot) =>
-                snapshot.docs.map((doc) => doc.data() as PartialSong)
-            ),
+            map((snapshot) => snapshot.docs.map((doc) => doc.data() as PartialSong)),
             catchError((error) => this.handleError(error))
         );
     }
@@ -218,9 +216,7 @@ export class SongService {
     }
 
     private async verifyAuthentication(): Promise<boolean> {
-        const isAuthenticated = await firstValueFrom(
-            this._userService.isAuthenticated()
-        );
+        const isAuthenticated = await firstValueFrom(this._userService.isAuthenticated());
         if (!isAuthenticated) {
             this.showSnackbar('Authentication required', 3000, 'warning');
             return false;
@@ -228,11 +224,7 @@ export class SongService {
         return true;
     }
 
-    private showSnackbar(
-        message: string,
-        duration: number = 3000,
-        type?: string
-    ): void {
+    private showSnackbar(message: string, duration: number = 3000, type?: string): void {
         this._snackBar.open(message, 'Close', {
             duration,
             horizontalPosition: 'center',

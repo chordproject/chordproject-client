@@ -1,13 +1,12 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { SongService } from 'app/core/firebase/api/song.service';
+import { SearchComponent } from 'app/layout/common/search/search.component';
 import { PartialSong } from 'app/models/partialsong';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
@@ -18,10 +17,9 @@ import { Observable, Subject, takeUntil } from 'rxjs';
     imports: [
         TranslocoModule,
         AsyncPipe,
-        MatFormFieldModule,
-        MatInputModule,
         MatButtonModule,
         MatIconModule,
+        SearchComponent,
         ChpSongItemComponent,
         RouterLink,
     ],
@@ -44,11 +42,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.updateFeatures(this._translocoService.getActiveLang());
 
         // Escuchar cambios de idioma y actualizar el array de características
-        this._translocoService.langChanges$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((lang) => {
-                this.updateFeatures(lang);
-            });
+        this._translocoService.langChanges$.pipe(takeUntil(this._unsubscribeAll)).subscribe((lang) => {
+            this.updateFeatures(lang);
+        });
     }
 
     ngOnDestroy(): void {
@@ -62,19 +58,14 @@ export class HomeComponent implements OnInit, OnDestroy {
      */
     private updateFeatures(lang: string): void {
         // Usar selectTranslateObject para obtener las traducciones completas
-        this._translocoService
-            .selectTranslateObject('home', {}, lang)
-            .subscribe((homeTranslations) => {
-                // Verificar si existe la estructura home.features
-                if (
-                    homeTranslations &&
-                    Array.isArray(homeTranslations.features)
-                ) {
-                    this.features = homeTranslations.features;
-                } else {
-                    this.features = [];
-                }
-            });
+        this._translocoService.selectTranslateObject('home', {}, lang).subscribe((homeTranslations) => {
+            // Verificar si existe la estructura home.features
+            if (homeTranslations && Array.isArray(homeTranslations.features)) {
+                this.features = homeTranslations.features;
+            } else {
+                this.features = [];
+            }
+        });
     }
 
     trackByFn(index: number, item: PartialSong): any {

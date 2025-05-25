@@ -1,7 +1,7 @@
 {
     "home": {
         "about_title": "Acerca de este proyecto",
-        "about_description": "<mark>ChordProject</mark> es un cancionero digital que permite a músicos entusiastas crear, editar, organizar y descubrir nuevas canciones usando el formato <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>. Además, puedes compartir tus propias canciones con otros usuarios y utilizar la plataforma como una herramienta ideal para ensayar o acompañar presentaciones en vivo. A diferencia de un cancionero impreso, esta plataforma es dinámica, evoluciona y crece junto contigo.",
+        "about_description": "<strong>ChordProject</strong> es un cancionero digital que permite a músicos entusiastas crear, editar, organizar y descubrir nuevas canciones usando el formato <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>. Además, puedes compartir tus propias canciones con otros usuarios y utilizar la plataforma como una herramienta ideal para ensayar o acompañar presentaciones en vivo. A diferencia de un cancionero impreso, esta plataforma es dinámica, evoluciona y crece junto contigo.",
         "overview_title": "Descripción general",
         "overview_description": "Esta aplicación está diseñada para administrar <strong>canciones</strong> (con <strong>acordes</strong>) y <strong>cancioneros</strong>.",
         "features": [
@@ -12,6 +12,6 @@
             "Incluye un visor con herramientas para actuaciones en vivo, como desplazamiento automático, ajuste de tamaño de fuente, <strong>transposición</strong> y más.",
             "Permite organizar canciones en <strong>cancioneros</strong> personalizables."
         ],
-        "platform_description": "ChordProject tiene un sitio hermano, <mark><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">homenajesus.com</a></mark>, dedicado exclusivamente a la <strong>música cristiana</strong>, mientras que <a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">chordproject.com</a> es para uso general."
+        "platform_description": "ChordProject tiene un sitio hermano, <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, dedicado exclusivamente a la <strong>música cristiana</strong>, mientras que ChordProject es para uso general."
     }
 }

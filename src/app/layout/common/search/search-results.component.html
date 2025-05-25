@@ -1,0 +1,113 @@
+<mat-autocomplete
+    #matAutocomplete="matAutocomplete"
+    class="max-h-128 rounded-b border-t bg-gray-50 shadow-md sm:px-2 dark:bg-[#273549]"
+    [autoSelectActiveOption]="true"
+    [disableRipple]="true"
+>
+    @if (
+        resultSets &&
+        !resultSets.songs?.length &&
+        !resultSets.songsContent?.length &&
+        !resultSets.songbooks?.length &&
+        !resultSets.songsInSongbooks?.length
+    ) {
+        <mat-option class="text-secondary pointer-events-none bg-transparent px-6 py-0 text-md">
+            No results found!
+        </mat-option>
+    }
+
+    <!-- SONGS (by title) -->
+    @if (resultSets?.songs?.length) {
+        <mat-optgroup class="mt-2 flex items-center px-2">
+            <span class="text-secondary text-sm font-semibold tracking-wider">SONGS</span>
+        </mat-optgroup>
+        @for (song of resultSets.songs; track song.uid) {
+            <mat-option
+                class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-primary-100"
+                [routerLink]="['/songs/read', song.uid]"
+                [value]="song.title"
+            >
+                <div>
+                    <span
+                        class="font-semibold dark:group-hover:text-primary-900"
+                        [innerHTML]="highlightSearchTerm(song.title, searchValue)"
+                    ></span>
+                    <div class="text-secondary truncate text-xs">{{ song.lyrics }}</div>
+                </div>
+            </mat-option>
+        }
+    }
+
+    <!-- SONGS CONTENT (by lyrics) -->
+    @if (resultSets?.songsContent?.length) {
+        <mat-optgroup class="mt-2 flex items-center px-2">
+            <span class="text-secondary text-sm font-semibold tracking-wider">SONGS CONTENT</span>
+        </mat-optgroup>
+        @for (song of resultSets.songsContent; track song.uid) {
+            <mat-option
+                class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-primary-100"
+                [routerLink]="['/songs/read', song.uid]"
+                [value]="song.title"
+            >
+                <div>
+                    <span class="font-semibold dark:group-hover:text-primary-900">{{ song.title }}</span>
+                    <div
+                        class="text-secondary truncate text-xs"
+                        [innerHTML]="highlightSearchTerm(song.lyrics, searchValue)"
+                    ></div>
+                </div>
+            </mat-option>
+        }
+    }
+
+    <!-- Songbooks -->
+    @if (resultSets?.songbooks?.length) {
+        <mat-optgroup class="mt-2 flex items-center px-2">
+            <span class="text-secondary text-sm font-semibold tracking-wider">SONGBOOKS</span>
+        </mat-optgroup>
+        @for (songbook of resultSets.songbooks; track songbook.uid) {
+            <mat-option
+                class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-primary-100"
+                [routerLink]="['/songbook', songbook.uid]"
+                [value]="songbook.name"
+            >
+                <div>
+                    <span
+                        class="font-semibold dark:group-hover:text-primary-900"
+                        [innerHTML]="highlightSearchTerm(songbook.name, searchValue)"
+                    ></span>
+                </div>
+            </mat-option>
+        }
+    }
+
+    <!-- Songbooks Content -->
+    @if (resultSets?.songsInSongbooks?.length) {
+        <mat-optgroup class="mt-2 flex items-center px-2">
+            <span class="text-secondary text-sm font-semibold tracking-wider">SONGBOOKS CONTENT</span>
+        </mat-optgroup>
+        @for (group of resultSets.songsInSongbooks; track group.songbook.uid) {
+            <mat-option disabled class="text-secondary pointer-events-none bg-transparent px-6 py-0 text-xs">
+                <span class="italic">{{ group.songbook.name }}</span>
+            </mat-option>
+            @for (song of group.songs; track song.uid) {
+                <mat-option
+                    class="group relative mb-1 rounded-md px-8 py-0 text-md dark:hover:bg-hover hover:bg-primary-100"
+                    [routerLink]="['/songs/read', song.uid]"
+                    [value]="song.title"
+                >
+                    <div>
+                        <span
+                            class="font-semibold dark:group-hover:text-primary-900"
+                            [innerHTML]="highlightSearchTerm(song.title, searchValue)"
+                        ></span>
+                        <div
+                            class="text-secondary truncate text-xs"
+                            [innerHTML]="highlightSearchTerm(song.lyrics, searchValue)"
+                        ></div>
+                    </div>
+                </mat-option>
+            }
+        }
+    }
+</mat-autocomplete>

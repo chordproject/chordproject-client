@@ -6,17 +6,13 @@
 >
     @if (showDragHandle) {
         <div class="flex items-center justify-center px-1">
-            <mat-icon class="flex-shrink-0 cursor-move" cdkDragHandle>
-                drag_indicator
-            </mat-icon>
+            <mat-icon class="flex-shrink-0 cursor-move" cdkDragHandle> drag_indicator </mat-icon>
         </div>
     }
 
     <div class="flex-1 overflow-hidden px-3 py-4 md:px-4">
         <div class="flex flex-wrap items-center gap-y-1">
-            <div
-                class="flex min-w-0 flex-grow basis-[60%] flex-wrap items-center gap-x-2 overflow-hidden"
-            >
+            <div class="flex min-w-0 flex-grow basis-[60%] flex-wrap items-center gap-x-2 overflow-hidden">
                 <a
                     class="truncate text-base font-bold dark:group-hover:text-primary-900 dark:group-[.bg-primary-50]:text-primary-900"
                     [ngClass]="{ 'text-primary-900': selected }"
@@ -25,14 +21,8 @@
                 @if (song.artists && song.artists.length > 0) {
                     <span>&nbsp;-&nbsp;</span>
                 }
-                <div
-                    class="text-secondary flex flex-wrap items-center gap-x-1 text-sm"
-                >
-                    @for (
-                        artist of song.artists;
-                        track artist;
-                        let last = $last
-                    ) {
+                <div class="text-secondary flex flex-wrap items-center gap-x-1 text-sm">
+                    @for (artist of song.artists; track artist; let last = $last) {
                         <a
                             >{{ artist }}
                             @if (!last) {
@@ -42,22 +32,15 @@
                     }
                 </div>
             </div>
-            <div
-                class="flex flex-shrink-0 basis-[40%] flex-nowrap gap-x-1 overflow-x-hidden truncate text-xs"
-            >
+            <div class="flex flex-shrink-0 basis-[40%] flex-nowrap gap-x-1 overflow-x-hidden truncate text-xs">
                 @if (song.uniqueChords?.length > 0) {
                     @for (chord of song.uniqueChords; track chord) {
-                        <span
-                            class="rounded bg-primary-100 px-2 py-0.5 font-mono text-primary-700"
-                            >{{ chord }}</span
-                        >
+                        <span class="rounded bg-primary-100 px-2 py-0.5 font-mono text-primary-700">{{ chord }}</span>
                     }
                 }
             </div>
         </div>
-        @if (
-            song.lyrics?.trim()
-        ) {
+        @if (song.lyrics?.trim()) {
             <div class="mt-1 truncate text-xs italic text-gray-500">
                 {{ song.lyrics }}
             </div>

@@ -59,11 +59,8 @@ export class AuthSignInComponent implements OnInit {
 
     ngOnInit(): void {
         this.signInForm = this._formBuilder.group({
-            email: [
-                'chordprojectapp@gmail.com',
-                [Validators.required, Validators.email],
-            ],
-            password: ['GoChord1*', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', Validators.required],
             rememberMe: [''],
         });
     }
@@ -77,10 +74,7 @@ export class AuthSignInComponent implements OnInit {
         this.showAlert = false;
 
         this._subscription = this._authService
-            .signInWithEmail(
-                this.signInForm.get('email').value,
-                this.signInForm.get('password').value
-            )
+            .signInWithEmail(this.signInForm.get('email').value, this.signInForm.get('password').value)
             .subscribe({
                 next: () => {
                     this.signInForm.enable();
