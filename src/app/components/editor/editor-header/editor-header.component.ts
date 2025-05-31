@@ -8,22 +8,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     selector: 'chp-editor-header',
     templateUrl: './editor-header.component.html',
     standalone: true,
-    imports: [
-        MatButtonModule,
-        MatIconModule,
-        MatTooltipModule,
-        MatDividerModule,
-    ],
+    imports: [MatButtonModule, MatIconModule, MatTooltipModule, MatDividerModule],
 })
 export class ChpEditorHeaderComponent {
-    @Input() hideClose = false;
-    @Input() hideHelp = false;
-    @Input() hideToggleMode = false;
+    @Input() mode: 'basic' | 'full' = 'full';
 
     @Output() saveSongEvent = new EventEmitter<void>();
     @Output() removeSongEvent = new EventEmitter<void>();
     @Output() helpEvent = new EventEmitter<void>();
     @Output() openFullEditorEvent = new EventEmitter<void>();
     @Output() closeEvent = new EventEmitter<void>();
-    @Output() toggleModeEvent = new EventEmitter<void>();
 }

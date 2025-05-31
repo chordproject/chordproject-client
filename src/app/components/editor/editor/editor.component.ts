@@ -18,16 +18,22 @@ import {
 import { FuseConfigService } from '@fuse/services/config';
 import * as ChordProjectEditor from 'chordproject-editor';
 import { Subject, takeUntil } from 'rxjs';
+import { ChpEditorHeaderComponent } from '../editor-header/editor-header.component';
 
 @Component({
     selector: 'chp-editor',
     templateUrl: './editor.component.html',
+    imports: [ChpEditorHeaderComponent],
 })
-export class ChpEditorComponent
-    implements OnInit, OnDestroy, AfterViewInit, OnChanges
-{
+export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
     @Output() contentChange = new EventEmitter<string>();
+    @Output() close = new EventEmitter<void>();
+    @Output() save = new EventEmitter<void>();
+    @Output() remove = new EventEmitter<void>();
+    @Output() openFullEditor = new EventEmitter<void>();
+    @Output() help = new EventEmitter<void>();
     @Input() style: any = {};
+    @Input() mode: 'basic' | 'full' = 'full';
 
     @ViewChild('editorDiv', { static: true }) editorDiv!: ElementRef;
 
@@ -38,7 +44,6 @@ export class ChpEditorComponent
     oldContent: any;
     timeoutSaving: any;
     isDarkMode: boolean = false;
-    private _initialized = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -54,27 +59,21 @@ export class ChpEditorComponent
 
     ngOnInit(): void {
         // Subscribe to config changes to detect theme changes
-        this._fuseConfigService.config$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((config) => {
-                // Update darkTheme based on the current scheme and body class
-                let newDarkTheme = config.scheme === 'dark';
+        this._fuseConfigService.config$.pipe(takeUntil(this._unsubscribeAll)).subscribe((config) => {
+            // Update darkTheme based on the current scheme and body class
+            let newDarkTheme = config.scheme === 'dark';
 
-                // For auto scheme, check the actual body class
-                if (
-                    config.scheme === 'auto' &&
-                    isPlatformBrowser(this._platformId)
-                ) {
-                    newDarkTheme =
-                        this._document.body.classList.contains('dark');
-                }
+            // For auto scheme, check the actual body class
+            if (config.scheme === 'auto' && isPlatformBrowser(this._platformId)) {
+                newDarkTheme = this._document.body.classList.contains('dark');
+            }
 
-                // Only call themeChanged if the theme actually changed
-                if (this.isDarkMode !== newDarkTheme) {
-                    this.isDarkMode = newDarkTheme;
-                    this.themeChanged();
-                }
-            });
+            // Only call themeChanged if the theme actually changed
+            if (this.isDarkMode !== newDarkTheme) {
+                this.isDarkMode = newDarkTheme;
+                this.themeChanged();
+            }
+        });
     }
 
     ngAfterViewInit(): void {
@@ -121,7 +120,12 @@ export class ChpEditorComponent
             // Aplicar el tema actual
             this.themeChanged();
 
-            this._initialized = true;
+            setTimeout(() => {
+                const input = this.editorDiv.nativeElement.querySelector('textarea, [contenteditable="true"]');
+                if (input) {
+                    (input as HTMLElement).focus();
+                }
+            }, 0);
         } catch (error) {
             console.error('Error al inicializar el editor:', error);
         }
@@ -167,11 +171,7 @@ export class ChpEditorComponent
         if (content === null || content === undefined) {
             content = '';
         }
-        if (
-            this._editor &&
-            this._content !== content &&
-            this._autoUpdateContent === true
-        ) {
+        if (this._editor && this._content !== content && this._autoUpdateContent === true) {
             this._content = content;
             this._editor.setValue(content);
             this._editor.clearSelection();
@@ -181,10 +181,7 @@ export class ChpEditorComponent
 
     setEditorContent(value: string): void {
         if (!this._editor) {
-            console.warn(
-                'Editor no inicializado. Contenido no aplicado:',
-                value
-            );
+            console.warn('Editor no inicializado. Contenido no aplicado:', value);
             this._content = value || '';
             return;
         }
@@ -194,10 +191,7 @@ export class ChpEditorComponent
             this._editor.clearSelection();
             this._editor.resize(true);
         } catch (error) {
-            console.error(
-                'Error al establecer el contenido en el editor:',
-                error
-            );
+            console.error('Error al establecer el contenido en el editor:', error);
         }
     }
 
@@ -234,5 +228,21 @@ export class ChpEditorComponent
         }
 
         ChordProjectEditor.Main.doSetTheme(theme);
+    }
+
+    onClose() {
+        this.close.emit();
+    }
+    onSave() {
+        this.save.emit();
+    }
+    onRemove() {
+        this.remove.emit();
+    }
+    onOpenFullEditor() {
+        this.openFullEditor.emit();
+    }
+    onHelp() {
+        this.help.emit();
     }
 }

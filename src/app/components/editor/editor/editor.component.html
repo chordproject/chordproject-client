@@ -1,1 +1,9 @@
-<div #editorDiv id="chordProjectEditor"></div>
+<chp-editor-header
+    [mode]="mode"
+    (saveSongEvent)="onSave()"
+    (removeSongEvent)="onRemove()"
+    (openFullEditorEvent)="onOpenFullEditor()"
+    (closeEvent)="onClose()"
+    (helpEvent)="onHelp()"
+></chp-editor-header>
+<div id="chordProjectEditor" class="mt-4" #editorDiv tabindex="0"></div>

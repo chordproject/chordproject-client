@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChpEditorHeaderComponent } from 'app/components/editor/editor-header/editor-header.component';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
@@ -22,19 +21,12 @@ import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
     standalone: true,
     templateUrl: './song-editor.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        MatCardModule,
-        ChpSplitLayoutComponent,
-        ChpViewerComponent,
-        ChpEditorComponent,
-        ChpEditorHeaderComponent,
-    ],
+    imports: [MatCardModule, ChpSplitLayoutComponent, ChpViewerComponent, ChpEditorComponent],
 })
 export class SongEditorComponent implements OnInit, OnDestroy {
     isReaderMode = false;
     songContent = '';
     song$: Observable<Song>;
-    isMobile = false;
     private _song: Song = new Song();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -97,15 +89,8 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         }
     }
 
-    toggleMode(): void {
-        this.isReaderMode = !this.isReaderMode;
-        this.cleanupTemplateRefs();
-    }
-
     saveSong(): void {
-        const updatedSong = this.editorService.prepareSongFromContent(
-            this.songContent
-        );
+        const updatedSong = this.editorService.prepareSongFromContent(this.songContent);
         this._song = { ...this._song, ...updatedSong };
         this._songService.save(this._song).then((res) => {
             this._song.uid = res;
@@ -123,6 +108,12 @@ export class SongEditorComponent implements OnInit, OnDestroy {
 
     showHelp(): void {
         // Implement help functionality
+    }
+
+    onEditorClose() {
+        if (this._song?.uid) {
+            this.router.navigate(['/songs/read', this._song.uid]);
+        }
     }
 
     ngOnDestroy(): void {

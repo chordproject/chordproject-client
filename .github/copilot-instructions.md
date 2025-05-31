@@ -7,3 +7,5 @@
     - Un Subject privado \_unsubscribeAll para manejar las suscripciones
     - la inyeccion de dependencias debe hacerse en el constructor
 - Al realizar correcciones generales en el codebase, no se debe alterar nada al interior de la carpeta @fuse
+- prioriza el uso de @if () {} en lugar de *ngIf. Hacer lo mismo para @for () {} en lugar de *ngFor
+- al generear mensaje de commit limitarse a las funionalidades que se estan implementando, no agregar detalles Como "para mejorar funcionalidad" o "para mejorar el rendimiento"

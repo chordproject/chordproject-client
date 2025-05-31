@@ -1,8 +1,4 @@
-import {
-    CdkDragDrop,
-    DragDropModule,
-    moveItemInArray,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,13 +15,7 @@ import { switchMap } from 'rxjs/operators';
     selector: 'chp-songbook',
     standalone: true,
     templateUrl: './songbook.component.html',
-    imports: [
-        CommonModule,
-        DragDropModule,
-        ChpViewerComponent,
-        ChpSongItemComponent,
-        ChpSplitLayoutComponent,
-    ],
+    imports: [CommonModule, DragDropModule, ChpViewerComponent, ChpSongItemComponent, ChpSplitLayoutComponent],
 })
 export class SongbookComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -58,9 +48,11 @@ export class SongbookComponent implements OnInit, OnDestroy {
     private loadSongs(): void {
         this.songs$ = this._route.paramMap.pipe(
             takeUntil(this._unsubscribeAll),
-            switchMap((params) =>
-                this._songbookService.getContent(params.get('uid'))
-            )
+            switchMap((params) => {
+                // Reset selected song when route changes
+                this.selectedSong = null;
+                return this._songbookService.getContent(params.get('uid'));
+            })
         );
 
         this.songs$.pipe(takeUntil(this._unsubscribeAll)).subscribe((songs) => {
@@ -79,11 +71,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
         }
 
         // Actualizar la UI inmediatamente
-        moveItemInArray(
-            this.songsList,
-            event.previousIndex,
-            event.currentIndex
-        );
+        moveItemInArray(this.songsList, event.previousIndex, event.currentIndex);
 
         // Preparar datos para BD
         const songOrders = this.songsList.map((song, index) => ({
@@ -93,10 +81,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
 
         // Actualizar en Firebase sin recargar después
         const songbookId = this._route.snapshot.paramMap.get('uid');
-        this._songbookService
-            .updateSongOrder(songbookId, songOrders)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe();
+        this._songbookService.updateSongOrder(songbookId, songOrders).pipe(takeUntil(this._unsubscribeAll)).subscribe();
     }
 
     selectSong(song: PartialSong): void {

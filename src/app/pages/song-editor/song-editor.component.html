@@ -2,26 +2,20 @@
     class="h-full w-full flex-auto"
     [leftTemplate]="isReaderMode ? viewer : editor"
     [rightTemplate]="isReaderMode ? editor : viewer"
-    (isMobileChange)="isMobile = $event"
 >
 </chp-split-layout>
 
 <ng-template #editor>
     <mat-card class="flex h-full flex-col">
-        <mat-card-header class="!p-0">
-            <chp-editor-header
-                class="w-full"
-                [hideClose]="true"
-                [hideToggleMode]="isMobile"
-                (saveSongEvent)="saveSong()"
-                (removeSongEvent)="removeSong()"
-                (helpEvent)="showHelp()"
-                (toggleModeEvent)="toggleMode()"
-            >
-            </chp-editor-header>
-        </mat-card-header>
         <mat-card-content class="!p-0 pt-2.5">
-            <chp-editor [(content)]="songContent" tabindex="0"></chp-editor>
+            <chp-editor
+                [(content)]="songContent"
+                tabindex="0"
+                (close)="onEditorClose()"
+                (save)="saveSong()"
+                (remove)="removeSong()"
+                (help)="showHelp()"
+            ></chp-editor>
         </mat-card-content>
     </mat-card>
 </ng-template>

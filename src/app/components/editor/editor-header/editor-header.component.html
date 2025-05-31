@@ -1,70 +1,26 @@
-<div
-    class="flex flex-0 items-center justify-between border-b bg-gray-50 px-4 py-3 dark:bg-transparent"
->
-    <div class="flex items-center">
-        <button
-            mat-icon-button
-            matTooltip="Save"
-            class="mr-2"
-            (click)="saveSongEvent.emit()"
-        >
-            <mat-icon
-                [svgIcon]="'heroicons_outline:document-arrow-down'"
-            ></mat-icon>
+<div class="flex flex-0 items-center justify-between border-b bg-gray-50 px-4 py-3 dark:bg-transparent">
+    <div class="flex items-center gap-2">
+        <button mat-icon-button [matTooltip]="'Save'" (click)="saveSongEvent.emit()">
+            <mat-icon [svgIcon]="'heroicons_outline:document-arrow-down'"></mat-icon>
         </button>
-        <button
-            mat-icon-button
-            [color]="'warn'"
-            matTooltip="Delete"
-            class="mr-2"
-            (click)="removeSongEvent.emit()"
-        >
+        <button mat-icon-button [color]="'warn'" [matTooltip]="'Delete'" (click)="removeSongEvent.emit()">
             <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
         </button>
-        @if (!hideHelp) {
-            <button
-                mat-icon-button
-                matTooltip="Help"
-                (click)="helpEvent.emit()"
-            >
-                <mat-icon
-                    [svgIcon]="'heroicons_outline:question-mark-circle'"
-                ></mat-icon>
-            </button>
-        } @else {
-            <button
-                mat-icon-button
-                [matTooltip]="'Open in full editor'"
-                class="mr-2"
-                (click)="openFullEditorEvent.emit()"
-            >
-                <mat-icon
-                    [svgIcon]="'heroicons_outline:arrow-top-right-on-square'"
-                ></mat-icon>
+        @if (mode === 'basic') {
+            <button mat-icon-button [matTooltip]="'Open in full editor'" (click)="openFullEditorEvent.emit()">
+                <mat-icon [svgIcon]="'heroicons_outline:arrow-top-right-on-square'"></mat-icon>
             </button>
         }
-        @if (!hideToggleMode) {
-            <button
-                mat-icon-button
-                matTooltip="Toggle Mode"
-                (click)="toggleModeEvent.emit()"
-            >
-                <mat-icon
-                    [svgIcon]="'heroicons_outline:arrows-right-left'"
-                ></mat-icon>
+        @if (mode === 'full') {
+            <button mat-icon-button [matTooltip]="'Help'" (click)="helpEvent.emit()">
+                <mat-icon [svgIcon]="'heroicons_outline:question-mark-circle'"></mat-icon>
             </button>
         }
     </div>
-    @if (!hideClose) {
-        <div class="flex items-center">
-            <a
-                mat-icon-button
-                [matTooltip]="'Close'"
-                (click)="closeEvent.emit()"
-            >
-                <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
-            </a>
-        </div>
-    }
+    <div class="flex items-center">
+        <button mat-icon-button [matTooltip]="'Close'" (click)="closeEvent.emit()">
+            <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+        </button>
+    </div>
 </div>
 <mat-divider></mat-divider>

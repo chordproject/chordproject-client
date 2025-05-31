@@ -1,9 +1,8 @@
 <div align="center">
-[![Logo](./public/chp/logo.svg)](https://chordproject.com)
-[![Text Logo](./public/chp/logo-text-light.svg)](https://chordproject.com)
+<a href="https://chordproject.com"><img src="./public/chp/logo.svg" alt="Logo"></a>
+<a href="https://chordproject.com"><img src="./public/chp/logo-text-light.svg" alt="Text Logo"></a>
 
-[chordproject.com](https://chordproject.com)
-
+<a href="https://chordproject.com">chordproject.com</a>
 </div>
 
 # ChordProject Client
