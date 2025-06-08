@@ -9,7 +9,8 @@
             "Permet de lire, éditer ou imprimer des chansons avec des diagrammes d'accords.",
             "Garantit que les accords sont toujours correctement positionnés, quelle que soit la taille de la police ou de l'écran.",
             "Stocke les chansons en ligne, avec des mises à jour instantanément reflétées sur tous les appareils.",
-            "Inclut un visualiseur avec des outils pour les performances en direct, comme le défilement automatique, l'ajustement de la taille de la police, la <strong>transposition</strong> et plus encore.",
+            "Comprend un visualiseur avec des outils pour les performances en direct, comme le défilement automatique, l'ajustement de la taille de la police et plus encore.",
+            "La transposition suit des règles musicales, pas seulement des changements mathématiques.",
             "Permet d'organiser les chansons dans des <strong>carnets de chansons</strong> personnalisables."
         ],
         "platform_description": "ChordProject a un site frère, <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, dédié exclusivement à la <strong>musique chrétienne</strong>, tandis que ChordProject est destiné à un usage général."

@@ -9,7 +9,8 @@
             "Allows you to read, edit, or print songs with chord diagrams.",
             "Ensures chords are always correctly positioned, regardless of font or screen size.",
             "Stores songs online, with updates instantly reflected on all devices.",
-            "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, <strong>transposition</strong>, and more.",
+            "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, and more.",
+            "Transposition follows musical rules, not just mathematical shifting.",
             "Lets you organize songs into customizable <strong>songbooks</strong>."
         ],
         "platform_description": "ChordProject has a sister site, <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, dedicated exclusively to <strong>Christian music</strong>, while ChordProject is for general use."

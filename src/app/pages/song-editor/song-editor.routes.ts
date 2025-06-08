@@ -8,18 +8,11 @@ export default [
             {
                 path: '',
                 component: SongEditorComponent,
-                data: { mode: 'create' },
             },
             {
                 path: ':uid',
                 component: SongEditorComponent,
-                data: { mode: 'create' },
             },
         ],
-    },
-    {
-        path: 'read/:uid',
-        component: SongEditorComponent,
-        data: { mode: 'reader' },
     },
 ] as Routes;

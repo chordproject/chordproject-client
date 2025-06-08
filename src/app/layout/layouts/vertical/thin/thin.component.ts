@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterOutlet } from '@angular/router';
 import { FuseDrawerComponent } from '@fuse/components/drawer';
-import { FuseFullscreenComponent } from '@fuse/components/fullscreen';
 import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
 import {
     FuseNavigationItem,
@@ -33,7 +32,6 @@ import { Subject, takeUntil } from 'rxjs';
         FuseVerticalNavigationComponent,
         MatButtonModule,
         MatIconModule,
-        FuseFullscreenComponent,
         SearchComponent,
         ThemeSelectorComponent,
         UserComponent,

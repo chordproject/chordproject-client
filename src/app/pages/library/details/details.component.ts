@@ -29,7 +29,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
-import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
+import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
@@ -94,16 +94,14 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         this._songsListComponent.matDrawer.open();
 
         // Get the song
-        this._songsService.song$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((song: Song) => {
-                this._songsListComponent.matDrawer.open();
-                this.song = song;
-                this.songContent = song?.content || '';
-                this.toggleEditMode(false);
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        this._songsService.song$.pipe(takeUntil(this._unsubscribeAll)).subscribe((song: Song) => {
+            this._songsListComponent.matDrawer.open();
+            this.song = song;
+            this.songContent = song?.content || '';
+            this.toggleEditMode(false);
+            // Mark for check
+            this._changeDetectorRef.markForCheck();
+        });
 
         // // Get the tags
         // this._songsService.tags$
@@ -159,9 +157,7 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     }
 
     updateSong(): void {
-        const updatedSong = this.editorService.prepareSongFromContent(
-            this.songContent
-        );
+        const updatedSong = this.editorService.prepareSongFromContent(this.songContent);
         this.song = { ...this.song, ...updatedSong };
         this._songsService.save(this.song).then(() => {
             this.toggleEditMode(false);
@@ -204,22 +200,14 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         // Subscribe to the attachments observable
         this._tagsPanelOverlayRef.attachments().subscribe(() => {
             // Add a class to the origin
-            this._renderer2.addClass(
-                this._tagsPanelOrigin.nativeElement,
-                'panel-opened'
-            );
+            this._renderer2.addClass(this._tagsPanelOrigin.nativeElement, 'panel-opened');
 
             // Focus to the search input once the overlay has been attached
-            this._tagsPanelOverlayRef.overlayElement
-                .querySelector('input')
-                .focus();
+            this._tagsPanelOverlayRef.overlayElement.querySelector('input').focus();
         });
 
         // Create a portal from the template
-        const templatePortal = new TemplatePortal(
-            this._tagsPanel,
-            this._viewContainerRef
-        );
+        const templatePortal = new TemplatePortal(this._tagsPanel, this._viewContainerRef);
 
         // Attach the portal to the overlay
         this._tagsPanelOverlayRef.attach(templatePortal);
@@ -227,16 +215,10 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         // Subscribe to the backdrop click
         this._tagsPanelOverlayRef.backdropClick().subscribe(() => {
             // Remove the class from the origin
-            this._renderer2.removeClass(
-                this._tagsPanelOrigin.nativeElement,
-                'panel-opened'
-            );
+            this._renderer2.removeClass(this._tagsPanelOrigin.nativeElement, 'panel-opened');
 
             // If overlay exists and attached...
-            if (
-                this._tagsPanelOverlayRef &&
-                this._tagsPanelOverlayRef.hasAttached()
-            ) {
+            if (this._tagsPanelOverlayRef && this._tagsPanelOverlayRef.hasAttached()) {
                 // Detach it
                 this._tagsPanelOverlayRef.detach();
 
@@ -264,9 +246,7 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
         const value = event.target.value.toLowerCase();
 
         // Filter the tags
-        this.filteredTags = this.tags.filter((tag) =>
-            tag.title.toLowerCase().includes(value)
-        );
+        this.filteredTags = this.tags.filter((tag) => tag.title.toLowerCase().includes(value));
     }
 
     filterTagsInputKeyDown(event): void {
@@ -357,15 +337,12 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
 
     shouldShowCreateTagButton(inputValue: string): boolean {
         return !!!(
-            inputValue === '' ||
-            this.tags.findIndex(
-                (tag) => tag.title.toLowerCase() === inputValue.toLowerCase()
-            ) > -1
+            inputValue === '' || this.tags.findIndex((tag) => tag.title.toLowerCase() === inputValue.toLowerCase()) > -1
         );
     }
-    
+
     openFullEditor(): void {
-        if (this.song) {
+        if (this.song?.uid) {
             this._router.navigate(['/songs/create', this.song.uid]);
         }
     }
@@ -373,5 +350,4 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
-
 }

@@ -1,15 +1,10 @@
-<chp-split-layout
-    class="h-full w-full flex-auto"
-    [leftTemplate]="isReaderMode ? viewer : editor"
-    [rightTemplate]="isReaderMode ? editor : viewer"
->
-</chp-split-layout>
+<chp-split-layout class="h-full w-full flex-auto" [leftTemplate]="editor" [rightTemplate]="viewer"> </chp-split-layout>
 
 <ng-template #editor>
     <mat-card class="flex h-full flex-col">
         <mat-card-content class="!p-0 pt-2.5">
             <chp-editor
-                [(content)]="songContent"
+                [(content)]="song.content"
                 tabindex="0"
                 (close)="onEditorClose()"
                 (save)="saveSong()"
@@ -21,5 +16,5 @@
 </ng-template>
 
 <ng-template #viewer>
-    <chp-viewer #viewer [content]="songContent" isPreview="true"></chp-viewer>
+    <chp-viewer #viewer [content]="song.content" isPreview="true"></chp-viewer>
 </ng-template>

@@ -10,11 +10,11 @@ import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
-import { ChpViewerComponent } from 'app/components/viewer/viewer.component';
+import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
-import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'song-editor',
@@ -24,33 +24,26 @@ import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
     imports: [MatCardModule, ChpSplitLayoutComponent, ChpViewerComponent, ChpEditorComponent],
 })
 export class SongEditorComponent implements OnInit, OnDestroy {
-    isReaderMode = false;
-    songContent = '';
-    song$: Observable<Song>;
-    private _song: Song = new Song();
+    song: Song = new Song();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _viewContainerRef: ViewContainerRef,
         private _songService: SongService,
-        private editorService: EditorService,
-        private route: ActivatedRoute,
-        private router: Router
+        private _editorService: EditorService,
+        private _route: ActivatedRoute,
+        private _router: Router
     ) {}
 
     ngOnInit(): void {
-        const mode = this.route.snapshot.data['mode'];
-
-        // Siempre limpiar las referencias, sin importar el modo
+        // Siempre limpiar las referencias
         this.cleanupTemplateRefs();
-
-        this.isReaderMode = mode === 'reader';
         this.loadSong();
     }
 
     private loadSong(): void {
-        this.route.paramMap
+        this._route.paramMap
             .pipe(
                 takeUntil(this._unsubscribeAll),
                 switchMap((params) => {
@@ -63,9 +56,7 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             )
             .subscribe((data) => {
                 if (data) {
-                    this._song = data;
-                    this._song.uid = this.route.snapshot.paramMap.get('uid');
-                    this.songContent = data.content;
+                    this.song = data;
                     this._changeDetectorRef.markForCheck();
                 }
             });
@@ -90,17 +81,17 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     saveSong(): void {
-        const updatedSong = this.editorService.prepareSongFromContent(this.songContent);
-        this._song = { ...this._song, ...updatedSong };
-        this._songService.save(this._song).then((res) => {
-            this._song.uid = res;
+        const updatedSong = this._editorService.prepareSongFromContent(this.song.content);
+        this.song = { ...this.song, ...updatedSong };
+        this._songService.save(this.song).then((res) => {
+            this.song.uid = res;
         });
     }
 
     removeSong(): void {
-        this.editorService.confirmAndDelete(this._song).subscribe((success) => {
+        this._editorService.confirmAndDelete(this.song).subscribe((success) => {
             if (success) {
-                this.router.navigate(['/library']);
+                this._router.navigate(['/library']);
             }
             this._changeDetectorRef.markForCheck();
         });
@@ -111,8 +102,8 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     onEditorClose() {
-        if (this._song?.uid) {
-            this.router.navigate(['/songs/read', this._song.uid]);
+        if (this.song?.uid) {
+            this._router.navigate(['/songs/read', this.song.uid]);
         }
     }
 

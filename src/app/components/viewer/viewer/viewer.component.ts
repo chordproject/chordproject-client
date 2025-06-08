@@ -1,11 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    Input,
-    ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { ParserService } from 'app/core/chordpro/parser.service';
 import { ViewSettingsService } from 'app/core/chordpro/viewsettings.service';
 import { SafeHtmlPipe } from 'app/pipes/safeHtml.pipe';
@@ -57,9 +51,7 @@ export class ChpViewerComponent implements AfterViewInit {
         private parserService: ParserService,
         private viewSettingsService: ViewSettingsService
     ) {
-        this.viewSettingsService
-            .getViewSettings()
-            .subscribe((settings) => this.setViewSettings(settings));
+        this.viewSettingsService.getViewSettings().subscribe((settings) => this.setViewSettings(settings));
     }
 
     ngAfterViewInit(): void {
@@ -102,27 +94,18 @@ export class ChpViewerComponent implements AfterViewInit {
         if (!this.currentSong) {
             return;
         }
-        this.currentSong = this.parserService.transposeSong(
-            this._initialSong,
-            letter
-        );
+        this.currentSong = this.parserService.transposeSong(this._initialSong, letter);
     }
 
     private setViewSettings(settings: ViewSettings): void {
-        const oldSettings =
-            this.viewSettings != undefined
-                ? Object.assign({}, this.viewSettings)
-                : undefined;
+        const oldSettings = this.viewSettings != undefined ? Object.assign({}, this.viewSettings) : undefined;
         const newSettings = Object.assign({}, settings);
         this.viewSettings = newSettings;
         if (!oldSettings) {
             return;
         }
 
-        if (
-            oldSettings.showChords != newSettings.showChords ||
-            oldSettings.showTabs != newSettings.showTabs
-        ) {
+        if (oldSettings.showChords != newSettings.showChords || oldSettings.showTabs != newSettings.showTabs) {
             this.formatSong();
         }
     }

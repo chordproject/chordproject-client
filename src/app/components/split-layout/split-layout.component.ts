@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     EventEmitter,
@@ -21,6 +22,7 @@ import { Subject, takeUntil } from 'rxjs';
     standalone: true,
     templateUrl: './split-layout.component.html',
     imports: [CommonModule, AngularSplitModule, MatIconModule, MatButtonModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChpSplitLayoutComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();

@@ -9,7 +9,8 @@
             "Allows you to read, edit, or print songs with chord diagrams.",
             "Ensures chords are always correctly positioned, regardless of font or screen size.",
             "Stores songs online, with updates reflected instantly across all devices.",
-            "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, <strong>transposition</strong>, and more.",
+            "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, and more.",
+            "Transposition follows musical rules, not just mathematical shifting.",
             "Enables organizing songs into customizable <strong>songbooks</strong>."
         ],
         "platform_description": "We moderate <strong>HomenaJesus</strong> to be a Christian music platform. If you would also like to use it for other genres, we created <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong> for you."

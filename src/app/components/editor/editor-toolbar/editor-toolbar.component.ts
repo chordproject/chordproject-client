@@ -1,16 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-    selector: 'chp-editor-header',
-    templateUrl: './editor-header.component.html',
+    selector: 'chp-editor-toolbar',
+    templateUrl: './editor-toolbar.component.html',
     standalone: true,
-    imports: [MatButtonModule, MatIconModule, MatTooltipModule, MatDividerModule],
+    imports: [MatButtonModule, MatIconModule, MatTooltipModule],
 })
-export class ChpEditorHeaderComponent {
+export class ChpEditorToolbarComponent {
     @Input() mode: 'basic' | 'full' = 'full';
 
     @Output() saveSongEvent = new EventEmitter<void>();

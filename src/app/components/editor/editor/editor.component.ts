@@ -18,12 +18,12 @@ import {
 import { FuseConfigService } from '@fuse/services/config';
 import * as ChordProjectEditor from 'chordproject-editor';
 import { Subject, takeUntil } from 'rxjs';
-import { ChpEditorHeaderComponent } from '../editor-header/editor-header.component';
+import { ChpEditorToolbarComponent } from '../editor-toolbar/editor-toolbar.component';
 
 @Component({
     selector: 'chp-editor',
     templateUrl: './editor.component.html',
-    imports: [ChpEditorHeaderComponent],
+    imports: [ChpEditorToolbarComponent],
 })
 export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
     @Output() contentChange = new EventEmitter<string>();
@@ -32,6 +32,7 @@ export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit, OnC
     @Output() remove = new EventEmitter<void>();
     @Output() openFullEditor = new EventEmitter<void>();
     @Output() help = new EventEmitter<void>();
+
     @Input() style: any = {};
     @Input() mode: 'basic' | 'full' = 'full';
 

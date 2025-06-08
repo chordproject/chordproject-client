@@ -1,0 +1,16 @@
+<div class="relative">
+    <button mat-icon-button [matTooltip]="'Change Size'" (click)="toggleSizeSlider()">
+        <mat-icon [svgIcon]="'heroicons_outline:magnifying-glass-plus'"></mat-icon>
+    </button>
+    @if (showSizeSlider) {
+        <div class="fixed inset-0" (click)="toggleSizeSlider()"></div>
+        <div
+            class="absolute left-1/2 -translate-x-1/2 rounded-lg bg-white p-2 shadow-lg dark:bg-gray-800"
+            [ngClass]="{ 'bottom-[calc(100%)]': isMobile }"
+        >
+            <mat-slider discrete min="8" max="24" (valueChange)="onZoomEvent($event)">
+                <input matSliderThumb [value]="fontSize" />
+            </mat-slider>
+        </div>
+    }
+</div>
