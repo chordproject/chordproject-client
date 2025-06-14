@@ -1,20 +1,12 @@
 import { inject } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    Router,
-    RouterStateSnapshot,
-    Routes,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, Routes } from '@angular/router';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { catchError, throwError } from 'rxjs';
 import { SongsDetailsComponent } from './details/details.component';
 import { LibraryComponent } from './library.component';
 import { SongsListComponent } from './list/list.component';
 
-const songResolver = (
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-) => {
+const songResolver = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
     const songService = inject(SongService);
     const router = inject(Router);
 
@@ -66,16 +58,15 @@ export default [
             {
                 path: '',
                 component: SongsListComponent,
-                children: [
-                    {
-                        path: ':uid',
-                        component: SongsDetailsComponent,
-                        resolve: {
-                            song: songResolver,
-                        },
-                        canDeactivate: [canDeactivateSongsDetails],
-                    },
-                ],
+            },
+            {
+                path: ':uid',
+                outlet: 'drawer',
+                component: SongsDetailsComponent,
+                resolve: {
+                    song: songResolver,
+                },
+                canDeactivate: [canDeactivateSongsDetails],
             },
         ],
     },

@@ -10,7 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     imports: [MatButtonModule, MatIconModule, MatTooltipModule],
 })
 export class ChpEditorToolbarComponent {
-    @Input() mode: 'basic' | 'full' = 'full';
+    @Input() mode: 'quick' | 'full' = 'full';
 
     @Output() saveSongEvent = new EventEmitter<void>();
     @Output() removeSongEvent = new EventEmitter<void>();

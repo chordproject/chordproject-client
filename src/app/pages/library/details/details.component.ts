@@ -35,7 +35,7 @@ import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
 import { Tag } from 'app/models/tag';
 import { Subject, takeUntil } from 'rxjs';
-import { SongsListComponent } from '../list/list.component';
+import { LibraryComponent } from '../library.component';
 
 @Component({
     selector: 'songs-details',
@@ -79,7 +79,7 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _songsListComponent: SongsListComponent,
+        private _libraryComponent: LibraryComponent, 
         private _songsService: SongService,
         private _fuseConfirmationService: FuseConfirmationService,
         private editorService: EditorService,
@@ -91,11 +91,11 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         // Open the drawer
-        this._songsListComponent.matDrawer.open();
+        this._libraryComponent.matDrawer.open();
 
         // Get the song
         this._songsService.song$.pipe(takeUntil(this._unsubscribeAll)).subscribe((song: Song) => {
-            this._songsListComponent.matDrawer.open();
+            this._libraryComponent.matDrawer.open();
             this.song = song;
             this.songContent = song?.content || '';
             this.toggleEditMode(false);
@@ -127,7 +127,7 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     }
 
     closeDrawer(): Promise<MatDrawerToggleResult> {
-        return this._songsListComponent.matDrawer.close();
+        return this._libraryComponent.matDrawer.close();
     }
 
     toggleEditMode(editMode: boolean | null = null): void {

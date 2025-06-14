@@ -1,5 +1,5 @@
 - No agregar comentarios obvios
-- al generear mensaje de commit limitarse a las funionalidades que se estan implementando, no agregar detalles Como "para mejorar funcionalidad" o "para mejorar el rendimiento"
+- al generar mensaje de commit limitarse a las funionalidades que se estan implementando, no agregar detalles Como "para mejorar funcionalidad" o "para mejorar el rendimiento"
 - los mensajes de commits para git deben ser cortos
 - los nuevos componentes deben tener su template en su propio archivo y siempre usar standalone, no crear Modulos ni archivos de estilos
 - los componentes deberian seguir patrones del codebase como :
@@ -12,3 +12,4 @@
     - @if (condition) {} en vez de \*ngIf
     - @for (item of items) {} en vez de \*ngFor
     - @empty {} como bloque alternativo para @for
+- todo el codigo propuesto debe evitar redundancia al maximo, no repetir codigo innecesariamente

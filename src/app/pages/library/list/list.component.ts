@@ -5,7 +5,6 @@ import {
     Component,
     OnDestroy,
     OnInit,
-    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
@@ -13,13 +12,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { Router, RouterLink } from '@angular/router';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { PartialSong } from 'app/models/partialsong';
 import { merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { LibraryComponent } from '../library.component';
 
 @Component({
     selector: 'songs-list',
@@ -28,13 +26,11 @@ import { merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        MatSidenavModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatButtonModule,
         ReactiveFormsModule,
-        RouterOutlet,
         RouterLink,
         AsyncPipe,
         I18nPluralPipe,
@@ -42,11 +38,8 @@ import { merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
     ],
 })
 export class SongsListComponent implements OnInit, OnDestroy {
-    @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
-
     songs$: Observable<PartialSong[]>;
     songsCount: number = 0;
-    drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
     selectedSong: PartialSong;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -55,7 +48,7 @@ export class SongsListComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _songService: SongService,
         private _router: Router,
-        private _fuseMediaWatcherService: FuseMediaWatcherService
+        private _libraryComponent: LibraryComponent 
     ) {}
 
     ngOnInit(): void {
@@ -90,7 +83,7 @@ export class SongsListComponent implements OnInit, OnDestroy {
         });
 
         // Subscribe to MatDrawer opened change
-        this.matDrawer.openedChange.subscribe((opened) => {
+        this._libraryComponent.matDrawer.openedChange.subscribe((opened) => {
             if (!opened) {
                 // Remove the selected song when drawer closed
                 this.selectedSong = null;
@@ -99,27 +92,25 @@ export class SongsListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             }
         });
-
-        // Subscribe to media changes
-        this._fuseMediaWatcherService.onMediaChange$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(({ matchingAliases }) => {
-                // Set the drawerMode if the given breakpoint is active
-                if (matchingAliases.includes('lg')) {
-                    this.drawerMode = 'side';
-                } else {
-                    this.drawerMode = 'over';
-                }
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
     }
 
     ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
+    }
+
+    onSongClick(song: PartialSong): void {
+        // Si ya hay un drawer abierto y estamos seleccionando la misma canción, no hacer nada
+        if (this.selectedSong && this.selectedSong.uid === song.uid) {
+            return;
+        }
+
+        // Asegurarse de que el drawer está abierto
+        this._libraryComponent.matDrawer.open();
+
+        // Utilizar navigateByUrl con la ruta auxiliar correctamente formateada
+        this._router.navigateByUrl(`/library/(drawer:${song.uid})`);
     }
 
     onDblClick(song: PartialSong): void {

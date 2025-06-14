@@ -13,8 +13,20 @@
                 </div>
                 <!-- Right: Edit and Close buttons -->
                 <div class="flex items-center gap-2">
-                    <button mat-icon-button class="flex-shrink-0" (click)="toggleEditMode(true)" [matTooltip]="'Edit'">
+                    <button
+                        mat-icon-button
+                        class="flex-shrink-0"
+                        (click)="toggleEditMode(true)"
+                        [matTooltip]="'Quick edit'"
+                    >
                         <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:pencil-square'"></mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        [matTooltip]="'Open in full reader'"
+                        [routerLink]="['/songs/read', song.uid]"
+                    >
+                        <mat-icon [svgIcon]="'heroicons_outline:arrow-top-right-on-square'"></mat-icon>
                     </button>
                     <button mat-icon-button class="flex-shrink-0" [matTooltip]="'Close'" [routerLink]="['../']">
                         <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
@@ -48,7 +60,7 @@
     <!-- Edit mode -->
     @if (editMode) {
         <chp-editor
-            [mode]="'basic'"
+            [mode]="'quick'"
             [(content)]="songContent"
             tabindex="0"
             (close)="toggleEditMode(false)"

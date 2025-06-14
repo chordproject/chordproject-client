@@ -2,16 +2,14 @@
 
 <ng-template #editor>
     <mat-card class="flex h-full flex-col">
-        <mat-card-content class="!p-0 pt-2.5">
-            <chp-editor
-                [(content)]="song.content"
-                tabindex="0"
-                (close)="onEditorClose()"
-                (save)="saveSong()"
-                (remove)="removeSong()"
-                (help)="showHelp()"
-            ></chp-editor>
-        </mat-card-content>
+        <chp-editor
+            [(content)]="song.content"
+            tabindex="0"
+            (close)="onEditorClose()"
+            (save)="saveSong()"
+            (remove)="removeSong()"
+            (help)="showHelp()"
+        ></chp-editor>
     </mat-card>
 </ng-template>
 

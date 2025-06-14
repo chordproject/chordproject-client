@@ -1,101 +1,77 @@
-<div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
-    <mat-drawer-container class="bg-card h-full flex-auto dark:bg-transparent">
-        <mat-drawer
-            class="w-full md:w-160 dark:bg-gray-900"
-            [mode]="drawerMode"
-            [opened]="false"
-            [position]="'end'"
-            [disableClose]="true"
-            #matDrawer
-        >
-            <router-outlet></router-outlet>
-        </mat-drawer>
-
-        <mat-drawer-content class="flex flex-col">
-            <div class="flex-auto">
-                <!-- Header -->
-                <div class="flex flex-auto flex-col justify-between border-b px-6 py-8 sm:flex-row md:flex-col md:px-8">
-                    <!-- Title -->
-                    <div>
-                        <div class="text-4xl font-extrabold leading-none tracking-tight">Song Library</div>
-                        <div class="text-secondary ml-0.5 font-medium">
-                            @if (songsCount > 0) {
-                                {{ songsCount }}
-                            }
-                            {{
-                                songsCount
-                                    | i18nPlural
-                                        : {
-                                              '=0': 'No songs',
-                                              '=1': 'song',
-                                              other: 'songs',
-                                          }
-                            }}
-                        </div>
-                    </div>
-
-                    <div class="mt-4 flex items-center sm:mt-0 md:mt-4">
-                        <!-- Search -->
-                        <div class="flex-auto">
-                            <mat-form-field
-                                class="fuse-mat-dense fuse-mat-rounded w-full min-w-50"
-                                subscriptSizing="dynamic"
-                            >
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:magnifying-glass'"
-                                ></mat-icon>
-                                <input
-                                    matInput
-                                    [formControl]="searchInputControl"
-                                    [autocomplete]="'off'"
-                                    [placeholder]="'Search songs'"
-                                />
-                            </mat-form-field>
-                        </div>
-                        <!-- Add song button -->
-                        <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['/songs/create']">
-                            <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-                            <span class="ml-2 mr-1">Add</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Songs list -->
-                <div class="bg-card relative border-b">
-                    @if (songs$ | async; as songs) {
-                        @if (songs.length) {
-                            @for (song of songs; track trackByFn(i, song); let i = $index) {
-                                <!-- Group -->
-                                @if (i === 0 || song.normalizedInitial !== songs[i - 1].normalizedInitial) {
-                                    <div
-                                        class="text-secondary sticky top-0 z-10 -mt-px border-b border-t bg-gray-50 px-6 py-1 font-medium uppercase md:px-8 dark:bg-[#273549]"
-                                    >
-                                        {{ song.normalizedInitial }}
-                                    </div>
-                                }
-                                <!-- Song -->
-                                <chp-song-item
-                                    [song]="song"
-                                    [routerLink]="['./', song.uid]"
-                                    (dblclick)="onDblClick(song)"
-                                    [selected]="selectedSong && selectedSong.uid === song.uid && matDrawer.opened"
-                                ></chp-song-item>
-                            }
-                        } @else {
-                            <div class="flex flex-col items-center justify-center p-8 sm:p-16">
-                                <mat-icon
-                                    class="mb-4 text-warn-500 icon-size-12"
-                                    [svgIcon]="'heroicons_outline:exclamation-circle'"
-                                ></mat-icon>
-                                <p class="text-lg font-medium">Something went wrong while loading songs</p>
-                                <p class="text-secondary mt-2">Please refresh the page to try again</p>
-                            </div>
-                        }
-                    }
-                </div>
+<div class="flex-auto overflow-auto">
+    <!-- Header -->
+    <div class="flex flex-auto flex-col justify-between border-b px-6 py-8 sm:flex-row md:flex-col md:px-8">
+        <!-- Title -->
+        <div>
+            <div class="text-4xl font-extrabold leading-none tracking-tight">Song Library</div>
+            <div class="text-secondary ml-0.5 font-medium">
+                @if (songsCount > 0) {
+                    {{ songsCount }}
+                }
+                {{
+                    songsCount
+                        | i18nPlural
+                            : {
+                                  '=0': 'No songs',
+                                  '=1': 'song',
+                                  other: 'songs',
+                              }
+                }}
             </div>
-        </mat-drawer-content>
-    </mat-drawer-container>
+        </div>
+
+        <div class="mt-4 flex items-center sm:mt-0 md:mt-4">
+            <!-- Search -->
+            <div class="flex-auto">
+                <mat-form-field class="fuse-mat-dense fuse-mat-rounded w-full min-w-50" subscriptSizing="dynamic">
+                    <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:magnifying-glass'"></mat-icon>
+                    <input
+                        matInput
+                        [formControl]="searchInputControl"
+                        [autocomplete]="'off'"
+                        [placeholder]="'Search songs'"
+                    />
+                </mat-form-field>
+            </div>
+            <!-- Add song button -->
+            <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['/songs/create']">
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">Add</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Songs list -->
+    <div class="bg-card relative border-b">
+        @if (songs$ | async; as songs) {
+            @if (songs.length) {
+                @for (song of songs; track trackByFn(i, song); let i = $index) {
+                    <!-- Group -->
+                    @if (i === 0 || song.normalizedInitial !== songs[i - 1].normalizedInitial) {
+                        <div
+                            class="text-secondary sticky top-0 z-10 -mt-px border-b border-t bg-gray-50 px-6 py-1 font-medium uppercase md:px-8 dark:bg-[#273549]"
+                        >
+                            {{ song.normalizedInitial }}
+                        </div>
+                    }
+                    <!-- Song -->
+                    <chp-song-item
+                        [song]="song"
+                        (click)="onSongClick(song)"
+                        (dblclick)="onDblClick(song)"
+                        [selected]="selectedSong && selectedSong.uid === song.uid"
+                    ></chp-song-item>
+                }
+            } @else {
+                <div class="flex flex-col items-center justify-center p-8 sm:p-16">
+                    <mat-icon
+                        class="mb-4 text-warn-500 icon-size-12"
+                        [svgIcon]="'heroicons_outline:exclamation-circle'"
+                    ></mat-icon>
+                    <p class="text-lg font-medium">Something went wrong while loading songs</p>
+                    <p class="text-secondary mt-2">Please refresh the page to try again</p>
+                </div>
+            }
+        }
+    </div>
 </div>

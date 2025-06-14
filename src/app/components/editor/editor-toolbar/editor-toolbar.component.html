@@ -6,7 +6,7 @@
         <button mat-icon-button [color]="'warn'" [matTooltip]="'Delete'" (click)="removeSongEvent.emit()">
             <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
         </button>
-        @if (mode === 'basic') {
+        @if (mode === 'quick') {
             <button mat-icon-button [matTooltip]="'Open in full editor'" (click)="openFullEditorEvent.emit()">
                 <mat-icon [svgIcon]="'heroicons_outline:arrow-top-right-on-square'"></mat-icon>
             </button>

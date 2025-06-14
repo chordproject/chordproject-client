@@ -34,7 +34,7 @@ export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit, OnC
     @Output() help = new EventEmitter<void>();
 
     @Input() style: any = {};
-    @Input() mode: 'basic' | 'full' = 'full';
+    @Input() mode: 'quick' | 'full' = 'full';
 
     @ViewChild('editorDiv', { static: true }) editorDiv!: ElementRef;
 
