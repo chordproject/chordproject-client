@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { lucideIcons } from './lucide';
 
 export const provideIcons = (): EnvironmentProviders =>
   makeEnvironmentProviders([
@@ -14,8 +15,8 @@ export const provideIcons = (): EnvironmentProviders =>
       const matIconRegistry = inject(MatIconRegistry);
 
       // Lucide icons
-      matIconRegistry.addSvgIconSet(
-        domSanitizer.bypassSecurityTrustResourceUrl('/icons/lucide.svg'),
+      matIconRegistry.addSvgIconSetLiteral(
+        domSanitizer.bypassSecurityTrustHtml(lucideIcons),
         { viewBox: '0 0 24 24' }
       );
     }),
