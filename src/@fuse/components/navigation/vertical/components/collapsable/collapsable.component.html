@@ -48,14 +48,17 @@
 
     <!-- Arrow -->
     <mat-icon
-      class="fuse-vertical-navigation-item-arrow icon-size-4"
-      [svgIcon]="'heroicons_solid:chevron-right'"
+      class="fuse-vertical-navigation-item-arrow"
+      svgIcon="chevron-right"
     ></mat-icon>
   </div>
 </div>
 
 @if (!isCollapsed) {
-  <div class="fuse-vertical-navigation-item-children" @expandCollapse>
+  <div
+    class="fuse-vertical-navigation-item-children"
+    @expandCollapse
+  >
     @for (item of item.children; track trackByFn($index, item)) {
       <!-- Skip the hidden items -->
       @if ((item.hidden && !item.hidden(item)) || !item.hidden) {

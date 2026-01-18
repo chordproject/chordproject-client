@@ -3,7 +3,6 @@ import { DateTime } from 'luxon';
 /* Get the current instant */
 const now = DateTime.now();
 
-/* tslint:disable:max-line-length */
 export const finance = {
   accountBalance: {
     growRate: 38.33,

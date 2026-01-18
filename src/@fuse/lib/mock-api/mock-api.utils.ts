@@ -7,8 +7,6 @@ export class FuseMockApiUtils {
    * Generate a globally unique id
    */
   static guid(): string {
-    /* eslint-disable */
-
     let d = new Date().getTime();
 
     // Use high-precision timer if available
@@ -24,7 +22,5 @@ export class FuseMockApiUtils {
       d = Math.floor(d / 16);
       return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
     });
-
-    /* eslint-enable */
   }
 }

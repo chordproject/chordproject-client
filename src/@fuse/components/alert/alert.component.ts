@@ -1,5 +1,4 @@
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,6 +16,7 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Subject, filter, takeUntil } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertService } from '@fuse/components/alert/alert.service';
 import {
@@ -24,7 +24,6 @@ import {
   FuseAlertType,
 } from '@fuse/components/alert/alert.types';
 import { FuseUtilsService } from '@fuse/services/utils/utils.service';
-import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'fuse-alert',
@@ -38,21 +37,19 @@ import { Subject, filter, takeUntil } from 'rxjs';
   imports: [MatIconModule, MatButtonModule],
 })
 export class FuseAlertComponent implements OnChanges, OnInit, OnDestroy {
-  /* eslint-disable @typescript-eslint/naming-convention */
   static ngAcceptInputType_dismissible: BooleanInput;
   static ngAcceptInputType_dismissed: BooleanInput;
   static ngAcceptInputType_showIcon: BooleanInput;
-  /* eslint-enable @typescript-eslint/naming-convention */
 
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _fuseAlertService = inject(FuseAlertService);
   private _fuseUtilsService = inject(FuseUtilsService);
 
   @Input() appearance: FuseAlertAppearance = 'soft';
-  @Input() dismissed: boolean = false;
-  @Input() dismissible: boolean = false;
+  @Input() dismissed = false;
+  @Input() dismissible = false;
   @Input() name: string = this._fuseUtilsService.randomId();
-  @Input() showIcon: boolean = true;
+  @Input() showIcon = true;
   @Input() type: FuseAlertType = 'primary';
   @Output() readonly dismissedChanged: EventEmitter<boolean> =
     new EventEmitter<boolean>();
@@ -67,7 +64,6 @@ export class FuseAlertComponent implements OnChanges, OnInit, OnDestroy {
    * Host binding for component classes
    */
   @HostBinding('class') get classList(): any {
-    /* eslint-disable @typescript-eslint/naming-convention */
     return {
       'fuse-alert-appearance-border': this.appearance === 'border',
       'fuse-alert-appearance-fill': this.appearance === 'fill',
@@ -83,7 +79,6 @@ export class FuseAlertComponent implements OnChanges, OnInit, OnDestroy {
       'fuse-alert-type-success': this.type === 'success',
       'fuse-alert-type-warning': this.type === 'warning',
     };
-    /* eslint-enable @typescript-eslint/naming-convention */
   }
 
   // -----------------------------------------------------------------------------------------------------

@@ -1,4 +1,3 @@
-/* eslint-disable */
 export const tags = [
   {
     id: 'a0bf42ca-c3a5-47be-8341-b9c0bb8ef270',

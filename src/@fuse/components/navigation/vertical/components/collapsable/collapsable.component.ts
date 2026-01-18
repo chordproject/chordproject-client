@@ -14,6 +14,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NavigationEnd, Router } from '@angular/router';
+import { Subject, filter, takeUntil } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
@@ -22,7 +23,6 @@ import { FuseVerticalNavigationDividerItemComponent } from '@fuse/components/nav
 import { FuseVerticalNavigationGroupItemComponent } from '@fuse/components/navigation/vertical/components/group/group.component';
 import { FuseVerticalNavigationSpacerItemComponent } from '@fuse/components/navigation/vertical/components/spacer/spacer.component';
 import { FuseVerticalNavigationComponent } from '@fuse/components/navigation/vertical/vertical.component';
-import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'fuse-vertical-navigation-collapsable-item',
@@ -44,9 +44,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
 export class FuseVerticalNavigationCollapsableItemComponent
   implements OnInit, OnDestroy
 {
-  /* eslint-disable @typescript-eslint/naming-convention */
   static ngAcceptInputType_autoCollapse: BooleanInput;
-  /* eslint-enable @typescript-eslint/naming-convention */
 
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _router = inject(Router);
@@ -56,8 +54,8 @@ export class FuseVerticalNavigationCollapsableItemComponent
   @Input() item: FuseNavigationItem;
   @Input() name: string;
 
-  isCollapsed: boolean = true;
-  isExpanded: boolean = false;
+  isCollapsed = true;
+  isExpanded = false;
   private _fuseVerticalNavigationComponent: FuseVerticalNavigationComponent;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -69,12 +67,10 @@ export class FuseVerticalNavigationCollapsableItemComponent
    * Host binding for component classes
    */
   @HostBinding('class') get classList(): any {
-    /* eslint-disable @typescript-eslint/naming-convention */
     return {
       'fuse-vertical-navigation-item-collapsed': this.isCollapsed,
       'fuse-vertical-navigation-item-expanded': this.isExpanded,
     };
-    /* eslint-enable @typescript-eslint/naming-convention */
   }
 
   // -----------------------------------------------------------------------------------------------------

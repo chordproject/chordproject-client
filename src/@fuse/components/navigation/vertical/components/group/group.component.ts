@@ -11,6 +11,7 @@ import {
   inject,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { Subject, takeUntil } from 'rxjs';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
 import { FuseVerticalNavigationBasicItemComponent } from '@fuse/components/navigation/vertical/components/basic/basic.component';
@@ -18,7 +19,6 @@ import { FuseVerticalNavigationCollapsableItemComponent } from '@fuse/components
 import { FuseVerticalNavigationDividerItemComponent } from '@fuse/components/navigation/vertical/components/divider/divider.component';
 import { FuseVerticalNavigationSpacerItemComponent } from '@fuse/components/navigation/vertical/components/spacer/spacer.component';
 import { FuseVerticalNavigationComponent } from '@fuse/components/navigation/vertical/vertical.component';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'fuse-vertical-navigation-group-item',
@@ -38,9 +38,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class FuseVerticalNavigationGroupItemComponent
   implements OnInit, OnDestroy
 {
-  /* eslint-disable @typescript-eslint/naming-convention */
   static ngAcceptInputType_autoCollapse: BooleanInput;
-  /* eslint-enable @typescript-eslint/naming-convention */
 
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _fuseNavigationService = inject(FuseNavigationService);

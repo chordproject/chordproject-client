@@ -11,9 +11,9 @@ import { FuseConfirmationConfig } from '@fuse/services/confirmation/confirmation
   styles: [
     `
       .fuse-confirmation-dialog-panel {
-        @screen md {
-          @apply w-128;
-        }
+        //@screen md {
+        //  //@apply w-128;
+        //}
 
         .mat-mdc-dialog-container {
           .mat-mdc-dialog-surface {

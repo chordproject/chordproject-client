@@ -37,11 +37,9 @@ import { FuseUtilsService } from '@fuse/services/utils/utils.service';
   standalone: true,
 })
 export class FuseDrawerComponent implements OnChanges, OnInit, OnDestroy {
-  /* eslint-disable @typescript-eslint/naming-convention */
   static ngAcceptInputType_fixed: BooleanInput;
   static ngAcceptInputType_opened: BooleanInput;
   static ngAcceptInputType_transparentOverlay: BooleanInput;
-  /* eslint-enable @typescript-eslint/naming-convention */
 
   private _animationBuilder = inject(AnimationBuilder);
   private _elementRef = inject(ElementRef);
@@ -49,12 +47,12 @@ export class FuseDrawerComponent implements OnChanges, OnInit, OnDestroy {
   private _fuseDrawerService = inject(FuseDrawerService);
   private _fuseUtilsService = inject(FuseUtilsService);
 
-  @Input() fixed: boolean = false;
+  @Input() fixed = false;
   @Input() mode: FuseDrawerMode = 'side';
   @Input() name: string = this._fuseUtilsService.randomId();
-  @Input() opened: boolean = false;
+  @Input() opened = false;
   @Input() position: FuseDrawerPosition = 'left';
-  @Input() transparentOverlay: boolean = false;
+  @Input() transparentOverlay = false;
   @Output() readonly fixedChanged: EventEmitter<boolean> =
     new EventEmitter<boolean>();
   @Output() readonly modeChanged: EventEmitter<FuseDrawerMode> =
@@ -64,9 +62,9 @@ export class FuseDrawerComponent implements OnChanges, OnInit, OnDestroy {
   @Output() readonly positionChanged: EventEmitter<FuseDrawerPosition> =
     new EventEmitter<FuseDrawerPosition>();
 
-  private _animationsEnabled: boolean = false;
+  private _animationsEnabled = false;
   private readonly _handleOverlayClick = (): void => this.close();
-  private _hovered: boolean = false;
+  private _hovered = false;
   private _overlay: HTMLElement;
   private _player: AnimationPlayer;
 
@@ -78,7 +76,6 @@ export class FuseDrawerComponent implements OnChanges, OnInit, OnDestroy {
    * Host binding for component classes
    */
   @HostBinding('class') get classList(): any {
-    /* eslint-disable @typescript-eslint/naming-convention */
     return {
       'fuse-drawer-animations-enabled': this._animationsEnabled,
       'fuse-drawer-fixed': this.fixed,
@@ -87,7 +84,6 @@ export class FuseDrawerComponent implements OnChanges, OnInit, OnDestroy {
       'fuse-drawer-opened': this.opened,
       [`fuse-drawer-position-${this.position}`]: true,
     };
-    /* eslint-enable @typescript-eslint/naming-convention */
   }
 
   /**
@@ -109,7 +105,7 @@ export class FuseDrawerComponent implements OnChanges, OnInit, OnDestroy {
    * @private
    */
   @HostListener('mouseenter')
-  private _onMouseenter(): void {
+  _onMouseenter(): void {
     // Enable the animations
     this._enableAnimations();
 
@@ -123,7 +119,7 @@ export class FuseDrawerComponent implements OnChanges, OnInit, OnDestroy {
    * @private
    */
   @HostListener('mouseleave')
-  private _onMouseleave(): void {
+  _onMouseleave(): void {
     // Enable the animations
     this._enableAnimations();
 

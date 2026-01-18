@@ -1,0 +1,239 @@
+<div class="flex flex-auto">
+  <div class="flex flex-auto items-center justify-center p-4 sm:p-12">
+    <div class="flex w-full max-w-80 flex-col sm:min-w-80">
+      <!-- Logo -->
+      <img
+        class="w-12"
+        src="/images/logo/logo.svg"
+        alt="Fuse logo"
+      />
+
+      <!-- Title -->
+      <div class="leading-tight mt-8 text-4xl font-extrabold tracking-tight">
+        Sign up
+      </div>
+      <div class="mt-0.5 flex items-baseline font-medium">
+        <div class="text-neutral-500">Already have an account?</div>
+        <a
+          class="ml-1 underline"
+          routerLink="/auth/sign-in"
+        >
+          Sign in
+        </a>
+      </div>
+
+      <!-- Sign up form -->
+      <form
+        class="mt-8"
+        (submit)="signUp($event)"
+      >
+        <div class="flex flex-col gap-y-4">
+          <!-- Name field -->
+          <mat-form-field
+            class="w-full"
+            subscriptSizing="dynamic"
+          >
+            <mat-label>Name</mat-label>
+            <input
+              id="name"
+              matInput
+              [formField]="signUpForm.name"
+            />
+            <mat-error>
+              @if (signUpForm.name().touched() && signUpForm.name().invalid()) {
+                @for (error of signUpForm.name().errors(); track error) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Company field -->
+          <mat-form-field
+            class="w-full"
+            subscriptSizing="dynamic"
+          >
+            <mat-label>Company</mat-label>
+            <input
+              id="company"
+              matInput
+              [formField]="signUpForm.company"
+            />
+            <mat-error>
+              @if (
+                signUpForm.company().touched() && signUpForm.company().invalid()
+              ) {
+                @for (error of signUpForm.company().errors(); track error) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Email field -->
+          <mat-form-field
+            class="w-full"
+            subscriptSizing="dynamic"
+          >
+            <mat-label>Email address</mat-label>
+            <input
+              id="email"
+              matInput
+              [formField]="signUpForm.email"
+            />
+            <mat-error>
+              @if (
+                signUpForm.email().touched() && signUpForm.email().invalid()
+              ) {
+                @for (error of signUpForm.email().errors(); track error) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Password field -->
+          <mat-form-field
+            appearance="fill"
+            class="w-full"
+            subscriptSizing="dynamic"
+          >
+            <mat-label>Password</mat-label>
+            <input
+              id="password"
+              matInput
+              type="password"
+              [formField]="signUpForm.password"
+              #passwordField
+            />
+            <button
+              matIconButton
+              type="button"
+              (click)="
+                passwordField.type === 'password'
+                  ? (passwordField.type = 'text')
+                  : (passwordField.type = 'password')
+              "
+              matSuffix
+            >
+              @if (passwordField.type === 'password') {
+                <mat-icon
+                  class="icon-size-5"
+                  svgIcon="eye"
+                ></mat-icon>
+              }
+              @if (passwordField.type === 'text') {
+                <mat-icon
+                  class="icon-size-5"
+                  svgIcon="eye-off"
+                ></mat-icon>
+              }
+            </button>
+            <mat-error>
+              @if (
+                signUpForm.password().touched() &&
+                signUpForm.password().invalid()
+              ) {
+                @for (error of signUpForm.password().errors(); track error) {
+                  {{ error.message }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- ToS and PP -->
+        <div class="mt-2 inline-flex w-full items-end">
+          <mat-checkbox class="-ml-2">
+            <span>I agree with</span>
+            <a
+              class="ml-1 underline"
+              [routerLink]="['./']"
+              >Terms
+            </a>
+            <span>and</span>
+            <a
+              class="ml-1 underline"
+              [routerLink]="['./']"
+              >Privacy Policy
+            </a>
+          </mat-checkbox>
+        </div>
+
+        <!-- Submit button -->
+        <button
+          type="submit"
+          matButton="filled"
+          class="mt-6 w-full"
+          [disabled]="signUpForm().invalid()"
+        >
+          Create my account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div
+    class="relative hidden flex-auto items-center justify-center overflow-hidden border-l bg-neutral-950 p-8 sm:px-12 md:flex"
+  >
+    <!-- Background -->
+    <!-- Rings -->
+    <!-- prettier-ignore -->
+    <svg class="absolute inset-0 pointer-events-none"
+         viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+      <g class="text-neutral-700/25" fill="none" stroke="currentColor" stroke-width="100">
+        <circle r="234" cx="196" cy="23"></circle>
+        <circle r="234" cx="790" cy="491"></circle>
+      </g>
+    </svg>
+
+    <!-- Dots -->
+    <!-- prettier-ignore -->
+    <svg class="absolute -top-16 -right-16 text-neutral-700"
+         viewBox="0 0 220 192" width="220" height="192" fill="none">
+      <defs>
+        <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
+        </pattern>
+      </defs>
+      <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
+    </svg>
+
+    <!-- Content -->
+    <div class="relative z-10 w-full max-w-2xl">
+      <div class="text-5xl font-bold text-white">Welcome to our community</div>
+      <div class="text-medium mt-6 text-xl text-neutral-500">
+        Fuse helps developers to build organized and well coded dashboards full
+        of beautiful and rich modules. Join us and start building your
+        application today.
+      </div>
+      <div class="mt-12 flex items-center">
+        <div class="flex shrink-0 items-center -space-x-1.5">
+          <img
+            class="h-10 w-10 rounded-full object-cover ring-1"
+            src="/images/photos/female-18.jpg"
+            alt="Avatar image"
+          />
+          <img
+            class="h-10 w-10 rounded-full object-cover ring-1"
+            src="/images/photos/female-11.jpg"
+            alt="Avatar image"
+          />
+          <img
+            class="h-10 w-10 rounded-full object-cover ring-1"
+            src="/images/photos/male-09.jpg"
+            alt="Avatar image"
+          />
+          <img
+            class="h-10 w-10 rounded-full object-cover ring-1"
+            src="/images/photos/male-16.jpg"
+            alt="Avatar image"
+          />
+        </div>
+        <div class="ml-4 font-medium tracking-tight text-neutral-500">
+          More than 17k people joined us, it's your turn
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

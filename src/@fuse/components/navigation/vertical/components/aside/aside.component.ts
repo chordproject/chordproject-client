@@ -14,6 +14,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NavigationEnd, Router } from '@angular/router';
+import { Subject, filter, takeUntil } from 'rxjs';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
 import { FuseVerticalNavigationBasicItemComponent } from '@fuse/components/navigation/vertical/components/basic/basic.component';
@@ -22,7 +23,6 @@ import { FuseVerticalNavigationDividerItemComponent } from '@fuse/components/nav
 import { FuseVerticalNavigationGroupItemComponent } from '@fuse/components/navigation/vertical/components/group/group.component';
 import { FuseVerticalNavigationSpacerItemComponent } from '@fuse/components/navigation/vertical/components/spacer/spacer.component';
 import { FuseVerticalNavigationComponent } from '@fuse/components/navigation/vertical/vertical.component';
-import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'fuse-vertical-navigation-aside-item',
@@ -43,10 +43,8 @@ import { Subject, filter, takeUntil } from 'rxjs';
 export class FuseVerticalNavigationAsideItemComponent
   implements OnChanges, OnInit, OnDestroy
 {
-  /* eslint-disable @typescript-eslint/naming-convention */
   static ngAcceptInputType_autoCollapse: BooleanInput;
   static ngAcceptInputType_skipChildren: BooleanInput;
-  /* eslint-enable @typescript-eslint/naming-convention */
 
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _router = inject(Router);
@@ -58,7 +56,7 @@ export class FuseVerticalNavigationAsideItemComponent
   @Input() name: string;
   @Input() skipChildren: boolean;
 
-  active: boolean = false;
+  active = false;
   private _fuseVerticalNavigationComponent: FuseVerticalNavigationComponent;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 

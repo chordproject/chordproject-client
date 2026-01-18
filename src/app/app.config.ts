@@ -5,17 +5,18 @@ import {
   isDevMode,
   provideAppInitializer,
 } from '@angular/core';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { TranslocoService, provideTransloco } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
+import { provideIcons } from '@/app/core/icons/provider';
+import { provideSplashScreen } from '@/app/core/splash-screen/splash-screen.provider';
+import { provideTheme } from '@/app/core/theme/theme.provider';
+import { provideTheming } from '@/app/core/theming';
 import { provideFuse } from '@fuse';
 import { appRoutes } from './app.routes';
-import { provideAuth } from './core/auth/auth.provider';
-import { provideIcons } from './core/icons/icons.provider';
-import { provideTheme } from './core/theme/theme.provider';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
 import { MockApiService } from './mock-api';
 
@@ -77,7 +78,6 @@ export const appConfig: ApplicationConfig = {
     }),
 
     // Fuse
-    provideAuth(),
     provideFuse({
       mockApi: {
         delay: 0,
@@ -123,31 +123,38 @@ export const appConfig: ApplicationConfig = {
     }),
 
     // ------------------------------------------------
-    // FUSE v20.0.0
+    // FUSE v21.0.0
     // ------------------------------------------------
 
+    provideSplashScreen(),
     provideIcons(),
     provideTheme([
       {
         name: 'default',
-        primaryColor: '#4f46e5',
+        primary: '#4f46e5',
       },
       {
         name: 'teal',
-        primaryColor: '#0d9488',
+        primary: '#0d9488',
       },
       {
         name: 'rose',
-        primaryColor: '#e11d48',
+        primary: '#e11d48',
       },
       {
         name: 'purple',
-        primaryColor: '#9333ea',
+        primary: '#9333ea',
       },
       {
         name: 'amber',
-        primaryColor: '#facc15',
+        primary: '#facc15',
       },
     ]),
+
+    provideTheming({
+      scheme: 'system',
+      primary: '#4f46e5',
+      error: '#dc2626',
+    }),
   ],
 };

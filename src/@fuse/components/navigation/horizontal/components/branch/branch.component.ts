@@ -14,12 +14,12 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Subject, takeUntil } from 'rxjs';
 import { FuseHorizontalNavigationBasicItemComponent } from '@fuse/components/navigation/horizontal/components/basic/basic.component';
 import { FuseHorizontalNavigationDividerItemComponent } from '@fuse/components/navigation/horizontal/components/divider/divider.component';
 import { FuseHorizontalNavigationComponent } from '@fuse/components/navigation/horizontal/horizontal.component';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'fuse-horizontal-navigation-branch-item',
@@ -40,14 +40,12 @@ import { Subject, takeUntil } from 'rxjs';
 export class FuseHorizontalNavigationBranchItemComponent
   implements OnInit, OnDestroy
 {
-  /* eslint-disable @typescript-eslint/naming-convention */
   static ngAcceptInputType_child: BooleanInput;
-  /* eslint-enable @typescript-eslint/naming-convention */
 
   private _changeDetectorRef = inject(ChangeDetectorRef);
   private _fuseNavigationService = inject(FuseNavigationService);
 
-  @Input() child: boolean = false;
+  @Input() child = false;
   @Input() item: FuseNavigationItem;
   @Input() name: string;
   @ViewChild('matMenu', { static: true }) matMenu: MatMenu;

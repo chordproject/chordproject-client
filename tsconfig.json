@@ -3,20 +3,37 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "strict": false, // true
+    "noImplicitOverride": true,
+    //    "noPropertyAccessFromIndexSignature": true,
+    //    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
     "paths": {
       "@fuse": ["./src/@fuse"],
       "@fuse/*": ["./src/@fuse/*"],
-      "@/*": ["./src/*"]
-    },
-    "outDir": "./dist/out-tsc",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "bundler",
-    "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022"
+      "@/*": ["./src/*"],
+    }
   },
   "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false
-  }
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": false // true
+  },
+  "include": ["*.config.ts"],
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

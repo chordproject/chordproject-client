@@ -8,13 +8,22 @@ export class UserService {
   private _httpClient = inject(HttpClient);
   private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
 
+  constructor() {
+    this._user.next({
+      id: 'cfaad35d-07a3-4447-a6c3-d8c3d54fd5df',
+      name: 'Brian Hughes',
+      email: 'hughes.brian@company.com',
+      avatar: 'images/avatars/brian-hughes.jpg',
+      status: 'online',
+    });
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
   // -----------------------------------------------------------------------------------------------------
 
   /**
    * Setter & getter for user
-   *
    * @param value
    */
   set user(value: User) {
@@ -43,7 +52,6 @@ export class UserService {
 
   /**
    * Update the user
-   *
    * @param user
    */
   update(user: User): Observable<any> {

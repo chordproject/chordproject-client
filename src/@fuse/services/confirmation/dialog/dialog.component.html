@@ -4,7 +4,7 @@
     <div class="absolute right-0 top-0 pr-4 pt-4">
       <button mat-icon-button [matDialogClose]="undefined">
         <mat-icon
-          class="text-secondary"
+          class="text-muted"
           [svgIcon]="'heroicons_outline:x-mark'"
         ></mat-icon>
       </button>
@@ -52,7 +52,7 @@
 
         <!-- Message -->
         @if (data.message) {
-          <div class="text-secondary" [innerHTML]="data.message"></div>
+          <div class="text-muted" [innerHTML]="data.message"></div>
         }
       </div>
     }

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { FuseNavigationItem } from '@fuse/components/navigation';
 
 export const defaultNavigation: FuseNavigationItem[] = [
@@ -7,34 +6,34 @@ export const defaultNavigation: FuseNavigationItem[] = [
     title: 'Dashboards',
     subtitle: 'Unique dashboard designs',
     type: 'group',
-    icon: 'heroicons_outline:home',
+    icon: 'lucide:house',
     children: [
       {
         id: 'dashboards.project',
         title: 'Project',
         type: 'basic',
-        icon: 'heroicons_outline:clipboard-document-check',
+        icon: 'lucide:clipboard-check',
         link: '/dashboards/project',
       },
       {
         id: 'dashboards.analytics',
         title: 'Analytics',
         type: 'basic',
-        icon: 'heroicons_outline:chart-pie',
+        icon: 'lucide:chart-no-axes-combined',
         link: '/dashboards/analytics',
       },
       {
         id: 'dashboards.finance',
         title: 'Finance',
         type: 'basic',
-        icon: 'heroicons_outline:banknotes',
+        icon: 'lucide:wallet',
         link: '/dashboards/finance',
       },
       {
         id: 'dashboards.crypto',
         title: 'Crypto',
         type: 'basic',
-        icon: 'heroicons_outline:currency-dollar',
+        icon: 'lucide:coins',
         link: '/dashboards/crypto',
       },
     ],
@@ -44,34 +43,34 @@ export const defaultNavigation: FuseNavigationItem[] = [
     title: 'Applications',
     subtitle: 'Custom made application designs',
     type: 'group',
-    icon: 'heroicons_outline:home',
+    icon: 'lucide:layout-grid',
     children: [
       {
         id: 'apps.academy',
         title: 'Academy',
         type: 'basic',
-        icon: 'heroicons_outline:academic-cap',
+        icon: 'lucide:graduation-cap',
         link: '/apps/academy',
       },
       {
         id: 'apps.chat',
         title: 'Chat',
         type: 'basic',
-        icon: 'heroicons_outline:chat-bubble-bottom-center-text',
+        icon: 'lucide:message-square-text',
         link: '/apps/chat',
       },
       {
         id: 'apps.contacts',
         title: 'Contacts',
         type: 'basic',
-        icon: 'heroicons_outline:user-group',
+        icon: 'lucide:contact',
         link: '/apps/contacts',
       },
       {
         id: 'apps.ecommerce',
         title: 'ECommerce',
         type: 'collapsable',
-        icon: 'heroicons_outline:shopping-cart',
+        icon: 'lucide:shopping-cart',
         children: [
           {
             id: 'apps.ecommerce.inventory',
@@ -85,14 +84,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'apps.file-manager',
         title: 'File Manager',
         type: 'basic',
-        icon: 'heroicons_outline:cloud',
+        icon: 'lucide:folder-sync',
         link: '/apps/file-manager',
       },
       {
         id: 'apps.help-center',
         title: 'Help Center',
         type: 'collapsable',
-        icon: 'heroicons_outline:information-circle',
+        icon: 'lucide:message-circle-question',
         link: '/apps/help-center',
         children: [
           {
@@ -126,7 +125,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'apps.mailbox',
         title: 'Mailbox',
         type: 'basic',
-        icon: 'heroicons_outline:envelope',
+        icon: 'lucide:inbox',
         link: '/apps/mailbox',
         badge: {
           title: '27',
@@ -137,21 +136,21 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'apps.notes',
         title: 'Notes',
         type: 'basic',
-        icon: 'heroicons_outline:pencil-square',
+        icon: 'lucide:notebook-text',
         link: '/apps/notes',
       },
       {
         id: 'apps.scrumboard',
         title: 'Scrumboard',
         type: 'basic',
-        icon: 'heroicons_outline:view-columns',
+        icon: 'lucide:square-kanban',
         link: '/apps/scrumboard',
       },
       {
         id: 'apps.tasks',
         title: 'Tasks',
         type: 'basic',
-        icon: 'heroicons_outline:check-circle',
+        icon: 'lucide:list-todo',
         link: '/apps/tasks',
       },
     ],
@@ -161,20 +160,20 @@ export const defaultNavigation: FuseNavigationItem[] = [
     title: 'Pages',
     subtitle: 'Custom made page designs',
     type: 'group',
-    icon: 'heroicons_outline:document',
+    icon: 'lucide:file',
     children: [
       {
         id: 'pages.activities',
         title: 'Activities',
         type: 'basic',
-        icon: 'heroicons_outline:bars-3-bottom-left',
+        icon: 'lucide:logs',
         link: '/pages/activities',
       },
       {
         id: 'pages.authentication',
         title: 'Authentication',
         type: 'collapsable',
-        icon: 'heroicons_outline:lock-closed',
+        icon: 'lucide:lock-keyhole',
         children: [
           {
             id: 'pages.authentication.sign-in',
@@ -531,7 +530,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'pages.coming-soon',
         title: 'Coming Soon',
         type: 'collapsable',
-        icon: 'heroicons_outline:clock',
+        icon: 'lucide:clock',
         link: '/pages/coming-soon',
         children: [
           {
@@ -582,7 +581,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'pages.error',
         title: 'Error',
         type: 'collapsable',
-        icon: 'heroicons_outline:exclamation-circle',
+        icon: 'lucide:octagon-x',
         children: [
           {
             id: 'pages.error.404',
@@ -602,7 +601,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'pages.invoice',
         title: 'Invoice',
         type: 'collapsable',
-        icon: 'heroicons_outline:calculator',
+        icon: 'lucide:receipt-text',
         children: [
           {
             id: 'pages.invoice.printable',
@@ -629,14 +628,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'pages.maintenance',
         title: 'Maintenance',
         type: 'basic',
-        icon: 'heroicons_outline:exclamation-triangle',
+        icon: 'lucide:construction',
         link: '/pages/maintenance',
       },
       {
         id: 'pages.pricing',
         title: 'Pricing',
         type: 'collapsable',
-        icon: 'heroicons_outline:banknotes',
+        icon: 'lucide:banknote',
         children: [
           {
             id: 'pages.pricing.modern',
@@ -668,14 +667,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'pages.profile',
         title: 'Profile',
         type: 'basic',
-        icon: 'heroicons_outline:user-circle',
+        icon: 'lucide:circle-user-round',
         link: '/pages/profile',
       },
       {
         id: 'pages.settings',
         title: 'Settings',
         type: 'basic',
-        icon: 'heroicons_outline:cog-8-tooth',
+        icon: 'lucide:settings',
         link: '/pages/settings',
       },
     ],

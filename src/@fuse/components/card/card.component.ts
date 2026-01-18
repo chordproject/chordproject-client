@@ -1,5 +1,4 @@
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
-
 import {
   Component,
   HostBinding,
@@ -22,14 +21,12 @@ import { FuseCardFace } from '@fuse/components/card/card.types';
   imports: [],
 })
 export class FuseCardComponent implements OnChanges {
-  /* eslint-disable @typescript-eslint/naming-convention */
   static ngAcceptInputType_expanded: BooleanInput;
   static ngAcceptInputType_flippable: BooleanInput;
-  /* eslint-enable @typescript-eslint/naming-convention */
 
-  @Input() expanded: boolean = false;
+  @Input() expanded = false;
   @Input() face: FuseCardFace = 'front';
-  @Input() flippable: boolean = false;
+  @Input() flippable = false;
 
   // -----------------------------------------------------------------------------------------------------
   // @ Accessors
@@ -39,14 +36,12 @@ export class FuseCardComponent implements OnChanges {
    * Host binding for component classes
    */
   @HostBinding('class') get classList(): any {
-    /* eslint-disable @typescript-eslint/naming-convention */
     return {
       'fuse-card-expanded': this.expanded,
       'fuse-card-face-back': this.flippable && this.face === 'back',
       'fuse-card-face-front': this.flippable && this.face === 'front',
       'fuse-card-flippable': this.flippable,
     };
-    /* eslint-enable @typescript-eslint/naming-convention */
   }
 
   // -----------------------------------------------------------------------------------------------------

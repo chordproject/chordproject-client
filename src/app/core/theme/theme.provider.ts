@@ -9,9 +9,10 @@ import { ThemeService } from './theme.service';
 
 export interface ThemeConfig {
   name: string;
-  primaryColor: string;
-  secondaryColor?: string;
-  neutralColor?: string;
+  primary: string;
+  secondary?: string;
+  tertiary?: string;
+  neutral?: string;
 }
 
 /**

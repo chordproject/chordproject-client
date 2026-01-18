@@ -10,13 +10,13 @@ import {
   SimpleChanges,
   inject,
 } from '@angular/core';
+import { merge } from 'lodash-es';
+import PerfectScrollbar from 'perfect-scrollbar';
+import { Subject, debounceTime, fromEvent, takeUntil } from 'rxjs';
 import {
   ScrollbarGeometry,
   ScrollbarPosition,
 } from '@fuse/directives/scrollbar/scrollbar.types';
-import { merge } from 'lodash-es';
-import PerfectScrollbar from 'perfect-scrollbar';
-import { Subject, debounceTime, fromEvent, takeUntil } from 'rxjs';
 
 /**
  * Wrapper directive for the Perfect Scrollbar: https://github.com/mdbootstrap/perfect-scrollbar
@@ -27,14 +27,12 @@ import { Subject, debounceTime, fromEvent, takeUntil } from 'rxjs';
   standalone: true,
 })
 export class FuseScrollbarDirective implements OnChanges, OnInit, OnDestroy {
-  /* eslint-disable @typescript-eslint/naming-convention */
   static ngAcceptInputType_fuseScrollbar: BooleanInput;
-  /* eslint-enable @typescript-eslint/naming-convention */
 
   private _elementRef = inject(ElementRef);
   private _platform = inject(Platform);
 
-  @Input() fuseScrollbar: boolean = true;
+  @Input() fuseScrollbar = true;
   @Input() fuseScrollbarOptions: PerfectScrollbar.Options;
 
   private _animation: number;
@@ -172,7 +170,7 @@ export class FuseScrollbarDirective implements OnChanges, OnInit, OnDestroy {
    *
    * @param prefix
    */
-  geometry(prefix: string = 'scroll'): ScrollbarGeometry {
+  geometry(prefix = 'scroll'): ScrollbarGeometry {
     return new ScrollbarGeometry(
       this._elementRef.nativeElement[prefix + 'Left'],
       this._elementRef.nativeElement[prefix + 'Top'],
@@ -186,7 +184,7 @@ export class FuseScrollbarDirective implements OnChanges, OnInit, OnDestroy {
    *
    * @param absolute
    */
-  position(absolute: boolean = false): ScrollbarPosition {
+  position(absolute = false): ScrollbarPosition {
     let scrollbarPosition;
 
     if (!absolute && this._ps) {
@@ -251,7 +249,7 @@ export class FuseScrollbarDirective implements OnChanges, OnInit, OnDestroy {
    * @param offset
    * @param speed
    */
-  scrollToTop(offset: number = 0, speed?: number): void {
+  scrollToTop(offset = 0, speed?: number): void {
     this.animateScrolling('scrollTop', offset, speed);
   }
 
@@ -261,7 +259,7 @@ export class FuseScrollbarDirective implements OnChanges, OnInit, OnDestroy {
    * @param offset
    * @param speed
    */
-  scrollToBottom(offset: number = 0, speed?: number): void {
+  scrollToBottom(offset = 0, speed?: number): void {
     const top =
       this._elementRef.nativeElement.scrollHeight -
       this._elementRef.nativeElement.clientHeight;
@@ -274,7 +272,7 @@ export class FuseScrollbarDirective implements OnChanges, OnInit, OnDestroy {
    * @param offset
    * @param speed
    */
-  scrollToLeft(offset: number = 0, speed?: number): void {
+  scrollToLeft(offset = 0, speed?: number): void {
     this.animateScrolling('scrollLeft', offset, speed);
   }
 
@@ -284,7 +282,7 @@ export class FuseScrollbarDirective implements OnChanges, OnInit, OnDestroy {
    * @param offset
    * @param speed
    */
-  scrollToRight(offset: number = 0, speed?: number): void {
+  scrollToRight(offset = 0, speed?: number): void {
     const left =
       this._elementRef.nativeElement.scrollWidth -
       this._elementRef.nativeElement.clientWidth;
@@ -301,8 +299,8 @@ export class FuseScrollbarDirective implements OnChanges, OnInit, OnDestroy {
    */
   scrollToElement(
     qs: string,
-    offset: number = 0,
-    ignoreVisible: boolean = false,
+    offset = 0,
+    ignoreVisible = false,
     speed?: number
   ): void {
     const element = this._elementRef.nativeElement.querySelector(qs);

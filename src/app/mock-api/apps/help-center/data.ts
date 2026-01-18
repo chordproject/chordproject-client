@@ -1,4 +1,3 @@
-/* eslint-disable */
 export const faqCategories = [
   {
     id: '28924eab-97cc-465a-ba21-f232bb95843f',
@@ -509,7 +508,7 @@ export const guideContent = `
 <h3>Header Level 3</h3>
 
 <img src="images/pages/help-center/image-1.jpg">
-<p class="text-secondary">
+<p class="text-muted">
     <em>Nullam sagittis nulla in diam finibus, sed pharetra velit vestibulum. Suspendisse euismod in urna eu posuere.</em>
 </p>
 

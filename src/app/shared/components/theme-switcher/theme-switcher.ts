@@ -24,8 +24,11 @@ import { ThemeService } from '@/app/core/theme/theme.service';
     TitleCasePipe,
   ],
   template: `
-    <button mat-icon-button [matMenuTriggerFor]="themeSwitcherMenu">
-      <mat-icon svgIcon="lucide:paintbrush"></mat-icon>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="themeSwitcherMenu"
+    >
+      <mat-icon svgIcon="paintbrush"></mat-icon>
     </button>
     <mat-menu #themeSwitcherMenu>
       @for (item of themes; track item.name) {
@@ -36,7 +39,7 @@ import { ThemeService } from '@/app/core/theme/theme.service';
         >
           <span
             class="inline-flex size-3 rounded-full"
-            [style.backgroundColor]="item.primaryColor"
+            [style.backgroundColor]="item.primary"
           ></span>
           {{ item.name | titlecase }}
         </button>

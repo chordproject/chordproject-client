@@ -7,9 +7,7 @@ import {
   provideAppInitializer,
   provideEnvironmentInitializer,
 } from '@angular/core';
-import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import {
   FUSE_MOCK_API_DEFAULT_DELAY,
   mockApiInterceptor,
@@ -22,8 +20,6 @@ import {
   fuseLoadingInterceptor,
 } from '@fuse/services/loading';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { FusePlatformService } from '@fuse/services/platform';
-import { FuseSplashScreenService } from '@fuse/services/splash-screen';
 import { FuseUtilsService } from '@fuse/services/utils';
 
 export type FuseProviderConfig = {
@@ -39,25 +35,9 @@ export type FuseProviderConfig = {
  */
 export const provideFuse = (
   config: FuseProviderConfig
-): Array<Provider | EnvironmentProviders> => {
+): (Provider | EnvironmentProviders)[] => {
   // Base providers
-  const providers: Array<Provider | EnvironmentProviders> = [
-    {
-      // Disable 'theme' sanity check
-      provide: MATERIAL_SANITY_CHECKS,
-      useValue: {
-        doctype: true,
-        theme: false,
-        version: true,
-      },
-    },
-    {
-      // Use the 'fill' appearance on Angular Material form fields by default
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'outline',
-      },
-    },
+  const providers: (Provider | EnvironmentProviders)[] = [
     {
       provide: FUSE_MOCK_API_DEFAULT_DELAY,
       useValue: config?.mockApi?.delay ?? 0,
@@ -74,8 +54,7 @@ export const provideFuse = (
     provideEnvironmentInitializer(() => inject(FuseLoadingService)),
 
     provideEnvironmentInitializer(() => inject(FuseMediaWatcherService)),
-    provideEnvironmentInitializer(() => inject(FusePlatformService)),
-    provideEnvironmentInitializer(() => inject(FuseSplashScreenService)),
+    // provideEnvironmentInitializer(() => inject(FuseSplashScreenService)),
     provideEnvironmentInitializer(() => inject(FuseUtilsService)),
   ];
 

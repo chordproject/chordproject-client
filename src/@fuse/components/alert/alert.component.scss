@@ -34,7 +34,7 @@ fuse-alert {
 
       .fuse-alert-default-icon {
         .mat-icon {
-          @apply icon-size-5;
+          ////@apply icon-size-5;
         }
       }
 
@@ -99,7 +99,7 @@ fuse-alert {
       line-height: 32px !important;
 
       .mat-icon {
-        @apply icon-size-4;
+        ////@apply icon-size-4;
       }
     }
   }
@@ -127,7 +127,7 @@ fuse-alert {
       position: relative;
       overflow: hidden;
       border-radius: 6px;
-      @apply bg-card shadow-md;
+      ////@apply bg-card shadow-md;
 
       .fuse-alert-border {
         position: absolute;
@@ -138,7 +138,7 @@ fuse-alert {
       }
 
       .fuse-alert-message {
-        @apply text-gray-600;
+        //@apply text-gray-600;
       }
     }
 
@@ -146,32 +146,32 @@ fuse-alert {
     &.fuse-alert-type-primary {
       .fuse-alert-container {
         .fuse-alert-border {
-          @apply bg-primary;
+          //@apply bg-primary;
         }
 
         .fuse-alert-title,
         .fuse-alert-icon {
-          @apply text-primary;
+          //@apply text-primary;
         }
 
         .dark & {
-          @apply bg-gray-700;
+          //@apply bg-gray-700;
 
           .fuse-alert-border {
-            @apply bg-primary-400;
+            //@apply bg-primary-400;
           }
 
           .fuse-alert-title,
           .fuse-alert-icon {
-            @apply text-primary-400;
+            //@apply text-primary-400;
           }
 
           .fuse-alert-message {
-            @apply text-gray-300;
+            //@apply text-gray-300;
           }
 
           code {
-            @apply bg-gray-400 text-gray-800;
+            //@apply bg-gray-400 text-gray-800;
           }
         }
       }
@@ -181,32 +181,32 @@ fuse-alert {
     &.fuse-alert-type-error {
       .fuse-alert-container {
         .fuse-alert-border {
-          @apply bg-error;
+          //@apply bg-error;
         }
 
         .fuse-alert-title,
         .fuse-alert-icon {
-          @apply text-error;
+          //@apply text-error;
         }
 
         .dark & {
-          @apply bg-gray-700;
+          //@apply bg-gray-700;
 
           .fuse-alert-border {
-            @apply bg-error-400;
+            //@apply bg-error-400;
           }
 
           .fuse-alert-title,
           .fuse-alert-icon {
-            @apply text-error-400;
+            //@apply text-error-400;
           }
 
           .fuse-alert-message {
-            @apply text-gray-300;
+            //@apply text-gray-300;
           }
 
           code {
-            @apply bg-gray-400 text-gray-800;
+            //@apply bg-gray-400 text-gray-800;
           }
         }
       }
@@ -216,32 +216,32 @@ fuse-alert {
     &.fuse-alert-type-basic {
       .fuse-alert-container {
         .fuse-alert-border {
-          @apply bg-gray-600;
+          //@apply bg-gray-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-icon {
-          @apply text-gray-600;
+          //@apply text-gray-600;
         }
 
         .dark & {
-          @apply bg-gray-700;
+          //@apply bg-gray-700;
 
           .fuse-alert-border {
-            @apply bg-gray-400;
+            //@apply bg-gray-400;
           }
 
           .fuse-alert-title,
           .fuse-alert-icon {
-            @apply text-gray-400;
+            //@apply text-gray-400;
           }
 
           .fuse-alert-message {
-            @apply text-gray-300;
+            //@apply text-gray-300;
           }
 
           code {
-            @apply bg-gray-400 text-gray-800;
+            //@apply bg-gray-400 text-gray-800;
           }
         }
       }
@@ -251,32 +251,32 @@ fuse-alert {
     &.fuse-alert-type-info {
       .fuse-alert-container {
         .fuse-alert-border {
-          @apply bg-blue-600;
+          //@apply bg-blue-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-icon {
-          @apply text-blue-700;
+          //@apply text-blue-700;
         }
 
         .dark & {
-          @apply bg-gray-700;
+          //@apply bg-gray-700;
 
           .fuse-alert-border {
-            @apply bg-blue-400;
+            //@apply bg-blue-400;
           }
 
           .fuse-alert-title,
           .fuse-alert-icon {
-            @apply text-blue-400;
+            //@apply text-blue-400;
           }
 
           .fuse-alert-message {
-            @apply text-gray-300;
+            //@apply text-gray-300;
           }
 
           code {
-            @apply bg-gray-400 text-gray-800;
+            //@apply bg-gray-400 text-gray-800;
           }
         }
       }
@@ -286,32 +286,32 @@ fuse-alert {
     &.fuse-alert-type-success {
       .fuse-alert-container {
         .fuse-alert-border {
-          @apply bg-green-500;
+          //@apply bg-green-500;
         }
 
         .fuse-alert-title,
         .fuse-alert-icon {
-          @apply text-green-500;
+          //@apply text-green-500;
         }
 
         .dark & {
-          @apply bg-gray-700;
+          //@apply bg-gray-700;
 
           .fuse-alert-border {
-            @apply bg-green-400;
+            //@apply bg-green-400;
           }
 
           .fuse-alert-title,
           .fuse-alert-icon {
-            @apply text-green-400;
+            //@apply text-green-400;
           }
 
           .fuse-alert-message {
-            @apply text-gray-300;
+            //@apply text-gray-300;
           }
 
           code {
-            @apply bg-gray-400 text-gray-800;
+            //@apply bg-gray-400 text-gray-800;
           }
         }
       }
@@ -321,32 +321,32 @@ fuse-alert {
     &.fuse-alert-type-warning {
       .fuse-alert-container {
         .fuse-alert-border {
-          @apply bg-amber-500;
+          //@apply bg-amber-500;
         }
 
         .fuse-alert-title,
         .fuse-alert-icon {
-          @apply text-amber-500;
+          //@apply text-amber-500;
         }
 
         .dark & {
-          @apply bg-gray-700;
+          //@apply bg-gray-700;
 
           .fuse-alert-border {
-            @apply bg-amber-400;
+            //@apply bg-amber-400;
           }
 
           .fuse-alert-title,
           .fuse-alert-icon {
-            @apply text-amber-400;
+            //@apply text-amber-400;
           }
 
           .fuse-alert-message {
-            @apply text-gray-300;
+            //@apply text-gray-300;
           }
 
           code {
-            @apply bg-gray-400 text-gray-800;
+            //@apply bg-gray-400 text-gray-800;
           }
         }
       }
@@ -356,32 +356,32 @@ fuse-alert {
     &.fuse-alert-type-error {
       .fuse-alert-container {
         .fuse-alert-border {
-          @apply bg-red-600;
+          //@apply bg-red-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-icon {
-          @apply text-red-700;
+          //@apply text-red-700;
         }
 
         .dark & {
-          @apply bg-gray-700;
+          //@apply bg-gray-700;
 
           .fuse-alert-border {
-            @apply bg-red-400;
+            //@apply bg-red-400;
           }
 
           .fuse-alert-title,
           .fuse-alert-icon {
-            @apply text-red-400;
+            //@apply text-red-400;
           }
 
           .fuse-alert-message {
-            @apply text-gray-300;
+            //@apply text-gray-300;
           }
 
           code {
-            @apply bg-gray-400 text-gray-800;
+            //@apply bg-gray-400 text-gray-800;
           }
         }
       }
@@ -394,29 +394,29 @@ fuse-alert {
       border-radius: 6px;
 
       .fuse-alert-dismiss-button {
-        @apply text-white;
+        //@apply text-white;
       }
     }
 
     /* Primary */
     &.fuse-alert-type-primary {
       .fuse-alert-container {
-        @apply bg-primary-600;
+        //@apply bg-primary-600;
 
         .fuse-alert-icon {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-title {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-message {
-          @apply text-primary-100;
+          //@apply text-primary-100;
         }
 
         code {
-          @apply bg-primary-200 text-primary-800;
+          //@apply bg-primary-200 text-primary-800;
         }
       }
     }
@@ -424,22 +424,22 @@ fuse-alert {
     /* Error */
     &.fuse-alert-type-error {
       .fuse-alert-container {
-        @apply bg-error-600;
+        //@apply bg-error-600;
 
         .fuse-alert-icon {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-title {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-message {
-          @apply text-error-100;
+          //@apply text-error-100;
         }
 
         code {
-          @apply bg-error-200 text-error-800;
+          //@apply bg-error-200 text-error-800;
         }
       }
     }
@@ -447,22 +447,22 @@ fuse-alert {
     /* Basic */
     &.fuse-alert-type-basic {
       .fuse-alert-container {
-        @apply bg-gray-600;
+        //@apply bg-gray-600;
 
         .fuse-alert-icon {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-title {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-message {
-          @apply text-gray-100;
+          //@apply text-gray-100;
         }
 
         code {
-          @apply bg-gray-200 text-gray-800;
+          //@apply bg-gray-200 text-gray-800;
         }
       }
     }
@@ -470,22 +470,22 @@ fuse-alert {
     /* Info */
     &.fuse-alert-type-info {
       .fuse-alert-container {
-        @apply bg-blue-600;
+        //@apply bg-blue-600;
 
         .fuse-alert-icon {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-title {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-message {
-          @apply text-blue-100;
+          //@apply text-blue-100;
         }
 
         code {
-          @apply bg-blue-200 text-blue-800;
+          //@apply bg-blue-200 text-blue-800;
         }
       }
     }
@@ -493,22 +493,22 @@ fuse-alert {
     /* Success */
     &.fuse-alert-type-success {
       .fuse-alert-container {
-        @apply bg-green-600;
+        //@apply bg-green-600;
 
         .fuse-alert-icon {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-title {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-message {
-          @apply text-green-100;
+          //@apply text-green-100;
         }
 
         code {
-          @apply bg-green-200 text-gray-800;
+          //@apply bg-green-200 text-gray-800;
         }
       }
     }
@@ -516,22 +516,22 @@ fuse-alert {
     /* Warning */
     &.fuse-alert-type-warning {
       .fuse-alert-container {
-        @apply bg-amber-500;
+        //@apply bg-amber-500;
 
         .fuse-alert-icon {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-title {
-          @apply text-white;
+          //@apply text-white;
         }
 
         .fuse-alert-message {
-          @apply text-amber-100;
+          //@apply text-amber-100;
         }
 
         code {
-          @apply bg-amber-200 text-amber-800;
+          //@apply bg-amber-200 text-amber-800;
         }
       }
     }
@@ -546,39 +546,39 @@ fuse-alert {
     /* Primary */
     &.fuse-alert-type-primary {
       .fuse-alert-container {
-        @apply bg-primary-50 ring-1 ring-inset ring-primary-400;
+        //@apply bg-primary-50 ring-primary-400 ring-1 ring-inset;
 
         .fuse-alert-icon {
-          @apply text-primary-600;
+          //@apply text-primary-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-primary-900;
+          //@apply text-primary-900;
         }
 
         .fuse-alert-message {
-          @apply text-primary-700;
+          //@apply text-primary-700;
         }
 
         code {
-          @apply bg-primary-200 text-primary-800;
+          //@apply bg-primary-200 text-primary-800;
         }
 
         .dark & {
-          @apply bg-primary-600;
+          //@apply bg-primary-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-primary-200;
+            //@apply text-primary-200;
           }
         }
       }
@@ -587,39 +587,39 @@ fuse-alert {
     /* Error */
     &.fuse-alert-type-error {
       .fuse-alert-container {
-        @apply bg-error-50 ring-1 ring-inset ring-error-400;
+        //@apply bg-error-50 ring-error-400 ring-1 ring-inset;
 
         .fuse-alert-icon {
-          @apply text-error-600;
+          //@apply text-error-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-error-900;
+          //@apply text-error-900;
         }
 
         .fuse-alert-message {
-          @apply text-error-700;
+          //@apply text-error-700;
         }
 
         code {
-          @apply bg-error-200 text-error-800;
+          //@apply bg-error-200 text-error-800;
         }
 
         .dark & {
-          @apply bg-error-600;
+          //@apply bg-error-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-error-200;
+            //@apply text-error-200;
           }
         }
       }
@@ -628,39 +628,39 @@ fuse-alert {
     /* Basic */
     &.fuse-alert-type-basic {
       .fuse-alert-container {
-        @apply bg-gray-100 ring-1 ring-inset ring-gray-400;
+        //@apply bg-gray-100 ring-1 ring-gray-400 ring-inset;
 
         .fuse-alert-icon {
-          @apply text-gray-600;
+          //@apply text-gray-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-gray-900;
+          //@apply text-gray-900;
         }
 
         .fuse-alert-message {
-          @apply text-gray-700;
+          //@apply text-gray-700;
         }
 
         code {
-          @apply bg-gray-200 text-gray-800;
+          //@apply bg-gray-200 text-gray-800;
         }
 
         .dark & {
-          @apply bg-gray-600;
+          //@apply bg-gray-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-gray-200;
+            //@apply text-gray-200;
           }
         }
       }
@@ -669,39 +669,39 @@ fuse-alert {
     /* Info */
     &.fuse-alert-type-info {
       .fuse-alert-container {
-        @apply bg-blue-50 ring-1 ring-inset ring-blue-400;
+        //@apply bg-blue-50 ring-1 ring-blue-400 ring-inset;
 
         .fuse-alert-icon {
-          @apply text-blue-600;
+          //@apply text-blue-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-blue-900;
+          //@apply text-blue-900;
         }
 
         .fuse-alert-message {
-          @apply text-blue-700;
+          //@apply text-blue-700;
         }
 
         code {
-          @apply bg-blue-200 text-blue-800;
+          //@apply bg-blue-200 text-blue-800;
         }
 
         .dark & {
-          @apply bg-blue-600;
+          //@apply bg-blue-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-blue-200;
+            //@apply text-blue-200;
           }
         }
       }
@@ -710,39 +710,39 @@ fuse-alert {
     /* Success */
     &.fuse-alert-type-success {
       .fuse-alert-container {
-        @apply bg-green-50 ring-1 ring-inset ring-green-400;
+        //@apply bg-green-50 ring-1 ring-green-400 ring-inset;
 
         .fuse-alert-icon {
-          @apply text-green-600;
+          //@apply text-green-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-green-900;
+          //@apply text-green-900;
         }
 
         .fuse-alert-message {
-          @apply text-green-700;
+          //@apply text-green-700;
         }
 
         code {
-          @apply bg-green-200 text-green-800;
+          //@apply bg-green-200 text-green-800;
         }
 
         .dark & {
-          @apply bg-green-600;
+          //@apply bg-green-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-green-200;
+            //@apply text-green-200;
           }
         }
       }
@@ -751,39 +751,39 @@ fuse-alert {
     /* Warning */
     &.fuse-alert-type-warning {
       .fuse-alert-container {
-        @apply bg-amber-50 ring-1 ring-inset ring-amber-400;
+        //@apply bg-amber-50 ring-1 ring-amber-400 ring-inset;
 
         .fuse-alert-icon {
-          @apply text-amber-600;
+          //@apply text-amber-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-amber-900;
+          //@apply text-amber-900;
         }
 
         .fuse-alert-message {
-          @apply text-amber-700;
+          //@apply text-amber-700;
         }
 
         code {
-          @apply bg-amber-200 text-amber-800;
+          //@apply bg-amber-200 text-amber-800;
         }
 
         .dark & {
-          @apply bg-amber-600;
+          //@apply bg-amber-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-amber-200;
+            //@apply text-amber-200;
           }
         }
       }
@@ -799,39 +799,39 @@ fuse-alert {
     /* Primary */
     &.fuse-alert-type-primary {
       .fuse-alert-container {
-        @apply bg-primary-50;
+        //@apply bg-primary-50;
 
         .fuse-alert-icon {
-          @apply text-primary-600;
+          //@apply text-primary-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-primary-900;
+          //@apply text-primary-900;
         }
 
         .fuse-alert-message {
-          @apply text-primary-700;
+          //@apply text-primary-700;
         }
 
         code {
-          @apply bg-primary-200 text-primary-800;
+          //@apply bg-primary-200 text-primary-800;
         }
 
         .dark & {
-          @apply bg-primary-600;
+          //@apply bg-primary-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-primary-200;
+            //@apply text-primary-200;
           }
         }
       }
@@ -840,39 +840,39 @@ fuse-alert {
     /* Error */
     &.fuse-alert-type-error {
       .fuse-alert-container {
-        @apply bg-error-50;
+        //@apply bg-error-50;
 
         .fuse-alert-icon {
-          @apply text-error-600;
+          //@apply text-error-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-error-900;
+          //@apply text-error-900;
         }
 
         .fuse-alert-message {
-          @apply text-error-700;
+          //@apply text-error-700;
         }
 
         code {
-          @apply bg-error-200 text-error-800;
+          //@apply bg-error-200 text-error-800;
         }
 
         .dark & {
-          @apply bg-error-600;
+          //@apply bg-error-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-error-200;
+            //@apply text-error-200;
           }
         }
       }
@@ -881,39 +881,39 @@ fuse-alert {
     /* Basic */
     &.fuse-alert-type-basic {
       .fuse-alert-container {
-        @apply bg-gray-100;
+        //@apply bg-gray-100;
 
         .fuse-alert-icon {
-          @apply text-gray-600;
+          //@apply text-gray-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-gray-900;
+          //@apply text-gray-900;
         }
 
         .fuse-alert-message {
-          @apply text-gray-700;
+          //@apply text-gray-700;
         }
 
         code {
-          @apply bg-gray-200 text-gray-800;
+          //@apply bg-gray-200 text-gray-800;
         }
 
         .dark & {
-          @apply bg-gray-600;
+          //@apply bg-gray-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-gray-200;
+            //@apply text-gray-200;
           }
         }
       }
@@ -922,39 +922,39 @@ fuse-alert {
     /* Info */
     &.fuse-alert-type-info {
       .fuse-alert-container {
-        @apply bg-blue-50;
+        //@apply bg-blue-50;
 
         .fuse-alert-icon {
-          @apply text-blue-600;
+          //@apply text-blue-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-blue-900;
+          //@apply text-blue-900;
         }
 
         .fuse-alert-message {
-          @apply text-blue-700;
+          //@apply text-blue-700;
         }
 
         code {
-          @apply bg-blue-200 text-blue-800;
+          //@apply bg-blue-200 text-blue-800;
         }
 
         .dark & {
-          @apply bg-blue-600;
+          //@apply bg-blue-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-blue-200;
+            //@apply text-blue-200;
           }
         }
       }
@@ -963,39 +963,39 @@ fuse-alert {
     /* Success */
     &.fuse-alert-type-success {
       .fuse-alert-container {
-        @apply bg-green-50;
+        //@apply bg-green-50;
 
         .fuse-alert-icon {
-          @apply text-green-600;
+          //@apply text-green-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-green-900;
+          //@apply text-green-900;
         }
 
         .fuse-alert-message {
-          @apply text-green-700;
+          //@apply text-green-700;
         }
 
         code {
-          @apply bg-green-200 text-green-800;
+          //@apply bg-green-200 text-green-800;
         }
 
         .dark & {
-          @apply bg-green-600;
+          //@apply bg-green-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-green-200;
+            //@apply text-green-200;
           }
         }
       }
@@ -1004,39 +1004,39 @@ fuse-alert {
     /* Warning */
     &.fuse-alert-type-warning {
       .fuse-alert-container {
-        @apply bg-amber-50;
+        //@apply bg-amber-50;
 
         .fuse-alert-icon {
-          @apply text-amber-600;
+          //@apply text-amber-600;
         }
 
         .fuse-alert-title,
         .fuse-alert-dismiss-button {
-          @apply text-amber-900;
+          //@apply text-amber-900;
         }
 
         .fuse-alert-message {
-          @apply text-amber-700;
+          //@apply text-amber-700;
         }
 
         code {
-          @apply bg-amber-200 text-amber-800;
+          //@apply bg-amber-200 text-amber-800;
         }
 
         .dark & {
-          @apply bg-amber-600;
+          //@apply bg-amber-600;
 
           .fuse-alert-icon {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-title,
           .fuse-alert-dismiss-button {
-            @apply text-white;
+            //@apply text-white;
           }
 
           .fuse-alert-message {
-            @apply text-amber-200;
+            //@apply text-amber-200;
           }
         }
       }
