@@ -1,14 +1,23 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   ApplicationConfig,
   inject,
   isDevMode,
   provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import {
+  provideClientHydration,
+  withIncrementalHydration,
+} from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+} from '@angular/router';
 import { TranslocoService, provideTransloco } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { provideIcons } from '@/app/core/icons/provider';
@@ -16,18 +25,36 @@ import { provideSplashScreen } from '@/app/core/splash-screen/splash-screen.prov
 import { provideTheme } from '@/app/core/theme/theme.provider';
 import { provideTheming } from '@/app/core/theming';
 import { provideFuse } from '@fuse';
-import { appRoutes } from './app.routes';
+import { routes } from './app.routes';
 import { TranslocoHttpLoader } from './core/transloco/transloco.http-loader';
 import { MockApiService } from './mock-api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(),
-    provideHttpClient(),
+    provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withFetch()),
+    provideClientHydration(withIncrementalHydration()),
     provideRouter(
-      appRoutes,
+      routes,
+      withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
+
+    provideIcons(),
+    provideTheming({
+      scheme: 'system',
+      primary: '#4f46e5',
+      error: '#dc2626',
+    }),
+
+    // ----------------------------------------------------------------------
+    // OLD STUFF
+    // @TODO: Migrate application configuration
+    // @TODO: Remove zone.js from package.json and angular.json
+    // @TODO: Handle commonjs dependencies on angular.json
+    //
+
+    provideAnimations(),
 
     // Material Date Adapter
     {
@@ -122,12 +149,7 @@ export const appConfig: ApplicationConfig = {
       },
     }),
 
-    // ------------------------------------------------
-    // FUSE v21.0.0
-    // ------------------------------------------------
-
     provideSplashScreen(),
-    provideIcons(),
     provideTheme([
       {
         name: 'default',
@@ -150,11 +172,5 @@ export const appConfig: ApplicationConfig = {
         primary: '#facc15',
       },
     ]),
-
-    provideTheming({
-      scheme: 'system',
-      primary: '#4f46e5',
-      error: '#dc2626',
-    }),
   ],
 };

@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-export const appRoutes: Route[] = [
+export const routes: Route[] = [
   // Redirect empty path to '/auth/sign-in'
   { path: '', pathMatch: 'full', redirectTo: '/auth/sign-in' },
 
