@@ -1,55 +1,22 @@
 import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDivider } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import {
   MatSidenav,
   MatSidenavContainer,
   MatSidenavContent,
 } from '@angular/material/sidenav';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { Media } from '@/app/core/media';
 import { LayoutService } from '@/app/domains/admin/layout/data/layout';
-// import { navigation } from '@/app/domains/admin/layout/data/navigation';
-import { LanguagesComponent } from '@/app/domains/admin/layout/ui/languages/languages.component';
-import { MessagesComponent } from '@/app/domains/admin/layout/ui/messages/messages.component';
-import { NotificationsComponent } from '@/app/domains/admin/layout/ui/notifications/notifications.component';
-import { QuickChatComponent } from '@/app/domains/admin/layout/ui/quick-chat/quick-chat.component';
-import { SearchComponent } from '@/app/domains/admin/layout/ui/search/search.component';
-import { ShortcutsComponent } from '@/app/domains/admin/layout/ui/shortcuts/shortcuts.component';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
-import { FullscreenComponent } from '@/app/shared/components/fullscreen/fullscreen.component';
-import FuseSchemeSwitcher from '@/app/shared/components/scheme-switcher/scheme-switcher';
-import FuseThemeSwitcher from '@/app/shared/components/theme-switcher/theme-switcher';
-import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
-import {
-  FuseNavigationService,
-  FuseVerticalNavigationComponent,
-} from '@fuse/components/navigation';
 
 @Component({
   selector: 'admin-layout',
   imports: [
-    FuseLoadingBarComponent,
-    FuseVerticalNavigationComponent,
-    NotificationsComponent,
     MatIconModule,
     MatButtonModule,
-    LanguagesComponent,
-    SearchComponent,
-    ShortcutsComponent,
-    MessagesComponent,
     RouterOutlet,
-    QuickChatComponent,
-    FuseSchemeSwitcher,
-    FuseThemeSwitcher,
-    MatDivider,
-    MatMenu,
-    MatMenuItem,
-    MatMenuTrigger,
-    FullscreenComponent,
-    RouterLink,
     MatSidenavContainer,
     MatSidenav,
     MatSidenavContent,
@@ -222,31 +189,12 @@ import {
   `,
 })
 export class AdminLayout {
-  // Data
-  // protected navigation = navigation;
-
   // Dependencies
   protected layoutService = inject(LayoutService);
   private media = inject(Media);
-  private fuseNavigationService = inject(FuseNavigationService);
 
   // State
-  protected isScreenSmall = this.media.match('(max-width: 768px)');
-
   protected isMobile = computed(() =>
     this.media.match(`(max-width: 1023px)`)()
   );
-
-  toggleNavigation(name: string): void {
-    // Get the navigation
-    const navigation =
-      this.fuseNavigationService.getComponent<FuseVerticalNavigationComponent>(
-        name
-      );
-
-    if (navigation) {
-      // Toggle the opened status
-      navigation.toggle();
-    }
-  }
 }

@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
+import { Media } from '@/app/core/media';
 import { FuseLoadingBarComponent } from '@fuse/components/loading-bar';
 import {
   FuseNavigationItem,
   FuseNavigationService,
   FuseVerticalNavigationComponent,
 } from '@fuse/components/navigation';
-import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { NavigationService } from '../../core/navigation/navigation.service';
 
 @Component({
@@ -48,19 +48,23 @@ import { NavigationService } from '../../core/navigation/navigation.service';
     <!-- Navigation -->
     <fuse-vertical-navigation
       class="dark bg-gray-900 print:hidden"
-      [mode]="isScreenSmall ? 'over' : 'side'"
+      [mode]="isMobile() ? 'over' : 'side'"
       [name]="'docsNavigation'"
       [navigation]="navigation"
-      [opened]="!isScreenSmall"
+      [opened]="!isMobile()"
       #docsNav
     >
       <!-- Navigation header hook -->
       <ng-container fuseVerticalNavigationContentHeader>
         <!-- Logo -->
         <div class="flex items-center p-6">
-          <img class="w-8" src="images/logo/logo.svg" alt="Logo image" />
+          <img
+            class="w-8"
+            src="images/logo/logo.svg"
+            alt="Logo image"
+          />
           <div
-            class="ml-3 flex flex-col items-start text-2xl font-semibold leading-none"
+            class="ml-3 flex flex-col items-start text-2xl leading-none font-semibold"
           >
             FUSE DOCS
           </div>
@@ -72,10 +76,13 @@ import { NavigationService } from '../../core/navigation/navigation.service';
     <div class="flex w-full min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card relative z-49 flex h-16 w-full flex-0 items-center px-4 shadow dark:border-b dark:bg-transparent dark:shadow-none md:px-6 print:hidden"
+        class="bg-card relative z-49 flex h-16 w-full flex-0 items-center px-4 shadow md:px-6 dark:border-b dark:bg-transparent dark:shadow-none print:hidden"
       >
         <!-- Navigation toggle button -->
-        <button mat-icon-button (click)="docsNav.toggle()">
+        <button
+          mat-icon-button
+          (click)="docsNav.toggle()"
+        >
           <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
         </button>
         <!-- Components -->
@@ -95,7 +102,7 @@ import { NavigationService } from '../../core/navigation/navigation.service';
 
       <!-- Footer -->
       <div
-        class="bg-card relative z-49 flex h-14 w-full flex-0 items-center justify-start border-t px-4 dark:bg-transparent md:px-6 print:hidden"
+        class="bg-card relative z-49 flex h-14 w-full flex-0 items-center justify-start border-t px-4 md:px-6 dark:bg-transparent print:hidden"
       >
         <span class="text-muted font-medium"
           >Fuse &copy; {{ currentYear }}
@@ -105,9 +112,15 @@ import { NavigationService } from '../../core/navigation/navigation.service';
   `,
 })
 export default class DocumentationLayout implements OnInit, OnDestroy {
+  // Dependencies
+  private media = inject(Media);
+
+  // State
+  protected isMobile = this.media.match('(max-width: 1023px)');
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  protected isScreenSmall: boolean;
+  // protected isScreenSmall: boolean;
   protected navigation: FuseNavigationItem[] = [
     {
       id: 'docs.changelog',
@@ -794,7 +807,6 @@ export default class DocumentationLayout implements OnInit, OnDestroy {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _navigationService: NavigationService,
-    private _fuseMediaWatcherService: FuseMediaWatcherService,
     private _fuseNavigationService: FuseNavigationService
   ) {}
 
@@ -823,14 +835,13 @@ export default class DocumentationLayout implements OnInit, OnDestroy {
             .subscribe((navigation: Navigation) => {
                 this.navigation = navigation;
             });*/
-
     // Subscribe to media changes
-    this._fuseMediaWatcherService.onMediaChange$
+    /*this._fuseMediaWatcherService.onMediaChange$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(({ matchingAliases }) => {
         // Check if the screen is small
         this.isScreenSmall = !matchingAliases.includes('md');
-      });
+      });*/
   }
 
   /**
@@ -848,7 +859,6 @@ export default class DocumentationLayout implements OnInit, OnDestroy {
 
   /**
    * Toggle navigation
-   *
    * @param name
    */
   toggleNavigation(name: string): void {

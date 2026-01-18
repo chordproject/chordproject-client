@@ -12,8 +12,6 @@ import {
   FUSE_MOCK_API_DEFAULT_DELAY,
   mockApiInterceptor,
 } from '@fuse/lib/mock-api';
-import { FuseConfig } from '@fuse/services/config';
-import { FUSE_CONFIG } from '@fuse/services/config/config.constants';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import {
   FuseLoadingService,
@@ -27,7 +25,6 @@ export type FuseProviderConfig = {
     delay?: number;
     service?: any;
   };
-  fuse?: FuseConfig;
 };
 
 /**
@@ -40,11 +37,7 @@ export const provideFuse = (
   const providers: (Provider | EnvironmentProviders)[] = [
     {
       provide: FUSE_MOCK_API_DEFAULT_DELAY,
-      useValue: config?.mockApi?.delay ?? 0,
-    },
-    {
-      provide: FUSE_CONFIG,
-      useValue: config?.fuse ?? {},
+      useValue: 0,
     },
 
     importProvidersFrom(MatDialogModule),

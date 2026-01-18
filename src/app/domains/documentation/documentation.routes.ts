@@ -190,10 +190,10 @@ const routes: Routes = [
               },
             ],
           },
-          {
+          /*{
             path: 'page-layouts',
             loadChildren: () => import('./ui/page-layouts/page-layouts.routes'),
-          },
+          },*/
           {
             path: 'typography',
             loadComponent: () => import('./ui/typography/typography'),

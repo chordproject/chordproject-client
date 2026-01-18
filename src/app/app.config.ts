@@ -21,8 +21,6 @@ import {
 import { TranslocoService, provideTransloco } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { provideIcons } from '@/app/core/icons/provider';
-import { provideSplashScreen } from '@/app/core/splash-screen/splash-screen.provider';
-import { provideTheme } from '@/app/core/theme/theme.provider';
 import { provideTheming } from '@/app/core/theming';
 import { provideFuse } from '@fuse';
 import { routes } from './app.routes';
@@ -110,67 +108,6 @@ export const appConfig: ApplicationConfig = {
         delay: 0,
         service: MockApiService,
       },
-      fuse: {
-        layout: 'classy',
-        scheme: 'light',
-        screens: {
-          sm: '600px',
-          md: '960px',
-          lg: '1280px',
-          xl: '1440px',
-        },
-        theme: 'theme-default',
-        themes: [
-          {
-            id: 'theme-default',
-            name: 'Default',
-          },
-          {
-            id: 'theme-brand',
-            name: 'Brand',
-          },
-          {
-            id: 'theme-teal',
-            name: 'Teal',
-          },
-          {
-            id: 'theme-rose',
-            name: 'Rose',
-          },
-          {
-            id: 'theme-purple',
-            name: 'Purple',
-          },
-          {
-            id: 'theme-amber',
-            name: 'Amber',
-          },
-        ],
-      },
     }),
-
-    provideSplashScreen(),
-    provideTheme([
-      {
-        name: 'default',
-        primary: '#4f46e5',
-      },
-      {
-        name: 'teal',
-        primary: '#0d9488',
-      },
-      {
-        name: 'rose',
-        primary: '#e11d48',
-      },
-      {
-        name: 'purple',
-        primary: '#9333ea',
-      },
-      {
-        name: 'amber',
-        primary: '#facc15',
-      },
-    ]),
   ],
 };
