@@ -11,7 +11,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -21,14 +21,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Guides</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Getting Started</span>
@@ -37,7 +37,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Prerequisites
             </h2>
@@ -45,7 +45,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           Before you begin developing with Fuse, make sure your development
           environment includes Node.js, npm and Angular CLI.
@@ -54,7 +54,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         <h2>1. Node.js</h2>
         <p>
           To install Node.js, go to
-          <a href="https://nodejs.org/" rel="noreferrer" target="_blank"
+          <a
+            href="https://nodejs.org/"
+            rel="noreferrer"
+            target="_blank"
             >Node.js
           </a>
           and install the active LTS version.
@@ -72,7 +75,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         <h2>3. Angular CLI</h2>
         <p>
           You will use the
-          <a href="https://cli.angular.io/" rel="noreferrer" target="_blank"
+          <a
+            href="https://cli.angular.io/"
+            rel="noreferrer"
+            target="_blank"
             >Angular CLI
           </a>
           to create projects, generate application and library code, and perform
@@ -83,7 +89,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           To install the CLI using npm, open a terminal/console window and enter
           the following command:
         </p>
-        <textarea fuse-highlight lang="bash">
+        <textarea
+          fuse-highlight
+          lang="bash"
+        >
                     npm install -g @angular/cli
                 </textarea
         >

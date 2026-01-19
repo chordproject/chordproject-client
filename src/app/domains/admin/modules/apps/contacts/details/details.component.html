@@ -12,7 +12,11 @@
       }
       <!-- Close button -->
       <div class="mx-auto flex w-full max-w-3xl items-center justify-end pt-6">
-        <a mat-icon-button [matTooltip]="'Close'" [routerLink]="['../']">
+        <a
+          mat-icon-button
+          [matTooltip]="'Close'"
+          [routerLink]="['../']"
+        >
           <mat-icon
             class="text-white"
             [svgIcon]="'heroicons_outline:x-mark'"
@@ -33,11 +37,14 @@
             class="ring-bg-card flex h-32 w-32 items-center justify-center overflow-hidden rounded-full ring-4"
           >
             @if (contact.avatar) {
-              <img class="h-full w-full object-cover" [src]="contact.avatar" />
+              <img
+                class="h-full w-full object-cover"
+                [src]="contact.avatar"
+              />
             }
             @if (!contact.avatar) {
               <div
-                class="flex h-full w-full items-center justify-center overflow-hidden rounded bg-gray-200 text-8xl font-bold uppercase leading-none text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                class="text-8xl flex h-full w-full items-center justify-center overflow-hidden rounded bg-gray-200 leading-none font-bold text-gray-600 uppercase dark:bg-gray-700 dark:text-gray-200"
               >
                 {{ contact.name.charAt(0) }}
               </div>
@@ -45,7 +52,10 @@
           </div>
           <!-- Actions -->
           <div class="mb-1 ml-auto flex items-center">
-            <button mat-stroked-button (click)="toggleEditMode(true)">
+            <button
+              mat-stroked-button
+              (click)="toggleEditMode(true)"
+            >
               <mat-icon [svgIcon]="'heroicons_solid:pencil-square'"></mat-icon>
               <span class="ml-2">Edit</span>
             </button>
@@ -66,9 +76,9 @@
               track trackByFn($index, tag)
             ) {
               <div
-                class="mb-3 mr-3 flex items-center justify-center rounded-full bg-gray-100 px-3 py-1 leading-normal text-gray-500 dark:bg-gray-700 dark:text-gray-300"
+                class="leading-normal mr-3 mb-3 flex items-center justify-center rounded-full bg-gray-100 px-3 py-1 text-gray-500 dark:bg-gray-700 dark:text-gray-300"
               >
-                <span class="whitespace-nowrap text-sm font-medium">{{
+                <span class="text-sm font-medium whitespace-nowrap">{{
                   tag.title
                 }}</span>
               </div>
@@ -138,9 +148,7 @@
                     <div
                       class="hidden h-4 w-6 overflow-hidden sm:flex"
                       [matTooltip]="getCountryByIso(phoneNumber.country).name"
-                      [style.background]="
-                        'url(\'/images/apps/contacts/flags.png\') no-repeat 0 0'
-                      "
+                      [style.background]="'url(\'/images/apps/contacts/flags.png\') no-repeat 0 0'"
                       [style.backgroundSize]="'24px 3876px'"
                       [style.backgroundPosition]="
                         getCountryByIso(phoneNumber.country).flagImagePos
@@ -191,7 +199,7 @@
                 [svgIcon]="'heroicons_outline:bars-3-bottom-left'"
               ></mat-icon>
               <div
-                class="prose prose-sm ml-6 max-w-none"
+                class="prose-sm prose ml-6 max-w-none"
                 [innerHTML]="contact.notes"
               ></div>
             </div>
@@ -214,7 +222,11 @@
       }
       <!-- Close button -->
       <div class="mx-auto flex w-full max-w-3xl items-center justify-end pt-6">
-        <a mat-icon-button [matTooltip]="'Close'" [routerLink]="['../']">
+        <a
+          mat-icon-button
+          [matTooltip]="'Close'"
+          [routerLink]="['../']"
+        >
           <mat-icon
             class="text-white"
             [svgIcon]="'heroicons_outline:x-mark'"
@@ -233,7 +245,7 @@
               class="ring-bg-card relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full ring-4"
             >
               <!-- Upload / Remove avatar -->
-              <div class="absolute inset-0 z-10 bg-black bg-opacity-50"></div>
+              <div class="bg-opacity-50 absolute inset-0 z-10 bg-black"></div>
               <div
                 class="absolute inset-0 z-20 flex items-center justify-center"
               >
@@ -248,7 +260,7 @@
                     #avatarFileInput
                   />
                   <label
-                    class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full hover:bg-hover"
+                    class="hover:bg-hover flex h-10 w-10 cursor-pointer items-center justify-center rounded-full"
                     for="avatar-file-input"
                     matRipple
                   >
@@ -259,7 +271,10 @@
                   </label>
                 </div>
                 <div>
-                  <button mat-icon-button (click)="removeAvatar()">
+                  <button
+                    mat-icon-button
+                    (click)="removeAvatar()"
+                  >
                     <mat-icon
                       class="text-white"
                       [svgIcon]="'heroicons_outline:trash'"
@@ -276,7 +291,7 @@
               }
               @if (!contact.avatar) {
                 <div
-                  class="flex h-full w-full items-center justify-center overflow-hidden rounded bg-gray-200 text-8xl font-bold uppercase leading-none text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                  class="text-8xl flex h-full w-full items-center justify-center overflow-hidden rounded bg-gray-200 leading-none font-bold text-gray-600 uppercase dark:bg-gray-700 dark:text-gray-200"
                 >
                   {{ contact.name.charAt(0) }}
                 </div>
@@ -286,11 +301,14 @@
 
           <!-- Name -->
           <div class="mt-8">
-            <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-form-field
+              class="w-full"
+              [subscriptSizing]="'dynamic'"
+            >
               <mat-label>Name</mat-label>
               <mat-icon
                 matPrefix
-                class="hidden icon-size-5 sm:flex"
+                class="hidden size-5 sm:flex"
                 [svgIcon]="'heroicons_solid:user-circle'"
               ></mat-icon>
               <input
@@ -313,7 +331,7 @@
                 <div
                   class="m-1.5 flex items-center justify-center rounded-full bg-gray-100 px-4 leading-9 text-gray-500 dark:bg-gray-700 dark:text-gray-300"
                 >
-                  <span class="whitespace-nowrap font-medium">{{
+                  <span class="font-medium whitespace-nowrap">{{
                     tag.title
                   }}</span>
                 </div>
@@ -327,18 +345,18 @@
             >
               @if (contact.tags.length) {
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   [svgIcon]="'heroicons_solid:pencil-square'"
                 ></mat-icon>
-                <span class="ml-1.5 whitespace-nowrap font-medium">Edit</span>
+                <span class="ml-1.5 font-medium whitespace-nowrap">Edit</span>
               }
 
               @if (!contact.tags.length) {
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   [svgIcon]="'heroicons_solid:plus-circle'"
                 ></mat-icon>
-                <span class="ml-1.5 whitespace-nowrap font-medium">Add</span>
+                <span class="ml-1.5 font-medium whitespace-nowrap">Add</span>
               }
 
               <!-- Tags panel -->
@@ -348,7 +366,7 @@
                   <div class="m-3 mr-2 flex items-center">
                     <div class="flex items-center">
                       <mat-icon
-                        class="icon-size-5"
+                        class="size-5"
                         [svgIcon]="'heroicons_solid:magnifying-glass'"
                       ></mat-icon>
                       <div class="ml-2">
@@ -370,13 +388,13 @@
                     >
                       @if (!tagsEditMode) {
                         <mat-icon
-                          class="icon-size-5"
+                          class="size-5"
                           [svgIcon]="'heroicons_solid:pencil-square'"
                         ></mat-icon>
                       }
                       @if (tagsEditMode) {
                         <mat-icon
-                          class="icon-size-5"
+                          class="size-5"
                           [svgIcon]="'heroicons_solid:check'"
                         ></mat-icon>
                       }
@@ -389,7 +407,7 @@
                     @if (!tagsEditMode) {
                       @for (tag of filteredTags; track trackByFn($index, tag)) {
                         <div
-                          class="flex h-10 min-h-10 cursor-pointer items-center pl-1 pr-4 hover:bg-hover"
+                          class="hover:bg-hover flex h-10 min-h-10 cursor-pointer items-center pr-4 pl-1"
                           (click)="toggleContactTag(tag)"
                           matRipple
                         >
@@ -438,14 +456,14 @@
                     <!-- Create tag -->
                     @if (shouldShowCreateTagButton(newTagInput.value)) {
                       <div
-                        class="-ml-0.5 flex h-10 min-h-10 cursor-pointer items-center pl-4 pr-3 leading-none hover:bg-hover"
+                        class="hover:bg-hover -ml-0.5 flex h-10 min-h-10 cursor-pointer items-center pr-3 pl-4 leading-none"
                         (click)="
                           createTag(newTagInput.value); newTagInput.value = ''
                         "
                         matRipple
                       >
                         <mat-icon
-                          class="mr-2 icon-size-5"
+                          class="mr-2 size-5"
                           [svgIcon]="'heroicons_solid:plus-circle'"
                         ></mat-icon>
                         <div class="break-all">
@@ -462,11 +480,14 @@
 
           <!-- Title -->
           <div class="mt-8">
-            <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-form-field
+              class="w-full"
+              [subscriptSizing]="'dynamic'"
+            >
               <mat-label>Title</mat-label>
               <mat-icon
                 matPrefix
-                class="hidden icon-size-5 sm:flex"
+                class="hidden size-5 sm:flex"
                 [svgIcon]="'heroicons_solid:briefcase'"
               ></mat-icon>
               <input
@@ -479,11 +500,14 @@
 
           <!-- Company -->
           <div class="mt-8">
-            <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-form-field
+              class="w-full"
+              [subscriptSizing]="'dynamic'"
+            >
               <mat-label>Company</mat-label>
               <mat-icon
                 matPrefix
-                class="hidden icon-size-5 sm:flex"
+                class="hidden size-5 sm:flex"
                 [svgIcon]="'heroicons_solid:building-office-2'"
               ></mat-icon>
               <input
@@ -514,7 +538,7 @@
                     }
                     <mat-icon
                       matPrefix
-                      class="hidden icon-size-5 sm:flex"
+                      class="hidden size-5 sm:flex"
                       [svgIcon]="'heroicons_solid:envelope'"
                     ></mat-icon>
                     <input
@@ -533,7 +557,7 @@
                     }
                     <mat-icon
                       matPrefix
-                      class="hidden icon-size-5 sm:flex"
+                      class="hidden size-5 sm:flex"
                       [svgIcon]="'heroicons_solid:tag'"
                     ></mat-icon>
                     <input
@@ -564,11 +588,11 @@
               }
             </div>
             <div
-              class="group -ml-4 mt-2 inline-flex cursor-pointer items-center rounded px-4 py-2"
+              class="group mt-2 -ml-4 inline-flex cursor-pointer items-center rounded px-4 py-2"
               (click)="addEmailField()"
             >
               <mat-icon
-                class="icon-size-5"
+                class="size-5"
                 [svgIcon]="'heroicons_solid:plus-circle'"
               ></mat-icon>
               <span class="text-muted ml-2 font-medium group-hover:underline"
@@ -609,9 +633,7 @@
                         <span class="flex items-center">
                           <span
                             class="mr-1 hidden h-4 w-6 overflow-hidden sm:flex"
-                            [style.background]="
-                              'url(\'/images/apps/contacts/flags.png\') no-repeat 0 0'
-                            "
+                            [style.background]="'url(\'/images/apps/contacts/flags.png\') no-repeat 0 0'"
                             [style.backgroundSize]="'24px 3876px'"
                             [style.backgroundPosition]="
                               getCountryByIso(phoneNumber.get('country').value)
@@ -635,9 +657,7 @@
                           <span class="flex items-center">
                             <span
                               class="h-4 w-6 overflow-hidden"
-                              [style.background]="
-                                'url(\'/images/apps/contacts/flags.png\') no-repeat 0 0'
-                              "
+                              [style.background]="'url(\'/images/apps/contacts/flags.png\') no-repeat 0 0'"
                               [style.backgroundSize]="'24px 3876px'"
                               [style.backgroundPosition]="country.flagImagePos"
                             ></span>
@@ -659,7 +679,7 @@
                     }
                     <mat-icon
                       matPrefix
-                      class="hidden icon-size-5 sm:flex"
+                      class="hidden size-5 sm:flex"
                       [svgIcon]="'heroicons_solid:tag'"
                     ></mat-icon>
                     <input
@@ -690,11 +710,11 @@
               }
             </div>
             <div
-              class="group -ml-4 mt-2 inline-flex cursor-pointer items-center rounded px-4 py-2"
+              class="group mt-2 -ml-4 inline-flex cursor-pointer items-center rounded px-4 py-2"
               (click)="addPhoneNumberField()"
             >
               <mat-icon
-                class="icon-size-5"
+                class="size-5"
                 [svgIcon]="'heroicons_solid:plus-circle'"
               ></mat-icon>
               <span class="text-muted ml-2 font-medium group-hover:underline"
@@ -705,11 +725,14 @@
 
           <!-- Address -->
           <div class="mt-8">
-            <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-form-field
+              class="w-full"
+              [subscriptSizing]="'dynamic'"
+            >
               <mat-label>Address</mat-label>
               <mat-icon
                 matPrefix
-                class="hidden icon-size-5 sm:flex"
+                class="hidden size-5 sm:flex"
                 [svgIcon]="'heroicons_solid:map-pin'"
               ></mat-icon>
               <input
@@ -722,11 +745,14 @@
 
           <!-- Birthday -->
           <div class="mt-8">
-            <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-form-field
+              class="w-full"
+              [subscriptSizing]="'dynamic'"
+            >
               <mat-label>Birthday</mat-label>
               <mat-icon
                 matPrefix
-                class="hidden icon-size-5 sm:flex"
+                class="hidden size-5 sm:flex"
                 [svgIcon]="'heroicons_solid:cake'"
               ></mat-icon>
               <input
@@ -735,7 +761,10 @@
                 [formControlName]="'birthday'"
                 [placeholder]="'Birthday'"
               />
-              <mat-datepicker-toggle matSuffix [for]="birthdayDatepicker">
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="birthdayDatepicker"
+              >
               </mat-datepicker-toggle>
               <mat-datepicker #birthdayDatepicker></mat-datepicker>
             </mat-form-field>
@@ -743,11 +772,14 @@
 
           <!-- Notes -->
           <div class="mt-8">
-            <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-form-field
+              class="w-full"
+              [subscriptSizing]="'dynamic'"
+            >
               <mat-label>Notes</mat-label>
               <mat-icon
                 matPrefix
-                class="hidden icon-size-5 sm:flex"
+                class="hidden size-5 sm:flex"
                 [svgIcon]="'heroicons_solid:bars-3-bottom-left'"
               ></mat-icon>
               <textarea
@@ -763,7 +795,7 @@
 
           <!-- Actions -->
           <div
-            class="-mx-6 mt-10 flex items-center border-t bg-gray-50 py-4 pl-1 pr-4 dark:bg-transparent sm:-mx-12 sm:pl-7 sm:pr-12"
+            class="-mx-6 mt-10 flex items-center border-t bg-gray-50 py-4 pr-4 pl-1 sm:-mx-12 sm:pr-12 sm:pl-7 dark:bg-transparent"
           >
             <!-- Delete -->
             <button

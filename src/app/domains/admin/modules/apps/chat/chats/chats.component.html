@@ -1,8 +1,11 @@
 <div class="bg-card relative flex w-full flex-auto dark:bg-transparent">
-  <mat-drawer-container class="h-full flex-auto" [hasBackdrop]="false">
+  <mat-drawer-container
+    class="h-full flex-auto"
+    [hasBackdrop]="false"
+  >
     <!-- Drawer -->
     <mat-drawer
-      class="w-full dark:bg-gray-900 sm:w-100 lg:border-r lg:shadow-none"
+      class="w-full sm:w-100 lg:border-r lg:shadow-none dark:bg-gray-900"
       [autoFocus]="false"
       [(opened)]="drawerOpened"
       #drawer
@@ -23,7 +26,7 @@
       <!-- Chats list -->
       @if (chats && chats.length > 0) {
         <div
-          class="bg-card relative flex w-full min-w-0 flex-auto flex-col dark:bg-transparent lg:min-w-100 lg:max-w-100"
+          class="bg-card relative flex w-full min-w-0 flex-auto flex-col lg:max-w-100 lg:min-w-100 dark:bg-transparent"
         >
           <!-- Header -->
           <div
@@ -44,7 +47,7 @@
                   }
                   @if (!profile.avatar) {
                     <div
-                      class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg uppercase text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                      class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg text-gray-600 uppercase dark:bg-gray-700 dark:text-gray-200"
                     >
                       {{ profile.name.charAt(0) }}
                     </div>
@@ -54,7 +57,11 @@
                   {{ profile.name }}
                 </div>
               </div>
-              <button class="ml-auto" mat-icon-button (click)="openNewChat()">
+              <button
+                class="ml-auto"
+                mat-icon-button
+                (click)="openNewChat()"
+              >
                 <mat-icon
                   [svgIcon]="'heroicons_outline:plus-circle'"
                 ></mat-icon>
@@ -80,7 +87,10 @@
                     ></mat-icon>
                     Create a room
                   </button>
-                  <button mat-menu-item (click)="openProfile()">
+                  <button
+                    mat-menu-item
+                    (click)="openProfile()"
+                  >
                     <mat-icon
                       [svgIcon]="'heroicons_outline:user-circle'"
                     ></mat-icon>
@@ -113,7 +123,7 @@
               >
                 <mat-icon
                   matPrefix
-                  class="icon-size-5"
+                  class="size-5"
                   [svgIcon]="'heroicons_solid:magnifying-glass'"
                 ></mat-icon>
                 <input
@@ -136,7 +146,7 @@
                   [ngClass]="{
                     'hover:bg-gray-100':
                       !selectedChat || selectedChat.id !== chat.id,
-                    'bg-primary-50 dark:bg-hover':
+                    'dark:bg-hover bg-primary-50':
                       selectedChat && selectedChat.id === chat.id,
                   }"
                   [routerLink]="[chat.id]"
@@ -146,7 +156,7 @@
                   >
                     @if (chat.unreadCount > 0) {
                       <div
-                        class="ring-bg-card absolute bottom-0 right-0 -ml-0.5 h-2 w-2 flex-0 rounded-full bg-primary text-on-primary ring-2 dark:bg-primary-500 dark:ring-gray-900"
+                        class="ring-bg-card bg-primary text-on-primary absolute right-0 bottom-0 -ml-0.5 h-2 w-2 flex-0 rounded-full ring-2 dark:bg-primary-500 dark:ring-gray-900"
                         [class.ring-primary-50]="
                           selectedChat && selectedChat.id === chat.id
                         "
@@ -161,14 +171,14 @@
                     }
                     @if (!chat.contact.avatar) {
                       <div
-                        class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg uppercase text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                        class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg text-gray-600 uppercase dark:bg-gray-700 dark:text-gray-200"
                       >
                         {{ chat.contact.name.charAt(0) }}
                       </div>
                     }
                   </div>
                   <div class="ml-4 min-w-0">
-                    <div class="truncate font-medium leading-5">
+                    <div class="truncate leading-5 font-medium">
                       {{ chat.contact.name }}
                     </div>
                     <div
@@ -185,7 +195,7 @@
                     </div>
                     @if (chat.muted) {
                       <mat-icon
-                        class="text-muted icon-size-5"
+                        class="text-muted size-5"
                         [svgIcon]="'heroicons_solid:speaker-x-mark'"
                       ></mat-icon>
                     }
@@ -197,7 +207,7 @@
                 class="flex h-full flex-auto flex-col items-center justify-center"
               >
                 <mat-icon
-                  class="icon-size-24"
+                  class="size-24"
                   [svgIcon]="'heroicons_outline:chat-bubble-oval-left-ellipsis'"
                 ></mat-icon>
                 <div
@@ -212,7 +222,7 @@
       } @else {
         <div class="flex h-full flex-auto flex-col items-center justify-center">
           <mat-icon
-            class="icon-size-24"
+            class="size-24"
             [svgIcon]="'heroicons_outline:chat-bubble-oval-left-ellipsis'"
           ></mat-icon>
           <div class="text-muted mt-4 text-2xl font-semibold tracking-tight">

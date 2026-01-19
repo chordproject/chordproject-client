@@ -17,7 +17,7 @@ import { Scheme, Theming } from '@/app/core/theming';
   ],
   template: `
     <button
-      class="flex w-full cursor-pointer items-center gap-x-3 rounded-xl p-2 text-left hover:bg-on-surface-variant/8"
+      class="flex w-full cursor-pointer items-center gap-x-3 rounded-xl p-2 text-left hover:bg-neutral-700/10 dark:hover:bg-neutral-300/10"
       [matMenuTriggerFor]="userMenu"
     >
       <img
@@ -27,7 +27,7 @@ import { Scheme, Theming } from '@/app/core/theming';
       />
       <div class="flex min-w-0 flex-auto flex-col select-none">
         <div class="truncate font-medium">Brian Hughes</div>
-        <div class="truncate text-sm text-on-surface-variant">
+        <div class="text-on-surface-variant truncate text-sm">
           brian&#64;example.com
         </div>
       </div>
@@ -54,7 +54,7 @@ import { Scheme, Theming } from '@/app/core/theming';
         />
         <div class="ml-3 flex min-w-0 flex-auto flex-col select-none">
           <div class="truncate font-medium">Brian Hughes</div>
-          <div class="truncate text-xs text-on-surface-variant">
+          <div class="text-on-surface-variant truncate text-xs">
             brian&#64;example.com
           </div>
         </div>

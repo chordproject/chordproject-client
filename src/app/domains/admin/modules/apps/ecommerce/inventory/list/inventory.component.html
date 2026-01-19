@@ -1,5 +1,5 @@
 <div
-  class="bg-card flex min-w-0 flex-auto flex-col dark:bg-transparent sm:absolute sm:inset-0 sm:overflow-hidden"
+  class="bg-card flex min-w-0 flex-auto flex-col sm:absolute sm:inset-0 sm:overflow-hidden dark:bg-transparent"
 >
   <!-- Header -->
   <div
@@ -14,14 +14,14 @@
     <!-- Title -->
     <div class="text-4xl font-extrabold tracking-tight">Inventory</div>
     <!-- Actions -->
-    <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
+    <div class="mt-6 flex shrink-0 items-center sm:mt-0 sm:ml-4">
       <!-- Search -->
       <mat-form-field
         class="fuse-mat-dense fuse-mat-rounded min-w-64"
         [subscriptSizing]="'dynamic'"
       >
         <mat-icon
-          class="icon-size-5"
+          class="size-5"
           matPrefix
           [svgIcon]="'heroicons_solid:magnifying-glass'"
         ></mat-icon>
@@ -33,9 +33,13 @@
         />
       </mat-form-field>
       <!-- Add product button -->
-      <button class="ml-4" mat-flat-button (click)="createProduct()">
+      <button
+        class="ml-4"
+        mat-flat-button
+        (click)="createProduct()"
+      >
         <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-        <span class="ml-2 mr-1">Add</span>
+        <span class="mr-1 ml-2">Add</span>
       </button>
     </div>
   </div>
@@ -51,20 +55,34 @@
           <div class="grid">
             <!-- Header -->
             <div
-              class="inventory-grid text-muted sticky top-0 z-10 grid gap-4 bg-gray-50 px-6 py-4 font-semibold shadow dark:bg-black dark:bg-opacity-5 md:px-8"
+              class="inventory-grid text-muted dark:bg-opacity-5 sticky top-0 z-10 grid gap-4 bg-gray-50 px-6 py-4 font-semibold shadow md:px-8 dark:bg-black"
               matSort
               matSortDisableClear
             >
               <div></div>
-              <div class="hidden md:block" [mat-sort-header]="'sku'">SKU</div>
+              <div
+                class="hidden md:block"
+                [mat-sort-header]="'sku'"
+              >
+                SKU
+              </div>
               <div [mat-sort-header]="'name'">Name</div>
-              <div class="hidden sm:block" [mat-sort-header]="'price'">
+              <div
+                class="hidden sm:block"
+                [mat-sort-header]="'price'"
+              >
                 Price
               </div>
-              <div class="hidden lg:block" [mat-sort-header]="'stock'">
+              <div
+                class="hidden lg:block"
+                [mat-sort-header]="'stock'"
+              >
                 Stock
               </div>
-              <div class="hidden lg:block" [mat-sort-header]="'active'">
+              <div
+                class="hidden lg:block"
+                [mat-sort-header]="'active'"
+              >
                 Active
               </div>
               <div class="hidden sm:block">Details</div>
@@ -89,7 +107,7 @@
                       }
                       @if (!product.thumbnail) {
                         <div
-                          class="flex h-full w-full items-center justify-center text-center text-xs font-semibold uppercase leading-none"
+                          class="flex h-full w-full items-center justify-center text-center text-xs leading-none font-semibold uppercase"
                         >
                           NO THUMB
                         </div>
@@ -147,13 +165,13 @@
                   <div class="hidden lg:block">
                     @if (product.active) {
                       <mat-icon
-                        class="text-green-400 icon-size-5"
+                        class="size-5 text-green-400"
                         [svgIcon]="'heroicons_solid:check'"
                       ></mat-icon>
                     }
                     @if (!product.active) {
                       <mat-icon
-                        class="text-gray-400 icon-size-5"
+                        class="size-5 text-gray-400"
                         [svgIcon]="'heroicons_solid:x-mark'"
                       ></mat-icon>
                     }
@@ -191,7 +209,7 @@
           </div>
 
           <mat-paginator
-            class="z-10 border-b bg-gray-50 dark:bg-transparent sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-b-0 sm:border-t"
+            class="z-10 border-b bg-gray-50 sm:absolute sm:inset-x-0 sm:bottom-0 sm:border-t sm:border-b-0 dark:bg-transparent"
             [ngClass]="{ 'pointer-events-none': isLoading }"
             [length]="pagination.length"
             [pageIndex]="pagination.page"
@@ -208,7 +226,10 @@
         }
       }
 
-      <ng-template #rowDetailsTemplate let-product>
+      <ng-template
+        #rowDetailsTemplate
+        let-product
+      >
         <div class="overflow-hidden shadow-lg">
           <div class="flex border-b">
             <!-- Selected product form -->
@@ -241,7 +262,10 @@
                     </div>
                     @if (selectedProductForm.get('images').value.length) {
                       <div class="mt-2 flex items-center whitespace-nowrap">
-                        <button mat-icon-button (click)="cycleImages(false)">
+                        <button
+                          mat-icon-button
+                          (click)="cycleImages(false)"
+                        >
                           <mat-icon
                             [svgIcon]="'heroicons_mini:arrow-long-left'"
                           ></mat-icon>
@@ -254,7 +278,10 @@
                           of
                           {{ selectedProductForm.get('images').value.length }}
                         </span>
-                        <button mat-icon-button (click)="cycleImages(true)">
+                        <button
+                          mat-icon-button
+                          (click)="cycleImages(true)"
+                        >
                           <mat-icon
                             [svgIcon]="'heroicons_mini:arrow-long-right'"
                           ></mat-icon>
@@ -280,18 +307,27 @@
                     <!-- Name -->
                     <mat-form-field class="w-full">
                       <mat-label>Name</mat-label>
-                      <input matInput [formControlName]="'name'" />
+                      <input
+                        matInput
+                        [formControlName]="'name'"
+                      />
                     </mat-form-field>
 
                     <!-- SKU and Barcode -->
                     <div class="flex">
                       <mat-form-field class="w-1/3 pr-2">
                         <mat-label>SKU</mat-label>
-                        <input matInput [formControlName]="'sku'" />
+                        <input
+                          matInput
+                          [formControlName]="'sku'"
+                        />
                       </mat-form-field>
                       <mat-form-field class="w-2/3 pl-2">
                         <mat-label>Barcode</mat-label>
-                        <input matInput [formControlName]="'barcode'" />
+                        <input
+                          matInput
+                          [formControlName]="'barcode'"
+                        />
                       </mat-form-field>
                     </div>
 
@@ -355,12 +391,18 @@
                     <mat-form-field class="w-full">
                       <mat-label>Cost</mat-label>
                       <span matPrefix>$</span>
-                      <input matInput [formControlName]="'cost'" />
+                      <input
+                        matInput
+                        [formControlName]="'cost'"
+                      />
                     </mat-form-field>
                     <mat-form-field class="w-full">
                       <mat-label>Base Price</mat-label>
                       <span matPrefix>$</span>
-                      <input matInput [formControlName]="'basePrice'" />
+                      <input
+                        matInput
+                        [formControlName]="'basePrice'"
+                      />
                     </mat-form-field>
                     <mat-form-field class="w-full">
                       <mat-label>Tax</mat-label>
@@ -374,7 +416,10 @@
                     <mat-form-field class="w-full">
                       <mat-label>Price</mat-label>
                       <span matSuffix>$</span>
-                      <input matInput [formControlName]="'price'" />
+                      <input
+                        matInput
+                        [formControlName]="'price'"
+                      />
                     </mat-form-field>
                   </div>
 
@@ -383,11 +428,14 @@
                     <mat-form-field class="w-full">
                       <mat-label>Weight</mat-label>
                       <span matSuffix>lbs.</span>
-                      <input matInput [formControlName]="'weight'" />
+                      <input
+                        matInput
+                        [formControlName]="'weight'"
+                      />
                     </mat-form-field>
 
                     <!-- Tags -->
-                    <span class="mb-px font-medium leading-tight">Tags</span>
+                    <span class="leading-tight mb-px font-medium">Tags</span>
                     <div
                       class="mt-1.5 overflow-hidden rounded-md border border-gray-300 shadow-sm dark:border-gray-500"
                     >
@@ -395,7 +443,7 @@
                       <div class="-my-px flex items-center px-3 py-2">
                         <div class="flex min-w-0 flex-auto items-center">
                           <mat-icon
-                            class="icon-size-5"
+                            class="size-5"
                             [svgIcon]="'heroicons_solid:magnifying-glass'"
                           ></mat-icon>
                           <input
@@ -415,13 +463,13 @@
                         >
                           @if (!tagsEditMode) {
                             <mat-icon
-                              class="icon-size-5"
+                              class="size-5"
                               [svgIcon]="'heroicons_solid:pencil-square'"
                             ></mat-icon>
                           }
                           @if (tagsEditMode) {
                             <mat-icon
-                              class="icon-size-5"
+                              class="size-5"
                               [svgIcon]="'heroicons_solid:check'"
                             ></mat-icon>
                           }
@@ -438,7 +486,7 @@
                             track trackByFn($index, tag)
                           ) {
                             <mat-checkbox
-                              class="flex h-10 min-h-10 items-center pl-1 pr-4"
+                              class="flex h-10 min-h-10 items-center pr-4 pl-1"
                               [checked]="selectedProduct.tags.includes(tag.id)"
                               (change)="toggleProductTag(tag, $event)"
                             >
@@ -477,7 +525,7 @@
                         }
                         @if (shouldShowCreateTagButton(newTagInput.value)) {
                           <div
-                            class="-ml-0.5 flex h-10 min-h-10 cursor-pointer items-center border-t pl-4 pr-3 leading-none hover:bg-gray-50"
+                            class="-ml-0.5 flex h-10 min-h-10 cursor-pointer items-center border-t pr-3 pl-4 leading-none hover:bg-gray-50"
                             (click)="
                               createTag(newTagInput.value);
                               newTagInput.value = ''
@@ -485,7 +533,7 @@
                             matRipple
                           >
                             <mat-icon
-                              class="mr-2 icon-size-5"
+                              class="mr-2 size-5"
                               [svgIcon]="'heroicons_solid:plus-circle'"
                             ></mat-icon>
                             <div class="break-all">
@@ -530,7 +578,10 @@
                       }
                     </div>
                   }
-                  <button mat-flat-button (click)="updateSelectedProduct()">
+                  <button
+                    mat-flat-button
+                    (click)="updateSelectedProduct()"
+                  >
                     Update
                   </button>
                 </div>

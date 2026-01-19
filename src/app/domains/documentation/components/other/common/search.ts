@@ -11,7 +11,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -21,14 +21,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Other Components</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Common</span>
@@ -37,7 +37,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Search
             </h2>
@@ -45,7 +45,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           This component can be used for searching. It will make API calls as
           you start typing the search query into the search field and show the
@@ -55,7 +55,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
 
         <h2>Usage</h2>
         <p>Here's the basic usage of the component:</p>
-        <textarea fuse-highlight lang="html">
+        <textarea
+          fuse-highlight
+          lang="html"
+        >
                     <search [appearance]="'bar'"></search>
                 </textarea
         >

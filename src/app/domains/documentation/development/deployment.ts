@@ -17,7 +17,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -27,14 +27,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Guides</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Development</span>
@@ -43,7 +43,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Deployment
             </h2>
@@ -51,7 +51,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           To deploy your application, you have to compile it, and then host the
           JavaScript, CSS, and HTML on a web server. Built Angular applications
@@ -61,19 +61,28 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         <p>
           To build your application for production, run the following command:
         </p>
-        <textarea fuse-highlight lang="bash">
+        <textarea
+          fuse-highlight
+          lang="bash"
+        >
                     ng build
                 </textarea
         >
 
         <h2>Alternate command</h2>
-        <textarea fuse-highlight lang="bash">
+        <textarea
+          fuse-highlight
+          lang="bash"
+        >
                     npm run build
                 </textarea
         >
         <p class="mb-12">Alias for <code>ng build</code>.</p>
 
-        <fuse-alert [appearance]="'border'" [type]="'info'">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
           If you are getting error messages that includes keywords like
           <strong>HEAP</strong>, <strong>JS stack tree</strong>,
           <strong>out of memory</strong> while trying to run

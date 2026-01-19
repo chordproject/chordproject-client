@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -20,14 +20,14 @@ import { MatIconModule } from '@angular/material/icon';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Guides</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Development</span>
@@ -36,7 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Starter Kit
             </h2>
@@ -44,7 +44,7 @@ import { MatIconModule } from '@angular/material/icon';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           Starter kit is the bare minimum version of the Fuse. All the Demo
           applications and pages are stripped from it and includes only the

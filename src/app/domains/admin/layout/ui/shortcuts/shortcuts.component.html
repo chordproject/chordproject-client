@@ -1,5 +1,9 @@
 <!-- Shortcuts toggle -->
-<button mat-icon-button (click)="openPanel()" #shortcutsOrigin>
+<button
+  mat-icon-button
+  (click)="openPanel()"
+  #shortcutsOrigin
+>
   <mat-icon [svgIcon]="'heroicons_outline:squares-plus'"></mat-icon>
 </button>
 
@@ -10,17 +14,20 @@
   >
     <!-- Header -->
     <div
-      class="flex shrink-0 items-center bg-primary py-4 pl-6 pr-4 text-on-primary"
+      class="bg-primary text-on-primary flex shrink-0 items-center py-4 pr-4 pl-6"
     >
-      <div class="-ml-1 mr-3 sm:hidden">
-        <button mat-icon-button (click)="closePanel()">
+      <div class="mr-3 -ml-1 sm:hidden">
+        <button
+          mat-icon-button
+          (click)="closePanel()"
+        >
           <mat-icon
             class="text-current"
             [svgIcon]="'heroicons_solid:x-mark'"
           ></mat-icon>
         </button>
       </div>
-      <div class="flex items-center text-lg font-medium leading-10">
+      <div class="flex items-center text-lg leading-10 font-medium">
         <span class="">Shortcuts</span>
         @if (mode !== 'view') {
           <span class="ml-1">
@@ -116,7 +123,7 @@
           <!-- Shortcut -->
           @for (shortcut of shortcuts; track trackByFn($index, shortcut)) {
             <div
-              class="group bg-card relative flex flex-col overflow-hidden border-b border-r even:border-r-0 hover:bg-gray-50 dark:hover:bg-black dark:hover:bg-opacity-5"
+              class="group bg-card dark:hover:bg-opacity-5 relative flex flex-col overflow-hidden border-r border-b even:border-r-0 hover:bg-gray-50 dark:hover:bg-black"
             >
               @if (mode === 'modify') {
                 <div
@@ -155,7 +162,7 @@
                 >
                   @if (mode === 'modify') {
                     <mat-icon
-                      class="absolute z-20 opacity-0 icon-size-5 group-hover:opacity-100"
+                      class="absolute z-20 size-5 opacity-0 group-hover:opacity-100"
                       [svgIcon]="'heroicons_solid:pencil'"
                     ></mat-icon>
                   }
@@ -203,22 +210,40 @@
 
       <!-- Add/Edit mode -->
       @if (mode === 'add' || mode === 'edit') {
-        <form class="p-6" [formGroup]="shortcutForm">
+        <form
+          class="p-6"
+          [formGroup]="shortcutForm"
+        >
           <mat-form-field class="w-full">
             <mat-label>Label</mat-label>
-            <input matInput [formControlName]="'label'" required />
+            <input
+              matInput
+              [formControlName]="'label'"
+              required
+            />
           </mat-form-field>
           <mat-form-field class="w-full">
             <mat-label>Description</mat-label>
-            <input matInput [formControlName]="'description'" />
+            <input
+              matInput
+              [formControlName]="'description'"
+            />
           </mat-form-field>
           <mat-form-field class="w-full">
             <mat-label>Icon</mat-label>
-            <input matInput [formControlName]="'icon'" required />
+            <input
+              matInput
+              [formControlName]="'icon'"
+              required
+            />
           </mat-form-field>
           <mat-form-field class="w-full">
             <mat-label>Link</mat-label>
-            <input matInput [formControlName]="'link'" required />
+            <input
+              matInput
+              [formControlName]="'link'"
+              required
+            />
           </mat-form-field>
           <mat-slide-toggle [formControlName]="'useRouter'">
             Use router for the link

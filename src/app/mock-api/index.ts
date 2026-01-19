@@ -16,10 +16,6 @@ import { NotificationsMockApi } from './common/notifications/api';
 import { SearchMockApi } from './common/search/api';
 import { ShortcutsMockApi } from './common/shortcuts/api';
 import { UserMockApi } from './common/user/api';
-import { AnalyticsMockApi } from './dashboards/analytics/api';
-import { CryptoMockApi } from './dashboards/crypto/api';
-import { FinanceMockApi } from './dashboards/finance/api';
-import { ProjectMockApi } from './dashboards/project/api';
 import { ActivitiesMockApi } from './pages/activities/api';
 import { IconsMockApi } from './ui/icons/api';
 
@@ -27,14 +23,11 @@ import { IconsMockApi } from './ui/icons/api';
 export class MockApiService {
   academyMockApi = inject(AcademyMockApi);
   activitiesMockApi = inject(ActivitiesMockApi);
-  analyticsMockApi = inject(AnalyticsMockApi);
   authMockApi = inject(AuthMockApi);
   chatMockApi = inject(ChatMockApi);
   contactsMockApi = inject(ContactsMockApi);
-  cryptoMockApi = inject(CryptoMockApi);
   eCommerceInventoryMockApi = inject(ECommerceInventoryMockApi);
   fileManagerMockApi = inject(FileManagerMockApi);
-  financeMockApi = inject(FinanceMockApi);
   helpCenterMockApi = inject(HelpCenterMockApi);
   iconsMockApi = inject(IconsMockApi);
   mailboxMockApi = inject(MailboxMockApi);
@@ -42,7 +35,6 @@ export class MockApiService {
   navigationMockApi = inject(NavigationMockApi);
   notesMockApi = inject(NotesMockApi);
   notificationsMockApi = inject(NotificationsMockApi);
-  projectMockApi = inject(ProjectMockApi);
   searchMockApi = inject(SearchMockApi);
   scrumboardMockApi = inject(ScrumboardMockApi);
   shortcutsMockApi = inject(ShortcutsMockApi);

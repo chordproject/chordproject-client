@@ -187,31 +187,28 @@ export const NAVIGATION: NavigationItem[] = [
         route: 'error/404',
       },
       {
-        id: 'extras/auth',
-        label: 'Auth',
-        icon: 'user-lock',
-        children: [
-          {
-            id: 'auth/sign-in',
-            label: 'Sign in',
-            route: '/auth/sign-in',
-          },
-          {
-            id: 'auth/sign-up',
-            label: 'Sign up',
-            route: '/auth/sign-up',
-          },
-          {
-            id: 'auth/forgot-password',
-            label: 'Forgot password',
-            route: '/auth/forgot-password',
-          },
-          {
-            id: 'auth/reset-password',
-            label: 'Reset password',
-            route: '/auth/reset-password',
-          },
-        ],
+        id: 'extras/sign-in',
+        label: 'Sign in',
+        icon: 'log-in',
+        route: '/auth/sign-in',
+      },
+      {
+        id: 'extras/sign-up',
+        label: 'Sign up',
+        icon: 'log-out',
+        route: '/auth/sign-up',
+      },
+      {
+        id: 'extras/forgot-password',
+        label: 'Forgot password',
+        icon: 'rectangle-ellipsis',
+        route: '/auth/forgot-password',
+      },
+      {
+        id: 'extras/reset-password',
+        label: 'Reset password',
+        icon: 'rotate-ccw-key',
+        route: '/auth/reset-password',
       },
       {
         id: 'extras/coming-soon',

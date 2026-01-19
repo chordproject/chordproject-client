@@ -17,7 +17,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -27,14 +27,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Fuse Components</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Libraries</span>
@@ -43,7 +43,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Mock API
             </h2>
@@ -51,7 +51,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           <strong>MockAPI</strong> is a helper library developed specifically
           for Fuse to mock API endpoints and provide data to your app without
@@ -85,7 +85,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             without spending many hours and resources
           </li>
         </ul>
-        <fuse-alert [appearance]="'border'" [type]="'warning'">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'warning'"
+        >
           MockAPI is NOT a database or a backend replacement! It works on
           memory. As soon as you reload your app, all the changes you have made
           using Mock API endpoints will go away and replaced with defaults.
@@ -169,7 +172,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <code>FuseMockApiService</code> allowing method chaining. It has 2
           methods:
         </p>
-        <div class="bg-card mb-4 mt-4 rounded shadow">
+        <div class="bg-card mt-4 mb-4 rounded shadow">
           <div class="text-muted border-b px-6 py-3 font-mono">
             .reply(callback: FuseMockApiReplyCallback): void
           </div>
@@ -210,7 +213,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
 
         <h3>Basic usage</h3>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     this.fuseMockApiService
                     .onPut('api/navigation')
                     .reply(({request: HttpRequest<any>}) => {
@@ -225,7 +231,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     })
                 </textarea
         >
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     this.fuseMockApiService
                     .onGet('api/navigation')
                     .reply(() => {
@@ -251,7 +260,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           responses. Once you understand the underlying mechanic, you will be
           able to mock API endpoints in no time.
         </p>
-        <fuse-alert [appearance]="'border'" [type]="'info'">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
           Please keep in mind that the following step-by-step guide assumes you
           are doing everything from scratch for the
           <em>MockAPI</em> like creating directories, adding files, exporting
@@ -267,7 +279,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           directory or choose another one. For this guide, we will assume you
           are going to use the default directory.
         </p>
-        <fuse-alert [appearance]="'border'" [type]="'info'">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
           It's important to keep all mock related files in the same directory
           because we will create a barrel file that exports all the mock classes
           and provide that to the
@@ -296,7 +311,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           needs to be called within the <code>constructor</code> of your mock
           class:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { Injectable } from '@angular/core';
                     import { FuseMockApiService } from '@fuse/lib/mock-api';
 
@@ -333,7 +351,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <strong>exported const</strong> value. You can have more than one
           <code>const</code> per file, just remember to export all of them:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     // An array of navigation items for compact layout
                     export const compactNavigation = [ ]
 
@@ -347,7 +368,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           Return back to <code>api.ts</code> file, import your data and set them
           as class properties so they can be accessible within the class:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { Injectable } from '@angular/core';
                     import { FuseMockApiService } from '@fuse/lib/mock-api';
                     import { compactNavigation, defaultNavigation } from 'app/mock-api/navigation/data';
@@ -391,7 +415,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           Inside the <code>registerHandlers()</code> method, define your
           endpoints and callbacks to provide data:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { Injectable } from '@angular/core';
                     import { cloneDeep } 'lodash-es';
                     import { FuseMockApiService, FuseMockApiUtils } from '@fuse/lib/mock-api';
@@ -463,7 +490,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           services. Only import the services and not the data files, create an
           array from them and then export that array:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { AuthMockApi } from 'app/mock-api/auth';
                     import { NavigationMockApi } from 'app/mock-api/navigation';
                     import { UserMockApi } from 'app/mock-api/user';
@@ -479,7 +509,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           After that, head to the <code>app.config.ts</code> file, provide the
           array of services you have exported:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     ...
                     import { provideFuse } from '@fuse';
                     import { mockApiServices } from 'app/mock-api';
@@ -499,7 +532,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           to simulate a slow connection, a server that's under attack or
           failing, some kind of service interruption and etc.
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     ...
                     import { provideFuse } from '@fuse';
                     import { mockApiServices } from 'app/mock-api';
@@ -524,7 +560,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           then the <strong>MockAPI</strong> will let the request to pass through
           allowing you to use a real API endpoints along with the mocked ones.
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     /**
                     * Get navigation
                     */

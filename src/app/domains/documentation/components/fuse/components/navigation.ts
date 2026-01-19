@@ -24,7 +24,7 @@ import {
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -34,14 +34,14 @@ import {
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Fuse Components</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Components</span>
@@ -50,7 +50,7 @@ import {
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Navigation
             </h2>
@@ -58,7 +58,7 @@ import {
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           <strong>fuse-navigation</strong> is a set of components for creating
           navigations from data. It has two different variations;
@@ -82,14 +82,20 @@ import {
           <code>fuseHorizontalNavigation</code>
         </p>
 
-        <fuse-alert [appearance]="'border'" [type]="'info'">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
           fuse-navigation designed to work with data and it must be supplied in
           certain format. If you want to create a navigation from an HTML
           structure, this component is not for you.
         </fuse-alert>
 
         <h2>Module</h2>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseVerticalNavigationModule } from '@fuse/components/navigation';
                     import { FuseHorizontalNavigationModule } from '@fuse/components/navigation';
                 </textarea
@@ -101,7 +107,10 @@ import {
           <em>vertical</em> and <em>horizontal</em> navigation items use the
           same interface:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     export interface FuseNavigationItem
                     {
                     id?: string;
@@ -373,7 +382,10 @@ import {
           Here's the basic usage of the
           <code>fuse-vertical-navigation</code>:
         </p>
-        <textarea fuse-highlight lang="html">
+        <textarea
+          fuse-highlight
+          lang="html"
+        >
                     <fuse-vertical-navigation
                     [appearance]="'classic'"
                     [autoCollapse]="true"
@@ -613,7 +625,10 @@ import {
             </tbody>
           </table>
         </div>
-        <textarea fuse-highlight lang="html">
+        <textarea
+          fuse-highlight
+          lang="html"
+        >
                     <!-- Navigation -->
                     <fuse-vertical-navigation>
 
@@ -638,7 +653,10 @@ import {
         >
 
         <h3>Type aliases</h3>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     export type FuseVerticalNavigationAppearance =
                     | 'default'
                     | 'compact'
@@ -648,13 +666,19 @@ import {
                     | string;
                 </textarea
         >
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     export type FuseVerticalNavigationMode =
                     | 'over'
                     | 'side';
                 </textarea
         >
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     export type FuseVerticalNavigationPosition =
                     | 'left'
                     | 'right';
@@ -667,7 +691,10 @@ import {
           Here's the basic usage of the
           <code>fuse-horizontal-navigation</code>:
         </p>
-        <textarea fuse-highlight lang="html">
+        <textarea
+          fuse-highlight
+          lang="html"
+        >
                     <fuse-horizontal-navigation
                     [name]="'topNavigation'"
                     [navigation]="navigationData">
@@ -739,7 +766,10 @@ import {
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <button
                                 mat-flat-button
                                 
@@ -751,7 +781,10 @@ import {
             </mat-tab>
 
             <mat-tab label="Typescript">
-              <textarea fuse-highlight [lang]="'typescript'">
+              <textarea
+                fuse-highlight
+                [lang]="'typescript'"
+              >
 
                                 /**
                                 * Get navigation item
@@ -813,7 +846,10 @@ import {
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <button
                                 mat-flat-button
                                 
@@ -825,7 +861,10 @@ import {
             </mat-tab>
 
             <mat-tab label="Typescript">
-              <textarea fuse-highlight [lang]="'typescript'">
+              <textarea
+                fuse-highlight
+                [lang]="'typescript'"
+              >
 
                                 /**
                                 * Update badge title
@@ -877,7 +916,10 @@ import {
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <button
                                 mat-flat-button
                                 
@@ -889,7 +931,10 @@ import {
             </mat-tab>
 
             <mat-tab label="Typescript">
-              <textarea fuse-highlight [lang]="'typescript'">
+              <textarea
+                fuse-highlight
+                [lang]="'typescript'"
+              >
 
                                 /**
                                 * Toggle disabled status
@@ -938,7 +983,10 @@ import {
           <mat-tab-group [animationDuration]="'0ms'">
             <mat-tab label="Preview">
               <ng-template matTabContent>
-                <fuse-alert appearance="outline" type="info">
+                <fuse-alert
+                  appearance="outline"
+                  type="info"
+                >
                   Reload the page to load the default navigation!
                 </fuse-alert>
                 <button
@@ -952,7 +1000,10 @@ import {
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <button
                                 mat-flat-button
                                 
@@ -964,7 +1015,10 @@ import {
             </mat-tab>
 
             <mat-tab label="Typescript">
-              <textarea fuse-highlight [lang]="'typescript'">
+              <textarea
+                fuse-highlight
+                [lang]="'typescript'"
+              >
 
                                 /**
                                 * Swap navigation data
@@ -1056,7 +1110,6 @@ export default class Navigation {
 
   /**
    * Get navigation item
-   *
    * @param itemId
    * @param navigationName
    */
@@ -1081,7 +1134,6 @@ export default class Navigation {
 
   /**
    * Update badge title
-   *
    * @param itemId
    * @param navigationName
    * @param title
@@ -1107,7 +1159,6 @@ export default class Navigation {
 
   /**
    * Toggle disabled status
-   *
    * @param itemId
    * @param navigationName
    */
@@ -1132,7 +1183,6 @@ export default class Navigation {
 
   /**
    * Swap navigation data
-   *
    * @param navigationName
    */
   swapNavigationData(navigationName): void {

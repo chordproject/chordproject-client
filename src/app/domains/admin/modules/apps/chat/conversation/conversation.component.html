@@ -2,10 +2,13 @@
   class="dark:bg-mat-background bg-card flex flex-auto flex-col overflow-y-auto lg:overflow-hidden"
 >
   @if (chat) {
-    <mat-drawer-container class="h-full flex-auto" [hasBackdrop]="false">
+    <mat-drawer-container
+      class="h-full flex-auto"
+      [hasBackdrop]="false"
+    >
       <!-- Drawer -->
       <mat-drawer
-        class="w-full dark:bg-gray-900 sm:w-100 lg:border-l lg:shadow-none"
+        class="w-full sm:w-100 lg:border-l lg:shadow-none dark:bg-gray-900"
         [autoFocus]="false"
         [mode]="drawerMode"
         [position]="'end'"
@@ -13,14 +16,17 @@
         #drawer
       >
         <!-- Contact info -->
-        <chat-contact-info [drawer]="drawer" [chat]="chat"></chat-contact-info>
+        <chat-contact-info
+          [drawer]="drawer"
+          [chat]="chat"
+        ></chat-contact-info>
       </mat-drawer>
 
       <!-- Drawer content -->
       <mat-drawer-content class="flex flex-col overflow-hidden">
         <!-- Header -->
         <div
-          class="flex h-18 flex-0 items-center border-b bg-gray-50 px-4 dark:bg-transparent md:px-6"
+          class="flex h-18 flex-0 items-center border-b bg-gray-50 px-4 md:px-6 dark:bg-transparent"
         >
           <!-- Back button -->
           <a
@@ -36,7 +42,7 @@
 
           <!-- Contact info -->
           <div
-            class="ml-2 mr-2 flex cursor-pointer items-center lg:ml-0"
+            class="mr-2 ml-2 flex cursor-pointer items-center lg:ml-0"
             (click)="openContactInfo()"
           >
             <div
@@ -51,13 +57,13 @@
               }
               @if (!chat.contact.avatar) {
                 <div
-                  class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg uppercase text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                  class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg text-gray-600 uppercase dark:bg-gray-700 dark:text-gray-200"
                 >
                   {{ chat.contact.name.charAt(0) }}
                 </div>
               }
             </div>
-            <div class="ml-4 truncate text-lg font-medium leading-5">
+            <div class="ml-4 truncate text-lg leading-5 font-medium">
               {{ chat.contact.name }}
             </div>
           </div>
@@ -71,7 +77,10 @@
               [svgIcon]="'heroicons_outline:ellipsis-vertical'"
             ></mat-icon>
             <mat-menu #conversationHeaderMenu>
-              <button mat-menu-item (click)="openContactInfo()">
+              <button
+                mat-menu-item
+                (click)="openContactInfo()"
+              >
                 <mat-icon
                   [svgIcon]="'heroicons_outline:user-circle'"
                 ></mat-icon>
@@ -83,7 +92,10 @@
                 ></mat-icon>
                 Select messages
               </button>
-              <button mat-menu-item (click)="toggleMuteNotifications()">
+              <button
+                mat-menu-item
+                (click)="toggleMuteNotifications()"
+              >
                 @if (!chat.muted) {
                   <mat-icon
                     [svgIcon]="'heroicons_outline:speaker-x-mark'"
@@ -130,7 +142,7 @@
                 <div class="-mx-6 my-3 flex items-center justify-center">
                   <div class="flex-auto border-b"></div>
                   <div
-                    class="text-muted mx-4 flex-0 text-sm font-medium leading-5"
+                    class="text-muted mx-4 flex-0 text-sm leading-5 font-medium"
                   >
                     {{ message.createdAt | date: 'longDate' }}
                   </div>
@@ -162,7 +174,7 @@
                       class="absolute bottom-0 w-3"
                       [ngClass]="{
                         '-right-1 -mr-px mb-px text-blue-500': message.isMine,
-                        '-left-1 -ml-px mb-px -scale-x-1 text-gray-500':
+                        '-left-1 mb-px -ml-px -scale-x-1 text-gray-500':
                           !message.isMine,
                       }"
                     >
@@ -205,7 +217,10 @@
             <button mat-icon-button>
               <mat-icon [svgIcon]="'heroicons_outline:face-smile'"></mat-icon>
             </button>
-            <button class="ml-0.5" mat-icon-button>
+            <button
+              class="ml-0.5"
+              mat-icon-button
+            >
               <mat-icon [svgIcon]="'heroicons_outline:paper-clip'"></mat-icon>
             </button>
           </div>
@@ -213,7 +228,11 @@
             class="fuse-mat-dense fuse-mat-rounded fuse-mat-bold ml-4 w-full"
             subscriptSizing="dynamic"
           >
-            <textarea matInput cdkTextareaAutosize #messageInput></textarea>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #messageInput
+            ></textarea>
           </mat-form-field>
           <div class="my-px ml-4 flex h-11 items-center">
             <button mat-icon-button>
@@ -230,7 +249,7 @@
       class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent"
     >
       <mat-icon
-        class="icon-size-24"
+        class="size-24"
         [svgIcon]="'heroicons_outline:chat-bubble-oval-left-ellipsis'"
       ></mat-icon>
       <div class="text-muted mt-4 text-2xl font-semibold tracking-tight">

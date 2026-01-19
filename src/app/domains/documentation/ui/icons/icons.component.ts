@@ -6,7 +6,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { FuseHighlightComponent } from '@fuse/components/highlight';
 import {
   BehaviorSubject,
   Observable,
@@ -15,6 +14,7 @@ import {
   map,
   takeUntil,
 } from 'rxjs';
+import { FuseHighlightComponent } from '@fuse/components/highlight';
 import { IconsService } from './icons.service';
 import { Icon } from './icons.types';
 
@@ -38,11 +38,11 @@ import { Icon } from './icons.types';
 export class IconsComponent implements OnInit, OnDestroy {
   icons$: Observable<Icon>;
   filteredIcons$: Observable<Icon>;
-  filterValue$: BehaviorSubject<string> = new BehaviorSubject('');
+  filterValue$ = new BehaviorSubject<string>('');
 
-  iconSize: string = 'icon-size-8';
+  iconSize = 'size-8';
   selectedIcon: string[];
-  private _unsubscribeAll: Subject<any> = new Subject();
+  private _unsubscribeAll = new Subject<any>();
 
   /**
    * Constructor
@@ -104,7 +104,6 @@ export class IconsComponent implements OnInit, OnDestroy {
 
   /**
    * Filter icons
-   *
    * @param event
    */
   filterIcons(event: any): void {
@@ -114,7 +113,6 @@ export class IconsComponent implements OnInit, OnDestroy {
 
   /**
    * Select an icon
-   *
    * @param namespace
    * @param icon
    */

@@ -1,7 +1,7 @@
 <div class="relative flex min-w-0 flex-auto flex-col overflow-hidden">
   <!-- Header & Cards -->
   <div
-    class="relative overflow-hidden px-6 pb-12 pt-8 sm:px-16 sm:pb-24 sm:pt-20"
+    class="relative overflow-hidden px-6 pt-8 pb-12 sm:px-16 sm:pt-20 sm:pb-24"
   >
     <!-- Background -->
     <!-- prettier-ignore -->
@@ -16,7 +16,7 @@
     <div class="flex flex-col items-center">
       <h2 class="text-xl font-semibold">PRICING</h2>
       <div
-        class="mt-1 text-center text-4xl font-extrabold leading-tight tracking-tight sm:text-7xl"
+        class="leading-tight sm:text-7xl mt-1 text-center text-4xl font-extrabold tracking-tight"
       >
         Take control of your productivity
       </div>
@@ -26,7 +26,7 @@
       </div>
       <!-- Recurring selector -->
       <div
-        class="mt-8 flex items-center overflow-hidden rounded-full bg-gray-200 p-0.5 dark:bg-gray-700 sm:mt-16"
+        class="mt-8 flex items-center overflow-hidden rounded-full bg-gray-200 p-0.5 sm:mt-16 dark:bg-gray-700"
       >
         <button
           class="px-6"
@@ -64,7 +64,7 @@
           <fuse-card
             class="max-w-sm flex-col p-6 sm:px-10 sm:py-12 md:max-w-none"
           >
-            <div class="text-4xl font-bold leading-tight tracking-tight">
+            <div class="leading-tight text-4xl font-bold tracking-tight">
               Personal
             </div>
             <div class="text-muted mt-2 text-lg font-medium tracking-tight">
@@ -74,7 +74,7 @@
             <!-- Price -->
             <div class="flex items-baseline whitespace-nowrap">
               <div class="mr-2 text-2xl">USD</div>
-              <div class="text-6xl font-semibold leading-tight tracking-tight">
+              <div class="text-6xl leading-tight font-semibold tracking-tight">
                 @if (yearlyBilling) {
                   $6.00
                 }
@@ -95,7 +95,10 @@
               }
             </div>
             <!-- CTA -->
-            <button class="fuse-mat-button-large mt-10" mat-stroked-button>
+            <button
+              class="fuse-mat-button-large mt-10"
+              mat-stroked-button
+            >
               Get Started
             </button>
             <!-- Features -->
@@ -104,35 +107,35 @@
               <div class="mt-4 space-y-2">
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5"><b>10</b> projects</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5"><b>5GB</b> storage</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5">Analytics</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5">Free mobile app</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5">Access to forums</div>
@@ -142,18 +145,18 @@
           </fuse-card>
           <!-- Card 2 -->
           <fuse-card
-            class="max-w-sm flex-col overflow-visible p-6 ring-2 ring-primary sm:px-10 sm:py-12 md:max-w-none"
+            class="ring-primary max-w-sm flex-col overflow-visible p-6 ring-2 sm:px-10 sm:py-12 md:max-w-none"
           >
             <div
               class="absolute inset-x-0 -top-4 flex items-center justify-center"
             >
               <div
-                class="flex h-8 items-center rounded-full bg-primary px-8 text-center font-medium leading-none text-on-primary"
+                class="bg-primary text-on-primary flex h-8 items-center rounded-full px-8 text-center leading-none font-medium"
               >
                 POPULAR
               </div>
             </div>
-            <div class="text-4xl font-bold leading-tight tracking-tight">
+            <div class="leading-tight text-4xl font-bold tracking-tight">
               Premium
             </div>
             <div class="text-muted mt-2 text-lg font-medium tracking-tight">
@@ -163,7 +166,7 @@
             <!-- Price -->
             <div class="flex items-baseline whitespace-nowrap">
               <div class="mr-2 text-2xl">USD</div>
-              <div class="text-6xl font-semibold leading-tight tracking-tight">
+              <div class="text-6xl leading-tight font-semibold tracking-tight">
                 @if (yearlyBilling) {
                   $12.00
                 }
@@ -184,7 +187,10 @@
               }
             </div>
             <!-- CTA -->
-            <button class="fuse-mat-button-large mt-10" mat-flat-button>
+            <button
+              class="fuse-mat-button-large mt-10"
+              mat-flat-button
+            >
               Start a free 14-day trial
             </button>
             <!-- Features -->
@@ -193,35 +199,35 @@
               <div class="mt-4 space-y-2">
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5"><b>Unlimited</b> projects</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5"><b>Unlimited</b> storage</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5">Custom domains</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5">Bulk editing</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5">12 / 5 support</div>
@@ -233,7 +239,7 @@
           <fuse-card
             class="max-w-sm flex-col p-6 sm:px-10 sm:py-12 md:max-w-none"
           >
-            <div class="text-4xl font-bold leading-tight tracking-tight">
+            <div class="leading-tight text-4xl font-bold tracking-tight">
               Enterprise
             </div>
             <div class="text-muted mt-2 text-lg font-medium tracking-tight">
@@ -243,7 +249,7 @@
             <!-- Price -->
             <div class="flex items-baseline whitespace-nowrap">
               <div class="mr-2 text-2xl">USD</div>
-              <div class="text-6xl font-semibold leading-tight tracking-tight">
+              <div class="text-6xl leading-tight font-semibold tracking-tight">
                 @if (yearlyBilling) {
                   $49.00
                 }
@@ -264,7 +270,10 @@
               }
             </div>
             <!-- CTA -->
-            <button class="fuse-mat-button-large mt-10" mat-stroked-button>
+            <button
+              class="fuse-mat-button-large mt-10"
+              mat-stroked-button
+            >
               Start a free 7-day trial
             </button>
             <!-- Features -->
@@ -273,35 +282,35 @@
               <div class="mt-4 space-y-2">
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5"><b>Dedicated</b> hardware</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5"><b>%99.9</b> uptime</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5">Advanced analytics</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5">3rd party integrations</div>
                 </div>
                 <div class="flex">
                   <mat-icon
-                    class="text-green-600 icon-size-5"
+                    class="size-5 text-green-600"
                     [svgIcon]="'heroicons_solid:check'"
                   ></mat-icon>
                   <div class="ml-2 leading-5">24 / 7 support</div>
@@ -316,11 +325,11 @@
 
   <!-- Features -->
   <div
-    class="flex flex-col items-center bg-white px-6 py-10 dark:bg-gray-800 sm:px-16 sm:pb-20 sm:pt-18"
+    class="flex flex-col items-center bg-white px-6 py-10 sm:px-16 sm:pt-18 sm:pb-20 dark:bg-gray-800"
   >
     <div class="w-full max-w-7xl">
       <div>
-        <div class="text-4xl font-extrabold leading-tight tracking-tight">
+        <div class="leading-tight text-4xl font-extrabold tracking-tight">
           Everything you need to build efficiently
         </div>
         <div class="text-muted mt-2 max-w-xl text-xl">
@@ -334,7 +343,7 @@
       >
         <div>
           <span
-            class="flex h-12 w-12 items-center justify-center rounded bg-primary"
+            class="bg-primary flex h-12 w-12 items-center justify-center rounded"
           >
             <mat-icon
               class="text-white"
@@ -349,7 +358,7 @@
         </div>
         <div>
           <span
-            class="flex h-12 w-12 items-center justify-center rounded bg-primary"
+            class="bg-primary flex h-12 w-12 items-center justify-center rounded"
           >
             <mat-icon
               class="text-white"
@@ -364,7 +373,7 @@
         </div>
         <div>
           <span
-            class="flex h-12 w-12 items-center justify-center rounded bg-primary"
+            class="bg-primary flex h-12 w-12 items-center justify-center rounded"
           >
             <mat-icon
               class="text-white"
@@ -379,7 +388,7 @@
         </div>
         <div>
           <span
-            class="flex h-12 w-12 items-center justify-center rounded bg-primary"
+            class="bg-primary flex h-12 w-12 items-center justify-center rounded"
           >
             <mat-icon
               class="text-white"
@@ -395,7 +404,7 @@
         </div>
         <div>
           <span
-            class="flex h-12 w-12 items-center justify-center rounded bg-primary"
+            class="bg-primary flex h-12 w-12 items-center justify-center rounded"
           >
             <mat-icon
               class="text-white"
@@ -410,7 +419,7 @@
         </div>
         <div>
           <span
-            class="flex h-12 w-12 items-center justify-center rounded bg-primary"
+            class="bg-primary flex h-12 w-12 items-center justify-center rounded"
           >
             <mat-icon
               class="text-white"
@@ -433,12 +442,12 @@
       class="mx-auto flex w-full max-w-7xl flex-col items-center text-center"
     >
       <div
-        class="text-3xl font-extrabold leading-6 sm:text-4xl sm:text-5xl sm:leading-10"
+        class="text-3xl leading-6 font-extrabold sm:text-4xl sm:text-5xl sm:leading-10"
       >
         Boost your productivity.
       </div>
       <div
-        class="mt-2 text-3xl font-extrabold leading-6 text-black text-opacity-70 sm:text-4xl sm:text-5xl sm:leading-10"
+        class="text-opacity-70 mt-2 text-3xl leading-6 font-extrabold text-black sm:text-4xl sm:text-5xl sm:leading-10"
       >
         Start using Fuse today.
       </div>
@@ -453,11 +462,11 @@
 
   <!-- Frequently asked questions -->
   <div
-    class="flex flex-col items-center bg-gray-50 px-6 pb-8 pt-12 dark:bg-gray-800 sm:px-16 sm:pb-20 sm:pt-18"
+    class="flex flex-col items-center bg-gray-50 px-6 pt-12 pb-8 sm:px-16 sm:pt-18 sm:pb-20 dark:bg-gray-800"
   >
     <div class="w-full max-w-7xl">
       <div>
-        <div class="text-4xl font-extrabold leading-tight tracking-tight">
+        <div class="leading-tight text-4xl font-extrabold tracking-tight">
           Frequently asked questions
         </div>
         <div class="text-muted mt-2 max-w-xl text-xl">

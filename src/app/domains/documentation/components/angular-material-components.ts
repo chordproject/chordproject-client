@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -23,14 +23,14 @@ import { MatIconModule } from '@angular/material/icon';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Angular Material Components
             </h2>
           </div>
         </div>
         <!-- Actions -->
-        <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
+        <div class="mt-6 flex shrink-0 items-center sm:mt-0 sm:ml-4">
           <a
             mat-flat-button
             href="https://material.angular.io/components/categories"
@@ -38,7 +38,7 @@ import { MatIconModule } from '@angular/material/icon';
             rel="noreferrer"
           >
             <mat-icon
-              class="icon-size-4"
+              class="size-4"
               [svgIcon]="'heroicons_mini:arrow-top-right-on-square'"
             ></mat-icon>
             <span class="ml-2">Official docs</span>
@@ -48,7 +48,7 @@ import { MatIconModule } from '@angular/material/icon';
 
       <!-- Main -->
       <div class="flex-auto p-6 sm:p-10">
-        <div class="prose prose-sm max-w-4xl">
+        <div class="prose-sm prose max-w-4xl">
           <p>
             Fuse uses
             <a

@@ -1,7 +1,7 @@
 <div class="flex min-w-0 flex-auto flex-col">
   <!-- Header -->
   <div
-    class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+    class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
   >
     <div class="min-w-0 flex-1">
       <!-- Breadcrumbs -->
@@ -13,7 +13,7 @@
       <!-- Title -->
       <div class="mt-2">
         <h2
-          class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+          class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
         >
           Cards
         </h2>
@@ -30,12 +30,15 @@
         (change)="onFilterChange($event)"
       >
         @for (filter of filters; track filter) {
-        <mat-button-toggle class="m-2" [value]="filter">
-          <span class="text-muted">{{ filter | titlecase }}</span>
-          <span class="text-muted ml-1.5 font-medium"
-            >({{ numberOfCards[filter] }})</span
+          <mat-button-toggle
+            class="m-2"
+            [value]="filter"
           >
-        </mat-button-toggle>
+            <span class="text-muted">{{ filter | titlecase }}</span>
+            <span class="text-muted ml-1.5 font-medium"
+              >({{ numberOfCards[filter] }})</span
+            >
+          </mat-button-toggle>
         }
       </mat-button-toggle-group>
     </div>
@@ -49,7 +52,7 @@
           alt="Card cover image"
         />
         <div class="m-8">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Most beautiful and quite places to see
           </div>
           <div class="mt-4">
@@ -67,7 +70,7 @@
           alt="Card cover image"
         />
         <div class="m-8">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Rocky mountain tops
           </div>
           <div class="text-muted mt-1">Updated with 20 new locations</div>
@@ -92,7 +95,7 @@
             alt="Card cover image"
           />
           <div class="m-8 mb-4">
-            <div class="text-2xl font-semibold leading-tight">
+            <div class="leading-tight text-2xl font-semibold">
               Most beautiful and quite places to see
             </div>
             <div class="mt-4">
@@ -104,11 +107,9 @@
                 class="px-3"
                 mat-button
                 (click)="
-                                    flippableCard01.face =
-                                        flippableCard01.face === 'front'
-                                            ? 'back'
-                                            : 'front'
-                                "
+                  flippableCard01.face =
+                    flippableCard01.face === 'front' ? 'back' : 'front'
+                "
               >
                 Read More
               </button>
@@ -121,18 +122,16 @@
               class="ml-1.5"
               mat-icon-button
               (click)="
-                                flippableCard01.face =
-                                    flippableCard01.face === 'front'
-                                        ? 'back'
-                                        : 'front'
-                            "
+                flippableCard01.face =
+                  flippableCard01.face === 'front' ? 'back' : 'front'
+              "
             >
               <mat-icon
                 [svgIcon]="'heroicons_outline:arrow-long-left'"
               ></mat-icon>
             </button>
             <div class="m-4 mt-3">
-              <div class="text-2xl font-semibold leading-tight">
+              <div class="leading-tight text-2xl font-semibold">
                 Most beautiful and quite places to see
               </div>
               <div class="mt-4">
@@ -158,7 +157,7 @@
           alt="Card cover image"
         />
         <div class="m-8 mb-4">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Rocky mountain tops
           </div>
           <div class="text-muted mt-1">Updated with 20 new locations</div>
@@ -167,7 +166,13 @@
             you must see and enjoy.
           </div>
           <div class="-mx-3 mt-3">
-            <a class="px-3" mat-button [routerLink]="['./']"> Read More </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Read More
+            </a>
           </div>
         </div>
       </fuse-card>
@@ -183,7 +188,7 @@
           alt="Card cover image"
         />
         <div class="m-8 mb-4">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Rocky mountain tops
           </div>
           <div class="text-muted mt-1">Updated with 20 new locations</div>
@@ -195,17 +200,14 @@
             <button
               class="px-3"
               mat-button
-              (click)="
-                                expandableCard01.expanded =
-                                    !expandableCard01.expanded
-                            "
+              (click)="expandableCard01.expanded = !expandableCard01.expanded"
             >
               <span class="mr-1">Details</span>
               <mat-icon
-                class="rotate-0 transition-transform duration-150 ease-in-out icon-size-5"
+                class="size-5 rotate-0 transition-transform duration-150 ease-in-out"
                 [ngClass]="{
-                                    'rotate-180': expandableCard01.expanded,
-                                }"
+                  'rotate-180': expandableCard01.expanded,
+                }"
                 [svgIcon]="'heroicons_mini:chevron-down'"
               ></mat-icon>
             </button>
@@ -235,11 +237,11 @@
         />
         <div class="m-8">
           <div
-            class="mb-1 font-semibold leading-none tracking-wide text-primary"
+            class="text-primary mb-1 leading-none font-semibold tracking-wide"
           >
             TRAVEL
           </div>
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Most beautiful and quite places to see
           </div>
           <div class="mt-6 flex items-center">
@@ -249,7 +251,7 @@
               alt="Card cover image"
             />
             <div class="ml-3 flex flex-col">
-              <span class="font-medium leading-none">Galen Lewis</span>
+              <span class="leading-none font-medium">Galen Lewis</span>
               <span class="text-muted mt-1 text-sm leading-none"
                 >23 hours ago</span
               >
@@ -265,7 +267,7 @@
           src="images/cards/06-320x200.jpg"
           alt="Card cover image"
         />
-        <div class="m-8 text-2xl font-semibold leading-tight">
+        <div class="leading-tight m-8 text-2xl font-semibold">
           Most beautiful and quite places to see
         </div>
       </fuse-card>
@@ -291,7 +293,7 @@
           alt="Card cover image"
         />
         <div class="m-8">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Rocky mountain tops
           </div>
           <div class="text-muted mt-1">Updated with 20 new locations</div>
@@ -306,11 +308,17 @@
           alt="Card cover image"
         />
         <div class="m-8 mb-4">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Most beautiful and quite places to see
           </div>
           <div class="-mx-3 mt-3">
-            <a class="px-3" mat-button [routerLink]="['./']"> Read More </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Read More
+            </a>
           </div>
         </div>
       </fuse-card>
@@ -323,12 +331,18 @@
           alt="Card cover image"
         />
         <div class="m-8 mb-4">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Rocky mountain tops
           </div>
           <div class="text-muted mt-1">Updated with 20 new locations</div>
           <div class="-mx-3 mt-3">
-            <a class="px-3" mat-button [routerLink]="['./']"> Read More </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Read More
+            </a>
           </div>
         </div>
       </fuse-card>
@@ -336,7 +350,7 @@
       <!-- Card #12 -->
       <fuse-card class="filter-article flex w-full max-w-80 flex-col">
         <div class="m-8 mb-4">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Most beautiful and quite places to see
           </div>
           <div class="mt-4">
@@ -347,14 +361,20 @@
             grasslands.
           </div>
           <div class="-mx-3 mt-3">
-            <a class="px-3" mat-button [routerLink]="['./']"> Read More </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Read More
+            </a>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #13 -->
       <fuse-card class="filter-article flex w-full max-w-80 flex-col p-8">
-        <div class="text-2xl font-semibold leading-tight">
+        <div class="leading-tight text-2xl font-semibold">
           Most beautiful and quite places to see
         </div>
         <div class="mt-4">
@@ -368,7 +388,7 @@
 
       <!-- Card #14 -->
       <fuse-card class="filter-article flex w-full max-w-80 flex-col p-8">
-        <div class="text-2xl font-semibold leading-tight">
+        <div class="leading-tight text-2xl font-semibold">
           Rocky mountain tops
         </div>
         <div class="text-muted mt-1">Updated with 20 new locations</div>
@@ -390,7 +410,7 @@
             alt="Card cover image"
           />
           <div class="ml-6 flex flex-col">
-            <div class="text-2xl font-semibold leading-tight">
+            <div class="leading-tight text-2xl font-semibold">
               Mountain tops
             </div>
             <div class="text-muted font-medium">Travel locations</div>
@@ -401,7 +421,13 @@
           must see and enjoy.
         </div>
         <div class="-mx-3 mt-3">
-          <a class="px-3" mat-button [routerLink]="['./']"> Read More </a>
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
+            Read More
+          </a>
         </div>
       </fuse-card>
 
@@ -409,7 +435,7 @@
       <fuse-card class="filter-article flex w-full max-w-80 flex-col p-8 pb-4">
         <div class="flex items-center justify-between">
           <div class="mr-6 flex flex-col">
-            <div class="text-2xl font-semibold leading-tight">
+            <div class="leading-tight text-2xl font-semibold">
               Mountain tops
             </div>
             <div class="text-muted font-medium">Travel locations</div>
@@ -425,7 +451,13 @@
           must see and enjoy.
         </div>
         <div class="-mx-3 mt-3">
-          <a class="px-3" mat-button [routerLink]="['./']"> Read More </a>
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
+            Read More
+          </a>
         </div>
       </fuse-card>
 
@@ -441,7 +473,7 @@
           />
         </div>
         <div class="m-8 mb-4 flex flex-auto flex-col">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Mountain tops and clear lakes
           </div>
           <div class="text-muted mt-1 font-medium">
@@ -453,7 +485,13 @@
             little picnic on top of the amazing grasslands.
           </div>
           <div class="-mx-3 mt-3">
-            <a class="px-3" mat-button [routerLink]="['./']"> Read More </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Read More
+            </a>
           </div>
         </div>
       </fuse-card>
@@ -463,7 +501,7 @@
         class="filter-article flex w-full max-w-80 flex-col md:max-w-160 md:flex-row"
       >
         <div class="order-2 m-8 mb-4 flex flex-auto flex-col md:order-1">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Mountain tops and clear lakes
           </div>
           <div class="text-muted mt-1 font-medium">
@@ -475,7 +513,13 @@
             little picnic on top of the amazing grasslands.
           </div>
           <div class="-mx-3 mt-3">
-            <a class="px-3" mat-button [routerLink]="['./']"> Read More </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Read More
+            </a>
           </div>
         </div>
         <div class="w-80 flex-0 md:w-64">
@@ -495,29 +539,29 @@
           alt="Card cover image"
         />
         <div class="m-8 mb-4">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Puzzles Coffee Shop
           </div>
-          <div class="-ml-1 mt-2 flex items-center leading-none">
+          <div class="mt-2 -ml-1 flex items-center leading-none">
             <div class="flex items-center">
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star_half'"
               ></mat-icon>
             </div>
@@ -531,37 +575,49 @@
             never ending constructions.
           </div>
           <div class="-mx-3 mt-3 flex items-center">
-            <a class="mr-1 px-3" mat-button [routerLink]="['./']"> Location </a>
-            <a class="px-3" mat-button [routerLink]="['./']"> Reviews </a>
+            <a
+              class="mr-1 px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Location
+            </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Reviews
+            </a>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #20 -->
       <fuse-card class="filter-listing flex w-full max-w-80 flex-col p-8 pb-4">
-        <div class="text-2xl font-semibold leading-tight">
+        <div class="leading-tight text-2xl font-semibold">
           Puzzles Coffee Shop
         </div>
-        <div class="-ml-1 mt-2 flex items-center leading-none">
+        <div class="mt-2 -ml-1 flex items-center leading-none">
           <div class="flex items-center">
             <mat-icon
-              class="text-orange-500 icon-size-5"
+              class="size-5 text-orange-500"
               [svgIcon]="'mat_outline:star'"
             ></mat-icon>
             <mat-icon
-              class="text-orange-500 icon-size-5"
+              class="size-5 text-orange-500"
               [svgIcon]="'mat_outline:star'"
             ></mat-icon>
             <mat-icon
-              class="text-orange-500 icon-size-5"
+              class="size-5 text-orange-500"
               [svgIcon]="'mat_outline:star'"
             ></mat-icon>
             <mat-icon
-              class="text-orange-500 icon-size-5"
+              class="size-5 text-orange-500"
               [svgIcon]="'mat_outline:star'"
             ></mat-icon>
             <mat-icon
-              class="text-orange-500 icon-size-5"
+              class="size-5 text-orange-500"
               [svgIcon]="'mat_outline:star_half'"
             ></mat-icon>
           </div>
@@ -575,8 +631,20 @@
           ending constructions.
         </div>
         <div class="-mx-3 mt-3 flex items-center">
-          <a class="mr-1 px-3" mat-button [routerLink]="['./']"> Location </a>
-          <a class="px-3" mat-button [routerLink]="['./']"> Reviews </a>
+          <a
+            class="mr-1 px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
+            Location
+          </a>
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
+            Reviews
+          </a>
         </div>
       </fuse-card>
 
@@ -592,29 +660,29 @@
           />
         </div>
         <div class="m-8 mb-4 flex flex-auto flex-col">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Puzzles Coffee Shop
           </div>
-          <div class="-ml-1 mt-2 flex items-center leading-none">
+          <div class="mt-2 -ml-1 flex items-center leading-none">
             <div class="flex items-center">
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star_half'"
               ></mat-icon>
             </div>
@@ -628,8 +696,20 @@
             never ending constructions.
           </div>
           <div class="-mx-3 mt-3 flex items-center">
-            <a class="mr-1 px-3" mat-button [routerLink]="['./']"> Location </a>
-            <a class="px-3" mat-button [routerLink]="['./']"> Reviews </a>
+            <a
+              class="mr-1 px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Location
+            </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Reviews
+            </a>
           </div>
         </div>
       </fuse-card>
@@ -639,29 +719,29 @@
         class="filter-listing flex w-full max-w-80 flex-col justify-between p-8 pb-4 md:max-w-160 md:flex-row"
       >
         <div class="order-2 flex flex-auto flex-col md:order-1">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Puzzles Coffee Shop
           </div>
-          <div class="-ml-1 mt-2 flex items-center leading-none">
+          <div class="mt-2 -ml-1 flex items-center leading-none">
             <div class="flex items-center">
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star'"
               ></mat-icon>
               <mat-icon
-                class="text-orange-500 icon-size-5"
+                class="size-5 text-orange-500"
                 [svgIcon]="'mat_outline:star_half'"
               ></mat-icon>
             </div>
@@ -689,8 +769,20 @@
             </div>
           </div>
           <div class="-mx-3 mt-3 flex items-center">
-            <a class="mr-1 px-3" mat-button [routerLink]="['./']"> Location </a>
-            <a class="px-3" mat-button [routerLink]="['./']"> Reviews </a>
+            <a
+              class="mr-1 px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Location
+            </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Reviews
+            </a>
           </div>
         </div>
         <div
@@ -706,12 +798,15 @@
 
       <!-- Card #23 -->
       <fuse-card
-        class="filter-list flex w-full max-w-80 flex-col px-8 pb-4 pt-6"
+        class="filter-list flex w-full max-w-80 flex-col px-8 pt-6 pb-4"
       >
         <div class="flex items-center justify-between">
-          <div class="text-2xl font-semibold leading-tight">News</div>
+          <div class="leading-tight text-2xl font-semibold">News</div>
           <div class="-mr-3">
-            <button mat-icon-button [matMenuTriggerFor]="listCard01Menu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="listCard01Menu"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_solid:ellipsis-vertical'"
               ></mat-icon>
@@ -724,14 +819,14 @@
         <div class="mt-5 flex flex-col">
           <div class="flex">
             <mat-icon
-              class="mr-2 mt-0.5 icon-size-5"
+              class="mt-0.5 mr-2 size-5"
               [svgIcon]="'heroicons_solid:bell'"
             ></mat-icon>
             <div><b>20% OFF</b> in your favorite hats shop on next Friday.</div>
           </div>
           <div class="mt-5 flex">
             <mat-icon
-              class="mr-2 mt-0.5 icon-size-5"
+              class="mt-0.5 mr-2 size-5"
               [svgIcon]="'heroicons_solid:bell'"
             ></mat-icon>
             <div>
@@ -745,7 +840,7 @@
           </div>
           <div class="mt-5 flex">
             <mat-icon
-              class="mr-2 mt-0.5 icon-size-5"
+              class="mt-0.5 mr-2 size-5"
               [svgIcon]="'heroicons_solid:bell'"
             ></mat-icon>
             <div>
@@ -759,18 +854,27 @@
           </div>
         </div>
         <div class="-mx-3 mt-4 flex items-center">
-          <a class="px-3" mat-button [routerLink]="['./']"> See all news </a>
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
+            See all news
+          </a>
         </div>
       </fuse-card>
 
       <!-- Card #24 -->
       <fuse-card
-        class="filter-list flex w-full max-w-80 flex-col px-8 pb-4 pt-6"
+        class="filter-list flex w-full max-w-80 flex-col px-8 pt-6 pb-4"
       >
         <div class="flex items-center justify-between">
-          <div class="text-2xl font-semibold leading-tight">Groups</div>
+          <div class="leading-tight text-2xl font-semibold">Groups</div>
           <div class="-mr-3">
-            <button mat-icon-button [matMenuTriggerFor]="listCard02Menu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="listCard02Menu"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_solid:ellipsis-vertical'"
               ></mat-icon>
@@ -788,7 +892,7 @@
               alt="Card cover image"
             />
             <div class="flex min-w-0 flex-col">
-              <div class="font-medium leading-none">The Port Cafe</div>
+              <div class="leading-none font-medium">The Port Cafe</div>
               <div class="mt-1 truncate leading-none">
                 Best cafe of the downtown New York
               </div>
@@ -802,7 +906,7 @@
               alt="Card cover image"
             />
             <div class="flex min-w-0 flex-col">
-              <div class="font-medium leading-none">Design House LLC.</div>
+              <div class="leading-none font-medium">Design House LLC.</div>
               <div class="mt-1 truncate leading-none">
                 UI/UX, brand and product design
               </div>
@@ -816,7 +920,7 @@
               alt="Card cover image"
             />
             <div class="flex min-w-0 flex-col">
-              <div class="font-medium leading-none">Crax Laser Tag</div>
+              <div class="leading-none font-medium">Crax Laser Tag</div>
               <div class="mt-1 truncate leading-none">
                 30% off with group of 6 people
               </div>
@@ -830,7 +934,7 @@
               alt="Card cover image"
             />
             <div class="flex min-w-0 flex-col">
-              <div class="font-medium leading-none">Roadster Clothing Inc.</div>
+              <div class="leading-none font-medium">Roadster Clothing Inc.</div>
               <div class="mt-1 truncate leading-none">
                 $25 off on orders $500 and over
               </div>
@@ -839,20 +943,29 @@
           </div>
         </div>
         <div class="-mx-3 mt-6 flex items-center">
-          <a class="px-3" mat-button [routerLink]="['./']"> See all groups </a>
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
+            See all groups
+          </a>
         </div>
       </fuse-card>
 
       <!-- Card #25 -->
       <fuse-card
-        class="filter-list flex w-full max-w-80 flex-col px-8 pb-4 pt-6"
+        class="filter-list flex w-full max-w-80 flex-col px-8 pt-6 pb-4"
       >
         <div class="flex items-center justify-between">
-          <div class="text-2xl font-semibold leading-tight">
+          <div class="leading-tight text-2xl font-semibold">
             Friend Suggestions
           </div>
           <div class="-mr-3">
-            <button mat-icon-button [matMenuTriggerFor]="listCard03Menu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="listCard03Menu"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_solid:ellipsis-vertical'"
               ></mat-icon>
@@ -870,7 +983,7 @@
               alt="Card cover image"
             />
             <div class="flex min-w-0 flex-col">
-              <div class="font-medium leading-none">Amelia Edwards</div>
+              <div class="leading-none font-medium">Amelia Edwards</div>
               <div class="text-muted mt-1 leading-none">3 mutual friends</div>
             </div>
           </div>
@@ -881,7 +994,7 @@
               alt="Card cover image"
             />
             <div class="flex min-w-0 flex-col">
-              <div class="font-medium leading-none">Lew Silverton</div>
+              <div class="leading-none font-medium">Lew Silverton</div>
               <div class="text-muted mt-1 leading-none">3 mutual friends</div>
             </div>
           </div>
@@ -892,7 +1005,7 @@
               alt="Card cover image"
             />
             <div class="flex min-w-0 flex-col">
-              <div class="font-medium leading-none">Leanne Simpson</div>
+              <div class="leading-none font-medium">Leanne Simpson</div>
               <div class="text-muted mt-1 leading-none">
                 Went to same high school
               </div>
@@ -905,7 +1018,7 @@
               alt="Card cover image"
             />
             <div class="flex min-w-0 flex-col">
-              <div class="font-medium leading-none">Cecilia Pozo</div>
+              <div class="leading-none font-medium">Cecilia Pozo</div>
               <div class="text-muted mt-1 leading-none">
                 Went to same college
               </div>
@@ -913,7 +1026,11 @@
           </div>
         </div>
         <div class="-mx-3 mt-6 flex items-center">
-          <a class="px-3" mat-button [routerLink]="['./']">
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
             See all suggestions
           </a>
         </div>
@@ -921,12 +1038,15 @@
 
       <!-- Card #26 -->
       <fuse-card
-        class="filter-list flex w-full max-w-80 flex-col px-8 pb-4 pt-6"
+        class="filter-list flex w-full max-w-80 flex-col px-8 pt-6 pb-4"
       >
         <div class="flex items-center justify-between">
-          <div class="text-2xl font-semibold leading-tight">Activity Feed</div>
+          <div class="leading-tight text-2xl font-semibold">Activity Feed</div>
           <div class="-mr-3">
-            <button mat-icon-button [matMenuTriggerFor]="listCard04Menu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="listCard04Menu"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_solid:ellipsis-vertical'"
               ></mat-icon>
@@ -989,7 +1109,11 @@
           </div>
         </div>
         <div class="-mx-3 mt-6 flex items-center">
-          <a class="px-3" mat-button [routerLink]="['./']">
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
             See entire activity feed
           </a>
         </div>
@@ -997,12 +1121,15 @@
 
       <!-- Card #27 -->
       <fuse-card
-        class="filter-list flex w-full max-w-80 flex-col px-8 pb-4 pt-6"
+        class="filter-list flex w-full max-w-80 flex-col px-8 pt-6 pb-4"
       >
         <div class="flex items-center justify-between">
-          <div class="text-2xl font-semibold leading-tight">Shopping List</div>
+          <div class="leading-tight text-2xl font-semibold">Shopping List</div>
           <div class="-mr-3">
-            <button mat-icon-button [matMenuTriggerFor]="listCard05Menu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="listCard05Menu"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_solid:ellipsis-vertical'"
               ></mat-icon>
@@ -1016,12 +1143,30 @@
         </div>
         <div class="mt-3 flex flex-col">
           <mat-checkbox class="my-1"> Tomatoes </mat-checkbox>
-          <mat-checkbox class="my-1" [checked]="true"> Milk </mat-checkbox>
+          <mat-checkbox
+            class="my-1"
+            [checked]="true"
+          >
+            Milk
+          </mat-checkbox>
           <mat-checkbox class="my-1"> Eggs </mat-checkbox>
-          <mat-checkbox class="my-1" [checked]="true"> Bread </mat-checkbox>
+          <mat-checkbox
+            class="my-1"
+            [checked]="true"
+          >
+            Bread
+          </mat-checkbox>
           <mat-checkbox class="my-1"> Coffee </mat-checkbox>
-          <mat-checkbox class="my-1" [checked]="true"> Olives </mat-checkbox>
-          <mat-checkbox class="my-1" [checked]="true">
+          <mat-checkbox
+            class="my-1"
+            [checked]="true"
+          >
+            Olives
+          </mat-checkbox>
+          <mat-checkbox
+            class="my-1"
+            [checked]="true"
+          >
             Sour Cream
           </mat-checkbox>
           <mat-checkbox class="my-1"> Peanut Butter </mat-checkbox>
@@ -1029,16 +1174,24 @@
           <mat-checkbox class="my-1"> Cheese </mat-checkbox>
         </div>
         <div class="-mx-3 mt-3 flex items-center">
-          <button class="px-3" mat-button>Add item</button>
+          <button
+            class="px-3"
+            mat-button
+          >
+            Add item
+          </button>
         </div>
       </fuse-card>
 
       <!-- Card #28 -->
       <fuse-card class="filter-list flex w-full max-w-80 flex-col p-8 pt-6">
         <div class="flex items-center justify-between">
-          <div class="text-2xl font-semibold leading-tight">Today's Tasks</div>
+          <div class="leading-tight text-2xl font-semibold">Today's Tasks</div>
           <div class="-mr-3">
-            <button mat-icon-button [matMenuTriggerFor]="listCard06Menu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="listCard06Menu"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_solid:ellipsis-vertical'"
               ></mat-icon>
@@ -1055,13 +1208,19 @@
           ></span>
           <span class="text-muted font-medium">USER INTERFACE (5)</span>
         </div>
-        <div class="ml-4 mt-2 flex flex-col">
+        <div class="mt-2 ml-4 flex flex-col">
           <mat-checkbox class="my-1"> Design user profile </mat-checkbox>
-          <mat-checkbox class="my-1" [checked]="true">
+          <mat-checkbox
+            class="my-1"
+            [checked]="true"
+          >
             Design dashboard
           </mat-checkbox>
           <mat-checkbox class="my-1"> Create auth flow prototype </mat-checkbox>
-          <mat-checkbox class="my-1" [checked]="true">
+          <mat-checkbox
+            class="my-1"
+            [checked]="true"
+          >
             Re-design auth pages
           </mat-checkbox>
           <mat-checkbox class="my-1"> Design landing page </mat-checkbox>
@@ -1072,11 +1231,17 @@
           ></span>
           <span class="text-muted font-medium">DESIGN SYSTEM (3)</span>
         </div>
-        <div class="ml-4 mt-2 flex flex-col">
-          <mat-checkbox class="my-1" [checked]="true">
+        <div class="mt-2 ml-4 flex flex-col">
+          <mat-checkbox
+            class="my-1"
+            [checked]="true"
+          >
             Refine basic elements
           </mat-checkbox>
-          <mat-checkbox class="my-1" [checked]="true">
+          <mat-checkbox
+            class="my-1"
+            [checked]="true"
+          >
             List all the re-usable elements
           </mat-checkbox>
           <mat-checkbox class="my-1"> Add standard form elements </mat-checkbox>
@@ -1086,9 +1251,12 @@
       <!-- Card #29 -->
       <fuse-card class="filter-list flex w-full max-w-80 flex-col p-8 pt-6">
         <div class="flex items-center justify-between">
-          <div class="text-2xl font-semibold leading-tight">Daily Schedule</div>
+          <div class="leading-tight text-2xl font-semibold">Daily Schedule</div>
           <div class="-mr-3">
-            <button mat-icon-button [matMenuTriggerFor]="listCard07Menu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="listCard07Menu"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_solid:ellipsis-vertical'"
               ></mat-icon>
@@ -1129,41 +1297,60 @@
 
       <!-- Card #30 -->
       <fuse-card
-        class="filter-list flex w-full max-w-80 flex-col p-8 pb-4 pt-6"
+        class="filter-list flex w-full max-w-80 flex-col p-8 pt-6 pb-4"
       >
-        <div class="text-2xl font-semibold leading-tight">Customer Reviews</div>
+        <div class="leading-tight text-2xl font-semibold">Customer Reviews</div>
         <div class="text-muted mt-1">
           <b>4.74</b> average based on <b>508</b> reviews
         </div>
         <div class="mt-4 flex flex-col">
           <div class="my-2 flex items-center">
             <div class="w-full max-w-12 whitespace-nowrap">5 star</div>
-            <mat-progress-bar class="my-2" [value]="87"></mat-progress-bar>
+            <mat-progress-bar
+              class="my-2"
+              [value]="87"
+            ></mat-progress-bar>
             <div class="w-full max-w-10 text-right">87%</div>
           </div>
           <div class="my-2 flex items-center">
             <div class="w-full max-w-12 whitespace-nowrap">4 star</div>
-            <mat-progress-bar class="my-2" [value]="7"></mat-progress-bar>
+            <mat-progress-bar
+              class="my-2"
+              [value]="7"
+            ></mat-progress-bar>
             <div class="w-full max-w-10 text-right">7%</div>
           </div>
           <div class="my-2 flex items-center">
             <div class="w-full max-w-12 whitespace-nowrap">3 star</div>
-            <mat-progress-bar class="my-2" [value]="1"></mat-progress-bar>
+            <mat-progress-bar
+              class="my-2"
+              [value]="1"
+            ></mat-progress-bar>
             <div class="w-full max-w-10 text-right">1%</div>
           </div>
           <div class="my-2 flex items-center">
             <div class="w-full max-w-12 whitespace-nowrap">2 star</div>
-            <mat-progress-bar class="my-2" [value]="1"></mat-progress-bar>
+            <mat-progress-bar
+              class="my-2"
+              [value]="1"
+            ></mat-progress-bar>
             <div class="w-full max-w-10 text-right">1%</div>
           </div>
           <div class="my-2 flex items-center">
             <div class="w-full max-w-12 whitespace-nowrap">1 star</div>
-            <mat-progress-bar class="my-2" [value]="2"></mat-progress-bar>
+            <mat-progress-bar
+              class="my-2"
+              [value]="2"
+            ></mat-progress-bar>
             <div class="w-full max-w-10 text-right">2%</div>
           </div>
         </div>
         <div class="-mx-3 mt-3 flex items-center">
-          <a class="px-3" mat-button [routerLink]="['./']">
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
             Review this product
           </a>
         </div>
@@ -1171,12 +1358,15 @@
 
       <!-- Card #31 -->
       <fuse-card
-        class="filter-list flex w-full max-w-80 flex-col px-8 pb-4 pt-6"
+        class="filter-list flex w-full max-w-80 flex-col px-8 pt-6 pb-4"
       >
         <div class="flex items-center justify-between">
-          <div class="text-2xl font-semibold leading-tight">Followers</div>
+          <div class="leading-tight text-2xl font-semibold">Followers</div>
           <div class="-mr-3">
-            <button mat-icon-button [matMenuTriggerFor]="listCard08Menu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="listCard08Menu"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_solid:ellipsis-vertical'"
               ></mat-icon>
@@ -1277,7 +1467,11 @@
           </div>
         </div>
         <div class="-mx-3 mt-6 flex items-center">
-          <a class="px-3" mat-button [routerLink]="['./']">
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
             See all followers
           </a>
         </div>
@@ -1285,12 +1479,15 @@
 
       <!-- Card #32 -->
       <fuse-card
-        class="filter-list flex w-full max-w-80 flex-col px-8 pb-4 pt-6"
+        class="filter-list flex w-full max-w-80 flex-col px-8 pt-6 pb-4"
       >
         <div class="flex items-center justify-between">
-          <div class="text-2xl font-semibold leading-tight">Gallery</div>
+          <div class="leading-tight text-2xl font-semibold">Gallery</div>
           <div class="-mr-3">
-            <button mat-icon-button [matMenuTriggerFor]="listCard09Menu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="listCard09Menu"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_solid:ellipsis-vertical'"
               ></mat-icon>
@@ -1392,7 +1589,11 @@
           </div>
         </div>
         <div class="-mx-3 mt-6 flex items-center">
-          <a class="px-3" mat-button [routerLink]="['./']">
+          <a
+            class="px-3"
+            mat-button
+            [routerLink]="['./']"
+          >
             See entire gallery
           </a>
         </div>
@@ -1409,11 +1610,14 @@
           <div class="flex justify-between">
             <div class="flex flex-col">
               <div class="text-muted">FURNISHED MANSION</div>
-              <div class="mt-1 text-2xl font-semibold leading-tight">
+              <div class="leading-tight mt-1 text-2xl font-semibold">
                 USD $24.000.000
               </div>
             </div>
-            <button class="-mr-2 -mt-2" mat-icon-button>
+            <button
+              class="-mt-2 -mr-2"
+              mat-icon-button
+            >
               <mat-icon
                 class="text-red-500"
                 [svgIcon]="'heroicons_solid:heart'"
@@ -1421,8 +1625,20 @@
             </button>
           </div>
           <div class="-mx-3 mt-3">
-            <a class="mr-1 px-3" mat-button [routerLink]="['./']"> Details </a>
-            <a class="px-3" mat-button [routerLink]="['./']"> See on map </a>
+            <a
+              class="mr-1 px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Details
+            </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              See on map
+            </a>
           </div>
         </div>
       </fuse-card>
@@ -1438,12 +1654,15 @@
           <div class="flex justify-between">
             <div class="flex flex-col">
               <div class="text-muted">FURNISHED MANSION</div>
-              <div class="mt-1 text-2xl font-semibold leading-tight">
+              <div class="leading-tight mt-1 text-2xl font-semibold">
                 USD $24.000.000
               </div>
               <div class="text-muted mt-1">1 E. Pumpkin Hill Drive</div>
             </div>
-            <button class="-mr-2 -mt-2" mat-icon-button>
+            <button
+              class="-mt-2 -mr-2"
+              mat-icon-button
+            >
               <mat-icon
                 class="text-muted"
                 [svgIcon]="'heroicons_solid:heart'"
@@ -1460,8 +1679,20 @@
           </div>
           <hr class="my-4 border-b" />
           <div class="-mx-3 mt-3">
-            <a class="mr-1 px-3" mat-button [routerLink]="['./']"> Details </a>
-            <a class="px-3" mat-button [routerLink]="['./']"> See on map </a>
+            <a
+              class="mr-1 px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              Details
+            </a>
+            <a
+              class="px-3"
+              mat-button
+              [routerLink]="['./']"
+            >
+              See on map
+            </a>
           </div>
         </div>
       </fuse-card>
@@ -1474,18 +1705,22 @@
           class="flex items-center justify-center rounded-full bg-primary-100 p-5 dark:bg-gray-600"
         >
           <mat-icon
-            class="text-primary-500 icon-size-10 dark:text-primary-300"
+            class="size-10 text-primary-500 dark:text-primary-300"
             [svgIcon]="'heroicons_outline:information-circle'"
           ></mat-icon>
         </div>
-        <div class="mt-6 text-center text-2xl font-semibold leading-tight">
+        <div class="leading-tight mt-6 text-center text-2xl font-semibold">
           Support
         </div>
         <div class="text-muted mt-3 text-center">
           Contact support to learn more about our products and get professional
           help
         </div>
-        <a class="mt-8 px-6" mat-flat-button [routerLink]="['./']">
+        <a
+          class="mt-8 px-6"
+          mat-flat-button
+          [routerLink]="['./']"
+        >
           Contact Now
         </a>
       </fuse-card>
@@ -1495,13 +1730,13 @@
         class="filter-info flex w-full max-w-80 flex-col items-center p-8"
       >
         <mat-icon
-          class="text-red-500 icon-size-16"
+          class="size-16 text-red-500"
           [svgIcon]="'heroicons_solid:light-bulb'"
         ></mat-icon>
-        <div class="mt-6 text-center text-2xl font-semibold leading-tight">
+        <div class="leading-tight mt-6 text-center text-2xl font-semibold">
           Branding & Product Design
         </div>
-        <div class="text-muted mb-8 mt-1 text-center">
+        <div class="text-muted mt-1 mb-8 text-center">
           Brand strategy, purpose, and product positioning
         </div>
         <div class="flex items-center">
@@ -1532,7 +1767,11 @@
           />
         </div>
         <div class="text-muted mt-2 text-sm font-medium">+13 more</div>
-        <a class="mt-8 px-6" mat-flat-button [routerLink]="['./']">
+        <a
+          class="mt-8 px-6"
+          mat-flat-button
+          [routerLink]="['./']"
+        >
           View Project
         </a>
       </fuse-card>
@@ -1546,11 +1785,11 @@
           src="images/avatars/male-04.jpg"
           alt="Card cover image"
         />
-        <div class="mt-8 text-center text-2xl font-semibold leading-tight">
+        <div class="leading-tight mt-8 text-center text-2xl font-semibold">
           Brian Hughes
         </div>
-        <div class="text-muted mt-1 text-center leading-tight">London, UK</div>
-        <hr class="mb-0 mt-8 w-full border-t" />
+        <div class="text-muted leading-tight mt-1 text-center">London, UK</div>
+        <hr class="mt-8 mb-0 w-full border-t" />
         <div class="my-4 flex w-full items-center justify-between px-2">
           <div class="flex flex-col items-center">
             <span class="font-bold">1.2k</span>
@@ -1565,19 +1804,23 @@
             <span class="text-muted text-sm font-medium">FOLLOWING</span>
           </div>
         </div>
-        <hr class="mb-8 mt-0 w-full border-t" />
+        <hr class="mt-0 mb-8 w-full border-t" />
         <div class="text-muted text-center">
           I’m a friendly kitchen assistant who suffers from a severe phobia of
           buttons
         </div>
-        <a class="mt-4 px-6" mat-button [routerLink]="['./']">
+        <a
+          class="mt-4 px-6"
+          mat-button
+          [routerLink]="['./']"
+        >
           More about Brian
         </a>
       </fuse-card>
 
       <!-- Card #38 -->
       <fuse-card class="filter-info flex w-full max-w-80 flex-col p-8">
-        <div class="text-2xl font-semibold leading-tight">About Me</div>
+        <div class="leading-tight text-2xl font-semibold">About Me</div>
         <div class="mt-4">
           I’m a friendly kitchen assistant who suffers from a severe phobia of
           buttons.
@@ -1589,27 +1832,31 @@
         <div class="flex flex-col">
           <div class="flex items-center">
             <mat-icon
-              class="mr-3 icon-size-5"
+              class="mr-3 size-5"
               [svgIcon]="'heroicons_solid:map-pin'"
             ></mat-icon>
             <span class="leading-none">London, UK</span>
           </div>
           <div class="mt-4 flex items-center">
             <mat-icon
-              class="mr-3 icon-size-5"
+              class="mr-3 size-5"
               [svgIcon]="'heroicons_solid:briefcase'"
             ></mat-icon>
             <span class="leading-none">ACME Corp. Lead UX Designer</span>
           </div>
           <div class="mt-4 flex items-center">
             <mat-icon
-              class="mr-3 icon-size-5"
+              class="mr-3 size-5"
               [svgIcon]="'heroicons_solid:cake'"
             ></mat-icon>
             <span class="leading-none">April, 24</span>
           </div>
         </div>
-        <a class="mt-8 px-6" mat-flat-button [routerLink]="['./']">
+        <a
+          class="mt-8 px-6"
+          mat-flat-button
+          [routerLink]="['./']"
+        >
           See complete bio
         </a>
       </fuse-card>
@@ -1632,13 +1879,13 @@
             />
           </div>
         </div>
-        <div class="flex flex-col px-8 pb-6 pt-4">
+        <div class="flex flex-col px-8 pt-4 pb-6">
           <div class="flex items-center justify-between">
             <div class="mr-4">
-              <div class="text-2xl font-semibold leading-tight">
+              <div class="leading-tight text-2xl font-semibold">
                 Brian Hughes
               </div>
-              <div class="text-muted mt-1 leading-tight">London, UK</div>
+              <div class="text-muted leading-tight mt-1">London, UK</div>
             </div>
             <div
               class="flex h-10 w-10 items-center justify-center rounded-full border"
@@ -1685,7 +1932,7 @@
           alt="Card cover image"
         />
         <div class="flex flex-col">
-          <div class="text-2xl font-semibold leading-tight">Brian Hughes</div>
+          <div class="leading-tight text-2xl font-semibold">Brian Hughes</div>
           <div class="text-muted">London, UK</div>
         </div>
       </fuse-card>
@@ -1695,7 +1942,7 @@
         class="filter-info flex w-full max-w-80 items-center justify-between p-6"
       >
         <div class="flex flex-col">
-          <div class="text-2xl font-semibold leading-tight">Brian Hughes</div>
+          <div class="leading-tight text-2xl font-semibold">Brian Hughes</div>
           <div class="text-muted">London, UK</div>
         </div>
         <img
@@ -1713,7 +1960,7 @@
           alt="Card cover image"
         />
         <div class="flex flex-col">
-          <div class="text-2xl font-semibold leading-tight">Brian Hughes</div>
+          <div class="leading-tight text-2xl font-semibold">Brian Hughes</div>
           <div class="leading-tight text-primary">Head of HR Department</div>
           <div class="text-muted mt-2">h.brian&#64;company.com</div>
         </div>
@@ -1724,7 +1971,7 @@
         class="filter-info flex w-full max-w-80 items-center justify-between p-6"
       >
         <div class="flex flex-col">
-          <div class="text-2xl font-semibold leading-tight">Brian Hughes</div>
+          <div class="leading-tight text-2xl font-semibold">Brian Hughes</div>
           <div class="leading-tight text-primary">Head of HR Department</div>
           <div class="text-muted mt-2">h.brian&#64;company.com</div>
         </div>
@@ -1738,11 +1985,11 @@
       <!-- Card #44 -->
       <fuse-card class="filter-info flex w-full max-w-80 items-center p-6">
         <mat-icon
-          class="mr-6 icon-size-12"
+          class="mr-6 size-12"
           [svgIcon]="'heroicons_outline:envelope'"
         ></mat-icon>
         <div class="flex flex-col">
-          <div class="text-2xl font-semibold leading-tight">1 new mail</div>
+          <div class="leading-tight text-2xl font-semibold">1 new mail</div>
           <div class="text-muted">Mailbox</div>
         </div>
       </fuse-card>
@@ -1752,14 +1999,12 @@
         class="filter-info flex w-full max-w-80 items-center justify-between p-6"
       >
         <div class="flex flex-col">
-          <div class="text-2xl font-semibold leading-tight">New message</div>
+          <div class="leading-tight text-2xl font-semibold">New message</div>
           <div class="text-muted">from John Balista</div>
         </div>
         <mat-icon
-          class="ml-6 icon-size-12"
-          [svgIcon]="
-                        'heroicons_outline:chat-bubble-oval-left-ellipsis'
-                    "
+          class="ml-6 size-12"
+          [svgIcon]="'heroicons_outline:chat-bubble-oval-left-ellipsis'"
         ></mat-icon>
       </fuse-card>
 
@@ -1771,7 +2016,7 @@
           alt="Card cover image"
         />
         <div class="flex flex-auto flex-col justify-center p-6">
-          <div class="text-lg font-semibold leading-tight">
+          <div class="leading-tight text-lg font-semibold">
             Lavender Bouquet
           </div>
           <div class="text-muted">USD $5</div>
@@ -1782,7 +2027,7 @@
       <!-- Card #47 -->
       <fuse-card class="filter-info flex w-full max-w-80 justify-between">
         <div class="flex flex-auto flex-col justify-center p-6">
-          <div class="text-lg font-semibold leading-tight">
+          <div class="leading-tight text-lg font-semibold">
             Lavender Bouquet
           </div>
           <div class="text-muted">USD $5</div>
@@ -1799,7 +2044,7 @@
       <fuse-card
         class="filter-pricing w-full max-w-100 flex-col p-6 sm:px-10 sm:py-12"
       >
-        <div class="text-4xl font-bold leading-tight tracking-tight">
+        <div class="leading-tight text-4xl font-bold tracking-tight">
           Personal
         </div>
         <div class="text-muted mt-2 text-lg font-medium tracking-tight">
@@ -1809,7 +2054,7 @@
         <!-- Price -->
         <div class="flex items-baseline whitespace-nowrap">
           <div class="mr-2 text-2xl">USD</div>
-          <div class="text-6xl font-semibold leading-tight tracking-tight">
+          <div class="text-6xl leading-tight font-semibold tracking-tight">
             $6.00
           </div>
         </div>
@@ -1819,7 +2064,10 @@
           <div><b>$6.00</b> billed yearly</div>
         </div>
         <!-- CTA -->
-        <button class="fuse-mat-button-large mt-10" mat-stroked-button>
+        <button
+          class="fuse-mat-button-large mt-10"
+          mat-stroked-button
+        >
           Get Started
         </button>
         <!-- Features -->
@@ -1828,35 +2076,35 @@
           <div class="mt-4 space-y-2">
             <div class="flex">
               <mat-icon
-                class="text-green-600 icon-size-5"
+                class="size-5 text-green-600"
                 [svgIcon]="'heroicons_solid:check'"
               ></mat-icon>
               <div class="ml-2 leading-5"><b>10</b> projects</div>
             </div>
             <div class="flex">
               <mat-icon
-                class="text-green-600 icon-size-5"
+                class="size-5 text-green-600"
                 [svgIcon]="'heroicons_solid:check'"
               ></mat-icon>
               <div class="ml-2 leading-5"><b>5GB</b> storage</div>
             </div>
             <div class="flex">
               <mat-icon
-                class="text-green-600 icon-size-5"
+                class="size-5 text-green-600"
                 [svgIcon]="'heroicons_solid:check'"
               ></mat-icon>
               <div class="ml-2 leading-5">Analytics</div>
             </div>
             <div class="flex">
               <mat-icon
-                class="text-green-600 icon-size-5"
+                class="size-5 text-green-600"
                 [svgIcon]="'heroicons_solid:check'"
               ></mat-icon>
               <div class="ml-2 leading-5">Free mobile app</div>
             </div>
             <div class="flex">
               <mat-icon
-                class="text-green-600 icon-size-5"
+                class="size-5 text-green-600"
                 [svgIcon]="'heroicons_solid:check'"
               ></mat-icon>
               <div class="ml-2 leading-5">Access to forums</div>
@@ -1869,12 +2117,12 @@
       <fuse-card
         class="filter-pricing w-full max-w-80 flex-col items-center p-8 text-center sm:px-10 sm:py-12 lg:rounded-none lg:rounded-l"
       >
-        <div class="text-4xl font-bold leading-tight tracking-tight">
+        <div class="leading-tight text-4xl font-bold tracking-tight">
           Personal
         </div>
         <!-- Price -->
         <div class="mt-8 flex items-baseline whitespace-nowrap">
-          <div class="text-6xl font-semibold leading-tight tracking-tight">
+          <div class="text-6xl leading-tight font-semibold tracking-tight">
             $6
           </div>
           <div class="text-muted ml-2 text-2xl">/ month</div>
@@ -1893,7 +2141,10 @@
           <div>Access to forums</div>
         </div>
         <!-- CTA -->
-        <button class="fuse-mat-button-large mt-10 w-full" mat-stroked-button>
+        <button
+          class="fuse-mat-button-large mt-10 w-full"
+          mat-stroked-button
+        >
           Start your trial
         </button>
       </fuse-card>
@@ -1904,7 +2155,7 @@
       >
         <div class="p-6 sm:p-8 lg:p-10">
           <div class="text-3xl font-bold">Lifetime Membership</div>
-          <div class="text-muted mt-2 leading-relaxed">
+          <div class="text-muted leading-relaxed mt-2">
             Learn from like-minded individuals which are eager to make a living
             building stuff on the web. Pay once and get lifetime access to the
             community.
@@ -1917,28 +2168,28 @@
           <div class="mt-6 grid grid-cols-1 gap-y-4 lg:grid-cols-2">
             <div class="flex items-center">
               <mat-icon
-                class="text-primary icon-size-5"
+                class="text-primary size-5"
                 [svgIcon]="'heroicons_solid:check-circle'"
               ></mat-icon>
               <div class="ml-2">Private forum access</div>
             </div>
             <div class="flex items-center">
               <mat-icon
-                class="text-primary icon-size-5"
+                class="text-primary size-5"
                 [svgIcon]="'heroicons_solid:check-circle'"
               ></mat-icon>
               <div class="ml-2">Access to annual online conference</div>
             </div>
             <div class="flex items-center">
               <mat-icon
-                class="text-primary icon-size-5"
+                class="text-primary size-5"
                 [svgIcon]="'heroicons_solid:check-circle'"
               ></mat-icon>
               <div class="ml-2">Member resources</div>
             </div>
             <div class="flex items-center">
               <mat-icon
-                class="text-primary icon-size-5"
+                class="text-primary size-5"
                 [svgIcon]="'heroicons_solid:check-circle'"
               ></mat-icon>
               <div class="ml-2">Official member T-Shirt</div>
@@ -1947,7 +2198,7 @@
         </div>
         <!-- Price -->
         <div
-          class="flex flex-col items-center bg-gray-100 p-8 dark:bg-black dark:bg-opacity-10 lg:min-w-80 lg:px-10 lg:py-12"
+          class="dark:bg-opacity-10 flex flex-col items-center bg-gray-100 p-8 lg:min-w-80 lg:px-10 lg:py-12 dark:bg-black"
         >
           <div class="flex items-center whitespace-nowrap">
             <div class="text-8xl font-extrabold tracking-tight">$599</div>
@@ -1957,7 +2208,10 @@
             <div>No monthly subscription,</div>
             <div>you only pay once.</div>
           </div>
-          <button class="mt-8 w-full lg:mt-auto" mat-flat-button>
+          <button
+            class="mt-8 w-full lg:mt-auto"
+            mat-flat-button
+          >
             Get Started
           </button>
         </div>
@@ -1966,16 +2220,16 @@
       <!-- Card #51 -->
       <fuse-card class="filter-shopping flex w-full max-w-80 flex-col">
         <div class="relative">
-          <div class="absolute right-0 top-0 flex flex-col p-3">
+          <div class="absolute top-0 right-0 flex flex-col p-3">
             <button mat-icon-button>
               <mat-icon
-                class="text-white text-opacity-50"
+                class="text-opacity-50 text-white"
                 [svgIcon]="'heroicons_solid:heart'"
               ></mat-icon>
             </button>
             <button mat-icon-button>
               <mat-icon
-                class="text-white text-opacity-50"
+                class="text-opacity-50 text-white"
                 [svgIcon]="'heroicons_solid:arrows-right-left'"
               ></mat-icon>
             </button>
@@ -1988,7 +2242,7 @@
         </div>
         <div class="m-8 mb-0">
           <div class="flex flex-col">
-            <div class="text-2xl leading-tight">
+            <div class="leading-tight text-2xl">
               Black sneakers with white stripes
             </div>
             <div class="mt-2 text-3xl font-semibold">$240.00</div>
@@ -2001,11 +2255,14 @@
             <span class="mr-2">39</span>
             <span class="mr-2">40</span>
             <span class="mr-2">41</span>
-            <span class="mr-2 font-bold text-primary">42</span>
+            <span class="text-primary mr-2 font-bold">42</span>
             <span class="mr-2">43</span>
           </div>
           <div class="-mx-8 mt-6">
-            <button class="w-full rounded-none" mat-flat-button>
+            <button
+              class="w-full rounded-none"
+              mat-flat-button
+            >
               Add to Cart
             </button>
           </div>
@@ -2024,7 +2281,7 @@
           />
         </div>
         <div class="m-8 mb-4 flex flex-auto flex-col">
-          <div class="text-2xl leading-tight">
+          <div class="leading-tight text-2xl">
             Gray sneakers with white stripes
           </div>
           <div class="text-muted mt-1 font-medium">ALIDAS</div>
@@ -2036,16 +2293,22 @@
             <span class="mr-2">39</span>
             <span class="mr-2">40</span>
             <span class="mr-2">41</span>
-            <span class="mr-2 font-bold text-primary">42</span>
+            <span class="text-primary mr-2 font-bold">42</span>
             <span class="mr-2">43</span>
           </div>
-          <hr class="mb-4 mt-6 w-full border-b md:mt-auto" />
+          <hr class="mt-6 mb-4 w-full border-b md:mt-auto" />
           <div class="-mx-3 flex items-center">
-            <button class="mr-1 px-3" mat-button>
+            <button
+              class="mr-1 px-3"
+              mat-button
+            >
               <mat-icon [svgIcon]="'heroicons_solid:shopping-cart'"></mat-icon>
               <span class="ml-2">Add to Cart</span>
             </button>
-            <button class="ml-auto" mat-icon-button>
+            <button
+              class="ml-auto"
+              mat-icon-button
+            >
               <mat-icon
                 class="text-muted"
                 [svgIcon]="'heroicons_solid:heart'"
@@ -2073,10 +2336,10 @@
         </div>
         <div class="m-8 mb-4 flex flex-auto flex-col">
           <div class="flex flex-col items-baseline justify-between md:flex-row">
-            <div class="text-2xl leading-tight">
+            <div class="leading-tight text-2xl">
               White sneakers with red stripes
             </div>
-            <div class="mt-4 text-3xl font-semibold md:ml-6 md:mt-0">
+            <div class="mt-4 text-3xl font-semibold md:mt-0 md:ml-6">
               $240.00
             </div>
           </div>
@@ -2091,16 +2354,22 @@
             <span class="mr-2">39</span>
             <span class="mr-2">40</span>
             <span class="mr-2">41</span>
-            <span class="mr-2 font-bold text-primary">42</span>
+            <span class="text-primary mr-2 font-bold">42</span>
             <span class="mr-2">43</span>
           </div>
-          <hr class="mb-4 mt-6 w-full border-b" />
+          <hr class="mt-6 mb-4 w-full border-b" />
           <div class="-mx-3 flex items-center md:mt-auto">
-            <button class="mr-1 px-3" mat-button>
+            <button
+              class="mr-1 px-3"
+              mat-button
+            >
               <mat-icon [svgIcon]="'heroicons_solid:shopping-cart'"></mat-icon>
               Add to Cart
             </button>
-            <button class="ml-auto" mat-icon-button>
+            <button
+              class="ml-auto"
+              mat-icon-button
+            >
               <mat-icon
                 class="text-muted"
                 [svgIcon]="'heroicons_solid:heart'"
@@ -2121,29 +2390,29 @@
         class="filter-testimonial relative flex w-full max-w-80 flex-col p-8"
       >
         <span
-          class="absolute left-0 top-0 ml-8 mt-8 font-serif text-9xl leading-none text-primary"
+          class="text-9xl text-primary absolute top-0 left-0 mt-8 ml-8 font-serif leading-none"
           >“</span
         >
-        <div class="mt-4 text-lg italic leading-relaxed">
+        <div class="leading-relaxed mt-4 text-lg italic">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Puzzles
           coffee shop is one of the finest coffee shops in central downtown in
           New York. It's quiet; far away from busy streets and never ending
           constructions.
         </div>
-        <div class="mt-4 font-medium text-primary">
+        <div class="text-primary mt-4 font-medium">
           &#8212; Melissa Morillo, Comtent
         </div>
       </fuse-card>
 
       <!-- Card #55 -->
       <fuse-card class="filter-testimonial flex w-full max-w-80 flex-col">
-        <div class="p-8 text-lg italic leading-relaxed">
+        <div class="leading-relaxed p-8 text-lg italic">
           Puzzles coffee shop is one of the finest coffee shops in central
           downtown in New York. It's quiet; far away from busy streets and never
           ending constructions.
         </div>
         <div
-          class="mt-4 flex flex-col items-center bg-primary px-8 py-6 font-medium text-on-primary"
+          class="bg-primary text-on-primary mt-4 flex flex-col items-center px-8 py-6 font-medium"
         >
           <span class="bg-card relative -mt-14 mb-4 rounded-full p-1">
             <img
@@ -2169,12 +2438,12 @@
           />
         </div>
         <div class="m-8 flex flex-auto flex-col">
-          <div class="text-lg italic leading-relaxed">
+          <div class="leading-relaxed text-lg italic">
             Puzzles coffee shop is one of the finest coffee shops in central
             downtown in New York. It's quiet; far away from busy streets and
             never ending constructions.
           </div>
-          <div class="mt-4 font-medium text-primary">
+          <div class="text-primary mt-4 font-medium">
             &#8212; Melissa Morillo, Comtent
           </div>
         </div>
@@ -2185,17 +2454,17 @@
         class="filter-testimonial flex w-full max-w-80 flex-col items-center justify-between p-8 md:max-w-160 md:flex-row"
       >
         <img
-          class="mb-8 h-full w-30 rounded-full object-cover md:mb-0 md:mr-8"
+          class="mb-8 h-full w-30 rounded-full object-cover md:mr-8 md:mb-0"
           src="images/cards/avatar-400x400.jpg"
           alt="Card cover image"
         />
         <div class="flex flex-auto flex-col justify-center">
-          <div class="text-lg italic leading-relaxed">
+          <div class="leading-relaxed text-lg italic">
             Puzzles coffee shop is one of the finest coffee shops in central
             downtown in New York. It's quiet; far away from busy streets and
             never ending constructions.
           </div>
-          <div class="mt-4 font-medium text-primary">
+          <div class="text-primary mt-4 font-medium">
             &#8212; Melissa Morillo, Comtent
           </div>
         </div>
@@ -2215,7 +2484,10 @@
             />
             <div class="sm:hidden">Brian Hughes</div>
           </div>
-          <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+          <mat-form-field
+            class="w-full"
+            [subscriptSizing]="'dynamic'"
+          >
             <textarea
               matInput
               [placeholder]="'What\'s on your mind?'"
@@ -2225,37 +2497,56 @@
           </mat-form-field>
         </div>
         <div class="-mx-3 mt-6 flex items-center sm:mt-8">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:photo'"></mat-icon>
             Photo / Video
           </button>
-          <button class="mr-1 hidden px-3 sm:inline-flex" mat-button>
+          <button
+            class="mr-1 hidden px-3 sm:inline-flex"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
             Tag Friends
           </button>
-          <button class="mr-1 hidden px-3 sm:inline-flex" mat-button>
+          <button
+            class="mr-1 hidden px-3 sm:inline-flex"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:face-smile'"></mat-icon>
             Feeling
           </button>
-          <button class="px-3" mat-button [matMenuTriggerFor]="postCardMenu01">
+          <button
+            class="px-3"
+            mat-button
+            [matMenuTriggerFor]="postCardMenu01"
+          >
             <mat-icon
               [svgIcon]="'heroicons_solid:ellipsis-horizontal'"
             ></mat-icon>
           </button>
           <mat-menu #postCardMenu01="matMenu">
-            <button class="sm:hidden" mat-menu-item>
+            <button
+              class="sm:hidden"
+              mat-menu-item
+            >
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:user-circle'"
                 ></mat-icon>
                 <span>Tag Friends</span>
               </span>
             </button>
-            <button class="sm:hidden" mat-menu-item>
+            <button
+              class="sm:hidden"
+              mat-menu-item
+            >
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:face-smile'"
                 ></mat-icon>
                 <span>Feeling</span>
@@ -2264,7 +2555,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:play'"
                 ></mat-icon>
                 <span>Live</span>
@@ -2273,7 +2564,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:sparkles'"
                 ></mat-icon>
                 <span>Gif</span>
@@ -2282,7 +2573,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:map-pin'"
                 ></mat-icon>
                 <span>Check in</span>
@@ -2297,14 +2588,14 @@
         class="filter-post filter-interactive flex w-full max-w-140 flex-col"
         #expandableCard02="fuseCard"
       >
-        <div class="mx-6 mb-4 mt-6 flex items-center sm:mx-8">
+        <div class="mx-6 mt-6 mb-4 flex items-center sm:mx-8">
           <img
             class="mr-4 h-10 w-10 rounded-full"
             src="images/avatars/female-01.jpg"
             alt="Card cover image"
           />
           <div class="flex flex-col">
-            <span class="font-semibold leading-none">Caroline Lundu</span>
+            <span class="leading-none font-semibold">Caroline Lundu</span>
             <span class="text-muted mt-1 text-sm leading-none"
               >29 minutes ago</span
             >
@@ -2322,7 +2613,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:arrow-up-tray'"
                 ></mat-icon>
                 <span>Save post</span>
@@ -2331,7 +2622,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:eye-slash'"
                 ></mat-icon>
                 <span>Hide post</span>
@@ -2340,7 +2631,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:clock'"
                 ></mat-icon>
                 <span>Snooze for 30 days</span>
@@ -2349,7 +2640,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:minus-circle'"
                 ></mat-icon>
                 <span>Hide all</span>
@@ -2359,10 +2650,8 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
-                  [svgIcon]="
-                                        'heroicons_solid:exclamation-triangle'
-                                    "
+                  class="mr-3 size-5"
+                  [svgIcon]="'heroicons_solid:exclamation-triangle'"
                 ></mat-icon>
                 <span>Report post</span>
               </span>
@@ -2370,7 +2659,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:bell'"
                 ></mat-icon>
                 <span>Turn on notifications for this post</span>
@@ -2378,7 +2667,7 @@
             </button>
           </mat-menu>
         </div>
-        <div class="mx-6 mb-6 mt-2 sm:mx-8">
+        <div class="mx-6 mt-2 mb-6 sm:mx-8">
           Look at that sky! I so want to be there.. Can we arrange a trip? Is
           that a possibility? Please!!!
         </div>
@@ -2394,33 +2683,40 @@
             [matTooltipPosition]="'right'"
           >
             <mat-icon
-              class="text-gray-100 icon-size-4"
+              class="size-4 text-gray-100"
               [svgIcon]="'heroicons_solid:map-pin'"
             ></mat-icon>
           </div>
         </div>
         <div class="mx-3 flex items-center sm:mx-5">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
               class="text-red-500"
               [svgIcon]="'heroicons_solid:heart'"
             ></mat-icon>
             Unlike
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
-              [svgIcon]="
-                                'heroicons_solid:chat-bubble-left-ellipsis'
-                            "
+              [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
             ></mat-icon>
             Comment
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:share'"></mat-icon>
             Share
           </button>
         </div>
-        <hr class="mx-6 mb-6 mt-4 border-b sm:mx-8" />
+        <hr class="mx-6 mt-4 mb-6 border-b sm:mx-8" />
         <div
           class="mx-6 mb-4 flex flex-col sm:mx-8 sm:mb-6 sm:flex-row sm:items-center"
         >
@@ -2449,21 +2745,23 @@
           </div>
           <div class="hidden flex-auto sm:flex"></div>
           <div class="mt-4 flex items-center sm:mt-0">
-            <button class="-ml-2 mr-1 px-3 sm:ml-0" mat-button>4 shares</button>
+            <button
+              class="mr-1 -ml-2 px-3 sm:ml-0"
+              mat-button
+            >
+              4 shares
+            </button>
             <button
               class="px-3 sm:-mr-4"
               mat-button
-              (click)="
-                                expandableCard02.expanded =
-                                    !expandableCard02.expanded
-                            "
+              (click)="expandableCard02.expanded = !expandableCard02.expanded"
             >
               <span class="mr-1">5 Comments</span>
               <mat-icon
-                class="rotate-0 transition-transform duration-150 ease-in-out icon-size-5"
+                class="size-5 rotate-0 transition-transform duration-150 ease-in-out"
                 [ngClass]="{
-                                    'rotate-180': expandableCard02.expanded,
-                                }"
+                  'rotate-180': expandableCard02.expanded,
+                }"
                 [svgIcon]="'heroicons_mini:chevron-down'"
               ></mat-icon>
             </button>
@@ -2472,14 +2770,17 @@
 
         <ng-container fuseCardExpansion>
           <hr class="m-0 border-b" />
-          <div class="mx-4 mb-3 mt-6 flex flex-col sm:mx-8">
+          <div class="mx-4 mt-6 mb-3 flex flex-col sm:mx-8">
             <div class="flex items-start">
               <img
                 class="mr-5 h-12 w-12 rounded-full"
                 src="images/avatars/brian-hughes.jpg"
                 alt="Card cover image"
               />
-              <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+              <mat-form-field
+                class="w-full"
+                [subscriptSizing]="'dynamic'"
+              >
                 <textarea
                   matInput
                   [rows]="3"
@@ -2488,7 +2789,7 @@
                 ></textarea>
               </mat-form-field>
             </div>
-            <div class="-mr-3 ml-auto mt-3 flex items-center">
+            <div class="mt-3 -mr-3 ml-auto flex items-center">
               <button mat-icon-button>
                 <mat-icon [svgIcon]="'heroicons_solid:sparkles'"></mat-icon>
               </button>
@@ -2529,7 +2830,7 @@
                   </div>
                 </div>
               </div>
-              <div class="ml-12 mt-8 flex items-start">
+              <div class="mt-8 ml-12 flex items-start">
                 <img
                   class="mr-4 h-8 w-8 rounded-full"
                   src="images/avatars/female-01.jpg"
@@ -2551,7 +2852,7 @@
                   </div>
                 </div>
               </div>
-              <div class="ml-12 mt-8 flex items-start">
+              <div class="mt-8 ml-12 flex items-start">
                 <img
                   class="mr-4 h-8 w-8 rounded-full"
                   src="images/avatars/female-08.jpg"
@@ -2599,7 +2900,7 @@
                   </div>
                 </div>
               </div>
-              <div class="ml-12 mt-8 flex items-start">
+              <div class="mt-8 ml-12 flex items-start">
                 <img
                   class="mr-4 h-8 w-8 rounded-full"
                   src="images/avatars/female-01.jpg"
@@ -2621,7 +2922,7 @@
                   </div>
                 </div>
               </div>
-              <div class="ml-12 mt-8 flex items-start">
+              <div class="mt-8 ml-12 flex items-start">
                 <img
                   class="mr-4 h-8 w-8 rounded-full"
                   src="images/avatars/male-11.jpg"
@@ -2645,7 +2946,7 @@
                   </div>
                 </div>
               </div>
-              <div class="ml-12 mt-8 flex items-start">
+              <div class="mt-8 ml-12 flex items-start">
                 <img
                   class="mr-4 h-8 w-8 rounded-full"
                   src="images/avatars/female-01.jpg"
@@ -2668,7 +2969,7 @@
                   </div>
                 </div>
               </div>
-              <div class="ml-12 mt-8 flex items-start">
+              <div class="mt-8 ml-12 flex items-start">
                 <img
                   class="mr-4 h-8 w-8 rounded-full"
                   src="images/avatars/male-11.jpg"
@@ -2718,14 +3019,14 @@
 
       <!-- Card #60 -->
       <fuse-card class="filter-post flex w-full max-w-140 flex-col">
-        <div class="mx-6 mb-4 mt-6 flex items-center sm:mx-8">
+        <div class="mx-6 mt-6 mb-4 flex items-center sm:mx-8">
           <img
             class="mr-4 h-10 w-10 rounded-full"
             src="images/avatars/female-14.jpg"
             alt="Card cover image"
           />
           <div class="flex flex-col">
-            <span class="font-semibold leading-none">Marleah Eagleston</span>
+            <span class="leading-none font-semibold">Marleah Eagleston</span>
             <span class="text-muted mt-1 text-sm leading-none"
               >29 minutes ago</span
             >
@@ -2743,7 +3044,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:arrow-up-tray'"
                 ></mat-icon>
                 <span>Save post</span>
@@ -2752,7 +3053,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:eye-slash'"
                 ></mat-icon>
                 <span>Hide post</span>
@@ -2761,7 +3062,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:clock'"
                 ></mat-icon>
                 <span>Snooze for 30 days</span>
@@ -2770,7 +3071,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:minus-circle'"
                 ></mat-icon>
                 <span>Hide all</span>
@@ -2780,10 +3081,8 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
-                  [svgIcon]="
-                                        'heroicons_solid:exclamation-triangle'
-                                    "
+                  class="mr-3 size-5"
+                  [svgIcon]="'heroicons_solid:exclamation-triangle'"
                 ></mat-icon>
                 <span>Report post</span>
               </span>
@@ -2791,7 +3090,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:bell'"
                 ></mat-icon>
                 <span>Turn on notifications for this post</span>
@@ -2799,7 +3098,7 @@
             </button>
           </mat-menu>
         </div>
-        <div class="mx-6 mb-6 mt-2 sm:mx-8">
+        <div class="mx-6 mt-2 mb-6 sm:mx-8">
           Look at that sky! I so want to be there.. Can we arrange a trip? Is
           that a possibility? Please!!!
         </div>
@@ -2820,27 +3119,34 @@
           </div>
         </div>
         <div class="mx-3 flex items-center sm:mx-5">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
               class="text-red-500"
               [svgIcon]="'heroicons_solid:heart'"
             ></mat-icon>
             <span class="ml-2">Unlike</span>
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
-              [svgIcon]="
-                                'heroicons_solid:chat-bubble-left-ellipsis'
-                            "
+              [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
             ></mat-icon>
             <span class="ml-2">Comment</span>
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:share'"></mat-icon>
             Share
           </button>
         </div>
-        <hr class="mx-6 mb-6 mt-4 border-b sm:mx-8" />
+        <hr class="mx-6 mt-4 mb-6 border-b sm:mx-8" />
         <div
           class="mx-6 mb-4 flex flex-col sm:mx-8 sm:mb-6 sm:flex-row sm:items-center"
         >
@@ -2869,22 +3175,32 @@
           </div>
           <div class="hidden flex-auto sm:flex"></div>
           <div class="mt-4 flex items-center sm:mt-0">
-            <button class="-ml-2 mr-1 px-3 sm:ml-0" mat-button>4 shares</button>
-            <button class="px-3 sm:-mr-3" mat-button>No comments</button>
+            <button
+              class="mr-1 -ml-2 px-3 sm:ml-0"
+              mat-button
+            >
+              4 shares
+            </button>
+            <button
+              class="px-3 sm:-mr-3"
+              mat-button
+            >
+              No comments
+            </button>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #61 -->
       <fuse-card class="filter-post flex w-full max-w-140 flex-col">
-        <div class="mx-6 mb-4 mt-6 flex items-center sm:mx-8">
+        <div class="mx-6 mt-6 mb-4 flex items-center sm:mx-8">
           <img
             class="mr-4 h-10 w-10 rounded-full"
             src="images/avatars/female-14.jpg"
             alt="Card cover image"
           />
           <div class="flex flex-col">
-            <span class="font-semibold leading-none">Marleah Eagleston</span>
+            <span class="leading-none font-semibold">Marleah Eagleston</span>
             <span class="text-muted mt-1 text-sm leading-none"
               >29 minutes ago</span
             >
@@ -2902,7 +3218,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:arrow-up-tray'"
                 ></mat-icon>
                 <span>Save post</span>
@@ -2911,7 +3227,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:eye-slash'"
                 ></mat-icon>
                 <span>Hide post</span>
@@ -2920,7 +3236,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:clock'"
                 ></mat-icon>
                 <span>Snooze for 30 days</span>
@@ -2929,7 +3245,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:minus-circle'"
                 ></mat-icon>
                 <span>Hide all</span>
@@ -2939,10 +3255,8 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
-                  [svgIcon]="
-                                        'heroicons_solid:exclamation-triangle'
-                                    "
+                  class="mr-3 size-5"
+                  [svgIcon]="'heroicons_solid:exclamation-triangle'"
                 ></mat-icon>
                 <span>Report post</span>
               </span>
@@ -2950,7 +3264,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:bell'"
                 ></mat-icon>
                 <span>Turn on notifications for this post</span>
@@ -2958,7 +3272,7 @@
             </button>
           </mat-menu>
         </div>
-        <div class="mx-6 mb-6 mt-2 sm:mx-8">
+        <div class="mx-6 mt-2 mb-6 sm:mx-8">
           Look at that sky! I so want to be there.. Can we arrange a trip? Is
           that a possibility? Please!!!
         </div>
@@ -2988,27 +3302,34 @@
           </div>
         </div>
         <div class="mx-3 flex items-center sm:mx-5">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
               class="text-red-500"
               [svgIcon]="'heroicons_solid:heart'"
             ></mat-icon>
             Unlike
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
-              [svgIcon]="
-                                'heroicons_solid:chat-bubble-left-ellipsis'
-                            "
+              [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
             ></mat-icon>
             Comment
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:share'"></mat-icon>
             Share
           </button>
         </div>
-        <hr class="mx-6 mb-6 mt-4 border-b sm:mx-8" />
+        <hr class="mx-6 mt-4 mb-6 border-b sm:mx-8" />
         <div
           class="mx-6 mb-4 flex flex-col sm:mx-8 sm:mb-6 sm:flex-row sm:items-center"
         >
@@ -3037,22 +3358,32 @@
           </div>
           <div class="hidden flex-auto sm:flex"></div>
           <div class="mt-4 flex items-center sm:mt-0">
-            <button class="-ml-2 mr-1 px-3 sm:ml-0" mat-button>4 shares</button>
-            <button class="px-3 sm:-mr-3" mat-button>No comments</button>
+            <button
+              class="mr-1 -ml-2 px-3 sm:ml-0"
+              mat-button
+            >
+              4 shares
+            </button>
+            <button
+              class="px-3 sm:-mr-3"
+              mat-button
+            >
+              No comments
+            </button>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #62 -->
       <fuse-card class="filter-post flex w-full max-w-140 flex-col">
-        <div class="mx-6 mb-4 mt-6 flex items-center sm:mx-8">
+        <div class="mx-6 mt-6 mb-4 flex items-center sm:mx-8">
           <img
             class="mr-4 h-10 w-10 rounded-full"
             src="images/avatars/female-14.jpg"
             alt="Card cover image"
           />
           <div class="flex flex-col">
-            <span class="font-semibold leading-none">Marleah Eagleston</span>
+            <span class="leading-none font-semibold">Marleah Eagleston</span>
             <span class="text-muted mt-1 text-sm leading-none"
               >29 minutes ago</span
             >
@@ -3070,7 +3401,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:arrow-up-tray'"
                 ></mat-icon>
                 <span>Save post</span>
@@ -3079,7 +3410,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:eye-slash'"
                 ></mat-icon>
                 <span>Hide post</span>
@@ -3088,7 +3419,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:clock'"
                 ></mat-icon>
                 <span>Snooze for 30 days</span>
@@ -3097,7 +3428,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:minus-circle'"
                 ></mat-icon>
                 <span>Hide all</span>
@@ -3107,10 +3438,8 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
-                  [svgIcon]="
-                                        'heroicons_solid:exclamation-triangle'
-                                    "
+                  class="mr-3 size-5"
+                  [svgIcon]="'heroicons_solid:exclamation-triangle'"
                 ></mat-icon>
                 <span>Report post</span>
               </span>
@@ -3118,7 +3447,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:bell'"
                 ></mat-icon>
                 <span>Turn on notifications for this post</span>
@@ -3126,7 +3455,7 @@
             </button>
           </mat-menu>
         </div>
-        <div class="mx-6 mb-6 mt-2 sm:mx-8">
+        <div class="mx-6 mt-2 mb-6 sm:mx-8">
           Look at that sky! I so want to be there.. Can we arrange a trip? Is
           that a possibility? Please!!!
         </div>
@@ -3165,27 +3494,34 @@
           </div>
         </div>
         <div class="mx-3 flex items-center sm:mx-5">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
               class="text-red-500"
               [svgIcon]="'heroicons_solid:heart'"
             ></mat-icon>
             Unlike
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
-              [svgIcon]="
-                                'heroicons_solid:chat-bubble-left-ellipsis'
-                            "
+              [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
             ></mat-icon>
             Comment
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:share'"></mat-icon>
             Share
           </button>
         </div>
-        <hr class="mx-6 mb-6 mt-4 border-b sm:mx-8" />
+        <hr class="mx-6 mt-4 mb-6 border-b sm:mx-8" />
         <div
           class="mx-6 mb-4 flex flex-col sm:mx-8 sm:mb-6 sm:flex-row sm:items-center"
         >
@@ -3214,22 +3550,32 @@
           </div>
           <div class="hidden flex-auto sm:flex"></div>
           <div class="mt-4 flex items-center sm:mt-0">
-            <button class="-ml-2 mr-1 px-3 sm:ml-0" mat-button>4 shares</button>
-            <button class="px-3 sm:-mr-3" mat-button>No comments</button>
+            <button
+              class="mr-1 -ml-2 px-3 sm:ml-0"
+              mat-button
+            >
+              4 shares
+            </button>
+            <button
+              class="px-3 sm:-mr-3"
+              mat-button
+            >
+              No comments
+            </button>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #63 -->
       <fuse-card class="filter-post flex w-full max-w-140 flex-col">
-        <div class="mx-6 mb-4 mt-6 flex items-center sm:mx-8">
+        <div class="mx-6 mt-6 mb-4 flex items-center sm:mx-8">
           <img
             class="mr-4 h-10 w-10 rounded-full"
             src="images/avatars/female-14.jpg"
             alt="Card cover image"
           />
           <div class="flex flex-col">
-            <span class="font-semibold leading-none">Marleah Eagleston</span>
+            <span class="leading-none font-semibold">Marleah Eagleston</span>
             <span class="text-muted mt-1 text-sm leading-none"
               >29 minutes ago</span
             >
@@ -3247,7 +3593,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:arrow-up-tray'"
                 ></mat-icon>
                 <span>Save post</span>
@@ -3256,7 +3602,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:eye-slash'"
                 ></mat-icon>
                 <span>Hide post</span>
@@ -3265,7 +3611,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:clock'"
                 ></mat-icon>
                 <span>Snooze for 30 days</span>
@@ -3274,7 +3620,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:minus-circle'"
                 ></mat-icon>
                 <span>Hide all</span>
@@ -3284,10 +3630,8 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
-                  [svgIcon]="
-                                        'heroicons_solid:exclamation-triangle'
-                                    "
+                  class="mr-3 size-5"
+                  [svgIcon]="'heroicons_solid:exclamation-triangle'"
                 ></mat-icon>
                 <span>Report post</span>
               </span>
@@ -3295,7 +3639,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:bell'"
                 ></mat-icon>
                 <span>Turn on notifications for this post</span>
@@ -3303,7 +3647,7 @@
             </button>
           </mat-menu>
         </div>
-        <div class="mx-6 mb-6 mt-2 sm:mx-8">
+        <div class="mx-6 mt-2 mb-6 sm:mx-8">
           Look at that sky! I so want to be there.. Can we arrange a trip? Is
           that a possibility? Please!!!
         </div>
@@ -3349,27 +3693,34 @@
           </div>
         </div>
         <div class="mx-3 flex items-center sm:mx-5">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
               class="text-red-500"
               [svgIcon]="'heroicons_solid:heart'"
             ></mat-icon>
             <span class="ml-2">Unlike</span>
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
-              [svgIcon]="
-                                'heroicons_solid:chat-bubble-left-ellipsis'
-                            "
+              [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
             ></mat-icon>
             <span class="ml-2">Comment</span>
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:share'"></mat-icon>
             Share
           </button>
         </div>
-        <hr class="mx-6 mb-6 mt-4 border-b sm:mx-8" />
+        <hr class="mx-6 mt-4 mb-6 border-b sm:mx-8" />
         <div
           class="mx-6 mb-4 flex flex-col sm:mx-8 sm:mb-6 sm:flex-row sm:items-center"
         >
@@ -3398,22 +3749,32 @@
           </div>
           <div class="hidden flex-auto sm:flex"></div>
           <div class="mt-4 flex items-center sm:mt-0">
-            <button class="-ml-2 mr-1 px-3 sm:ml-0" mat-button>4 shares</button>
-            <button class="px-3 sm:-mr-3" mat-button>No comments</button>
+            <button
+              class="mr-1 -ml-2 px-3 sm:ml-0"
+              mat-button
+            >
+              4 shares
+            </button>
+            <button
+              class="px-3 sm:-mr-3"
+              mat-button
+            >
+              No comments
+            </button>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #64 -->
       <fuse-card class="filter-post flex w-full max-w-140 flex-col">
-        <div class="mx-6 mb-4 mt-6 flex items-center sm:mx-8">
+        <div class="mx-6 mt-6 mb-4 flex items-center sm:mx-8">
           <img
             class="mr-4 h-10 w-10 rounded-full"
             src="images/avatars/female-14.jpg"
             alt="Card cover image"
           />
           <div class="flex flex-col">
-            <span class="font-semibold leading-none">Marleah Eagleston</span>
+            <span class="leading-none font-semibold">Marleah Eagleston</span>
             <span class="text-muted mt-1 text-sm leading-none"
               >29 minutes ago</span
             >
@@ -3431,7 +3792,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:arrow-up-tray'"
                 ></mat-icon>
                 <span>Save post</span>
@@ -3440,7 +3801,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:eye-slash'"
                 ></mat-icon>
                 <span>Hide post</span>
@@ -3449,7 +3810,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:clock'"
                 ></mat-icon>
                 <span>Snooze for 30 days</span>
@@ -3458,7 +3819,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:minus-circle'"
                 ></mat-icon>
                 <span>Hide all</span>
@@ -3468,10 +3829,8 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
-                  [svgIcon]="
-                                        'heroicons_solid:exclamation-triangle'
-                                    "
+                  class="mr-3 size-5"
+                  [svgIcon]="'heroicons_solid:exclamation-triangle'"
                 ></mat-icon>
                 <span>Report post</span>
               </span>
@@ -3479,7 +3838,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:bell'"
                 ></mat-icon>
                 <span>Turn on notifications for this post</span>
@@ -3487,7 +3846,7 @@
             </button>
           </mat-menu>
         </div>
-        <div class="mx-6 mb-6 mt-2 sm:mx-8">
+        <div class="mx-6 mt-2 mb-6 sm:mx-8">
           Look at that sky! I so want to be there.. Can we arrange a trip? Is
           that a possibility? Please!!!
         </div>
@@ -3529,7 +3888,7 @@
               >
                 <span class="z-10 text-4xl text-white">+12</span>
                 <span
-                  class="absolute h-full w-full bg-primary opacity-70"
+                  class="bg-primary absolute h-full w-full opacity-70"
                 ></span>
               </div>
               <img
@@ -3541,27 +3900,34 @@
           </div>
         </div>
         <div class="mx-3 flex items-center sm:mx-5">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
               class="text-red-500"
               [svgIcon]="'heroicons_solid:heart'"
             ></mat-icon>
             Unlike
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
-              [svgIcon]="
-                                'heroicons_solid:chat-bubble-left-ellipsis'
-                            "
+              [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
             ></mat-icon>
             Comment
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:share'"></mat-icon>
             Share
           </button>
         </div>
-        <hr class="mx-6 mb-6 mt-4 border-b sm:mx-8" />
+        <hr class="mx-6 mt-4 mb-6 border-b sm:mx-8" />
         <div
           class="mx-6 mb-4 flex flex-col sm:mx-8 sm:mb-6 sm:flex-row sm:items-center"
         >
@@ -3590,22 +3956,32 @@
           </div>
           <div class="hidden flex-auto sm:flex"></div>
           <div class="mt-4 flex items-center sm:mt-0">
-            <button class="-ml-2 mr-1 px-3 sm:ml-0" mat-button>4 shares</button>
-            <button class="px-3 sm:-mr-3" mat-button>No comments</button>
+            <button
+              class="mr-1 -ml-2 px-3 sm:ml-0"
+              mat-button
+            >
+              4 shares
+            </button>
+            <button
+              class="px-3 sm:-mr-3"
+              mat-button
+            >
+              No comments
+            </button>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #65 -->
       <fuse-card class="filter-post flex w-full max-w-140 flex-col">
-        <div class="mx-6 mb-1 mt-6 flex items-center sm:mx-8">
+        <div class="mx-6 mt-6 mb-1 flex items-center sm:mx-8">
           <img
             class="mr-4 h-10 w-10 rounded-full"
             src="images/avatars/female-01.jpg"
             alt="Card cover image"
           />
           <div class="flex flex-col">
-            <span class="font-semibold leading-none">Caroline Lundu</span>
+            <span class="leading-none font-semibold">Caroline Lundu</span>
             <span class="text-muted mt-1 text-sm leading-none"
               >29 minutes ago</span
             >
@@ -3623,7 +3999,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:arrow-up-tray'"
                 ></mat-icon>
                 <span>Save post</span>
@@ -3632,7 +4008,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:eye-slash'"
                 ></mat-icon>
                 <span>Hide post</span>
@@ -3641,7 +4017,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:clock'"
                 ></mat-icon>
                 <span>Snooze for 30 days</span>
@@ -3650,7 +4026,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:minus-circle'"
                 ></mat-icon>
                 <span>Hide all</span>
@@ -3660,10 +4036,8 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
-                  [svgIcon]="
-                                        'heroicons_solid:exclamation-triangle'
-                                    "
+                  class="mr-3 size-5"
+                  [svgIcon]="'heroicons_solid:exclamation-triangle'"
                 ></mat-icon>
                 <span>Report post</span>
               </span>
@@ -3671,7 +4045,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:bell'"
                 ></mat-icon>
                 <span>Turn on notifications for this post</span>
@@ -3695,27 +4069,34 @@
           </p>
         </div>
         <div class="mx-3 flex items-center sm:mx-5">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
               class="text-red-500"
               [svgIcon]="'heroicons_solid:heart'"
             ></mat-icon>
             Unlike
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
-              [svgIcon]="
-                                'heroicons_solid:chat-bubble-left-ellipsis'
-                            "
+              [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
             ></mat-icon>
             Comment
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:share'"></mat-icon>
             Share
           </button>
         </div>
-        <hr class="mx-6 mb-6 mt-4 border-b sm:mx-8" />
+        <hr class="mx-6 mt-4 mb-6 border-b sm:mx-8" />
         <div
           class="mx-6 mb-4 flex flex-col sm:mx-8 sm:mb-6 sm:flex-row sm:items-center"
         >
@@ -3744,22 +4125,32 @@
           </div>
           <div class="hidden flex-auto sm:flex"></div>
           <div class="mt-4 flex items-center sm:mt-0">
-            <button class="-ml-2 mr-1 px-3 sm:ml-0" mat-button>4 shares</button>
-            <button class="px-3 sm:-mr-3" mat-button>No comments</button>
+            <button
+              class="mr-1 -ml-2 px-3 sm:ml-0"
+              mat-button
+            >
+              4 shares
+            </button>
+            <button
+              class="px-3 sm:-mr-3"
+              mat-button
+            >
+              No comments
+            </button>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #66 -->
       <fuse-card class="filter-post flex w-full max-w-140 flex-col">
-        <div class="mx-6 mb-4 mt-6 flex items-center sm:mx-8">
+        <div class="mx-6 mt-6 mb-4 flex items-center sm:mx-8">
           <img
             class="mr-4 h-10 w-10 rounded-full"
             src="images/avatars/female-01.jpg"
             alt="Card cover image"
           />
           <div class="flex flex-col">
-            <span class="font-semibold leading-none">Caroline Lundu</span>
+            <span class="leading-none font-semibold">Caroline Lundu</span>
             <span class="text-muted mt-1 text-sm leading-none"
               >29 minutes ago</span
             >
@@ -3777,7 +4168,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:arrow-up-tray'"
                 ></mat-icon>
                 <span>Save post</span>
@@ -3786,7 +4177,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:eye-slash'"
                 ></mat-icon>
                 <span>Hide post</span>
@@ -3795,7 +4186,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:clock'"
                 ></mat-icon>
                 <span>Snooze for 30 days</span>
@@ -3804,7 +4195,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:minus-circle'"
                 ></mat-icon>
                 <span>Hide all</span>
@@ -3814,10 +4205,8 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
-                  [svgIcon]="
-                                        'heroicons_solid:exclamation-triangle'
-                                    "
+                  class="mr-3 size-5"
+                  [svgIcon]="'heroicons_solid:exclamation-triangle'"
                 ></mat-icon>
                 <span>Report post</span>
               </span>
@@ -3825,7 +4214,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:bell'"
                 ></mat-icon>
                 <span>Turn on notifications for this post</span>
@@ -3833,7 +4222,7 @@
             </button>
           </mat-menu>
         </div>
-        <div class="mx-6 mb-6 mt-2 sm:mx-8">
+        <div class="mx-6 mt-2 mb-6 sm:mx-8">
           Hey!! I never saw this episode, it was amazing.. I think I’m going to
           buy myself a set and try his technique at home!
         </div>
@@ -3860,27 +4249,34 @@
           </div>
         </div>
         <div class="mx-3 flex items-center sm:mx-5">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
               class="text-red-500"
               [svgIcon]="'heroicons_solid:heart'"
             ></mat-icon>
             Unlike
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
-              [svgIcon]="
-                                'heroicons_solid:chat-bubble-left-ellipsis'
-                            "
+              [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
             ></mat-icon>
             Comment
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:share'"></mat-icon>
             Share
           </button>
         </div>
-        <hr class="mx-6 mb-6 mt-4 border-b sm:mx-8" />
+        <hr class="mx-6 mt-4 mb-6 border-b sm:mx-8" />
         <div
           class="mx-6 mb-4 flex flex-col sm:mx-8 sm:mb-6 sm:flex-row sm:items-center"
         >
@@ -3909,22 +4305,32 @@
           </div>
           <div class="hidden flex-auto sm:flex"></div>
           <div class="mt-4 flex items-center sm:mt-0">
-            <button class="-ml-2 mr-1 px-3 sm:ml-0" mat-button>4 shares</button>
-            <button class="px-3 sm:-mr-3" mat-button>No comments</button>
+            <button
+              class="mr-1 -ml-2 px-3 sm:ml-0"
+              mat-button
+            >
+              4 shares
+            </button>
+            <button
+              class="px-3 sm:-mr-3"
+              mat-button
+            >
+              No comments
+            </button>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #67 -->
       <fuse-card class="filter-post flex w-full max-w-140 flex-col">
-        <div class="mx-6 mb-4 mt-6 flex items-center sm:mx-8">
+        <div class="mx-6 mt-6 mb-4 flex items-center sm:mx-8">
           <img
             class="mr-4 h-10 w-10 rounded-full"
             src="images/avatars/female-01.jpg"
             alt="Card cover image"
           />
           <div class="flex flex-col">
-            <span class="font-medium leading-none">Caroline Lundu</span>
+            <span class="leading-none font-medium">Caroline Lundu</span>
             <span class="text-muted mt-1 text-sm leading-none"
               >29 minutes ago</span
             >
@@ -3942,7 +4348,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:arrow-up-tray'"
                 ></mat-icon>
                 <span>Save post</span>
@@ -3951,7 +4357,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:eye-slash'"
                 ></mat-icon>
                 <span>Hide post</span>
@@ -3960,7 +4366,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:clock'"
                 ></mat-icon>
                 <span>Snooze for 30 days</span>
@@ -3969,7 +4375,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:minus-circle'"
                 ></mat-icon>
                 <span>Hide all</span>
@@ -3979,10 +4385,8 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
-                  [svgIcon]="
-                                        'heroicons_solid:exclamation-triangle'
-                                    "
+                  class="mr-3 size-5"
+                  [svgIcon]="'heroicons_solid:exclamation-triangle'"
                 ></mat-icon>
                 <span>Report post</span>
               </span>
@@ -3990,7 +4394,7 @@
             <button mat-menu-item>
               <span class="flex items-center">
                 <mat-icon
-                  class="mr-3 icon-size-5"
+                  class="mr-3 size-5"
                   [svgIcon]="'heroicons_solid:bell'"
                 ></mat-icon>
                 <span>Turn on notifications for this post</span>
@@ -3998,7 +4402,7 @@
             </button>
           </mat-menu>
         </div>
-        <div class="mx-6 mb-6 mt-2 sm:mx-8">
+        <div class="mx-6 mt-2 mb-6 sm:mx-8">
           Hey!! I never saw this one, it was amazing.. I think I’m going to buy
           myself a set and try his technique at home!
         </div>
@@ -4025,27 +4429,34 @@
           </div>
         </div>
         <div class="mx-3 flex items-center sm:mx-5">
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
               class="text-red-500"
               [svgIcon]="'heroicons_solid:heart'"
             ></mat-icon>
             Unlike
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon
-              [svgIcon]="
-                                'heroicons_solid:chat-bubble-left-ellipsis'
-                            "
+              [svgIcon]="'heroicons_solid:chat-bubble-left-ellipsis'"
             ></mat-icon>
             Comment
           </button>
-          <button class="mr-1 px-3" mat-button>
+          <button
+            class="mr-1 px-3"
+            mat-button
+          >
             <mat-icon [svgIcon]="'heroicons_solid:share'"></mat-icon>
             Share
           </button>
         </div>
-        <hr class="mx-6 mb-6 mt-4 border-b sm:mx-8" />
+        <hr class="mx-6 mt-4 mb-6 border-b sm:mx-8" />
         <div
           class="mx-6 mb-4 flex flex-col sm:mx-8 sm:mb-6 sm:flex-row sm:items-center"
         >
@@ -4074,24 +4485,37 @@
           </div>
           <div class="hidden flex-auto sm:flex"></div>
           <div class="mt-4 flex items-center sm:mt-0">
-            <button class="-ml-2 mr-1 px-3 sm:ml-0" mat-button>4 shares</button>
-            <button class="px-3 sm:-mr-3" mat-button>No comments</button>
+            <button
+              class="mr-1 -ml-2 px-3 sm:ml-0"
+              mat-button
+            >
+              4 shares
+            </button>
+            <button
+              class="px-3 sm:-mr-3"
+              mat-button
+            >
+              No comments
+            </button>
           </div>
         </div>
       </fuse-card>
 
       <!-- Card #68 -->
       <fuse-card class="filter-post flex w-full max-w-140 flex-col">
-        <div class="mx-4 mb-3 mt-6 flex flex-col sm:mx-8">
+        <div class="mx-4 mt-6 mb-3 flex flex-col sm:mx-8">
           <div class="flex items-start">
             <img
               class="mr-5 h-12 w-12 rounded-full"
               src="images/avatars/brian-hughes.jpg"
               alt="Card cover image"
             />
-            <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+            <mat-form-field
+              class="w-full"
+              [subscriptSizing]="'dynamic'"
+            >
               <textarea
-                class="my-2 leading-normal"
+                class="leading-normal my-2"
                 matInput
                 [placeholder]="'Write a comment...'"
                 cdkTextareaAutosize
@@ -4099,7 +4523,7 @@
               ></textarea>
             </mat-form-field>
           </div>
-          <div class="-mr-3 ml-auto mt-3 flex items-center">
+          <div class="mt-3 -mr-3 ml-auto flex items-center">
             <button mat-icon-button>
               <mat-icon [svgIcon]="'heroicons_solid:sparkles'"></mat-icon>
             </button>
@@ -4136,7 +4560,7 @@
                 </div>
               </div>
             </div>
-            <div class="ml-12 mt-8 flex items-start">
+            <div class="mt-8 ml-12 flex items-start">
               <img
                 class="mr-4 h-8 w-8 rounded-full"
                 src="images/avatars/female-01.jpg"
@@ -4154,7 +4578,7 @@
                 </div>
               </div>
             </div>
-            <div class="ml-12 mt-8 flex items-start">
+            <div class="mt-8 ml-12 flex items-start">
               <img
                 class="mr-4 h-8 w-8 rounded-full"
                 src="images/avatars/female-08.jpg"
@@ -4194,7 +4618,7 @@
                 </div>
               </div>
             </div>
-            <div class="ml-12 mt-8 flex items-start">
+            <div class="mt-8 ml-12 flex items-start">
               <img
                 class="mr-4 h-8 w-8 rounded-full"
                 src="images/avatars/female-01.jpg"
@@ -4212,7 +4636,7 @@
                 </div>
               </div>
             </div>
-            <div class="ml-12 mt-8 flex items-start">
+            <div class="mt-8 ml-12 flex items-start">
               <img
                 class="mr-4 h-8 w-8 rounded-full"
                 src="images/avatars/male-11.jpg"
@@ -4232,7 +4656,7 @@
                 </div>
               </div>
             </div>
-            <div class="ml-12 mt-8 flex items-start">
+            <div class="mt-8 ml-12 flex items-start">
               <img
                 class="mr-4 h-8 w-8 rounded-full"
                 src="images/avatars/female-01.jpg"
@@ -4251,7 +4675,7 @@
                 </div>
               </div>
             </div>
-            <div class="ml-12 mt-8 flex items-start">
+            <div class="mt-8 ml-12 flex items-start">
               <img
                 class="mr-4 h-8 w-8 rounded-full"
                 src="images/avatars/male-11.jpg"

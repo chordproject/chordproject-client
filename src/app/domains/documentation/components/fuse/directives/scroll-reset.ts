@@ -11,7 +11,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -21,14 +21,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Fuse Components</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Directives</span>
@@ -37,7 +37,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               ScrollReset
             </h2>
@@ -45,7 +45,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           <strong>fuseScrollReset</strong> is a helper directive to reset the
           given element's scroll position to the top on route changes.
@@ -59,7 +59,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         <p><strong>Exported as: </strong><code>fuseScrollReset</code></p>
 
         <h2>Module</h2>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseScrollResetModule } from '@fuse/directives/scroll-reset';
                 </textarea
         >
@@ -69,14 +72,21 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           Here are some of the basic usages of the
           <code>fuseScrollReset</code>:
         </p>
-        <textarea fuse-highlight lang="html">
+        <textarea
+          fuse-highlight
+          lang="html"
+        >
                     <mat-drawer-content fuseScrollReset>
                     <router-outlet></router-outlet>
                     </mat-drawer-content>
                 </textarea
         >
 
-        <textarea class="mt-8" fuse-highlight lang="html">
+        <textarea
+          class="mt-8"
+          fuse-highlight
+          lang="html"
+        >
                     <div class="mail">
                     <div
                     class="threads"

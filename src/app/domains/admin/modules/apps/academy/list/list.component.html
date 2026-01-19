@@ -19,7 +19,7 @@
     <div class="relative z-10 flex flex-col items-center">
       <h2 class="text-xl font-semibold">FUSE ACADEMY</h2>
       <div
-        class="mt-1 text-center text-4xl font-extrabold leading-tight tracking-tight sm:text-7xl"
+        class="leading-tight sm:text-7xl mt-1 text-center text-4xl font-extrabold tracking-tight"
       >
         What do you want to learn today?
       </div>
@@ -39,7 +39,10 @@
       <div
         class="flex w-full max-w-xs flex-col items-center justify-between sm:max-w-none sm:flex-row"
       >
-        <mat-form-field class="w-full sm:w-36" [subscriptSizing]="'dynamic'">
+        <mat-form-field
+          class="w-full sm:w-36"
+          [subscriptSizing]="'dynamic'"
+        >
           <mat-select
             [value]="'all'"
             (selectionChange)="filterByCategory($event)"
@@ -53,12 +56,12 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field
-          class="mt-4 w-full sm:ml-4 sm:mt-0 sm:w-72"
+          class="mt-4 w-full sm:mt-0 sm:ml-4 sm:w-72"
           [subscriptSizing]="'dynamic'"
         >
           <mat-icon
             matPrefix
-            class="icon-size-5"
+            class="size-5"
             [svgIcon]="'heroicons_solid:magnifying-glass'"
           ></mat-icon>
           <input
@@ -69,7 +72,7 @@
           />
         </mat-form-field>
         <mat-slide-toggle
-          class="mt-8 sm:ml-auto sm:mt-0"
+          class="mt-8 sm:mt-0 sm:ml-auto"
           (change)="toggleCompleted($event)"
         >
           Hide completed
@@ -112,7 +115,7 @@
                   <div class="flex items-center">
                     @if (course.progress.completed > 0) {
                       <mat-icon
-                        class="text-green-600 icon-size-5"
+                        class="size-5 text-green-600"
                         [svgIcon]="'heroicons_solid:check-badge'"
                         [matTooltip]="'You completed this course at least once'"
                       ></mat-icon>
@@ -130,7 +133,7 @@
                 <!-- Course time -->
                 <div class="text-muted flex items-center leading-5">
                   <mat-icon
-                    class="text-muted icon-size-5"
+                    class="text-muted size-5"
                     [svgIcon]="'heroicons_solid:clock'"
                   ></mat-icon>
                   <div class="ml-1.5">{{ course.duration }} minutes</div>
@@ -138,7 +141,7 @@
                 <!-- Course completion -->
                 <div class="text-muted mt-2 flex items-center leading-5">
                   <mat-icon
-                    class="text-muted icon-size-5"
+                    class="text-muted size-5"
                     [svgIcon]="'heroicons_solid:academic-cap'"
                   ></mat-icon>
                   @if (course.progress.completed === 0) {
@@ -198,7 +201,10 @@
                 <div
                   class="bg-gray-50 px-6 py-4 text-right dark:bg-transparent"
                 >
-                  <a mat-stroked-button [routerLink]="[course.id]">
+                  <a
+                    mat-stroked-button
+                    [routerLink]="[course.id]"
+                  >
                     <span class="inline-flex items-center">
                       <!-- Not started -->
                       @if (course.progress.currentStep === 0) {
@@ -218,7 +224,7 @@
                       }
 
                       <mat-icon
-                        class="ml-1.5 icon-size-5"
+                        class="ml-1.5 size-5"
                         [svgIcon]="'heroicons_solid:arrow-small-right'"
                       ></mat-icon>
                     </span>
@@ -233,7 +239,7 @@
           class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent"
         >
           <mat-icon
-            class="icon-size-24"
+            class="size-24"
             [svgIcon]="'heroicons_outline:document-search'"
           ></mat-icon>
           <div class="text-muted mt-6 text-2xl font-semibold tracking-tight">

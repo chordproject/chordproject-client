@@ -7,7 +7,7 @@
       [opened]="drawerOpened"
       #drawer
     >
-      <div class="p-6 lg:py-8 lg:pl-4 lg:pr-0">
+      <div class="p-6 lg:py-8 lg:pr-0 lg:pl-4">
         <!-- Filters -->
         <div class="space-y-2">
           <!-- Notes -->
@@ -29,7 +29,7 @@
               class="text-current"
               [svgIcon]="'heroicons_outline:pencil-square'"
             ></mat-icon>
-            <div class="text-mat-on-background ml-3 select-none leading-5">
+            <div class="text-mat-on-background ml-3 leading-5 select-none">
               Notes
             </div>
           </div>
@@ -37,7 +37,7 @@
           <div
             class="relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium"
             [ngClass]="{
-              'bg-gray-200 text-primary dark:bg-gray-700 dark:text-primary-400':
+              'text-primary bg-gray-200 dark:bg-gray-700 dark:text-primary-400':
                 filterStatus === 'archived',
               'text-muted hover:bg-hover': filterStatus !== 'archived',
             }"
@@ -49,7 +49,7 @@
               class="text-current"
               [svgIcon]="'heroicons_outline:archive-box'"
             ></mat-icon>
-            <div class="text-mat-on-background ml-3 select-none leading-5">
+            <div class="text-mat-on-background ml-3 leading-5 select-none">
               Archive
             </div>
           </div>
@@ -59,7 +59,7 @@
               <div
                 class="relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium"
                 [ngClass]="{
-                  'bg-gray-200 text-primary dark:bg-gray-700 dark:text-primary-400':
+                  'text-primary bg-gray-200 dark:bg-gray-700 dark:text-primary-400':
                     'label:' + label.id === filterStatus,
                   'text-muted hover:bg-hover':
                     'label:' + label.id !== filterStatus,
@@ -72,7 +72,7 @@
                   class="text-current"
                   [svgIcon]="'heroicons_outline:tag'"
                 ></mat-icon>
-                <div class="text-mat-on-background ml-3 select-none leading-5">
+                <div class="text-mat-on-background ml-3 leading-5 select-none">
                   {{ label.title }}
                 </div>
               </div>
@@ -80,7 +80,7 @@
           }
           <!-- Edit Labels -->
           <div
-            class="relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium hover:bg-hover"
+            class="hover:bg-hover relative flex cursor-pointer items-center rounded-full px-4 py-2 font-medium"
             (click)="openEditLabelsDialog()"
             matRipple
           >
@@ -88,7 +88,7 @@
               class="text-muted"
               [svgIcon]="'heroicons_outline:pencil'"
             ></mat-icon>
-            <div class="ml-3 select-none leading-5">Edit labels</div>
+            <div class="ml-3 leading-5 select-none">Edit labels</div>
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@
               [subscriptSizing]="'dynamic'"
             >
               <mat-icon
-                class="icon-size-5"
+                class="size-5"
                 [svgIcon]="'heroicons_solid:magnifying-glass'"
                 matPrefix
               ></mat-icon>
@@ -147,7 +147,10 @@
               [columnsTemplate]="columnsTemplate"
             >
               <!-- Columns template -->
-              <ng-template #columnsTemplate let-columns>
+              <ng-template
+                #columnsTemplate
+                let-columns
+              >
                 <!-- Columns -->
                 @for (column of columns; track trackByFn($index, column)) {
                   <!-- Column -->
@@ -160,7 +163,10 @@
                       >
                         <!-- Image -->
                         @if (note.image) {
-                          <img class="w-full object-cover" [src]="note.image" />
+                          <img
+                            class="w-full object-cover"
+                            [src]="note.image"
+                          />
                         }
                         <div class="flex flex-auto flex-col space-y-4 p-6">
                           <!-- Title -->
@@ -194,7 +200,7 @@
                                   }
                                   @if (task.completed) {
                                     <mat-icon
-                                      class="text-muted icon-size-5"
+                                      class="text-muted size-5"
                                       [svgIcon]="'heroicons_solid:check-circle'"
                                     ></mat-icon>
                                   }
@@ -237,7 +243,7 @@
               class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent"
             >
               <mat-icon
-                class="icon-size-24"
+                class="size-24"
                 [svgIcon]="'heroicons_outline:document'"
               ></mat-icon>
               <div

@@ -10,28 +10,29 @@ import {
 import { RouterLink } from '@angular/router';
 import { FuseAlertComponent } from '@fuse/components/alert';
 
-interface DirNode {
+type DirNode = {
   name: string;
   expandable?: boolean;
   level?: number;
   last?: boolean;
   children?: DirNode[];
-}
+};
 
-interface FlatDirNode {
+type FlatDirNode = {
   name: string;
   expandable: boolean;
   level: number;
   last: boolean;
-}
+};
 
 @Component({
   selector: 'directory-structure',
   styles: [
     `
       directory-structure .mat-tree {
-        font-family: 'IBM Plex Mono', Menlo, Monaco, Consolas,
-          'Liberation Mono', 'Courier New', monospace;
+        font-family:
+          'IBM Plex Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
+          'Courier New', monospace;
       }
 
       directory-structure .mat-tree-node {
@@ -60,7 +61,7 @@ interface FlatDirNode {
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -70,14 +71,14 @@ interface FlatDirNode {
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Guides</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Development</span>
@@ -86,7 +87,7 @@ interface FlatDirNode {
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Directory Structure
             </h2>
@@ -94,8 +95,11 @@ interface FlatDirNode {
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
-        <fuse-alert [appearance]="'border'" [type]="'info'">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
           Fuse's directory structure might look overwhelming and intimidating at
           first, but following this page and giving a bit time to understand it
           before jumping right into code will help immensely.
@@ -542,7 +546,6 @@ export default class DirectoryStructure implements OnInit {
 
   /**
    * Has child
-   *
    * @param _
    * @param node
    */

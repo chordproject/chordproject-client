@@ -1,22 +1,31 @@
 <div class="w-full max-w-3xl">
   <!-- Add team member -->
   <div class="w-full">
-    <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+    <mat-form-field
+      class="w-full"
+      [subscriptSizing]="'dynamic'"
+    >
       <mat-label>Add team members</mat-label>
       <mat-icon
-        class="icon-size-5"
+        class="size-5"
         [svgIcon]="'heroicons_solid:user'"
         matPrefix
       ></mat-icon>
-      <input matInput [placeholder]="'Email address'" />
-      <button mat-icon-button matSuffix>
+      <input
+        matInput
+        [placeholder]="'Email address'"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+      >
         <mat-icon [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
       </button>
     </mat-form-field>
   </div>
 
   <!-- Team members -->
-  <div class="mt-8 flex flex-col divide-y border-b border-t">
+  <div class="mt-8 flex flex-col divide-y border-t border-b">
     @for (member of members; track trackByFn($index, member)) {
       <div class="flex flex-col py-6 sm:flex-row sm:items-center">
         <div class="flex items-center">
@@ -32,7 +41,7 @@
             }
             @if (!member.avatar) {
               <div
-                class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg uppercase text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg text-gray-600 uppercase dark:bg-gray-700 dark:text-gray-200"
               >
                 {{ member.name.charAt(0) }}
               </div>
@@ -43,7 +52,7 @@
             <div class="text-muted">{{ member.email }}</div>
           </div>
         </div>
-        <div class="mt-4 flex items-center sm:ml-auto sm:mt-0">
+        <div class="mt-4 flex items-center sm:mt-0 sm:ml-auto">
           <div class="order-2 ml-4 sm:order-1 sm:ml-0">
             <mat-form-field
               class="fuse-mat-dense w-32"
@@ -70,7 +79,7 @@
                       {{ role.label }}
                     </div>
                     <div
-                      class="text-muted mt-1.5 whitespace-normal text-sm leading-normal"
+                      class="text-muted leading-normal mt-1.5 text-sm whitespace-normal"
                     >
                       {{ role.description }}
                     </div>

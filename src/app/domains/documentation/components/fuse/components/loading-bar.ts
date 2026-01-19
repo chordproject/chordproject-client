@@ -27,7 +27,7 @@ import { FuseLoadingService } from '@fuse/services/loading';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -37,14 +37,14 @@ import { FuseLoadingService } from '@fuse/services/loading';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Fuse Components</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Components</span>
@@ -53,7 +53,7 @@ import { FuseLoadingService } from '@fuse/services/loading';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Loading Bar
             </h2>
@@ -61,7 +61,7 @@ import { FuseLoadingService } from '@fuse/services/loading';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           <strong>fuse-loading-bar</strong> is a small component to show the
           loading status at the top of the page. It can be configured to the
@@ -71,7 +71,10 @@ import { FuseLoadingService } from '@fuse/services/loading';
         <p><strong>Exported as: </strong><code>fuseLoadingBar</code></p>
 
         <h2>Module</h2>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseLoadingBarModule } from '@fuse/components/loading-bar';
                 </textarea
         >
@@ -82,7 +85,10 @@ import { FuseLoadingService } from '@fuse/services/loading';
           already placed the component to the layout templates for you but you
           can always move it!
         </p>
-        <textarea fuse-highlight lang="html">
+        <textarea
+          fuse-highlight
+          lang="html"
+        >
                     &lt;fuse-loading-bar&gt;&lt;/fuse-loading-bar&gt;
                 </textarea
         >
@@ -169,11 +175,17 @@ import { FuseLoadingService } from '@fuse/services/loading';
               <ng-template matTabContent>
                 <div class="bg-gray-100 p-4">
                   <div class="mx-auto flex max-w-80 space-x-4">
-                    <button mat-flat-button (click)="showLoadingBar()">
+                    <button
+                      mat-flat-button
+                      (click)="showLoadingBar()"
+                    >
                       Show loading bar
                     </button>
 
-                    <button mat-flat-button (click)="hideLoadingBar()">
+                    <button
+                      mat-flat-button
+                      (click)="hideLoadingBar()"
+                    >
                       Hide loading bar
                     </button>
                   </div>
@@ -182,7 +194,10 @@ import { FuseLoadingService } from '@fuse/services/loading';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <button
                                 mat-flat-button
                                 
@@ -201,7 +216,10 @@ import { FuseLoadingService } from '@fuse/services/loading';
             </mat-tab>
 
             <mat-tab label="Typescript">
-              <textarea fuse-highlight [lang]="'ts'">
+              <textarea
+                fuse-highlight
+                [lang]="'ts'"
+              >
                                 private _fuseLoadingService = inject(FuseLoadingService);
 
                                 ...
@@ -246,7 +264,10 @@ import { FuseLoadingService } from '@fuse/services/loading';
 
                     <div class="mb-6 w-24 border-b pt-6"></div>
 
-                    <button mat-flat-button (click)="makeAPICall()">
+                    <button
+                      mat-flat-button
+                      (click)="makeAPICall()"
+                    >
                       Make an API call (2000ms delay)
                     </button>
 
@@ -257,7 +278,10 @@ import { FuseLoadingService } from '@fuse/services/loading';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <mat-slide-toggle
                                 [checked]="true"
                                 
@@ -282,7 +306,10 @@ import { FuseLoadingService } from '@fuse/services/loading';
             </mat-tab>
 
             <mat-tab label="Typescript">
-              <textarea fuse-highlight [lang]="'ts'">
+              <textarea
+                fuse-highlight
+                [lang]="'ts'"
+              >
                                 private _httpClient = inject(HttpClient);
                                 private _fuseLoadingService = inject(FuseLoadingService);
 
@@ -332,16 +359,25 @@ import { FuseLoadingService } from '@fuse/services/loading';
                     class="mx-auto flex max-w-80 flex-col items-center space-y-8"
                   >
                     <div class="flex items-center space-x-4">
-                      <button mat-flat-button (click)="showLoadingBar()">
+                      <button
+                        mat-flat-button
+                        (click)="showLoadingBar()"
+                      >
                         Show loading bar
                       </button>
 
-                      <button mat-flat-button (click)="hideLoadingBar()">
+                      <button
+                        mat-flat-button
+                        (click)="hideLoadingBar()"
+                      >
                         Hide loading bar
                       </button>
                     </div>
 
-                    <mat-slide-toggle [checked]="false" (change)="toggleMode()">
+                    <mat-slide-toggle
+                      [checked]="false"
+                      (change)="toggleMode()"
+                    >
                       Toggle determinate mode
                     </mat-slide-toggle>
 
@@ -361,7 +397,10 @@ import { FuseLoadingService } from '@fuse/services/loading';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <mat-slide-toggle
                                 [checked]="false"
                                 
@@ -379,7 +418,10 @@ import { FuseLoadingService } from '@fuse/services/loading';
             </mat-tab>
 
             <mat-tab label="Typescript">
-              <textarea fuse-highlight [lang]="'ts'">
+              <textarea
+                fuse-highlight
+                [lang]="'ts'"
+              >
                                 private _fuseLoadingService = inject(FuseLoadingService);
 
                                 mode: 'determinate' | 'indeterminate' = 'indeterminate';
@@ -453,7 +495,6 @@ export default class LoadingBar {
 
   /**
    * Set the auto mode
-   *
    * @param change
    */
   setAutoMode(change: MatSlideToggleChange): void {

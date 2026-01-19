@@ -5,7 +5,7 @@
   >
     <!-- Drawer -->
     <mat-drawer
-      class="w-full dark:bg-gray-900 sm:w-128"
+      class="w-full sm:w-128 dark:bg-gray-900"
       [mode]="drawerMode"
       [opened]="false"
       [position]="'end'"
@@ -24,7 +24,7 @@
         >
           <!-- Title -->
           <div>
-            <div class="text-4xl font-extrabold leading-none tracking-tight">
+            <div class="text-4xl leading-none font-extrabold tracking-tight">
               Tasks
             </div>
             <div class="text-muted ml-0.5 font-medium">
@@ -45,7 +45,7 @@
               [matTooltip]="'Shortcut: Ctrl + .'"
             >
               <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-              <span class="ml-2 mr-1">Add Section</span>
+              <span class="mr-1 ml-2">Add Section</span>
             </button>
             <!-- Add task button -->
             <button
@@ -55,7 +55,7 @@
               [matTooltip]="'Shortcut: Ctrl + /'"
             >
               <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
-              <span class="ml-2 mr-1">Add Task</span>
+              <span class="mr-1 ml-2">Add Task</span>
             </button>
           </div>
         </div>
@@ -88,14 +88,17 @@
                 [cdkDragLockAxis]="'y'"
               >
                 <!-- Drag preview -->
-                <div class="flex h-0 w-0 flex-0" *cdkDragPreview></div>
+                <div
+                  class="flex h-0 w-0 flex-0"
+                  *cdkDragPreview
+                ></div>
 
                 <!-- Task content -->
                 <div class="relative flex h-full items-center pl-10">
                   <!-- Selected indicator -->
                   @if (selectedTask && selectedTask.id === task.id) {
                     <div
-                      class="absolute -bottom-px -top-px right-0 z-10 flex w-1 flex-0 bg-primary"
+                      class="bg-primary absolute -top-px right-0 -bottom-px z-10 flex w-1 flex-0"
                     ></div>
                   }
 
@@ -105,7 +108,7 @@
                     cdkDragHandle
                   >
                     <mat-icon
-                      class="text-muted icon-size-5"
+                      class="text-muted size-5"
                       [svgIcon]="'heroicons_solid:bars-3'"
                     ></mat-icon>
                   </div>
@@ -113,7 +116,7 @@
                   <!-- Complete task button -->
                   @if (task.type === 'task') {
                     <button
-                      class="-ml-2.5 mr-2 leading-none"
+                      class="mr-2 -ml-2.5 leading-none"
                       (click)="toggleCompleted(task)"
                       mat-icon-button
                     >
@@ -154,7 +157,7 @@
                         <!-- Low -->
                         @if (task.priority === 0) {
                           <mat-icon
-                            class="text-green-600 icon-size-4 dark:text-green-400"
+                            class="size-4 text-green-600 dark:text-green-400"
                             [svgIcon]="'heroicons_mini:arrow-long-down'"
                             [title]="'Low'"
                           ></mat-icon>
@@ -162,7 +165,7 @@
                         <!-- High -->
                         @if (task.priority === 2) {
                           <mat-icon
-                            class="text-red-600 icon-size-4 dark:text-red-400"
+                            class="size-4 text-red-600 dark:text-red-400"
                             [svgIcon]="'heroicons_mini:arrow-long-up'"
                             [title]="'High'"
                           ></mat-icon>
@@ -171,7 +174,7 @@
                     }
                     <!-- Due date -->
                     @if (task.type === 'task') {
-                      <div class="text-muted whitespace-nowrap text-sm">
+                      <div class="text-muted text-sm whitespace-nowrap">
                         {{ task.dueDate | date: 'LLL dd' }}
                       </div>
                     }
@@ -185,7 +188,7 @@
             class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent"
           >
             <mat-icon
-              class="icon-size-24"
+              class="size-24"
               [svgIcon]="'heroicons_outline:clipboard-document-list'"
             ></mat-icon>
             <div class="text-muted mt-4 text-2xl font-semibold tracking-tight">

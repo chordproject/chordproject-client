@@ -1,11 +1,15 @@
 <!-- Messages toggle -->
-<button mat-icon-button (click)="openPanel()" #messagesOrigin>
+<button
+  mat-icon-button
+  (click)="openPanel()"
+  #messagesOrigin
+>
   @if (unreadCount > 0) {
     <span
-      class="absolute left-0 right-0 top-0 z-10 flex h-3 items-center justify-center"
+      class="absolute top-0 right-0 left-0 z-10 flex h-3 items-center justify-center"
     >
       <span
-        class="ml-4 mt-2.5 flex h-4 min-w-4 shrink-0 items-center justify-center rounded-full bg-indigo-600 px-1 text-xs font-medium text-indigo-50"
+        class="mt-2.5 ml-4 flex h-4 min-w-4 shrink-0 items-center justify-center rounded-full bg-indigo-600 px-1 text-xs font-medium text-indigo-50"
       >
         {{ unreadCount }}
       </span>
@@ -21,17 +25,20 @@
   >
     <!-- Header -->
     <div
-      class="flex shrink-0 items-center bg-primary py-4 pl-6 pr-4 text-on-primary"
+      class="bg-primary text-on-primary flex shrink-0 items-center py-4 pr-4 pl-6"
     >
-      <div class="-ml-1 mr-3 sm:hidden">
-        <button mat-icon-button (click)="closePanel()">
+      <div class="mr-3 -ml-1 sm:hidden">
+        <button
+          mat-icon-button
+          (click)="closePanel()"
+        >
           <mat-icon
             class="text-current"
             [svgIcon]="'heroicons_solid:x-mark'"
           ></mat-icon>
         </button>
       </div>
-      <div class="text-lg font-medium leading-10">Messages</div>
+      <div class="text-lg leading-10 font-medium">Messages</div>
       <div class="ml-auto">
         <button
           class="dark:text-white"
@@ -55,7 +62,7 @@
       <!-- Messages -->
       @for (message of messages; track trackByFn($index, message)) {
         <div
-          class="group flex hover:bg-gray-50 dark:hover:bg-black dark:hover:bg-opacity-5"
+          class="group dark:hover:bg-opacity-5 flex hover:bg-gray-50 dark:hover:bg-black"
           [ngClass]="{ unread: !message.read }"
         >
           <!-- Message with a link -->
@@ -88,7 +95,7 @@
           }
 
           <!-- Actions -->
-          <div class="relative my-5 ml-2 mr-6 flex flex-col">
+          <div class="relative my-5 mr-6 ml-2 flex flex-col">
             <!-- Indicator -->
             <button
               mat-icon-button
@@ -98,7 +105,7 @@
               <span
                 class="h-2 w-2 rounded-full"
                 [ngClass]="{
-                  'bg-gray-400 dark:bg-gray-500 sm:opacity-0 sm:group-hover:opacity-100':
+                  'bg-gray-400 sm:opacity-0 sm:group-hover:opacity-100 dark:bg-gray-500':
                     message.read,
                   'bg-primary': !message.read,
                 }"
@@ -123,7 +130,10 @@
             <div
               class="mr-4 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700"
             >
-              <mat-icon class="icon-size-5" [svgIcon]="message.icon">
+              <mat-icon
+                class="size-5"
+                [svgIcon]="message.icon"
+              >
               </mat-icon>
             </div>
           }

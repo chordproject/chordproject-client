@@ -11,7 +11,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -21,14 +21,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Fuse Components</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Services</span>
@@ -37,7 +37,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Config
             </h2>
@@ -45,7 +45,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           <strong>FuseConfigService</strong> is a singleton service to store and
           access an application wide configuration object. It can be used to
@@ -54,7 +54,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </p>
 
         <h2>Module</h2>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseConfigModule } from '@fuse/services/config';
                 </textarea
         >
@@ -66,7 +69,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <strong>layout style</strong> as well as the
           <strong>color theme</strong> configurations:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     provideFuse({
                     ...
                     fuse   : {
@@ -120,7 +126,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           exist while preserving others. If the supplied option does not exist
           on the configuration, it will be added:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseConfigService } from '@fuse/services/config';
 
                     private _fuseConfigService = inject(FuseConfigService);
@@ -139,7 +148,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <strong>FuseConfigService</strong> which returns an
           <code>Observable</code> of the configuration object:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseConfigService } from '@fuse/services/config';
                     import { AppConfig } from 'app/core/config/app.config';
 

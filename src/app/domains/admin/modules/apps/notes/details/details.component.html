@@ -3,15 +3,21 @@
     <!-- Image -->
     @if (note.image) {
       <div class="relative w-full">
-        <div class="absolute bottom-0 right-0 p-4">
-          <button mat-icon-button (click)="removeImage(note)">
+        <div class="absolute right-0 bottom-0 p-4">
+          <button
+            mat-icon-button
+            (click)="removeImage(note)"
+          >
             <mat-icon
               class="text-white"
               [svgIcon]="'heroicons_outline:trash'"
             ></mat-icon>
           </button>
         </div>
-        <img class="w-full object-cover" [src]="note.image" />
+        <img
+          class="w-full object-cover"
+          [src]="note.image"
+        />
       </div>
     }
     <div class="m-4">
@@ -54,7 +60,7 @@
                 (input)="updateTaskOnNote(note, task)"
               />
               <mat-icon
-                class="ml-auto hidden cursor-pointer icon-size-5 group-hover:flex"
+                class="ml-auto hidden size-5 cursor-pointer group-hover:flex"
                 [svgIcon]="'heroicons_solid:x-mark'"
                 (click)="removeTaskFromNote(note, task)"
               ></mat-icon>
@@ -62,7 +68,7 @@
           }
           <div class="flex items-center">
             <mat-icon
-              class="text-muted -ml-0.5 icon-size-5"
+              class="text-muted -ml-0.5 size-5"
               [svgIcon]="'heroicons_solid:plus'"
             ></mat-icon>
             <input
@@ -87,7 +93,7 @@
                 {{ label.title }}
               </div>
               <mat-icon
-                class="ml-1 cursor-pointer icon-size-4"
+                class="ml-1 size-4 cursor-pointer"
                 [svgIcon]="'heroicons_solid:x-circle'"
                 (click)="toggleLabelOnNote(note, label)"
               ></mat-icon>
@@ -124,7 +130,7 @@
                 #imageFileInput
               />
               <label
-                class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full hover:bg-gray-400 hover:bg-opacity-20 dark:hover:bg-black dark:hover:bg-opacity-5"
+                class="hover:bg-opacity-20 dark:hover:bg-opacity-5 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full hover:bg-gray-400 dark:hover:bg-black"
                 for="image-file-input"
                 matRipple
               >
@@ -132,13 +138,19 @@
               </label>
             </div>
             <!-- Checklist -->
-            <button mat-icon-button (click)="addTasksToNote(note)">
+            <button
+              mat-icon-button
+              (click)="addTasksToNote(note)"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_outline:clipboard-document-list'"
               ></mat-icon>
             </button>
             <!-- Labels -->
-            <button mat-icon-button [matMenuTriggerFor]="labelsMenu">
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="labelsMenu"
+            >
               <mat-icon [svgIcon]="'heroicons_outline:tag'"></mat-icon>
             </button>
             <mat-menu #labelsMenu="matMenu">
@@ -161,16 +173,27 @@
               }
             </mat-menu>
             <!-- Archive -->
-            <button mat-icon-button (click)="toggleArchiveOnNote(note)">
+            <button
+              mat-icon-button
+              (click)="toggleArchiveOnNote(note)"
+            >
               <mat-icon [svgIcon]="'heroicons_outline:archive-box'"></mat-icon>
             </button>
             <!-- Delete -->
-            <button mat-icon-button (click)="deleteNote(note)">
+            <button
+              mat-icon-button
+              (click)="deleteNote(note)"
+            >
               <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
             </button>
           </div>
           <!-- Close -->
-          <button mat-flat-button matDialogClose>Close</button>
+          <button
+            mat-flat-button
+            matDialogClose
+          >
+            Close
+          </button>
         </div>
       }
     </div>

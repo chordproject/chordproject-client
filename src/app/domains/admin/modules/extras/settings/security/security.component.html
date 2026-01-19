@@ -11,10 +11,13 @@
     <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
       <!-- Current password -->
       <div class="sm:col-span-4">
-        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+        <mat-form-field
+          class="w-full"
+          [subscriptSizing]="'dynamic'"
+        >
           <mat-label>Current password</mat-label>
           <mat-icon
-            class="icon-size-5"
+            class="size-5"
             [svgIcon]="'heroicons_solid:key'"
             matPrefix
           ></mat-icon>
@@ -27,14 +30,21 @@
       </div>
       <!-- New password -->
       <div class="sm:col-span-4">
-        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+        <mat-form-field
+          class="w-full"
+          [subscriptSizing]="'dynamic'"
+        >
           <mat-label>New password</mat-label>
           <mat-icon
-            class="icon-size-5"
+            class="size-5"
             [svgIcon]="'heroicons_solid:key'"
             matPrefix
           ></mat-icon>
-          <input [formControlName]="'newPassword'" type="password" matInput />
+          <input
+            [formControlName]="'newPassword'"
+            type="password"
+            matInput
+          />
         </mat-form-field>
         <div class="text-muted mt-1">
           Minimum 8 characters. Must include numbers, letters and special
@@ -56,8 +66,11 @@
     <div class="mt-8 grid w-full gap-6 sm:grid-cols-4">
       <!-- 2-step auth -->
       <div class="flex items-center justify-between sm:col-span-4">
-        <div class="flex-auto cursor-pointer" (click)="twoStepToggle.toggle()">
-          <div class="font-medium leading-6">Enable 2-step authentication</div>
+        <div
+          class="flex-auto cursor-pointer"
+          (click)="twoStepToggle.toggle()"
+        >
+          <div class="leading-6 font-medium">Enable 2-step authentication</div>
           <div class="text-muted">
             Protects you against password theft by requesting an authentication
             code via SMS on every login.
@@ -76,7 +89,7 @@
           class="flex-auto cursor-pointer"
           (click)="askPasswordChangeToggle.toggle()"
         >
-          <div class="font-medium leading-6">
+          <div class="leading-6 font-medium">
             Ask to change password on every 6 months
           </div>
           <div class="text-muted">
@@ -98,8 +111,19 @@
 
     <!-- Actions -->
     <div class="flex items-center justify-end">
-      <button mat-stroked-button type="button">Cancel</button>
-      <button class="ml-4" mat-flat-button type="button">Save</button>
+      <button
+        mat-stroked-button
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        class="ml-4"
+        mat-flat-button
+        type="button"
+      >
+        Save
+      </button>
     </div>
   </form>
 </div>

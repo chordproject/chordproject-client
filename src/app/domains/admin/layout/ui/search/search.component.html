@@ -1,7 +1,10 @@
 <!-- Bar search -->
 @if (appearance === 'bar') {
   @if (!opened) {
-    <button mat-icon-button (click)="open()">
+    <button
+      mat-icon-button
+      (click)="open()"
+    >
       <mat-icon [svgIcon]="'heroicons_outline:magnifying-glass'"></mat-icon>
     </button>
   }
@@ -74,7 +77,7 @@
         }
       </mat-autocomplete>
       <button
-        class="absolute right-5 top-1/2 -mt-5 h-10 w-10 shrink-0 sm:right-7"
+        class="absolute top-1/2 right-5 -mt-5 h-10 w-10 shrink-0 sm:right-7"
         mat-icon-button
         (click)="close()"
       >
@@ -87,7 +90,10 @@
 <!-- Basic search -->
 @if (appearance === 'basic') {
   <div class="w-full sm:min-w-80">
-    <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+    <mat-form-field
+      class="w-full"
+      [subscriptSizing]="'dynamic'"
+    >
       <mat-icon
         matPrefix
         [svgIcon]="'heroicons_outline:magnifying-glass'"
@@ -154,7 +160,10 @@
 }
 
 <!-- Contact result template -->
-<ng-template #contactResult let-result>
+<ng-template
+  #contactResult
+  let-result
+>
   <div class="flex items-center">
     <div
       class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-100 dark:bg-primary-800"
@@ -164,7 +173,7 @@
       }
       @if (!result.avatar) {
         <mat-icon
-          class="m-0 text-primary icon-size-5 dark:text-primary-400"
+          class="text-primary m-0 size-5 dark:text-primary-400"
           [svgIcon]="'heroicons_outline:user-circle'"
         ></mat-icon>
       }
@@ -176,21 +185,30 @@
 </ng-template>
 
 <!-- Page result template -->
-<ng-template #pageResult let-result>
+<ng-template
+  #pageResult
+  let-result
+>
   <div class="flex flex-col">
-    <div class="truncate leading-normal" [innerHTML]="result.title"></div>
-    <div class="text-muted truncate text-sm leading-normal">
+    <div
+      class="leading-normal truncate"
+      [innerHTML]="result.title"
+    ></div>
+    <div class="text-muted leading-normal truncate text-sm">
       {{ result.link }}
     </div>
   </div>
 </ng-template>
 
 <!-- Task result template -->
-<ng-template #taskResult let-result>
+<ng-template
+  #taskResult
+  let-result
+>
   <div class="flex items-center">
     @if (result.completed) {
       <mat-icon
-        class="mr-0 text-primary dark:text-primary-400"
+        class="text-primary mr-0 dark:text-primary-400"
         [svgIcon]="'heroicons_outline:check-circle'"
       ></mat-icon>
     }
@@ -201,7 +219,7 @@
       ></mat-icon>
     }
     <div
-      class="ml-3 truncate leading-normal"
+      class="leading-normal ml-3 truncate"
       [ngClass]="{
         'text-muted line-through': result.completed,
       }"

@@ -17,7 +17,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -27,14 +27,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Guides</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Getting Started</span>
@@ -43,7 +43,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Installation
             </h2>
@@ -51,7 +51,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           Before you begin installing Fuse, prepare a folder where you can unzip
           the downloaded .zip file.
@@ -102,8 +102,11 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           After choosing the version you want to install, unzip the .zip file of
           that version into your workspace directory.
         </p>
-        <fuse-alert [appearance]="'border'" [type]="'info'">
-          <div class="prose prose-sm max-w-none text-current">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
+          <div class="prose-sm prose max-w-none text-current">
             <p>
               You can completely skip the steps #1 and #2 and instead fork the
               project from Fuse's Github repo directly. This will not only make
@@ -124,7 +127,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <code>package.json</code> file in order to run the commands.
         </p>
         <p>To complete the installation, enter the following command:</p>
-        <textarea fuse-highlight lang="bash">
+        <textarea
+          fuse-highlight
+          lang="bash"
+        >
                     npm install
                 </textarea
         >
@@ -134,8 +140,11 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <strong>node_modules</strong> directory in order for you to start
           developing.
         </p>
-        <fuse-alert [appearance]="'border'" [type]="'info'">
-          <div class="prose prose-sm max-w-none text-current">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
+          <div class="prose-sm prose max-w-none text-current">
             <p>
               After the installation completes, you may see warnings about
               deprecated packages and security risks. You can safely ignore

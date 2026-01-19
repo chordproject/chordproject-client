@@ -1,7 +1,7 @@
 <div class="flex min-w-0 flex-auto flex-col">
   <!-- Header -->
   <div
-    class="dark relative overflow-hidden bg-gray-800 px-4 pb-28 pt-8 dark:bg-gray-900 sm:px-16 sm:pb-48 sm:pt-20"
+    class="dark relative overflow-hidden bg-gray-800 px-4 pt-8 pb-28 sm:px-16 sm:pt-20 sm:pb-48 dark:bg-gray-900"
   >
     <!-- Background -->
     <!-- Rings -->
@@ -16,7 +16,7 @@
     <div class="relative z-10 flex flex-col items-center">
       <h2 class="text-xl font-semibold">HELP CENTER</h2>
       <div
-        class="mt-1 text-center text-4xl font-extrabold leading-tight tracking-tight sm:text-7xl"
+        class="leading-tight sm:text-7xl mt-1 text-center text-4xl font-extrabold tracking-tight"
       >
         How can we help you today?
       </div>
@@ -28,7 +28,10 @@
         class="fuse-mat-rounded fuse-mat-bold mt-10 w-full max-w-80 sm:mt-20 sm:max-w-120"
         [subscriptSizing]="'dynamic'"
       >
-        <input matInput [placeholder]="'Enter a question, topic or keyword'" />
+        <input
+          matInput
+          [placeholder]="'Enter a question, topic or keyword'"
+        />
         <mat-icon
           matPrefix
           [svgIcon]="'heroicons_outline:magnifying-glass'"
@@ -55,11 +58,14 @@
         <div
           class="flex items-center justify-center bg-gray-50 px-8 py-4 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400"
         >
-          <a class="flex items-center" [routerLink]="['faqs']">
+          <a
+            class="flex items-center"
+            [routerLink]="['faqs']"
+          >
             <span class="absolute inset-0"></span>
             <span class="font-medium">Go to FAQs</span>
             <mat-icon
-              class="ml-2 text-current icon-size-5"
+              class="ml-2 size-5 text-current"
               [svgIcon]="'heroicons_mini:arrow-long-right'"
             ></mat-icon>
           </a>
@@ -78,11 +84,14 @@
         <div
           class="flex items-center justify-center bg-gray-50 px-8 py-4 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400"
         >
-          <a class="flex items-center" [routerLink]="['guides']">
+          <a
+            class="flex items-center"
+            [routerLink]="['guides']"
+          >
             <span class="absolute inset-0"></span>
             <span class="font-medium">Check guides</span>
             <mat-icon
-              class="ml-2 text-current icon-size-5"
+              class="ml-2 size-5 text-current"
               [svgIcon]="'heroicons_mini:arrow-long-right'"
             ></mat-icon>
           </a>
@@ -101,11 +110,14 @@
         <div
           class="flex items-center justify-center bg-gray-50 px-8 py-4 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400"
         >
-          <a class="flex items-center" [routerLink]="['support']">
+          <a
+            class="flex items-center"
+            [routerLink]="['support']"
+          >
             <span class="absolute inset-0"></span>
             <span class="font-medium">Contact us</span>
             <mat-icon
-              class="ml-2 text-current icon-size-5"
+              class="ml-2 size-5 text-current"
               [svgIcon]="'heroicons_mini:arrow-long-right'"
             ></mat-icon>
           </a>
@@ -114,7 +126,7 @@
     </div>
     <!-- FAQs -->
     <div
-      class="mt-24 text-center text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl"
+      class="leading-tight mt-24 text-center text-3xl font-extrabold tracking-tight sm:text-5xl"
     >
       Most frequently asked questions
     </div>

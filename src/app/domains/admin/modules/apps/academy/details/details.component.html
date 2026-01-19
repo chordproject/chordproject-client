@@ -11,15 +11,15 @@
       <div class="flex flex-col items-start border-b p-8">
         <!-- Back to courses -->
         <a
-          class="inline-flex items-center leading-6 text-primary hover:underline"
+          class="text-primary inline-flex items-center leading-6 hover:underline"
           [routerLink]="['..']"
         >
           <span class="inline-flex items-center">
             <mat-icon
-              class="text-current icon-size-5"
+              class="size-5 text-current"
               [svgIcon]="'heroicons_solid:arrow-small-left'"
             ></mat-icon>
-            <span class="ml-1.5 font-medium leading-5">Back to courses</span>
+            <span class="ml-1.5 leading-5 font-medium">Back to courses</span>
           </span>
         </a>
         <!-- Course category -->
@@ -51,7 +51,7 @@
         <!-- Course time -->
         <div class="text-muted mt-6 flex items-center leading-5">
           <mat-icon
-            class="text-muted icon-size-5"
+            class="text-muted size-5"
             [svgIcon]="'heroicons_solid:clock'"
           ></mat-icon>
           <div class="ml-1.5">{{ course.duration }} minutes</div>
@@ -72,7 +72,7 @@
             >
               @if (!last) {
                 <div
-                  class="absolute left-4 top-6 -ml-px h-full w-0.5"
+                  class="absolute top-6 left-4 -ml-px h-full w-0.5"
                   [ngClass]="{
                     'bg-primary': step.order < currentStep,
                     'bg-gray-300 dark:bg-gray-600': step.order >= currentStep,
@@ -86,7 +86,7 @@
                 <div
                   class="dark:bg-mat-background bg-card flex h-8 w-8 flex-0 items-center justify-center rounded-full ring-2 ring-inset"
                   [ngClass]="{
-                    'bg-primary text-on-primary ring-transparent group-hover:bg-primary-800 dark:bg-primary':
+                    'bg-primary text-on-primary dark:bg-primary ring-transparent group-hover:bg-primary-800':
                       step.order < currentStep,
                     'ring-primary': step.order === currentStep,
                     'ring-gray-300 group-hover:ring-gray-400 dark:ring-gray-600':
@@ -96,14 +96,14 @@
                   <!-- Check icon, show if the step is completed -->
                   @if (step.order < currentStep) {
                     <mat-icon
-                      class="text-current icon-size-5"
+                      class="size-5 text-current"
                       [svgIcon]="'heroicons_solid:check'"
                     ></mat-icon>
                   }
                   <!-- Step order, show if the step is the current step -->
                   @if (step.order === currentStep) {
                     <div
-                      class="font-semibold text-primary dark:text-primary-500"
+                      class="text-primary font-semibold dark:text-primary-500"
                     >
                       {{ step.order + 1 }}
                     </div>
@@ -118,7 +118,7 @@
                   }
                 </div>
                 <div class="ml-4">
-                  <div class="font-medium leading-4">
+                  <div class="leading-4 font-medium">
                     {{ step.title }}
                   </div>
                   <div class="text-muted mt-1.5 leading-4">
@@ -136,10 +136,13 @@
     <mat-drawer-content class="flex flex-col overflow-hidden">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 items-center border-b py-2 pl-4 pr-6 dark:bg-transparent sm:py-4 md:pl-6 md:pr-8 lg:hidden lg:border-b-0"
+        class="bg-card flex flex-0 items-center border-b py-2 pr-6 pl-4 sm:py-4 md:pr-8 md:pl-6 lg:hidden lg:border-b-0 dark:bg-transparent"
       >
         <!-- Title & Actions -->
-        <a mat-icon-button [routerLink]="['..']">
+        <a
+          mat-icon-button
+          [routerLink]="['..']"
+        >
           <mat-icon [svgIcon]="'heroicons_outline:arrow-small-left'"></mat-icon>
         </a>
         <h2 class="ml-2.5 truncate font-medium tracking-tight sm:text-xl">
@@ -152,7 +155,10 @@
       ></mat-progress-bar>
 
       <!-- Main -->
-      <div class="flex-auto overflow-y-auto" cdkScrollable>
+      <div
+        class="flex-auto overflow-y-auto"
+        cdkScrollable
+      >
         <!-- Steps -->
         <mat-tab-group
           class="fuse-mat-no-header"
@@ -163,7 +169,7 @@
             <mat-tab>
               <ng-template matTabContent>
                 <div
-                  class="bg-card prose prose-sm mx-auto max-w-3xl overflow-hidden rounded-2xl p-6 shadow sm:my-2 sm:p-10 sm:py-12 lg:mt-4"
+                  class="bg-card prose-sm mx-auto prose max-w-3xl overflow-hidden rounded-2xl p-6 shadow sm:my-2 sm:p-10 sm:py-12 lg:mt-4"
                   [innerHTML]="step.content"
                 ></div>
               </ng-template>
@@ -174,9 +180,13 @@
         <!-- Navigation - Desktop -->
         <div class="sticky bottom-4 z-10 hidden p-4 lg:flex">
           <div
-            class="mx-auto flex items-center justify-center rounded-full bg-primary p-2 shadow-lg"
+            class="bg-primary mx-auto flex items-center justify-center rounded-full p-2 shadow-lg"
           >
-            <button class="flex-0" mat-flat-button (click)="goToPreviousStep()">
+            <button
+              class="flex-0"
+              mat-flat-button
+              (click)="goToPreviousStep()"
+            >
               <span class="inline-flex items-center">
                 <mat-icon
                   class="mr-2"
@@ -186,13 +196,17 @@
               </span>
             </button>
             <div
-              class="mx-2.5 flex items-center justify-center font-medium leading-5 text-on-primary"
+              class="text-on-primary mx-2.5 flex items-center justify-center leading-5 font-medium"
             >
               <span>{{ currentStep + 1 }}</span>
               <span class="text-muted mx-0.5">/</span>
               <span>{{ course.totalSteps }}</span>
             </div>
-            <button class="flex-0" mat-flat-button (click)="goToNextStep()">
+            <button
+              class="flex-0"
+              mat-flat-button
+              (click)="goToNextStep()"
+            >
               <span class="inline-flex items-center">
                 <span class="ml-1">Next</span>
                 <mat-icon
@@ -207,11 +221,14 @@
 
       <!-- Progress & Navigation - Mobile -->
       <div class="bg-card flex items-center border-t p-4 lg:hidden">
-        <button mat-icon-button (click)="matDrawer.toggle()">
+        <button
+          mat-icon-button
+          (click)="matDrawer.toggle()"
+        >
           <mat-icon [svgIcon]="'heroicons_outline:bars-4'"></mat-icon>
         </button>
         <div
-          class="ml-1 flex items-center justify-center font-medium leading-5 lg:ml-2"
+          class="ml-1 flex items-center justify-center leading-5 font-medium lg:ml-2"
         >
           <span>{{ currentStep + 1 }}</span>
           <span class="text-muted mx-0.5">/</span>
@@ -221,10 +238,18 @@
           class="ml-6 flex-auto rounded-full"
           [value]="(100 * (currentStep + 1)) / course.totalSteps"
         ></mat-progress-bar>
-        <button class="ml-4" mat-icon-button (click)="goToPreviousStep()">
+        <button
+          class="ml-4"
+          mat-icon-button
+          (click)="goToPreviousStep()"
+        >
           <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
         </button>
-        <button class="ml-0.5" mat-icon-button (click)="goToNextStep()">
+        <button
+          class="ml-0.5"
+          mat-icon-button
+          (click)="goToNextStep()"
+        >
           <mat-icon [svgIcon]="'heroicons_outline:arrow-long-right'"></mat-icon>
         </button>
       </div>

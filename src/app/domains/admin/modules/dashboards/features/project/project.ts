@@ -18,7 +18,6 @@ import {
   ChartComponent,
 } from 'ng-apexcharts';
 import { Theming } from '@/app/core/theming';
-import { SidebarToggle } from '@/app/domains/admin/layout/ui/sidebar-toggle';
 import { ProjectDashboardService } from '@/app/domains/admin/modules/dashboards/data/project';
 import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboards/features/project/budget-table';
 
@@ -38,21 +37,11 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
     MatMenuItem,
     MatMenuTrigger,
     ProjectDashboardBudgetTable,
-    SidebarToggle,
     MatButton,
   ],
   template: `
-    <!-- Toolbar -->
     <div
-      class="flex min-h-12 items-center gap-x-2 border-b p-2 sm:px-4 lg:px-6"
-    >
-      <sidebar-toggle class="lg:hidden" />
-      <div class="text-sm font-medium">Project Dashboard</div>
-    </div>
-
-    <!-- Content -->
-    <div
-      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-4 sm:gap-6 sm:p-6"
+      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 px-6 pt-2 sm:gap-6 lg:p-10 lg:pt-8"
     >
       <!-- Header -->
       <div class="flex items-center justify-between gap-x-3">
@@ -60,7 +49,7 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
           <div class="text-xl font-semibold tracking-tighter sm:text-2xl">
             Overview of Project Alpha
           </div>
-          <div class="text-on-surface-variant">
+          <div class="text-neutral-500">
             Summary of project performance and statistics
           </div>
         </div>
@@ -110,7 +99,7 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
             <div class="flex items-center pt-6 pr-4 pl-6">
               <div class="flex flex-col">
                 <div class="text-3xl font-semibold">New vs. Closed</div>
-                <div class="text-on-surface-variant mt-0.5 text-sm">
+                <div class="mt-0.5 text-sm text-neutral-500">
                   More issues were opened than closed this week. Team needs to
                   focus on resolving existing issues.
                 </div>
@@ -148,7 +137,7 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
                 let last = $last
               ) {
                 <div class="flex items-center gap-x-1">
-                  <div class="text-on-surface-variant">
+                  <div class="text-neutral-500">
                     {{ item.label }}
                   </div>
                   <div class="flex-auto"></div>
@@ -161,7 +150,7 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
 
             <div class="flex-auto"></div>
 
-            <div class="text-on-surface-variant mt-4 text-xs">
+            <div class="mt-4 text-xs text-neutral-500">
               Total issue count may exceed total closed issues as some issues
               can have multiple statuses.
             </div>
@@ -203,7 +192,7 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
                   />
                 }
                 <div
-                  class="text-on-surface-variant flex items-center gap-x-1 text-sm font-medium"
+                  class="flex items-center gap-x-1 text-sm font-medium text-neutral-500"
                 >
                   <div>
                     {{ item.change.value > 0 ? '+' : ''
@@ -293,9 +282,9 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
               <div class="flex items-center gap-x-4">
                 <!-- Date & Time -->
                 <div
-                  class="bg-surface-container flex flex-col items-center rounded-md px-2 py-1 whitespace-nowrap"
+                  class="flex flex-col items-center rounded-md bg-neutral-100 px-2 py-1 whitespace-nowrap dark:bg-neutral-800"
                 >
-                  <div class="text-on-surface-variant text-xs tabular-nums">
+                  <div class="text-xs text-neutral-500 tabular-nums">
                     {{ item.date | date: 'E, dd MMM' }}
                   </div>
                   <div class="font-medium tracking-tight tabular-nums">
@@ -311,7 +300,7 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
                         class="size-3"
                         svgIcon="map-pin"
                       ></mat-icon>
-                      <div class="text-on-surface-variant ml-1 truncate">
+                      <div class="ml-1 truncate text-neutral-500">
                         {{ item.location }}
                       </div>
                     </div>

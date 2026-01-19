@@ -4,9 +4,13 @@
     [formGroup]="taskForm"
   >
     <!-- Header -->
-    <div class="-ml-4 -mt-3 flex items-center justify-between">
+    <div class="-mt-3 -ml-4 flex items-center justify-between">
       <!-- Mark as ... button -->
-      <button class="pl-3.5 pr-4" mat-button (click)="toggleCompleted()">
+      <button
+        class="pr-4 pl-3.5"
+        mat-button
+        (click)="toggleCompleted()"
+      >
         <!-- Mark as complete -->
         @if (!taskForm.get('completed').value) {
           <div class="flex items-center justify-center">
@@ -29,30 +33,42 @@
 
       <div class="flex items-center">
         <!-- More menu -->
-        <button mat-icon-button [matMenuTriggerFor]="moreMenu">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="moreMenu"
+        >
           <mat-icon
             [svgIcon]="'heroicons_outline:ellipsis-vertical'"
           ></mat-icon>
         </button>
         <mat-menu #moreMenu="matMenu">
-          <button mat-menu-item (click)="deleteTask()">
+          <button
+            mat-menu-item
+            (click)="deleteTask()"
+          >
             <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
             <span>Delete {{ task.type === 'task' ? 'task' : 'section' }}</span>
           </button>
         </mat-menu>
 
         <!-- Close button -->
-        <a mat-icon-button [routerLink]="['../']">
+        <a
+          mat-icon-button
+          [routerLink]="['../']"
+        >
           <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
         </a>
       </div>
     </div>
 
-    <mat-divider class="mb-8 mt-6"></mat-divider>
+    <mat-divider class="mt-6 mb-8"></mat-divider>
 
     <!-- Title -->
     <div>
-      <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+      <mat-form-field
+        class="w-full"
+        [subscriptSizing]="'dynamic'"
+      >
         <mat-label>{{
           task.type === 'task' ? 'Task title' : 'Section title'
         }}</mat-label>
@@ -79,7 +95,7 @@
             <div
               class="m-1.5 flex items-center justify-center rounded-full bg-gray-100 px-4 leading-9 text-gray-500 dark:bg-gray-700 dark:text-gray-300"
             >
-              <span class="whitespace-nowrap font-medium">{{ tag.title }}</span>
+              <span class="font-medium whitespace-nowrap">{{ tag.title }}</span>
             </div>
           }
         }
@@ -90,18 +106,18 @@
         >
           @if (task.tags.length) {
             <mat-icon
-              class="icon-size-5"
+              class="size-5"
               [svgIcon]="'heroicons_solid:pencil-square'"
             ></mat-icon>
-            <span class="ml-1.5 whitespace-nowrap font-medium">Edit</span>
+            <span class="ml-1.5 font-medium whitespace-nowrap">Edit</span>
           }
 
           @if (!task.tags.length) {
             <mat-icon
-              class="icon-size-5"
+              class="size-5"
               [svgIcon]="'heroicons_solid:plus-circle'"
             ></mat-icon>
-            <span class="ml-1.5 whitespace-nowrap font-medium">Add</span>
+            <span class="ml-1.5 font-medium whitespace-nowrap">Add</span>
           }
 
           <!-- Tags panel -->
@@ -111,7 +127,7 @@
               <div class="m-3 mr-2 flex items-center">
                 <div class="flex items-center">
                   <mat-icon
-                    class="icon-size-5"
+                    class="size-5"
                     [svgIcon]="'heroicons_solid:magnifying-glass'"
                   ></mat-icon>
                   <div class="ml-2">
@@ -133,13 +149,13 @@
                 >
                   @if (!tagsEditMode) {
                     <mat-icon
-                      class="icon-size-5"
+                      class="size-5"
                       [svgIcon]="'heroicons_solid:pencil-square'"
                     ></mat-icon>
                   }
                   @if (tagsEditMode) {
                     <mat-icon
-                      class="icon-size-5"
+                      class="size-5"
                       [svgIcon]="'heroicons_solid:check'"
                     ></mat-icon>
                   }
@@ -150,7 +166,7 @@
                 @if (!tagsEditMode) {
                   @for (tag of filteredTags; track trackByFn($index, tag)) {
                     <div
-                      class="flex h-10 min-h-10 cursor-pointer items-center pl-1 pr-4 hover:bg-hover"
+                      class="hover:bg-hover flex h-10 min-h-10 cursor-pointer items-center pr-4 pl-1"
                       (click)="toggleTaskTag(tag)"
                       matRipple
                     >
@@ -198,14 +214,14 @@
                 <!-- Create tag -->
                 @if (shouldShowCreateTagButton(newTagInput.value)) {
                   <div
-                    class="-ml-0.5 flex h-10 min-h-10 cursor-pointer items-center pl-4 pr-3 leading-none hover:bg-hover"
+                    class="hover:bg-hover -ml-0.5 flex h-10 min-h-10 cursor-pointer items-center pr-3 pl-4 leading-none"
                     (click)="
                       createTag(newTagInput.value); newTagInput.value = ''
                     "
                     matRipple
                   >
                     <mat-icon
-                      class="mr-2 icon-size-5"
+                      class="mr-2 size-5"
                       [svgIcon]="'heroicons_solid:plus-circle'"
                     ></mat-icon>
                     <div class="break-all">
@@ -241,28 +257,28 @@
           <!-- Low -->
           @if (task.priority === 0) {
             <mat-icon
-              class="text-current icon-size-4"
+              class="size-4 text-current"
               [svgIcon]="'heroicons_mini:arrow-long-down'"
             ></mat-icon>
-            <span class="ml-2 mr-1 font-medium">Low</span>
+            <span class="mr-1 ml-2 font-medium">Low</span>
           }
 
           <!-- Normal -->
           @if (task.priority === 1) {
             <mat-icon
-              class="text-current icon-size-4"
+              class="size-4 text-current"
               [svgIcon]="'heroicons_solid:minus'"
             ></mat-icon>
-            <span class="ml-2 mr-1 font-medium">Normal</span>
+            <span class="mr-1 ml-2 font-medium">Normal</span>
           }
 
           <!-- High -->
           @if (task.priority === 2) {
             <mat-icon
-              class="text-current icon-size-4"
+              class="size-4 text-current"
               [svgIcon]="'heroicons_mini:arrow-long-up'"
             ></mat-icon>
-            <span class="ml-2 mr-1 font-medium">High</span>
+            <span class="mr-1 ml-2 font-medium">High</span>
           }
         </div>
         <mat-menu #priorityMenu="matMenu">
@@ -277,7 +293,7 @@
             >
               <span class="font-medium">Low</span>
               <mat-icon
-                class="mr-0 text-green-600 icon-size-4 dark:text-green-500"
+                class="mr-0 size-4 text-green-600 dark:text-green-500"
                 [svgIcon]="'heroicons_mini:arrow-long-down'"
               ></mat-icon>
             </span>
@@ -294,7 +310,7 @@
             >
               <span class="font-medium">Normal</span>
               <mat-icon
-                class="mr-0 text-gray-600 icon-size-4 dark:text-gray-500"
+                class="mr-0 size-4 text-gray-600 dark:text-gray-500"
                 [svgIcon]="'heroicons_solid:minus'"
               ></mat-icon>
             </span>
@@ -311,7 +327,7 @@
             >
               <span class="font-medium">High</span>
               <mat-icon
-                class="mr-0 text-red-600 icon-size-4 dark:text-red-500"
+                class="mr-0 size-4 text-red-600 dark:text-red-500"
                 [svgIcon]="'heroicons_mini:arrow-long-up'"
               ></mat-icon>
             </span>
@@ -335,7 +351,7 @@
           (click)="dueDatePicker.open()"
         >
           <mat-icon
-            class="text-current icon-size-5"
+            class="size-5 text-current"
             [svgIcon]="'heroicons_solid:calendar'"
           ></mat-icon>
           <span class="ml-2 font-medium">
@@ -364,7 +380,11 @@
                 >
                   Clear
                 </button>
-                <button class="" mat-flat-button matDatepickerApply>
+                <button
+                  class=""
+                  mat-flat-button
+                  matDatepickerApply
+                >
                   Select
                 </button>
               </mat-datepicker-actions>
@@ -376,7 +396,10 @@
 
     <!-- Notes -->
     <div class="mt-8">
-      <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+      <mat-form-field
+        class="w-full"
+        [subscriptSizing]="'dynamic'"
+      >
         <mat-label>Notes</mat-label>
         <textarea
           matInput

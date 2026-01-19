@@ -17,7 +17,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -27,14 +27,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Guides</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Customization</span>
@@ -43,7 +43,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Theming
             </h2>
@@ -51,7 +51,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           Since Fuse uses <em>Angular Material</em> as its primary UI library,
           it also uses the
@@ -76,7 +76,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           themes. Here's an example theme configuration from Tailwind's
           configuration:
         </p>
-        <textarea fuse-highlight lang="js">
+        <textarea
+          fuse-highlight
+          lang="js"
+        >
                     // tailwind.config.js
 
                     /**
@@ -127,7 +130,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                 </textarea
         >
         <p>Here's the general structure of a theme configuration:</p>
-        <textarea fuse-highlight lang="js">
+        <textarea
+          fuse-highlight
+          lang="js"
+        >
                     THEME_NAME: {
                     primary     : { ... },
                     accent      : { ... },
@@ -157,8 +163,11 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           </li>
         </ul>
 
-        <fuse-alert [appearance]="'border'" [type]="'info'">
-          <div class="prose prose-sm max-w-none text-current">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
+          <div class="prose-sm prose max-w-none text-current">
             <p>
               Angular Material library uses 3 main color palettes and their
               contrasting colors to theme their components. Here we basically
@@ -182,7 +191,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           Let's break down the 'default' theme configuration. This one is
           required for entire theming system and Fuse to work correctly:
         </p>
-        <textarea fuse-highlight lang="js">
+        <textarea
+          fuse-highlight
+          lang="js"
+        >
                     // tailwind.config.js
 
                     'default': {
@@ -231,7 +243,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         <p class="mt-12">
           Let's break down the rest of the theme configuration:
         </p>
-        <textarea fuse-highlight lang="js">
+        <textarea
+          fuse-highlight
+          lang="js"
+        >
                     // tailwind.config.js
 
                     // All themes will inherit the configuration from the "default" theme so you
@@ -309,7 +324,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           This custom helper method allows you to generate Tailwind-like
           palettes from either a single color or multiple colors:
         </p>
-        <textarea fuse-highlight lang="js">
+        <textarea
+          fuse-highlight
+          lang="js"
+        >
                     // tailwind.config.js
 
                     const generatePalette = require(path.resolve(__dirname, ('src/@fuse/tailwind/utils/generate-palette')));

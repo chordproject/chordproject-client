@@ -17,7 +17,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -27,14 +27,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Guides</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Customization</span>
@@ -43,7 +43,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Splash Screen
             </h2>
@@ -51,7 +51,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           The <strong>splash screen</strong> is the screen that shows up when
           your app is loading. It's <strong>NOT</strong> just a cosmetic screen
@@ -99,7 +99,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           put anything you want into the
           <code>fuse-splash-screen</code> element to show on the page.
         </p>
-        <fuse-alert [appearance]="'border'" [type]="'info'">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
           Please note, you cannot run Angular components in here. Basically, by
           the time you can run Angular components, you won't be needing the
           splash screen because everything would already be loaded!
@@ -113,7 +116,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <code>splash-screen.css</code> file:
         </p>
 
-        <textarea fuse-highlight lang="html">
+        <textarea
+          fuse-highlight
+          lang="html"
+        >
                     ...
 
                     <!-- Splash screen styles -->

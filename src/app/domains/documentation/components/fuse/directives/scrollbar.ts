@@ -11,7 +11,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -21,14 +21,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Fuse Components</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Directives</span>
@@ -37,7 +37,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Scrollbar
             </h2>
@@ -45,7 +45,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           <strong>fuseScrollbar</strong> is a wrapper directive for
           <a
@@ -59,14 +59,20 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         <p><strong>Exported as: </strong><code>fuseScrollbar</code></p>
 
         <h2>Module</h2>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseScrollbarModule } from '@fuse/directives/scrollbar';
                 </textarea
         >
 
         <h2>Usage</h2>
         <p>Here's the basic usage of the <code>fuseScrollbar</code>:</p>
-        <textarea fuse-highlight lang="html">
+        <textarea
+          fuse-highlight
+          lang="html"
+        >
                     <div fuseScrollbar
                     [fuseScrollbarOptions]="{wheelPropagation: false, suppressScrollX: true}">
                     A very long content to add scrollbars.
@@ -114,7 +120,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           It's possible to access the methods of this directive using a
           <em>&#64;ViewChild</em> or <em>&#64;ViewChildren</em>:
         </p>
-        <textarea fuse-highlight lang="html">
+        <textarea
+          fuse-highlight
+          lang="html"
+        >
                     <!-- Content #1 with custom scrollbar -->
                     <div fuseScrollbar>
                     A very long content to add scrollbars.
@@ -127,7 +136,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                 </textarea
         >
 
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseScrollbarDirective } from '@fuse/directives/scrollbar/scrollbar.directive';
 
                     @ViewChildren(FuseScrollbarDirective)

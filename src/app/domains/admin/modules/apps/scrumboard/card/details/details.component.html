@@ -3,10 +3,14 @@
 >
   <!-- Header -->
   <div
-    class="flex h-16 flex-0 items-center justify-between bg-primary pl-6 pr-3 text-on-primary sm:pl-8 sm:pr-5"
+    class="bg-primary text-on-primary flex h-16 flex-0 items-center justify-between pr-3 pl-6 sm:pr-5 sm:pl-8"
   >
     <div class="text-lg font-medium">Card</div>
-    <button mat-icon-button (click)="matDialogRef.close()" [tabIndex]="-1">
+    <button
+      mat-icon-button
+      (click)="matDialogRef.close()"
+      [tabIndex]="-1"
+    >
       <mat-icon
         class="text-current"
         [svgIcon]="'heroicons_outline:x-mark'"
@@ -20,7 +24,10 @@
     [formGroup]="cardForm"
   >
     <!-- Title -->
-    <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+    <mat-form-field
+      class="w-full"
+      [subscriptSizing]="'dynamic'"
+    >
       <mat-label>Title</mat-label>
       <textarea
         matInput
@@ -33,7 +40,10 @@
     </mat-form-field>
 
     <!-- Description -->
-    <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+    <mat-form-field
+      class="w-full"
+      [subscriptSizing]="'dynamic'"
+    >
       <mat-label>Description</mat-label>
       <textarea
         matInput
@@ -61,7 +71,7 @@
         (click)="dueDatePicker.open()"
       >
         <mat-icon
-          class="text-current icon-size-5"
+          class="size-5 text-current"
           [svgIcon]="'heroicons_solid:calendar'"
         ></mat-icon>
         <span class="ml-2 font-medium">
@@ -90,7 +100,12 @@
               >
                 Clear
               </button>
-              <button mat-flat-button matDatepickerApply>Select</button>
+              <button
+                mat-flat-button
+                matDatepickerApply
+              >
+                Select
+              </button>
             </mat-datepicker-actions>
           </mat-datepicker>
         </mat-form-field>
@@ -107,7 +122,7 @@
         <div class="mx-3 my-2 flex items-center">
           <div class="flex min-w-0 flex-auto items-center">
             <mat-icon
-              class="icon-size-5"
+              class="size-5"
               [svgIcon]="'heroicons_solid:magnifying-glass'"
             ></mat-icon>
             <input
@@ -125,7 +140,7 @@
           <!-- Labels -->
           @for (label of filteredLabels; track trackByFn($index, label)) {
             <mat-checkbox
-              class="flex h-10 min-h-10 items-center pl-1 pr-4"
+              class="flex h-10 min-h-10 items-center pr-4 pl-1"
               [checked]="hasLabel(label)"
               (change)="toggleProductTag(label, $event)"
             >

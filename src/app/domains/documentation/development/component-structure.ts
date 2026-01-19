@@ -19,7 +19,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -29,14 +29,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Guides</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Development</span>
@@ -45,7 +45,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Component Structure
             </h2>
@@ -53,8 +53,11 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
-        <fuse-alert [appearance]="'border'" [type]="'info'">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
+        <fuse-alert
+          [appearance]="'border'"
+          [type]="'info'"
+        >
           <span>
             Fuse uses route based component loading strategy. There are
             componentless and empty-path routes specifically structured to load
@@ -75,7 +78,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             class="relative h-120 rounded border-2 border-gray-400 p-6 pt-12"
           >
             <span
-              class="bg-card absolute left-0 top-0 -mt-px ml-3 -translate-y-1/2 px-2 font-medium text-gray-500"
+              class="bg-card absolute top-0 left-0 -mt-px ml-3 -translate-y-1/2 px-2 font-medium text-gray-500"
               >AppComponent</span
             >
             <!-- LayoutComponent -->
@@ -83,7 +86,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
               class="relative h-full w-full rounded border-2 border-purple-400 p-6 pt-12"
             >
               <span
-                class="bg-card absolute left-0 top-0 -mt-px ml-3 -translate-y-1/2 px-2 font-medium text-purple-500"
+                class="bg-card absolute top-0 left-0 -mt-px ml-3 -translate-y-1/2 px-2 font-medium text-purple-500"
                 >LayoutComponent</span
               >
               <!-- xxxLayoutComponent -->
@@ -91,7 +94,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                 class="relative h-full w-full rounded border-2 border-green-400"
               >
                 <span
-                  class="bg-card absolute left-0 top-0 -mt-px ml-3 -translate-y-1/2 px-2 font-medium text-green-500"
+                  class="bg-card absolute top-0 left-0 -mt-px ml-3 -translate-y-1/2 px-2 font-medium text-green-500"
                   >Layout</span
                 >
 
@@ -99,7 +102,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                   <!-- Navigation -->
                   <div class="relative w-1/4 border-r-2 border-green-400">
                     <span
-                      class="absolute left-0 top-0 p-3 pl-6 font-medium text-green-700"
+                      class="absolute top-0 left-0 p-3 pl-6 font-medium text-green-700"
                       >Navigation</span
                     >
                   </div>
@@ -110,14 +113,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                       class="relative h-12 w-full border-b-2 border-green-400"
                     >
                       <span
-                        class="absolute left-0 top-0 p-3 pl-6 font-medium text-green-700"
+                        class="absolute top-0 left-0 p-3 pl-6 font-medium text-green-700"
                         >Header</span
                       >
                     </div>
                     <!-- Content -->
                     <div class="relative flex w-full flex-auto">
                       <span
-                        class="absolute left-0 top-0 p-3 pl-6 font-medium text-green-700"
+                        class="absolute top-0 left-0 p-3 pl-6 font-medium text-green-700"
                         >&lt;router-outlet&gt;</span
                       >
                     </div>
@@ -126,7 +129,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                       class="relative h-12 w-full border-t-2 border-green-400"
                     >
                       <span
-                        class="absolute left-0 top-0 p-3 pl-6 font-medium text-green-700"
+                        class="absolute top-0 left-0 p-3 pl-6 font-medium text-green-700"
                         >Footer</span
                       >
                     </div>
@@ -156,7 +159,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           To understand how <strong>LayoutComponent</strong> works, look at this
           portion of the <code>app.routing.ts</code> file:
         </p>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     // Admin routes
                     {
                     path       : '',

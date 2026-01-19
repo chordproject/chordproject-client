@@ -1,26 +1,32 @@
 <div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
   <!-- Header -->
   <div
-    class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+    class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
   >
     <!-- Title -->
     <div class="min-w-0 flex-1">
       <h2
-        class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+        class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
       >
         {{ board.title }}
       </h2>
     </div>
     <!-- Actions -->
-    <div class="mt-6 flex shrink-0 items-center sm:ml-4 sm:mt-0">
-      <a mat-stroked-button [routerLink]="['..']">
+    <div class="mt-6 flex shrink-0 items-center sm:mt-0 sm:ml-4">
+      <a
+        mat-stroked-button
+        [routerLink]="['..']"
+      >
         <mat-icon
-          class="icon-size-5"
+          class="size-5"
           [svgIcon]="'heroicons_solid:view-columns'"
         ></mat-icon>
         <span class="ml-2">Boards</span>
       </a>
-      <button class="ml-3" mat-stroked-button>
+      <button
+        class="ml-3"
+        mat-stroked-button
+      >
         <mat-icon [svgIcon]="'heroicons_solid:cog-8-tooth'"></mat-icon>
         <span class="ml-2">Settings</span>
       </button>
@@ -28,7 +34,10 @@
   </div>
 
   <!-- Main -->
-  <div class="flex-auto overflow-y-auto p-6 sm:p-8 sm:pt-4" cdkScrollable>
+  <div
+    class="flex-auto overflow-y-auto p-6 sm:p-8 sm:pt-4"
+    cdkScrollable
+  >
     <!-- Lists -->
     <div
       class="flex"
@@ -38,7 +47,10 @@
       (cdkDropListDropped)="listDropped($event)"
     >
       <!-- Group all cdkDropList's after this point together so that the cards can be transferred between lists -->
-      <div class="flex items-start" cdkDropListGroup>
+      <div
+        class="flex items-start"
+        cdkDropListGroup
+      >
         <!-- List -->
         @for (list of board.lists; track trackByFn($index, list)) {
           <div
@@ -46,12 +58,15 @@
             cdkDrag
             [cdkDragLockAxis]="'x'"
           >
-            <div class="flex items-center justify-between" cdkDragHandle>
+            <div
+              class="flex items-center justify-between"
+              cdkDragHandle
+            >
               <div
-                class="flex w-full cursor-text items-center rounded-md border border-transparent px-3 py-2 focus-within:border-primary focus-within:bg-white focus-within:shadow-sm dark:focus-within:bg-gray-900"
+                class="focus-within:border-primary flex w-full cursor-text items-center rounded-md border border-transparent px-3 py-2 focus-within:bg-white focus-within:shadow-sm dark:focus-within:bg-gray-900"
               >
                 <input
-                  class="w-full bg-transparent font-medium leading-5"
+                  class="w-full bg-transparent leading-5 font-medium"
                   [spellcheck]="'false'"
                   [value]="list.title"
                   (focusout)="updateListTitle($event, list)"
@@ -60,7 +75,7 @@
                 />
               </div>
               <div
-                class="text-muted ml-4 flex min-w-6 items-center justify-center rounded-full bg-gray-300 text-sm font-semibold leading-6 dark:bg-gray-700"
+                class="text-muted ml-4 flex min-w-6 items-center justify-center rounded-full bg-gray-300 text-sm leading-6 font-semibold dark:bg-gray-700"
               >
                 {{ list.cards.length }}
               </div>
@@ -75,13 +90,19 @@
                   ></mat-icon>
                 </button>
                 <mat-menu #listMenu="matMenu">
-                  <button mat-menu-item (click)="renameList(listTitleInput)">
+                  <button
+                    mat-menu-item
+                    (click)="renameList(listTitleInput)"
+                  >
                     <mat-icon
                       [svgIcon]="'heroicons_solid:pencil-square'"
                     ></mat-icon>
                     Rename list
                   </button>
-                  <button mat-menu-item (click)="deleteList(list.id)">
+                  <button
+                    mat-menu-item
+                    (click)="deleteList(list.id)"
+                  >
                     <mat-icon [svgIcon]="'heroicons_solid:trash'"></mat-icon>
                     Delete list
                   </button>
@@ -91,7 +112,7 @@
 
             <!-- Cards -->
             <div
-              class="mt-2 rounded-xl bg-gray-400 bg-opacity-12 dark:border dark:bg-transparent"
+              class="bg-opacity-12 mt-2 rounded-xl bg-gray-400 dark:border dark:bg-transparent"
             >
               <div
                 [id]="list.id"
@@ -117,7 +138,7 @@
                       </div>
                     }
                     <!-- Title -->
-                    <div class="text-lg font-medium leading-5">
+                    <div class="text-lg leading-5 font-medium">
                       {{ card.title }}
                     </div>
                     <!-- Labels -->
@@ -140,13 +161,13 @@
                     <!-- Due date -->
                     @if (card.dueDate) {
                       <div
-                        class="text-muted flex items-center rounded text-sm font-medium leading-5"
+                        class="text-muted flex items-center rounded text-sm leading-5 font-medium"
                         [ngClass]="{
                           'text-red-600': isOverdue(card.dueDate),
                         }"
                       >
                         <mat-icon
-                          class="text-current icon-size-4"
+                          class="size-4 text-current"
                           [svgIcon]="'heroicons_outline:clock'"
                         ></mat-icon>
                         <div class="ml-1">

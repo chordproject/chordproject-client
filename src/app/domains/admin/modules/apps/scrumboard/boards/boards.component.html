@@ -6,7 +6,7 @@
   <div class="flex flex-auto flex-col items-center p-6 sm:p-10">
     <!-- Title -->
     <div
-      class="mt-4 text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:mt-24 md:text-6xl"
+      class="md:text-6xl mt-4 text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:mt-24"
     >
       Scrumboard Boards
     </div>
@@ -21,12 +21,15 @@
           [routerLink]="[board.id]"
         >
           <div
-            class="flex items-center justify-center rounded-full bg-primary-50 p-4 text-primary-700 dark:bg-primary dark:text-on-primary"
+            class="dark:bg-primary dark:text-on-primary flex items-center justify-center rounded-full bg-primary-50 p-4 text-primary-700"
           >
-            <mat-icon class="text-current" [svgIcon]="board.icon"></mat-icon>
+            <mat-icon
+              class="text-current"
+              [svgIcon]="board.icon"
+            ></mat-icon>
           </div>
           <!-- Title -->
-          <div class="mt-5 text-lg font-medium leading-5">
+          <div class="mt-5 text-lg leading-5 font-medium">
             {{ board.title }}
           </div>
           <!-- Description -->
@@ -69,10 +72,10 @@
       }
       <!-- New board -->
       <div
-        class="flex w-56 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 transition-colors duration-150 ease-in-out hover:bg-hover"
+        class="hover:bg-hover flex w-56 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 transition-colors duration-150 ease-in-out"
       >
         <mat-icon
-          class="text-muted icon-size-12"
+          class="text-muted size-12"
           [svgIcon]="'heroicons_outline:plus'"
         ></mat-icon>
       </div>

@@ -26,7 +26,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -36,14 +36,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Fuse Components</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Components</span>
@@ -52,7 +52,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Alert
             </h2>
@@ -60,7 +60,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           <strong>fuse-alert</strong> is a customizable component for displaying
           all kinds of alerts across your app. They can be controlled from your
@@ -69,7 +69,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         <p><strong>Exported as: </strong><code>fuseAlert</code></p>
 
         <h2>Module</h2>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseAlertModule } from '@fuse/components/alert';
                 </textarea
         >
@@ -172,7 +175,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
 
         <h2>Type aliases</h2>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     export type FuseAlertAppearance =
                     | 'border'
                     | 'fill'
@@ -180,7 +186,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                     | 'soft';
                 </textarea
         >
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     export type FuseAlertType =
                     | 'primary'
                     | 'warn'
@@ -205,7 +214,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           </div>
 
           <mat-tab-group [animationDuration]="'0ms'">
-            <mat-tab label="Preview" class="bg-gray-200">
+            <mat-tab
+              label="Preview"
+              class="bg-gray-200"
+            >
               <ng-template matTabContent>
                 <!-- Primary -->
                 <fuse-alert [type]="'primary'">
@@ -252,7 +264,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
 
                                 <!-- Primary -->
                                 <fuse-alert [type]="'primary'">
@@ -312,43 +327,64 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             <mat-tab label="Preview">
               <ng-template matTabContent>
                 <!-- Primary -->
-                <fuse-alert [type]="'primary'" [appearance]="'outline'">
+                <fuse-alert
+                  [type]="'primary'"
+                  [appearance]="'outline'"
+                >
                   <span fuseAlertTitle>Primary alert</span>
                   Thank you for joining our newsletter
                 </fuse-alert>
 
                 <!-- Warn -->
-                <fuse-alert [type]="'warn'" [appearance]="'outline'">
+                <fuse-alert
+                  [type]="'warn'"
+                  [appearance]="'outline'"
+                >
                   <span fuseAlertTitle>Warn alert</span>
                   Fill all required fields to proceed next step
                 </fuse-alert>
 
                 <!-- Basic -->
-                <fuse-alert [type]="'basic'" [appearance]="'outline'">
+                <fuse-alert
+                  [type]="'basic'"
+                  [appearance]="'outline'"
+                >
                   <span fuseAlertTitle>Basic alert</span>
                   You have 3 new notifications
                 </fuse-alert>
 
                 <!-- Info -->
-                <fuse-alert [type]="'info'" [appearance]="'outline'">
+                <fuse-alert
+                  [type]="'info'"
+                  [appearance]="'outline'"
+                >
                   <span fuseAlertTitle>Info alert</span>
                   This is a alert with an 'info' level severity
                 </fuse-alert>
 
                 <!-- Success -->
-                <fuse-alert [type]="'success'" [appearance]="'outline'">
+                <fuse-alert
+                  [type]="'success'"
+                  [appearance]="'outline'"
+                >
                   <span fuseAlertTitle>Success alert</span>
                   This is a alert with a 'success' level severity
                 </fuse-alert>
 
                 <!-- Warning -->
-                <fuse-alert [type]="'warning'" [appearance]="'outline'">
+                <fuse-alert
+                  [type]="'warning'"
+                  [appearance]="'outline'"
+                >
                   <span fuseAlertTitle>Warning alert</span>
                   This is a alert with a 'warning' level severity
                 </fuse-alert>
 
                 <!-- Error -->
-                <fuse-alert [type]="'error'" [appearance]="'outline'">
+                <fuse-alert
+                  [type]="'error'"
+                  [appearance]="'outline'"
+                >
                   <span fuseAlertTitle>Error alert</span>
                   This is a alert with an 'error' level severity
                 </fuse-alert>
@@ -356,7 +392,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
 
                                 <!-- Primary -->
                                 <fuse-alert
@@ -429,43 +468,64 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             <mat-tab label="Preview">
               <ng-template matTabContent>
                 <!-- Primary -->
-                <fuse-alert [type]="'primary'" [appearance]="'fill'">
+                <fuse-alert
+                  [type]="'primary'"
+                  [appearance]="'fill'"
+                >
                   <span fuseAlertTitle>Primary alert</span>
                   Thank you for joining our newsletter
                 </fuse-alert>
 
                 <!-- Warn -->
-                <fuse-alert [type]="'warn'" [appearance]="'fill'">
+                <fuse-alert
+                  [type]="'warn'"
+                  [appearance]="'fill'"
+                >
                   <span fuseAlertTitle>Warn alert</span>
                   Fill all required fields to proceed next step
                 </fuse-alert>
 
                 <!-- Basic -->
-                <fuse-alert [type]="'basic'" [appearance]="'fill'">
+                <fuse-alert
+                  [type]="'basic'"
+                  [appearance]="'fill'"
+                >
                   <span fuseAlertTitle>Basic alert</span>
                   You have 3 new notifications
                 </fuse-alert>
 
                 <!-- Info -->
-                <fuse-alert [type]="'info'" [appearance]="'fill'">
+                <fuse-alert
+                  [type]="'info'"
+                  [appearance]="'fill'"
+                >
                   <span fuseAlertTitle>Info alert</span>
                   This is a alert with an 'info' level severity
                 </fuse-alert>
 
                 <!-- Success -->
-                <fuse-alert [type]="'success'" [appearance]="'fill'">
+                <fuse-alert
+                  [type]="'success'"
+                  [appearance]="'fill'"
+                >
                   <span fuseAlertTitle>Success alert</span>
                   This is a alert with a 'success' level severity
                 </fuse-alert>
 
                 <!-- Warning -->
-                <fuse-alert [type]="'warning'" [appearance]="'fill'">
+                <fuse-alert
+                  [type]="'warning'"
+                  [appearance]="'fill'"
+                >
                   <span fuseAlertTitle>Warning alert</span>
                   This is a alert with a 'warning' level severity
                 </fuse-alert>
 
                 <!-- Error -->
-                <fuse-alert [type]="'error'" [appearance]="'fill'">
+                <fuse-alert
+                  [type]="'error'"
+                  [appearance]="'fill'"
+                >
                   <span fuseAlertTitle>Error alert</span>
                   This is a alert with an 'error' level severity
                 </fuse-alert>
@@ -473,7 +533,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
 
                                 <!-- Primary -->
                                 <fuse-alert
@@ -545,43 +608,64 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             <mat-tab label="Preview">
               <ng-template matTabContent>
                 <!-- Primary -->
-                <fuse-alert [type]="'primary'" [appearance]="'border'">
+                <fuse-alert
+                  [type]="'primary'"
+                  [appearance]="'border'"
+                >
                   <span fuseAlertTitle>Primary alert</span>
                   Thank you for joining our newsletter
                 </fuse-alert>
 
                 <!-- Warn -->
-                <fuse-alert [type]="'warn'" [appearance]="'border'">
+                <fuse-alert
+                  [type]="'warn'"
+                  [appearance]="'border'"
+                >
                   <span fuseAlertTitle>Warn alert</span>
                   Fill all required fields to proceed next step
                 </fuse-alert>
 
                 <!-- Basic -->
-                <fuse-alert [type]="'basic'" [appearance]="'border'">
+                <fuse-alert
+                  [type]="'basic'"
+                  [appearance]="'border'"
+                >
                   <span fuseAlertTitle>Basic alert</span>
                   You have 3 new notifications
                 </fuse-alert>
 
                 <!-- Info -->
-                <fuse-alert [type]="'info'" [appearance]="'border'">
+                <fuse-alert
+                  [type]="'info'"
+                  [appearance]="'border'"
+                >
                   <span fuseAlertTitle>Info alert</span>
                   This is a alert with an 'info' level severity
                 </fuse-alert>
 
                 <!-- Success -->
-                <fuse-alert [type]="'success'" [appearance]="'border'">
+                <fuse-alert
+                  [type]="'success'"
+                  [appearance]="'border'"
+                >
                   <span fuseAlertTitle>Success alert</span>
                   This is a alert with a 'success' level severity
                 </fuse-alert>
 
                 <!-- Warning -->
-                <fuse-alert [type]="'warning'" [appearance]="'border'">
+                <fuse-alert
+                  [type]="'warning'"
+                  [appearance]="'border'"
+                >
                   <span fuseAlertTitle>Warning alert</span>
                   This is a alert with a 'warning' level severity
                 </fuse-alert>
 
                 <!-- Error -->
-                <fuse-alert [type]="'error'" [appearance]="'border'">
+                <fuse-alert
+                  [type]="'error'"
+                  [appearance]="'border'"
+                >
                   <span fuseAlertTitle>Error alert</span>
                   This is a alert with an 'error' level severity
                 </fuse-alert>
@@ -589,7 +673,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <!-- Primary -->
                                 <fuse-alert
                                 [type]="'primary'"
@@ -665,23 +752,35 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <mat-tab-group [animationDuration]="'0ms'">
             <mat-tab label="Preview">
               <ng-template matTabContent>
-                <fuse-alert [appearance]="'soft'" [type]="'info'">
+                <fuse-alert
+                  [appearance]="'soft'"
+                  [type]="'info'"
+                >
                   <span fuseAlertTitle>Alert title</span>
                   This is the alert content
                 </fuse-alert>
 
-                <fuse-alert [appearance]="'soft'" [type]="'info'">
+                <fuse-alert
+                  [appearance]="'soft'"
+                  [type]="'info'"
+                >
                   <span fuseAlertTitle>Alert title without any content</span>
                 </fuse-alert>
 
-                <fuse-alert [appearance]="'soft'" [type]="'info'">
+                <fuse-alert
+                  [appearance]="'soft'"
+                  [type]="'info'"
+                >
                   Simple alert without a title
                 </fuse-alert>
               </ng-template>
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <fuse-alert
                                 [appearance]="'soft'"
                                 [type]="'info'">
@@ -733,7 +832,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <fuse-alert
                                 [appearance]="'soft'"
                                 [type]="'success'"
@@ -762,10 +864,13 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <mat-tab-group [animationDuration]="'0ms'">
             <mat-tab label="Preview">
               <ng-template matTabContent>
-                <fuse-alert [appearance]="'soft'" [type]="'info'">
+                <fuse-alert
+                  [appearance]="'soft'"
+                  [type]="'info'"
+                >
                   <mat-icon
                     fuseAlertIcon
-                    class="icon-size-5"
+                    class="size-5"
                     [svgIcon]="'heroicons_solid:lock-open'"
                   ></mat-icon>
                   Info alert with a custom icon
@@ -774,11 +879,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <fuse-alert
                                 [appearance]="'soft'"
                                 [type]="'info'">
-                                <mat-icon class="icon-size-5"
+                                <mat-icon class="size-5"
                                 fuseAlertIcon
                                 [svgIcon]="'heroicons_solid:lock-open'">
                                 </mat-icon>
@@ -803,7 +911,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         <div class="example-viewer">
           <div class="title">
             <h6>Example</h6>
-            <button mat-button (click)="show('alertBox1'); show('alertBox2')">
+            <button
+              mat-button
+              (click)="show('alertBox1'); show('alertBox2')"
+            >
               Reset
             </button>
           </div>
@@ -838,7 +949,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <fuse-alert
                                 [appearance]="'soft'"
                                 [dismissible]="true"
@@ -919,7 +1033,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <button
                                 class="mr-3"
                                 mat-flat-button
@@ -956,7 +1073,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="Typescript">
-              <textarea fuse-highlight [lang]="'typescript'">
+              <textarea
+                fuse-highlight
+                [lang]="'typescript'"
+              >
 
                                 private _fuseAlertService = inject(FuseAlertService);
 
@@ -1001,7 +1121,6 @@ export default class Alert {
 
   /**
    * Dismiss the alert via the service
-   *
    * @param name
    */
   dismiss(name: string): void {
@@ -1011,7 +1130,6 @@ export default class Alert {
 
   /**
    * Show the alert via the service
-   *
    * @param name
    */
   show(name: string): void {

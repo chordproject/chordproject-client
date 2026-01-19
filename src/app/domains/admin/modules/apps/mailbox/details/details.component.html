@@ -6,10 +6,14 @@
     <div class="relative z-10 flex w-full flex-0 flex-col border-b">
       <!-- Toolbar -->
       <div
-        class="flex min-h-16 items-center border-b bg-gray-50 px-4 dark:bg-transparent md:px-6"
+        class="flex min-h-16 items-center border-b bg-gray-50 px-4 md:px-6 dark:bg-transparent"
       >
         <!-- Back button -->
-        <a class="md:-ml-2 lg:hidden" mat-icon-button [routerLink]="['./../']">
+        <a
+          class="md:-ml-2 lg:hidden"
+          mat-icon-button
+          [routerLink]="['./../']"
+        >
           <mat-icon [svgIcon]="'heroicons_outline:arrow-long-left'"></mat-icon>
         </a>
 
@@ -23,7 +27,11 @@
         </button>
         <mat-menu #toggleLabelMenu="matMenu">
           @for (label of labels; track trackByFn($index, label)) {
-            <div mat-menu-item (click)="toggleLabel(label)" matRipple>
+            <div
+              mat-menu-item
+              (click)="toggleLabel(label)"
+              matRipple
+            >
               <mat-checkbox
                 class="pointer-events-none"
                 [checked]="mail.labels.includes(label.id)"
@@ -36,7 +44,11 @@
         </mat-menu>
 
         <!-- Toggle important button -->
-        <button class="ml-2" mat-icon-button (click)="toggleImportant()">
+        <button
+          class="ml-2"
+          mat-icon-button
+          (click)="toggleImportant()"
+        >
           <mat-icon
             [ngClass]="{
               'text-red-600 dark:text-red-500': mail.important,
@@ -46,7 +58,11 @@
         </button>
 
         <!-- Toggle starred button -->
-        <button class="ml-2" mat-icon-button (click)="toggleStar()">
+        <button
+          class="ml-2"
+          mat-icon-button
+          (click)="toggleStar()"
+        >
           <mat-icon
             [ngClass]="{
               'text-orange-500 dark:text-red-400': mail.starred,
@@ -56,7 +72,11 @@
         </button>
 
         <!-- Other actions button & menu -->
-        <button class="ml-2" mat-icon-button [matMenuTriggerFor]="mailMenu">
+        <button
+          class="ml-2"
+          mat-icon-button
+          [matMenuTriggerFor]="mailMenu"
+        >
           <mat-icon
             [svgIcon]="'heroicons_outline:ellipsis-vertical'"
           ></mat-icon>
@@ -64,7 +84,10 @@
         <mat-menu #mailMenu="matMenu">
           <!-- Mark as read / unread -->
           @if (mail.unread) {
-            <button mat-menu-item (click)="toggleUnread(false)">
+            <button
+              mat-menu-item
+              (click)="toggleUnread(false)"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_outline:envelope-open'"
               ></mat-icon>
@@ -72,7 +95,10 @@
             </button>
           }
           @if (!mail.unread) {
-            <button mat-menu-item (click)="toggleUnread(true)">
+            <button
+              mat-menu-item
+              (click)="toggleUnread(true)"
+            >
               <mat-icon [svgIcon]="'heroicons_outline:envelope'"></mat-icon>
               <span>Mark as unread</span>
             </button>
@@ -81,7 +107,10 @@
           @if (
             getCurrentFolder() !== 'spam' && getCurrentFolder() !== 'drafts'
           ) {
-            <button mat-menu-item (click)="moveToFolder('spam')">
+            <button
+              mat-menu-item
+              (click)="moveToFolder('spam')"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_outline:exclamation-triangle'"
               ></mat-icon>
@@ -89,7 +118,10 @@
             </button>
           }
           @if (getCurrentFolder() === 'spam') {
-            <button mat-menu-item (click)="moveToFolder('inbox')">
+            <button
+              mat-menu-item
+              (click)="moveToFolder('inbox')"
+            >
               <mat-icon
                 [svgIcon]="'heroicons_outline:exclamation-triangle'"
               ></mat-icon>
@@ -98,7 +130,10 @@
           }
           <!-- Delete -->
           @if (getCurrentFolder() !== 'trash') {
-            <button mat-menu-item (click)="moveToFolder('trash')">
+            <button
+              mat-menu-item
+              (click)="moveToFolder('trash')"
+            >
               <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
               <span>Delete</span>
             </button>
@@ -120,7 +155,7 @@
               track label
             ) {
               <div
-                class="m-1 whitespace-nowrap rounded-full px-2.5 py-0.5 text-sm font-medium"
+                class="m-1 rounded-full px-2.5 py-0.5 text-sm font-medium whitespace-nowrap"
                 [ngClass]="labelColors[label.color].combined"
               >
                 {{ label.title }}
@@ -133,12 +168,12 @@
 
     <!-- Threads -->
     <div
-      class="flex flex-auto shrink-0 flex-col bg-gray-100 p-3 dark:bg-transparent lg:shrink lg:overflow-y-auto"
+      class="flex flex-auto shrink-0 flex-col bg-gray-100 p-3 lg:shrink lg:overflow-y-auto dark:bg-transparent"
       fuseScrollReset
     >
       <!-- Thread -->
       <div
-        class="bg-card flex w-full flex-0 flex-col overflow-hidden rounded-2xl shadow dark:bg-black dark:bg-opacity-10"
+        class="bg-card dark:bg-opacity-10 flex w-full flex-0 flex-col overflow-hidden rounded-2xl shadow dark:bg-black"
       >
         <div class="flex flex-col px-6 py-8">
           <!-- Header -->
@@ -201,14 +236,14 @@
                     <!-- From -->
                     <div class="flex">
                       <div class="min-w-14 text-right font-medium">from:</div>
-                      <div class="whitespace-pre-wrap pl-2">
+                      <div class="pl-2 whitespace-pre-wrap">
                         {{ mail.from.contact }}
                       </div>
                     </div>
                     <!-- To -->
                     <div class="flex">
                       <div class="min-w-14 text-right font-medium">to:</div>
-                      <div class="whitespace-pre-wrap pl-2">
+                      <div class="pl-2 whitespace-pre-wrap">
                         {{ mail.to }}
                       </div>
                     </div>
@@ -216,7 +251,7 @@
                     @if (mail.cc) {
                       <div class="flex">
                         <div class="min-w-14 text-right font-medium">cc:</div>
-                        <div class="whitespace-pre-wrap pl-2">
+                        <div class="pl-2 whitespace-pre-wrap">
                           {{ mail.cc.join(',\n') }}
                         </div>
                       </div>
@@ -225,7 +260,7 @@
                     @if (mail.bcc) {
                       <div class="flex">
                         <div class="min-w-14 text-right font-medium">bcc:</div>
-                        <div class="whitespace-pre-wrap pl-2">
+                        <div class="pl-2 whitespace-pre-wrap">
                           {{ mail.bcc.join(',\n') }}
                         </div>
                       </div>
@@ -233,7 +268,7 @@
                     <!-- Date -->
                     <div class="flex">
                       <div class="min-w-14 text-right font-medium">date:</div>
-                      <div class="whitespace-pre-wrap pl-2">
+                      <div class="pl-2 whitespace-pre-wrap">
                         {{ mail.date | date: 'EEEE, MMMM d, y - hh:mm a' }}
                       </div>
                     </div>
@@ -242,7 +277,7 @@
                       <div class="min-w-14 text-right font-medium">
                         subject:
                       </div>
-                      <div class="whitespace-pre-wrap pl-2">
+                      <div class="pl-2 whitespace-pre-wrap">
                         {{ mail.subject }}
                       </div>
                     </div>
@@ -254,7 +289,7 @@
 
           <!-- Content -->
           <div
-            class="mt-8 flex whitespace-pre-line leading-relaxed"
+            class="leading-relaxed mt-8 flex whitespace-pre-line"
             [innerHTML]="mail.content"
           ></div>
 
@@ -264,7 +299,7 @@
               <!-- Title -->
               <div class="mt-12 flex items-center">
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   [svgIcon]="'heroicons_solid:paper-clip'"
                 ></mat-icon>
                 <div class="ml-2 font-semibold">
@@ -325,21 +360,33 @@
           @if (!replyFormActive) {
             <div class="-m-2 flex w-full flex-wrap">
               <!-- Reply -->
-              <button class="m-2" mat-stroked-button (click)="reply()">
+              <button
+                class="m-2"
+                mat-stroked-button
+                (click)="reply()"
+              >
                 <mat-icon
                   [svgIcon]="'heroicons_solid:arrow-uturn-left'"
                 ></mat-icon>
                 <span class="ml-2">Reply</span>
               </button>
               <!-- Reply all -->
-              <button class="m-2" mat-stroked-button (click)="replyAll()">
+              <button
+                class="m-2"
+                mat-stroked-button
+                (click)="replyAll()"
+              >
                 <mat-icon
                   [svgIcon]="'heroicons_solid:arrow-uturn-left'"
                 ></mat-icon>
                 <span class="ml-2">Reply All</span>
               </button>
               <!-- Forward -->
-              <button class="m-2" mat-stroked-button (click)="forward()">
+              <button
+                class="m-2"
+                mat-stroked-button
+                (click)="forward()"
+              >
                 <mat-icon
                   [svgIcon]="'heroicons_solid:chevron-double-right'"
                 ></mat-icon>
@@ -350,7 +397,10 @@
 
           <!-- Reply form -->
           @if (replyFormActive) {
-            <div class="flex w-full flex-col" #replyForm>
+            <div
+              class="flex w-full flex-col"
+              #replyForm
+            >
               <mat-form-field [subscriptSizing]="'dynamic'">
                 <textarea
                   class="textarea"
@@ -396,7 +446,11 @@
                     Discard
                   </button>
                   <!-- Send -->
-                  <button class="sm:ml-3" mat-flat-button (click)="send()">
+                  <button
+                    class="sm:ml-3"
+                    mat-flat-button
+                    (click)="send()"
+                  >
                     Send
                   </button>
                 </div>
@@ -411,7 +465,7 @@
       class="flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent"
     >
       <mat-icon
-        class="icon-size-24"
+        class="size-24"
         [svgIcon]="'heroicons_outline:envelope'"
       ></mat-icon>
       <div class="text-muted mt-4 text-2xl font-semibold tracking-tight">

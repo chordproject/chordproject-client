@@ -269,11 +269,6 @@ const routes: Routes = [
                       import('./components/fuse/components/card'),
                   },
                   {
-                    path: 'drawer',
-                    loadComponent: () =>
-                      import('./components/fuse/components/drawer'),
-                  },
-                  {
                     path: 'fullscreen',
                     loadComponent: () =>
                       import('./components/fuse/components/fullscreen'),

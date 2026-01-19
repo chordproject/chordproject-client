@@ -1,8 +1,8 @@
 <div
-  class="fixed bottom-0 top-0 w-full sm:w-96 lg:sticky lg:left-full lg:h-screen lg:w-16 lg:shadow"
+  class="fixed top-0 bottom-0 w-full sm:w-96 lg:sticky lg:left-full lg:h-screen lg:w-16 lg:shadow"
 >
   <div
-    class="bg-card flex h-full w-full flex-col transition-transform duration-400 ease-drawer sm:w-96"
+    class="bg-card ease-drawer flex h-full w-full flex-col transition-transform duration-400 sm:w-96"
     [ngClass]="{
       '-translate-x-full shadow sm:-translate-x-96 lg:-translate-x-80': opened,
       'translate-x-0': !opened,
@@ -18,12 +18,15 @@
         <div class="flex flex-auto items-center justify-center">
           <div class="flex w-16 flex-0 items-center justify-center">
             <mat-icon
-              class="icon-size-6"
+              class="size-6"
               [svgIcon]="'heroicons_outline:chat-bubble-left-right'"
             ></mat-icon>
           </div>
           <div class="text-muted text-lg font-medium">Team Chat</div>
-          <button class="ml-auto mr-4" mat-icon-button>
+          <button
+            class="mr-4 ml-auto"
+            mat-icon-button
+          >
             <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
           </button>
         </div>
@@ -44,16 +47,19 @@
             }
             @if (!chat.contact.avatar) {
               <div
-                class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg uppercase text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg text-gray-600 uppercase dark:bg-gray-700 dark:text-gray-200"
               >
                 {{ chat.contact.name.charAt(0) }}
               </div>
             }
           </div>
-          <div class="ml-4 truncate text-lg font-medium leading-5">
+          <div class="ml-4 truncate text-lg leading-5 font-medium">
             {{ chat.contact.name }}
           </div>
-          <button class="ml-auto mr-4" mat-icon-button>
+          <button
+            class="mr-4 ml-auto"
+            mat-icon-button
+          >
             <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
           </button>
         </div>
@@ -75,7 +81,7 @@
               [ngClass]="{
                 'hover:bg-gray-100':
                   !selectedChat || selectedChat.id !== chat.id,
-                'bg-primary-50 dark:bg-hover':
+                'dark:bg-hover bg-primary-50':
                   selectedChat && selectedChat.id === chat.id,
               }"
               (click)="selectChat(chat.id)"
@@ -85,7 +91,7 @@
               >
                 @if (chat.unreadCount > 0) {
                   <div
-                    class="ring-bg-card absolute bottom-0 right-0 -ml-0.5 h-2 w-2 flex-0 rounded-full bg-primary text-on-primary ring-2 dark:bg-primary-500 dark:ring-gray-900"
+                    class="ring-bg-card bg-primary text-on-primary absolute right-0 bottom-0 -ml-0.5 h-2 w-2 flex-0 rounded-full ring-2 dark:bg-primary-500 dark:ring-gray-900"
                     [class.ring-primary-50]="
                       selectedChat && selectedChat.id === chat.id
                     "
@@ -100,7 +106,7 @@
                 }
                 @if (!chat.contact.avatar) {
                   <div
-                    class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg uppercase text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                    class="flex h-full w-full items-center justify-center rounded-full bg-gray-200 text-lg text-gray-600 uppercase dark:bg-gray-700 dark:text-gray-200"
                   >
                     {{ chat.contact.name.charAt(0) }}
                   </div>
@@ -136,7 +142,7 @@
                   <div class="-mx-6 my-3 flex items-center justify-center">
                     <div class="flex-auto border-b"></div>
                     <div
-                      class="text-muted mx-4 flex-0 text-sm font-medium leading-5"
+                      class="text-muted mx-4 flex-0 text-sm leading-5 font-medium"
                     >
                       {{ message.createdAt | date: 'longDate' }}
                     </div>
@@ -170,7 +176,7 @@
                         class="absolute bottom-0 w-3"
                         [ngClass]="{
                           '-right-1 -mr-px mb-px text-blue-500': message.isMine,
-                          '-left-1 -ml-px mb-px -scale-x-1 text-gray-500':
+                          '-left-1 mb-px -ml-px -scale-x-1 text-gray-500':
                             !message.isMine,
                         }"
                       >
@@ -215,7 +221,11 @@
               class="fuse-mat-dense fuse-mat-rounded fuse-mat-bold w-full"
               [subscriptSizing]="'dynamic'"
             >
-              <textarea matInput cdkTextareaAutosize #messageInput></textarea>
+              <textarea
+                matInput
+                cdkTextareaAutosize
+                #messageInput
+              ></textarea>
             </mat-form-field>
             <div class="my-px ml-4 flex h-11 items-center">
               <button mat-icon-button>
@@ -230,7 +240,7 @@
             class="flex h-full w-full flex-auto flex-col items-center justify-center p-4"
           >
             <mat-icon
-              class="icon-size-24"
+              class="size-24"
               [svgIcon]="'heroicons_outline:chat-bubble-bottom-center-text'"
             ></mat-icon>
             <div

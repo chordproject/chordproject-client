@@ -2,7 +2,7 @@
   <!-- Mails list -->
   @if (mails && mails.length > 0) {
     <div
-      class="relative z-10 flex w-full min-w-0 flex-auto flex-col border-r lg:min-w-90 lg:max-w-90"
+      class="relative z-10 flex w-full min-w-0 flex-auto flex-col border-r lg:max-w-90 lg:min-w-90"
     >
       <!-- Header -->
       <div
@@ -10,7 +10,10 @@
       >
         <div class="flex items-center">
           <!-- Sidebar toggle button -->
-          <button mat-icon-button (click)="mailboxComponent.drawer.toggle()">
+          <button
+            mat-icon-button
+            (click)="mailboxComponent.drawer.toggle()"
+          >
             <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
           </button>
           <!-- Category name -->
@@ -40,7 +43,7 @@
             ]"
           >
             <mat-icon
-              class="icon-size-5"
+              class="size-5"
               [svgIcon]="'heroicons_solid:chevron-left'"
             ></mat-icon>
           </a>
@@ -57,7 +60,7 @@
             ]"
           >
             <mat-icon
-              class="icon-size-5"
+              class="size-5"
               [svgIcon]="'heroicons_solid:chevron-right'"
             ></mat-icon>
           </a>
@@ -73,21 +76,24 @@
       </div>
 
       <!-- Mail list -->
-      <div class="overflow-y-auto" #mailList>
+      <div
+        class="overflow-y-auto"
+        #mailList
+      >
         <!-- Item loop -->
         @for (mail of mails; track trackByFn(i, mail); let i = $index) {
           <!-- Item -->
           <a
-            class="relative flex border-t hover:bg-hover first:border-0"
+            class="hover:bg-hover relative flex border-t first:border-0"
             [routerLink]="[mail.id]"
             (click)="onMailSelected(mail)"
           >
             <!-- Item content -->
             <div
-              class="flex w-full flex-col items-start justify-start border-l-4 border-transparent py-6 pl-5 pr-4"
+              class="flex w-full flex-col items-start justify-start border-l-4 border-transparent py-6 pr-4 pl-5"
               [ngClass]="{
                 'border-primary': mail.unread,
-                'bg-primary-50 dark:bg-black dark:bg-opacity-5':
+                'dark:bg-opacity-5 bg-primary-50 dark:bg-black':
                   selectedMail && selectedMail.id === mail.id,
               }"
             >
@@ -100,12 +106,12 @@
                 <!-- Important indicator -->
                 @if (mail.important) {
                   <mat-icon
-                    class="mr-3 text-red-500 icon-size-4 dark:text-red-600"
+                    class="mr-3 size-4 text-red-500 dark:text-red-600"
                     [svgIcon]="'heroicons_solid:exclamation-circle'"
                   ></mat-icon>
                 }
                 <!-- Date -->
-                <div class="text-muted ml-auto whitespace-nowrap text-right">
+                <div class="text-muted ml-auto text-right whitespace-nowrap">
                   {{ mail.date | date: 'LLL dd' }}
                 </div>
               </div>
@@ -122,14 +128,14 @@
                     <!-- Attachments -->
                     @if (mail.attachments && mail.attachments.length > 0) {
                       <mat-icon
-                        class="flex justify-center icon-size-4"
+                        class="flex size-4 justify-center"
                         [svgIcon]="'heroicons_solid:paper-clip'"
                       ></mat-icon>
                     }
                     <!-- Starred -->
                     @if (mail.starred) {
                       <mat-icon
-                        class="ml-1 flex justify-center text-orange-500 icon-size-4 dark:text-orange-400"
+                        class="ml-1 flex size-4 justify-center text-orange-500 dark:text-orange-400"
                         [svgIcon]="'heroicons_solid:star'"
                       ></mat-icon>
                     }
@@ -138,7 +144,7 @@
               </div>
 
               <!-- Excerpt -->
-              <div class="text-muted mt-2 line-clamp-2 leading-normal">
+              <div class="text-muted leading-normal mt-2 line-clamp-2">
                 {{ mail.content }}...
               </div>
             </div>
@@ -148,10 +154,10 @@
     </div>
   } @else {
     <div
-      class="z-100 absolute inset-0 flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent"
+      class="absolute inset-0 z-100 flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent"
     >
       <mat-icon
-        class="icon-size-24"
+        class="size-24"
         [svgIcon]="'heroicons_outline:envelope'"
       ></mat-icon>
       <div class="text-muted mt-4 text-2xl font-semibold tracking-tight">

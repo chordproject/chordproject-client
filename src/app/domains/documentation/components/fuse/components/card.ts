@@ -19,7 +19,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
     <div class="flex min-w-0 flex-auto flex-col">
       <!-- Header -->
       <div
-        class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+        class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
       >
         <div class="min-w-0 flex-1">
           <!-- Breadcrumbs -->
@@ -29,14 +29,14 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <a class="ml-1 text-primary-500">Fuse Components</a>
             </div>
             <div class="ml-1 flex items-center whitespace-nowrap">
               <mat-icon
-                class="text-muted icon-size-5"
+                class="text-muted size-5"
                 [svgIcon]="'heroicons_mini:chevron-right'"
               ></mat-icon>
               <span class="text-muted ml-1">Components</span>
@@ -45,7 +45,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
           <!-- Title -->
           <div class="mt-2">
             <h2
-              class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+              class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
             >
               Card
             </h2>
@@ -53,7 +53,7 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         </div>
       </div>
 
-      <div class="prose prose-sm max-w-3xl flex-auto p-6 sm:p-10">
+      <div class="prose-sm prose max-w-3xl flex-auto p-6 sm:p-10">
         <p>
           <strong>fuse-card</strong> is a basic card component to show any kind
           of information or content with features like flipping and expanding.
@@ -61,7 +61,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
         <p><strong>Exported as: </strong><code>fuseCard</code></p>
 
         <h2>Module</h2>
-        <textarea fuse-highlight lang="typescript">
+        <textarea
+          fuse-highlight
+          lang="typescript"
+        >
                     import { FuseCardModule } from '@fuse/components/card';
                 </textarea
         >
@@ -145,7 +148,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <fuse-card>
                                 This content is in the card and it doesn't have any style applied to it!
                                 </fuse-card>
@@ -172,7 +178,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
               <ng-template matTabContent>
                 <div class="bg-gray-100 p-4">
                   <div class="mx-auto max-w-80">
-                    <fuse-card class="flex flex-col px-8 py-6 pb-4" #fuseCard>
+                    <fuse-card
+                      class="flex flex-col px-8 py-6 pb-4"
+                      #fuseCard
+                    >
                       <div class="text-lg font-bold">Title of the card</div>
                       <div class="mt-2">
                         A paragraph, an image, a form or simply anything can go
@@ -187,13 +196,13 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                           <span class="mr-1">Details</span>
                           @if (!fuseCard.expanded) {
                             <mat-icon
-                              class="icon-size-5"
+                              class="size-5"
                               [svgIcon]="'heroicons_solid:chevron-down'"
                             ></mat-icon>
                           }
                           @if (fuseCard.expanded) {
                             <mat-icon
-                              class="icon-size-5"
+                              class="size-5"
                               [svgIcon]="'heroicons_solid:chevron-up'"
                             ></mat-icon>
                           }
@@ -213,7 +222,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <fuse-card
                                 class="flex flex-col px-8 py-6 pb-4"
                                 #fuseCard>
@@ -228,11 +240,11 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
                                 (click)="fuseCard.expanded = !fuseCard.expanded">
                                 <span class="mr-1">Details</span>
                                 <mat-icon
-                                class="icon-size-5"
+                                class="size-5"
                                 *ngIf="!fuseCard.expanded"
                                 [svgIcon]="'heroicons_solid:chevron-down'"></mat-icon>
                                 <mat-icon
-                                class="icon-size-5"
+                                class="size-5"
                                 *ngIf="fuseCard.expanded"
                                 [svgIcon]="'heroicons_solid:chevron-up'"></mat-icon>
                                 </button>
@@ -329,7 +341,10 @@ import { FuseHighlightComponent } from '@fuse/components/highlight';
             </mat-tab>
 
             <mat-tab label="HTML">
-              <textarea fuse-highlight [lang]="'html'">
+              <textarea
+                fuse-highlight
+                [lang]="'html'"
+              >
                                 <fuse-card
                                 class="flex flex-col"
                                 [flippable]="true"

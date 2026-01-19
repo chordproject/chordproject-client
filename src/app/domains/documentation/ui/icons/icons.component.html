@@ -1,7 +1,7 @@
 <div class="flex min-w-0 flex-auto flex-col">
   <!-- Header -->
   <div
-    class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+    class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
   >
     <div class="min-w-0 flex-1">
       <!-- Breadcrumbs -->
@@ -11,7 +11,7 @@
         </div>
         <div class="ml-1 flex items-center whitespace-nowrap">
           <mat-icon
-            class="text-muted icon-size-5"
+            class="text-muted size-5"
             [svgIcon]="'heroicons_mini:chevron-right'"
           ></mat-icon>
           <a class="ml-1 text-primary-500">Icons</a>
@@ -20,7 +20,7 @@
       <!-- Title -->
       <div class="mt-2">
         <h2
-          class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+          class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
         >
           @if (icons$ | async; as icons) {
             <h1>{{ icons.name }}</h1>
@@ -32,7 +32,7 @@
 
   <!-- Main -->
   <div class="flex-auto p-6 sm:p-10">
-    <div class="prose prose-sm max-w-5xl">
+    <div class="prose-sm prose max-w-5xl">
       <h2>Usage</h2>
       @if (filteredIcons$ | async; as icons) {
         <textarea
@@ -57,13 +57,13 @@
         <mat-form-field class="xs:ml-0 ml-8 min-w-40">
           <mat-label>Icon size</mat-label>
           <mat-select [(ngModel)]="iconSize">
-            <mat-option [value]="'icon-size-4'">16</mat-option>
-            <mat-option [value]="'icon-size-5'">20</mat-option>
-            <mat-option [value]="'icon-size-6'">24</mat-option>
-            <mat-option [value]="'icon-size-8'">32</mat-option>
-            <mat-option [value]="'icon-size-10'">40</mat-option>
-            <mat-option [value]="'icon-size-12'">48</mat-option>
-            <mat-option [value]="'icon-size-16'">64</mat-option>
+            <mat-option [value]="'size-4'">16</mat-option>
+            <mat-option [value]="'size-5'">20</mat-option>
+            <mat-option [value]="'size-6'">24</mat-option>
+            <mat-option [value]="'size-8'">32</mat-option>
+            <mat-option [value]="'size-10'">40</mat-option>
+            <mat-option [value]="'size-12'">48</mat-option>
+            <mat-option [value]="'size-16'">64</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -72,7 +72,7 @@
         @if (filteredIcons$ | async; as icons) {
           @for (icon of icons.list; track icon) {
             <div
-              class="bg-card m-4 flex max-h-30 min-h-30 min-w-36 max-w-36 cursor-pointer flex-col items-center justify-center rounded border-2 p-4"
+              class="bg-card m-4 flex max-h-30 min-h-30 max-w-36 min-w-36 cursor-pointer flex-col items-center justify-center rounded border-2 p-4"
               [class.border-primary]="selectedIcon[1] === icon"
               (click)="selectIcon(icons.namespace, icon)"
             >
@@ -83,7 +83,7 @@
                 ></mat-icon>
               </div>
 
-              <div class="text-muted break-all text-center text-sm">
+              <div class="text-muted text-center text-sm break-all">
                 {{ icon }}
               </div>
             </div>

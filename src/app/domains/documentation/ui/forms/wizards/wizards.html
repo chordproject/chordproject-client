@@ -1,7 +1,7 @@
 <div class="flex min-w-0 flex-auto flex-col">
   <!-- Header -->
   <div
-    class="bg-card flex flex-0 flex-col border-b p-6 dark:bg-transparent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8"
+    class="bg-card flex flex-0 flex-col border-b p-6 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-8 dark:bg-transparent"
   >
     <div class="min-w-0 flex-1">
       <!-- Breadcrumbs -->
@@ -11,7 +11,7 @@
         </div>
         <div class="ml-1 flex items-center whitespace-nowrap">
           <mat-icon
-            class="text-muted icon-size-5"
+            class="text-muted size-5"
             [svgIcon]="'heroicons_mini:chevron-right'"
           ></mat-icon>
           <a class="ml-1 text-primary-500">Forms</a>
@@ -20,7 +20,7 @@
       <!-- Title -->
       <div class="mt-2">
         <h2
-          class="truncate text-3xl font-extrabold leading-7 tracking-tight sm:leading-10 md:text-4xl"
+          class="truncate text-3xl leading-7 font-extrabold tracking-tight sm:leading-10 md:text-4xl"
         >
           Form Wizards
         </h2>
@@ -31,7 +31,7 @@
   <!-- Main -->
   <div class="flex-auto p-6 sm:p-10">
     <div class="max-w-3xl">
-      <div class="prose prose-sm max-w-3xl">
+      <div class="prose-sm prose max-w-3xl">
         <p>
           Form wizard examples in this page uses
           <code>mat-horizontal-stepper</code> and
@@ -55,13 +55,16 @@
       </div>
 
       <!-- Horizontal stepper -->
-      <div class="mb-8 mt-16 text-3xl font-bold">Horizontal Stepper</div>
+      <div class="mt-16 mb-8 text-3xl font-bold">Horizontal Stepper</div>
 
       <form
         class="bg-card overflow-hidden rounded p-4 shadow"
         [formGroup]="horizontalStepperForm"
       >
-        <mat-horizontal-stepper [linear]="true" #horizontalStepper>
+        <mat-horizontal-stepper
+          [linear]="true"
+          #horizontalStepper
+        >
           <mat-step
             [formGroupName]="'step1'"
             [stepControl]="horizontalStepperForm.get('step1')"
@@ -80,7 +83,7 @@
                   required
                 />
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:envelope'"
                 ></mat-icon>
@@ -98,7 +101,7 @@
                   <mat-option value="country-3">Country 3</mat-option>
                 </mat-select>
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:map-pin'"
                 ></mat-icon>
@@ -114,7 +117,7 @@
                   <mat-option value="language-3">Language 3</mat-option>
                 </mat-select>
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:language'"
                 ></mat-icon>
@@ -125,10 +128,9 @@
                 class="px-8"
                 mat-flat-button
                 [disabled]="
-                                    horizontalStepperStep1.stepControl
-                                        .pristine ||
-                                    horizontalStepperStep1.stepControl.invalid
-                                "
+                  horizontalStepperStep1.stepControl.pristine ||
+                  horizontalStepperStep1.stepControl.invalid
+                "
                 type="button"
                 matStepperNext
               >
@@ -155,7 +157,7 @@
                   required
                 />
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:user-circle'"
                 ></mat-icon>
@@ -168,7 +170,7 @@
                   required
                 />
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:user-circle'"
                 ></mat-icon>
@@ -194,11 +196,9 @@
                   [rows]="3"
                 ></textarea>
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
-                  [svgIcon]="
-                                        'heroicons_solid:bars-3-bottom-left'
-                                    "
+                  [svgIcon]="'heroicons_solid:bars-3-bottom-left'"
                 ></mat-icon>
               </mat-form-field>
             </div>
@@ -215,10 +215,9 @@
                 class="px-8"
                 mat-flat-button
                 [disabled]="
-                                    horizontalStepperStep2.stepControl
-                                        .pristine ||
-                                    horizontalStepperStep2.stepControl.invalid
-                                "
+                  horizontalStepperStep2.stepControl.pristine ||
+                  horizontalStepperStep2.stepControl.invalid
+                "
                 type="button"
                 matStepperNext
               >
@@ -239,8 +238,14 @@
             <div class="gt-sm:flex-row flex flex-col">
               <div class="flex flex-col">
                 <span class="mb-2 font-medium">By Email</span>
-                <div class="flex flex-col" [formGroupName]="'byEmail'">
-                  <mat-checkbox class="mb-1" [formControlName]="'companyNews'">
+                <div
+                  class="flex flex-col"
+                  [formGroupName]="'byEmail'"
+                >
+                  <mat-checkbox
+                    class="mb-1"
+                    [formControlName]="'companyNews'"
+                  >
                     Company News
                   </mat-checkbox>
                   <mat-checkbox
@@ -260,10 +265,16 @@
                   class="flex flex-col"
                   [formControlName]="'pushNotifications'"
                 >
-                  <mat-radio-button class="mb-2" [value]="'everything'">
+                  <mat-radio-button
+                    class="mb-2"
+                    [value]="'everything'"
+                  >
                     Everything
                   </mat-radio-button>
-                  <mat-radio-button class="mb-2" [value]="'just-good'">
+                  <mat-radio-button
+                    class="mb-2"
+                    [value]="'just-good'"
+                  >
                     Just the good stuff
                   </mat-radio-button>
                   <mat-radio-button [value]="'no-push'">
@@ -281,7 +292,12 @@
               >
                 Back
               </button>
-              <button class="px-8" mat-flat-button type="button" matStepperNext>
+              <button
+                class="px-8"
+                mat-flat-button
+                type="button"
+                matStepperNext
+              >
                 Next
               </button>
             </div>
@@ -316,13 +332,16 @@
       </form>
 
       <!-- Vertical stepper -->
-      <div class="mb-8 mt-16 text-3xl font-bold">Vertical Stepper</div>
+      <div class="mt-16 mb-8 text-3xl font-bold">Vertical Stepper</div>
 
       <form
         class="bg-card overflow-hidden rounded p-4 shadow"
         [formGroup]="verticalStepperForm"
       >
-        <mat-vertical-stepper [linear]="true" #verticalStepper>
+        <mat-vertical-stepper
+          [linear]="true"
+          #verticalStepper
+        >
           <mat-step
             [formGroupName]="'step1'"
             [stepControl]="verticalStepperForm.get('step1')"
@@ -341,7 +360,7 @@
                   required
                 />
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:envelope'"
                 ></mat-icon>
@@ -359,7 +378,7 @@
                   <mat-option value="country-3">Country 3</mat-option>
                 </mat-select>
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:map-pin'"
                 ></mat-icon>
@@ -375,7 +394,7 @@
                   <mat-option value="language-3">Language 3</mat-option>
                 </mat-select>
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:language'"
                 ></mat-icon>
@@ -386,9 +405,9 @@
                 class="px-8"
                 mat-flat-button
                 [disabled]="
-                                    verticalStepperStep1.stepControl.pristine ||
-                                    verticalStepperStep1.stepControl.invalid
-                                "
+                  verticalStepperStep1.stepControl.pristine ||
+                  verticalStepperStep1.stepControl.invalid
+                "
                 type="button"
                 matStepperNext
               >
@@ -415,7 +434,7 @@
                   required
                 />
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:user-circle'"
                 ></mat-icon>
@@ -428,7 +447,7 @@
                   required
                 />
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
                   [svgIcon]="'heroicons_solid:user-circle'"
                 ></mat-icon>
@@ -454,11 +473,9 @@
                   [rows]="3"
                 ></textarea>
                 <mat-icon
-                  class="icon-size-5"
+                  class="size-5"
                   matPrefix
-                  [svgIcon]="
-                                        'heroicons_solid:bars-3-bottom-left'
-                                    "
+                  [svgIcon]="'heroicons_solid:bars-3-bottom-left'"
                 ></mat-icon>
               </mat-form-field>
             </div>
@@ -475,9 +492,9 @@
                 class="px-8"
                 mat-flat-button
                 [disabled]="
-                                    verticalStepperStep2.stepControl.pristine ||
-                                    verticalStepperStep2.stepControl.invalid
-                                "
+                  verticalStepperStep2.stepControl.pristine ||
+                  verticalStepperStep2.stepControl.invalid
+                "
                 type="button"
                 matStepperNext
               >
@@ -498,8 +515,14 @@
             <div class="gt-sm:flex-row flex flex-col">
               <div class="flex flex-col">
                 <span class="mb-2 font-medium">By Email</span>
-                <div class="flex flex-col" [formGroupName]="'byEmail'">
-                  <mat-checkbox class="mb-1" [formControlName]="'companyNews'">
+                <div
+                  class="flex flex-col"
+                  [formGroupName]="'byEmail'"
+                >
+                  <mat-checkbox
+                    class="mb-1"
+                    [formControlName]="'companyNews'"
+                  >
                     Company News
                   </mat-checkbox>
                   <mat-checkbox
@@ -519,10 +542,16 @@
                   class="flex flex-col"
                   [formControlName]="'pushNotifications'"
                 >
-                  <mat-radio-button class="mb-2" [value]="'everything'">
+                  <mat-radio-button
+                    class="mb-2"
+                    [value]="'everything'"
+                  >
                     Everything
                   </mat-radio-button>
-                  <mat-radio-button class="mb-2" [value]="'just-good'">
+                  <mat-radio-button
+                    class="mb-2"
+                    [value]="'just-good'"
+                  >
                     Just the good stuff
                   </mat-radio-button>
                   <mat-radio-button [value]="'no-push'">
@@ -540,7 +569,12 @@
               >
                 Back
               </button>
-              <button class="px-8" mat-flat-button type="button" matStepperNext>
+              <button
+                class="px-8"
+                mat-flat-button
+                type="button"
+                matStepperNext
+              >
                 Next
               </button>
             </div>

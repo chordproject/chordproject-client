@@ -8,7 +8,7 @@ import {
 } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { Media } from '@/app/core/media';
-import { LayoutService } from '@/app/domains/admin/layout/data/layout';
+import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
 
 @Component({
@@ -21,13 +21,14 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
     MatSidenav,
     MatSidenavContent,
     AdminSidebar,
+    SchemeSwitcher,
   ],
   template: `
     <mat-sidenav-container class="flex-auto">
       <mat-sidenav
         class="w-64"
         [mode]="isMobile() ? 'over' : 'side'"
-        [(opened)]="layoutService.sidebarOpen"
+        [opened]="!isMobile()"
         [disableClose]="!isMobile()"
         fixedInViewport
         #sidenav="matSidenav"
@@ -39,6 +40,22 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
         class="lg:my-2 lg:mr-2 lg:rounded-xl lg:border lg:shadow-xs"
       >
         <div class="flex flex-auto flex-col">
+          <!-- Header -->
+          <div class="flex items-center px-4 py-3 lg:hidden">
+            <button
+              matIconButton
+              (click)="sidenav.toggle()"
+            >
+              <mat-icon svgIcon="panel-left" />
+            </button>
+
+            <!-- Spacer -->
+            <div class="flex-auto"></div>
+
+            <scheme-switcher />
+          </div>
+
+          <!-- Content -->
           <router-outlet />
         </div>
       </mat-sidenav-content>
@@ -190,7 +207,6 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
 })
 export class AdminLayout {
   // Dependencies
-  protected layoutService = inject(LayoutService);
   private media = inject(Media);
 
   // State
