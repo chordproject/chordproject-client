@@ -293,10 +293,6 @@ export default class AcademyCourse {
   );
   protected currentStep = signal(0);
 
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
-
   goToStep(step: number): void {
     // Go to the step
     this.currentStep.set(step);
@@ -321,31 +317,4 @@ export default class AcademyCourse {
     // Go to next step
     this.currentStep.update((value) => value + 1);
   }
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Private methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Scrolls the current step element from
-   * sidenav into the view. This only happens when
-   * previous/next buttons pressed as we don't want
-   * to change the scroll position of the sidebar
-   * when the user actually clicks around the sidebar.
-   * @private
-   */
-  /*private _scrollCurrentStepElementIntoView(): void {
-    // Wrap everything into setTimeout so we can make sure that the 'current-step' class points to correct element
-    setTimeout(() => {
-      // Get the current step element and scroll it into view
-      const currentStepElement =
-        this._document.getElementsByClassName('current-step')[0];
-      if (currentStepElement) {
-        currentStepElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      }
-    });
-  }*/
 }
