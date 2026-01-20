@@ -459,6 +459,14 @@
     }
   }
 
+  /* mat-option */
+  --mat-option-label-text-size: var(--text-base); /* 14px */
+  --mat-option-label-text-line-height: var(--leading-5); /* 20px */
+
+  .mat-mdc-option {
+    min-height: 2.25rem;
+  }
+
   /* ------------------------------------------------------------------------ */
   /* Datepicker                                                               */
   /* ------------------------------------------------------------------------ */
@@ -793,7 +801,7 @@
     --form-field-subscript-letter-spacing: var(--tracking-normal);
 
     /* Size */
-    --form-field-border-radius: 0.375rem; /* 6px */
+    --form-field-border-radius: 0.5rem; /* 8px */
     --form-field-margin-top: 1.5rem; /* 24px */
     --form-field-padding-y: 0.5rem; /* 8px */
     --form-field-padding-x: 0.75rem; /* 12px */
@@ -855,18 +863,6 @@
     /* Mobile font size adjustment */
     @media screen and (max-width: 640px) {
       --form-field-font-size: var(--text-xl); /* 16px */
-    }
-
-    /* Size: large */
-    &.large {
-      --form-field-font-size: var(--text-xl); /* 16px */
-      --form-field-label-font-size: var(--text-lg); /* 14px */
-
-      --form-field-border-radius: 0.5rem; /* 8px */
-      --form-field-padding-y: 0.5rem; /* 8px */
-      --form-field-padding-x: 0.875rem; /* 14px */
-      --form-field-gap-x: 0.625rem; /* 10px */
-      --form-field-icon-size: 1.125rem; /* 18px */
     }
   }
 
@@ -947,6 +943,26 @@
   /* ------------------------------------------------------------------------ */
   /* Select                                                                   */
   /* ------------------------------------------------------------------------ */
+  --mat-select-trigger-text-size: var(--text-base); /* 14px */
+  --mat-select-trigger-text-line-height: var(--leading-5); /* 20px */
+
+  --mat-select-panel-background-color: light-dark(
+    var(--color-white),
+    var(--color-neutral-800)
+  );
+
+  .mat-mdc-select-arrow-wrapper {
+    height: 1.25rem; /* 20px */
+  }
+
+  .mat-mdc-select-panel {
+    border-radius: 0.5rem; /* 8px */
+  }
+
+  /* Mobile font size adjustment */
+  @media screen and (max-width: 640px) {
+    --mat-select-trigger-text-size: var(--text-xl); /* 16px */
+  }
 
   /* ------------------------------------------------------------------------ */
   /* Sidenav                                                                  */
@@ -997,6 +1013,22 @@
   /* ------------------------------------------------------------------------ */
   /* Slide Toggle                                                             */
   /* ------------------------------------------------------------------------ */
+  --mat-slide-toggle-track-width: 2.5rem; /* 40px */
+  --mat-slide-toggle-track-height: 1.5rem; /* 24px */
+  --mat-slide-toggle-track-outline-width: 1px;
+  --mat-slide-toggle-handle-height: 1rem; /* 16px */
+
+  /* with handle icon */
+  --mat-slide-toggle-with-icon-handle-size: 1rem; /* 16px */
+  --mat-slide-toggle-selected-with-icon-handle-horizontal-margin: 0 1.25rem; /* 0 20px */
+  --mat-slide-toggle-unselected-icon-size: 0.75rem; /* 12px */
+  --mat-slide-toggle-selected-icon-size: 0.75rem; /* 12px */
+
+  /* without handle icon */
+  --mat-slide-toggle-selected-handle-size: 1rem; /* 16px */
+  --mat-slide-toggle-unselected-handle-size: 1rem; /* 16px */
+  --mat-slide-toggle-unselected-handle-horizontal-margin: 0 0.25rem;
+  --mat-slide-toggle-selected-handle-horizontal-margin: 0 1.25rem;
 
   /* ------------------------------------------------------------------------ */
   /* Slider                                                                   */

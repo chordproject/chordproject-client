@@ -26,7 +26,7 @@ const routes: Routes = [
       // -----------------------------------------------------------------------
       {
         path: 'academy',
-        loadChildren: () => import('./modules/apps/academy/academy.routes'),
+        loadChildren: () => import('./modules/apps/academy/routes'),
       },
       {
         path: 'chat',

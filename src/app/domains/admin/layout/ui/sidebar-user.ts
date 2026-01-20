@@ -3,6 +3,7 @@ import { MatPseudoCheckbox } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/list';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { RouterLink } from '@angular/router';
 import { Scheme, Theming } from '@/app/core/theming';
 
 @Component({
@@ -14,6 +15,7 @@ import { Scheme, Theming } from '@/app/core/theming';
     MatMenuItem,
     MatPseudoCheckbox,
     MatMenuTrigger,
+    RouterLink,
   ],
   template: `
     <button
@@ -86,9 +88,12 @@ import { Scheme, Theming } from '@/app/core/theming';
         Appearance
       </button>
       <mat-divider />
-      <button mat-menu-item>
+      <button
+        mat-menu-item
+        routerLink="/auth/sign-in"
+      >
         <mat-icon svgIcon="log-out" />
-        Log out
+        Sign out
       </button>
     </mat-menu>
 

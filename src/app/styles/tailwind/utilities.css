@@ -46,24 +46,24 @@
     var(--color-neutral-600)
   );
   --tw-prose-pre-code: light-dark(
-    var(--color-neutral-200),
+    var(--color-neutral-950),
     var(--color-neutral-300)
   );
   --tw-prose-pre-bg: light-dark(
-    var(--color-neutral-800),
-    var(--color-neutral-900)
+    var(--color-neutral-100),
+    var(--color-neutral-950)
   );
   --tw-prose-pre-borders: light-dark(
     var(--color-neutral-300),
-    var(--color-neutral-600)
+    var(--color-neutral-700)
   );
   --tw-prose-th-borders: light-dark(
     var(--color-neutral-300),
-    var(--color-neutral-600)
+    var(--color-neutral-700)
   );
   --tw-prose-td-borders: light-dark(
     var(--color-neutral-200),
-    var(--color-neutral-700)
+    var(--color-neutral-800)
   );
 
   color: var(--tw-prose-body) !important;

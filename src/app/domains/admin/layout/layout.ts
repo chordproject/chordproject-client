@@ -37,7 +37,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
       </mat-sidenav>
 
       <mat-sidenav-content
-        class="lg:my-2 lg:mr-2 lg:rounded-xl lg:border lg:shadow-xs"
+        class="overflow-hidden lg:my-2 lg:mr-2 lg:rounded-xl lg:border lg:shadow-xs"
       >
         <div class="flex flex-auto flex-col">
           <!-- Header -->
