@@ -7,7 +7,6 @@ import { HelpCenterMockApi } from './apps/help-center/api';
 import { MailboxMockApi } from './apps/mailbox/api';
 import { NotesMockApi } from './apps/notes/api';
 import { ScrumboardMockApi } from './apps/scrumboard/api';
-import { TasksMockApi } from './apps/tasks/api';
 import { MessagesMockApi } from './common/messages/api';
 import { NotificationsMockApi } from './common/notifications/api';
 import { ShortcutsMockApi } from './common/shortcuts/api';
@@ -27,5 +26,4 @@ export class MockApiService {
   notificationsMockApi = inject(NotificationsMockApi);
   scrumboardMockApi = inject(ScrumboardMockApi);
   shortcutsMockApi = inject(ShortcutsMockApi);
-  tasksMockApi = inject(TasksMockApi);
 }

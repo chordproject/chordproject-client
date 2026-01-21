@@ -65,7 +65,7 @@ const routes: Routes = [
       },
       {
         path: 'tasks',
-        loadChildren: () => import('./modules/apps/tasks/tasks.routes'),
+        loadChildren: () => import('./modules/apps/tasks/routes'),
       },
 
       // -----------------------------------------------------------------------

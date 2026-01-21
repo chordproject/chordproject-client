@@ -161,6 +161,7 @@ export const NAVIGATION: NavigationItem[] = [
         label: 'Tasks',
         icon: 'list-todo',
         route: '/admin/tasks',
+        activeOptions: { exact: false },
       },
     ],
   },

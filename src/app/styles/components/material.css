@@ -470,6 +470,13 @@
   /* ------------------------------------------------------------------------ */
   /* Datepicker                                                               */
   /* ------------------------------------------------------------------------ */
+  --mat-datepicker-calendar-container-background-color: light-dark(
+    var(--color-white),
+    var(--color-neutral-800)
+  );
+
+  --mat-datepicker-calendar-container-elevation-shadow: var(--mat-sys-level2);
+  --mat-datepicker-calendar-container-shape: 0.5rem; /* 8px */
 
   /* ------------------------------------------------------------------------ */
   /* Dialog                                                                   */
@@ -953,6 +960,7 @@
 
   .mat-mdc-select-arrow-wrapper {
     height: 1.25rem; /* 20px */
+    transform: none;
   }
 
   .mat-mdc-select-panel {
