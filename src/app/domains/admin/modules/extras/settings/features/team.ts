@@ -5,13 +5,7 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatOption } from '@angular/material/core';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
-import {
-  MatFormField,
-  MatInput,
-  MatLabel,
-  MatPrefix,
-  MatSuffix,
-} from '@angular/material/input';
+import { MatFormField, MatInput } from '@angular/material/input';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 
 @Component({
@@ -22,9 +16,6 @@ import { MatSelect, MatSelectTrigger } from '@angular/material/select';
     MatIcon,
     MatIconButton,
     MatInput,
-    MatLabel,
-    MatPrefix,
-    MatSuffix,
     MatButton,
     MatDivider,
     MatOption,
@@ -58,7 +49,7 @@ import { MatSelect, MatSelectTrigger } from '@angular/material/select';
                 <img
                   class="size-full object-cover"
                   [src]="member.photo"
-                  alt="Contact photo"
+                  alt="Member photo"
                 />
               }
               @if (!member.photo) {
