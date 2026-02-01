@@ -173,7 +173,8 @@ export const NAVIGATION: NavigationItem[] = [
         id: 'extras/settings',
         label: 'Settings',
         icon: 'settings',
-        route: '/settings',
+        route: '/admin/settings',
+        activeOptions: { exact: false },
       },
       {
         id: 'extras/notifications',

@@ -73,7 +73,7 @@ const routes: Routes = [
       // -----------------------------------------------------------------------
       {
         path: 'settings',
-        loadChildren: () => import('./modules/extras/settings/settings.routes'),
+        loadChildren: () => import('./modules/extras/settings/routes'),
       },
 
       // {
