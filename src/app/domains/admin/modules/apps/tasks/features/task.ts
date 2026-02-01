@@ -97,10 +97,7 @@ import Tasks from '@/app/domains/admin/modules/apps/tasks/features/tasks';
         <mat-divider class="mt-6 mb-8"></mat-divider>
 
         <!-- Title -->
-        <mat-form-field
-          class="w-full"
-          subscriptSizing="dynamic"
-        >
+        <mat-form-field class="w-full">
           <mat-label>{{
             task().type === 'task' ? 'Task title' : 'Section title'
           }}</mat-label>
@@ -117,10 +114,7 @@ import Tasks from '@/app/domains/admin/modules/apps/tasks/features/tasks';
           class="mt-8 grid grid-cols-1 items-center gap-y-8 sm:grid-cols-2 sm:gap-x-3 sm:gap-y-0"
         >
           <!-- Priority -->
-          <mat-form-field
-            class="flex-auto"
-            subscriptSizing="dynamic"
-          >
+          <mat-form-field class="flex-auto">
             <mat-label>Priority</mat-label>
             <mat-select
               class="w-full"
@@ -134,10 +128,7 @@ import Tasks from '@/app/domains/admin/modules/apps/tasks/features/tasks';
           </mat-form-field>
 
           <!-- Due date -->
-          <mat-form-field
-            class="flex-auto"
-            subscriptSizing="dynamic"
-          >
+          <mat-form-field class="flex-auto">
             <mat-label>Due date</mat-label>
             <input
               matInput
@@ -154,10 +145,7 @@ import Tasks from '@/app/domains/admin/modules/apps/tasks/features/tasks';
 
         <!-- Notes -->
         <div class="mt-8">
-          <mat-form-field
-            class="w-full"
-            [subscriptSizing]="'dynamic'"
-          >
+          <mat-form-field class="w-full">
             <mat-label>Notes</mat-label>
             <textarea
               matInput

@@ -53,10 +53,7 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
         <div
           class="flex w-full max-w-xs flex-col items-center justify-between sm:max-w-none sm:flex-row"
         >
-          <mat-form-field
-            class="w-full sm:w-36"
-            [subscriptSizing]="'dynamic'"
-          >
+          <mat-form-field class="w-full sm:w-36">
             <mat-select [value]="'all'">
               <mat-option [value]="'all'">All</mat-option>
               @for (category of data.categories; track category.id) {
@@ -66,10 +63,7 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
               }
             </mat-select>
           </mat-form-field>
-          <mat-form-field
-            class="mt-4 w-full sm:mt-0 sm:ml-4 sm:w-72"
-            [subscriptSizing]="'dynamic'"
-          >
+          <mat-form-field class="mt-4 w-full sm:mt-0 sm:ml-4 sm:w-72">
             <mat-icon
               matPrefix
               svgIcon="search"

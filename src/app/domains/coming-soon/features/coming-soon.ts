@@ -53,10 +53,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
             (submit)="register($event)"
           >
             <!-- Email field -->
-            <mat-form-field
-              class="w-full"
-              subscriptSizing="dynamic"
-            >
+            <mat-form-field class="w-full">
               <mat-label>Email address</mat-label>
               <input
                 id="email"

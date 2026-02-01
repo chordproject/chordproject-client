@@ -1038,6 +1038,13 @@
   --mat-slide-toggle-unselected-handle-horizontal-margin: 0 0.25rem;
   --mat-slide-toggle-selected-handle-horizontal-margin: 0 1.25rem;
 
+  /* handle icon colors */
+  --mat-slide-toggle-unselected-icon-color: light-dark(
+    color-mix(in oklch, var(--color-black) 40%, transparent),
+    color-mix(in oklch, var(--color-white) 40%, transparent)
+  );
+  --mat-slide-toggle-selected-icon-color: var(--color-neutral-950);
+
   /* ------------------------------------------------------------------------ */
   /* Slider                                                                   */
   /* ------------------------------------------------------------------------ */
@@ -1076,6 +1083,11 @@
   /* ------------------------------------------------------------------------ */
   /* Tabs                                                                     */
   /* ------------------------------------------------------------------------ */
+  --mat-tab-container-height: 2.25rem;
+  --mat-tab-divider-color: light-dark(
+    var(--color-neutral-200),
+    var(--color-neutral-800)
+  );
 
   /* ------------------------------------------------------------------------ */
   /* Timepicker                                                               */
