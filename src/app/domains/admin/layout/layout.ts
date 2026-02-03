@@ -8,6 +8,7 @@ import {
 } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { Media } from '@/app/core/media';
+import { Notifications } from '@/app/domains/admin/layout/ui/notifications';
 import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
 
@@ -22,6 +23,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
     MatSidenavContent,
     AdminSidebar,
     SchemeSwitcher,
+    Notifications,
   ],
   template: `
     <mat-sidenav-container class="flex-auto">
@@ -52,7 +54,10 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
             <!-- Spacer -->
             <div class="flex-auto"></div>
 
-            <scheme-switcher />
+            <div class="flex items-center gap-x-2">
+              <notifications />
+              <scheme-switcher />
+            </div>
           </div>
 
           <!-- Content -->

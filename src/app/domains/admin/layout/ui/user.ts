@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
 import { Scheme, Theming } from '@/app/core/theming';
 
 @Component({
-  selector: 'sidebar-user',
+  selector: 'user',
   imports: [
     MatDivider,
     MatIcon,
@@ -114,7 +114,7 @@ import { Scheme, Theming } from '@/app/core/theming';
     </mat-menu>
   `,
 })
-export class SidebarUser {
+export class User {
   // Dependencies
   private theming = inject(Theming);
 

@@ -5,6 +5,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import {
+  isActive,
   IsActiveMatchOptions,
   NavigationEnd,
   Router,
@@ -18,7 +19,7 @@ import {
 } from '@/app/domains/admin/layout/data/navigation';
 
 @Component({
-  selector: 'sidebar-navigation',
+  selector: 'navigation',
   imports: [
     MatIcon,
     NgTemplateOutlet,
@@ -142,7 +143,7 @@ import {
     </div>
   `,
 })
-export class SidebarNavigation {
+export class Navigation {
   // Dependencies
   private router = inject(Router);
 
@@ -183,10 +184,11 @@ export class SidebarNavigation {
 
       if (
         item.route &&
-        this.router.isActive(
+        isActive(
           item.route,
+          this.router,
           this.isActiveOption(item.activeOptions ?? { exact: true })
-        )
+        )()
       ) {
         item.expanded = true;
       }

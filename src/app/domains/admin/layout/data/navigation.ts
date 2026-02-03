@@ -160,6 +160,7 @@ export const NAVIGATION: NavigationItem[] = [
         id: 'general/tasks',
         label: 'Tasks',
         icon: 'list-todo',
+        badge: '10',
         route: '/admin/tasks',
         activeOptions: { exact: false },
       },
@@ -175,12 +176,6 @@ export const NAVIGATION: NavigationItem[] = [
         icon: 'settings',
         route: '/admin/settings',
         activeOptions: { exact: false },
-      },
-      {
-        id: 'extras/notifications',
-        label: 'Notifications',
-        icon: 'bell',
-        route: '/notifications',
       },
       {
         id: 'extras/error',

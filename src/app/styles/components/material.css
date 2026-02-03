@@ -377,6 +377,14 @@
     /* Filled */
     &.mat-mdc-unelevated-button {
     }
+
+    &.small {
+      --mat-button-text-container-height: 1.75rem;
+      --mat-button-outlined-container-height: 1.75rem;
+      --mat-button-tonal-container-height: 1.75rem;
+      --mat-button-filled-container-height: 1.75rem;
+      --mat-button-protected-container-height: 1.75rem;
+    }
   }
 
   /* ------------------------------------------------------------------------ */
@@ -489,6 +497,20 @@
   /* ------------------------------------------------------------------------ */
   /* Expansion Panel                                                          */
   /* ------------------------------------------------------------------------ */
+  --mat-expansion-header-text-size: var(--text-base);
+  --mat-expansion-header-text-weight: var(--font-weight-medium);
+
+  --mat-expansion-container-text-size: var(--text-base);
+  --mat-expansion-container-text-weight: var(--text-base--font-weight);
+  --mat-expansion-container-text-tracking: var(--tracking-normal);
+
+  --mat-expansion-container-shape: 0;
+  --mat-expansion-container-elevation-shadow: none;
+  --mat-expansion-container-background-color: transparent;
+
+  .mat-expansion-panel {
+    border-radius: 0.5rem;
+  }
 
   /* ------------------------------------------------------------------------ */
   /* Form Field                                                               */
@@ -934,6 +956,15 @@
   /* ------------------------------------------------------------------------ */
   /* Progress Bar                                                             */
   /* ------------------------------------------------------------------------ */
+  --mat-progress-bar-track-color: light-dark(
+    var(--color-neutral-200),
+    var(--color-neutral-800)
+  );
+
+  .mdc-linear-progress {
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
 
   /* ------------------------------------------------------------------------ */
   /* Progress Spinner                                                         */
