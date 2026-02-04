@@ -3,34 +3,28 @@ import { Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./layout'),
+    pathMatch: 'full',
+    loadComponent: () => import('./features/home'),
+  },
+  {
+    path: 'faq',
+    loadComponent: () => import('./features/faq'),
+  },
+  {
+    path: 'support',
+    loadComponent: () => import('./features/support'),
+  },
+  {
+    path: 'guides',
     children: [
       {
         path: '',
         pathMatch: 'full',
-        loadComponent: () => import('./features/home'),
+        redirectTo: 'getting-started',
       },
       {
-        path: 'faq',
-        loadComponent: () => import('./features/faq'),
-      },
-      {
-        path: 'support',
-        loadComponent: () => import('./features/support'),
-      },
-      {
-        path: 'guides',
-        children: [
-          {
-            path: '',
-            pathMatch: 'full',
-            redirectTo: 'getting-started',
-          },
-          {
-            path: ':id',
-            loadComponent: () => import('./features/guide'),
-          },
-        ],
+        path: ':id',
+        loadComponent: () => import('./features/guide'),
       },
     ],
   },

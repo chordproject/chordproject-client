@@ -42,8 +42,7 @@ const routes: Routes = [
       },
       {
         path: 'file-manager',
-        loadChildren: () =>
-          import('./modules/apps/file-manager/file-manager.routes'),
+        loadChildren: () => import('./modules/apps/file-manager/routes'),
       },
       {
         path: 'help-center',
