@@ -34,7 +34,7 @@ const routes: Routes = [
       },
       {
         path: 'contacts',
-        loadChildren: () => import('./modules/apps/contacts/contacts.routes'),
+        loadChildren: () => import('./modules/apps/contacts/routes'),
       },
       {
         path: 'ecommerce',

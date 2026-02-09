@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { ChatMockApi } from './apps/chat/api';
-import { ContactsMockApi } from './apps/contacts/api';
 import { ECommerceInventoryMockApi } from './apps/ecommerce/inventory/api';
 import { MailboxMockApi } from './apps/mailbox/api';
 import { NotesMockApi } from './apps/notes/api';
@@ -11,7 +10,6 @@ import { ShortcutsMockApi } from './common/shortcuts/api';
 @Injectable({ providedIn: 'root' })
 export class MockApiService {
   chatMockApi = inject(ChatMockApi);
-  contactsMockApi = inject(ContactsMockApi);
   eCommerceInventoryMockApi = inject(ECommerceInventoryMockApi);
   mailboxMockApi = inject(MailboxMockApi);
   messagesMockApi = inject(MessagesMockApi);

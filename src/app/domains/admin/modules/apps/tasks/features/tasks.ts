@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Media } from '@/app/core/media';
 import { Task } from '@/app/domains/admin/modules/apps/tasks/data/model';
 import { TasksService } from '@/app/domains/admin/modules/apps/tasks/data/tasks';
@@ -37,21 +37,30 @@ import { TasksService } from '@/app/domains/admin/modules/apps/tasks/data/tasks'
     MatMenuItem,
     MatMenuTrigger,
   ],
+  host: {
+    class: 'max-h-[calc(1dvh-1rem)]',
+  },
   template: `
-    <div class="@container mx-auto flex w-full flex-auto flex-col">
-      <mat-drawer-container class="h-full flex-auto">
+    <div
+      class="@container mx-auto flex w-full flex-auto flex-col overflow-hidden"
+    >
+      <mat-sidenav-container
+        class="h-full flex-auto [&_.mat-drawer-backdrop]:fixed"
+        (backdropClick)="closeTask()"
+      >
         <!-- Drawer -->
-        <mat-drawer
+        <mat-sidenav
           class="w-full bg-white sm:w-lg dark:bg-neutral-900"
           [mode]="isMobile() ? 'over' : 'side'"
           [opened]="!!selectedTask()"
           [position]="'end'"
-          [disableClose]="true"
+          [fixedInViewport]="isMobile()"
+          disableClose
         >
           <router-outlet></router-outlet>
-        </mat-drawer>
+        </mat-sidenav>
 
-        <mat-drawer-content
+        <mat-sidenav-content
           class="flex flex-auto flex-col"
           [class.border-r]="!!selectedTask()"
         >
@@ -210,8 +219,8 @@ import { TasksService } from '@/app/domains/admin/modules/apps/tasks/data/tasks'
               </div>
             </div>
           }
-        </mat-drawer-content>
-      </mat-drawer-container>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
     </div>
   `,
 })
@@ -219,6 +228,7 @@ export default class Tasks {
   // Dependencies
   private media = inject(Media);
   private tasksService = inject(TasksService);
+  private router = inject(Router);
 
   // State
   protected data = this.tasksService.data;
@@ -233,5 +243,13 @@ export default class Tasks {
       event.previousIndex,
       event.currentIndex
     );
+  }
+
+  closeTask() {
+    const selectedTask = this.selectedTask();
+    if (selectedTask) {
+      this.selectedTask.set(null);
+      this.router.navigate(['/admin/tasks']);
+    }
   }
 }
