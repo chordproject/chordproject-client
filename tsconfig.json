@@ -3,10 +3,10 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "strict": false, // true
+    "strict": true,
     "noImplicitOverride": true,
-    //    "noPropertyAccessFromIndexSignature": true,
-    //    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "isolatedModules": true,
@@ -15,16 +15,14 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@fuse": ["./src/@fuse"],
-      "@fuse/*": ["./src/@fuse/*"],
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": false // true
+    "strictTemplates": true
   },
   "include": ["*.config.ts"],
   "files": [],

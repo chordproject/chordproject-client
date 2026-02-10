@@ -10,7 +10,7 @@ export type Task = {
   notes: string;
   completed: boolean;
   dueDate: string | null;
-  assignees: string[] | null;
+  assignees: string[];
   priority: 0 | 1 | 2;
   tags: string[];
   order: number;

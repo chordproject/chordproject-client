@@ -285,8 +285,8 @@ export default class AcademyCourse {
 
   // State
   protected data = this.academyService.data;
-  protected course = computed(() =>
-    this.data.courses.find((course) => course.id === this.courseId())
+  protected course = computed(
+    () => this.data.courses.find((course) => course.id === this.courseId())!
   );
   protected currentStep = signal(0);
   protected isMobile = computed(() =>

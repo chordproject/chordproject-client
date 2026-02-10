@@ -257,13 +257,13 @@ import {
           <div class="flex flex-auto flex-col">
             <apx-chart
               class="h-full w-full flex-auto"
-              [chart]="accountBalanceChart.chart"
-              [colors]="accountBalanceChart.colors"
-              [fill]="accountBalanceChart.fill"
-              [series]="accountBalanceChart.series"
-              [stroke]="accountBalanceChart.stroke"
-              [tooltip]="accountBalanceChart.tooltip"
-              [xaxis]="accountBalanceChart.xaxis"
+              [chart]="accountBalanceChart.chart!"
+              [colors]="accountBalanceChart.colors!"
+              [fill]="accountBalanceChart.fill!"
+              [series]="accountBalanceChart.series!"
+              [stroke]="accountBalanceChart.stroke!"
+              [tooltip]="accountBalanceChart.tooltip!"
+              [xaxis]="accountBalanceChart.xaxis!"
             ></apx-chart>
           </div>
         </mat-card>

@@ -145,7 +145,7 @@ export class TasksService {
         '91658b8a-f382-4b0c-a53f-e9390351c2c5',
         '51483dd3-cb98-4400-9128-4bd66b455807',
       ],
-      assignees: [null],
+      assignees: [],
       order: 0,
     },
     {
@@ -189,7 +189,7 @@ export class TasksService {
       dueDate: null,
       priority: 2,
       tags: ['a0bf42ca-c3a5-47be-8341-b9c0bb8ef270'],
-      assignees: [null],
+      assignees: [],
       order: 3,
     },
     {
@@ -344,7 +344,7 @@ export class TasksService {
       dueDate: '2020-08-08T16:32:24.768Z',
       priority: 1,
       tags: [],
-      assignees: [null],
+      assignees: [],
       order: 14,
     },
     {
@@ -415,7 +415,7 @@ export class TasksService {
       dueDate: '2023-10-04T15:48:16.507Z',
       priority: 1,
       tags: ['d3ef4226-ef2c-43b0-a986-3e3e07f32799'],
-      assignees: [null],
+      assignees: [],
       order: 19,
     },
     {
@@ -497,7 +497,7 @@ export class TasksService {
       dueDate: '2023-12-08T23:20:50.910Z',
       priority: 2,
       tags: ['a0bf42ca-c3a5-47be-8341-b9c0bb8ef270'],
-      assignees: [null],
+      assignees: [],
       order: 25,
     },
     {

@@ -11,6 +11,5 @@ export default {
     },
   ],
   plugins: ['prettier-plugin-packagejson', 'prettier-plugin-tailwindcss'],
-  tailwindStylesheet: './src/app/styles/styles.css',
-  tailwindFunctions: ['fuse'],
+  tailwindStylesheet: './src/styles/styles.css',
 };

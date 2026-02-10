@@ -113,8 +113,9 @@ export default class Note {
   readonly content = viewChild.required<TemplateRef<unknown>>('content');
 
   // State
-  protected note = linkedSignal(() =>
-    this.notesService.data.notes.find((note) => note.id === this.noteId())
+  protected note = linkedSignal(
+    () =>
+      this.notesService.data.notes.find((note) => note.id === this.noteId())!
   );
   protected noteForm = form(this.note);
 

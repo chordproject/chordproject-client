@@ -90,10 +90,10 @@ export default class FileManager {
   protected items = computed(() => {
     const folderId = this.folderId();
     if (folderId) {
-      return this.data.filter((item) => item.folderId === folderId);
+      return this.data.filter((item) => item.folderId === folderId)!;
     }
 
-    return this.data.filter((item) => item.folderId === null);
+    return this.data.filter((item) => item.folderId === null)!;
   });
 
   // Build the breadcrumb trail by walking the folder hierarchy.
@@ -109,18 +109,18 @@ export default class FileManager {
     const trail: Item[] = [];
 
     // Prepare the current folder
-    let currentFolder = null;
+    let currentFolder: Item | null = null;
 
     // Get the current folder and add it as the first entry
     if (folderId) {
-      currentFolder = data.find((item) => item.id === folderId);
+      currentFolder = data.find((item) => item.id === folderId)!;
       trail.push(currentFolder);
     }
 
     // Start traversing and storing the folders as a path array
     // until we hit null on the folder id
     while (currentFolder?.folderId) {
-      currentFolder = data.find((item) => item.id === currentFolder.folderId);
+      currentFolder = data.find((item) => item.id === currentFolder?.folderId)!;
       if (currentFolder) {
         trail.unshift(currentFolder);
       }

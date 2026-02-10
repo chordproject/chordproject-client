@@ -8,11 +8,7 @@
   "projects": {
     "fuse": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -28,24 +24,11 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/app/styles/styles.css"],
+            "styles": ["src/styles/styles.css"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {
               "entry": "src/server.ts"
-            },
-
-            "polyfills": ["zone.js"],
-            "inlineStyleLanguage": "scss",
-            "allowedCommonJsDependencies": [
-              "apexcharts",
-              "crypto-js/enc-utf8",
-              "crypto-js/hmac-sha256",
-              "crypto-js/enc-base64",
-              "quill-delta"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": ["src/@fuse/styles"]
             }
           },
           "configurations": {
@@ -53,13 +36,11 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "3mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "75kb",
-                  "maximumError": "90kb"
+                  "maximumWarning": "4kB"
                 }
               ],
               "outputHashing": "all"
