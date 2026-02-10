@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'documentation-layout',
-  imports: [],
-  template: ``,
+  imports: [RouterOutlet],
+  template: `<router-outlet />`,
 })
 export default class DocumentationLayout {}

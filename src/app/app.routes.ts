@@ -25,9 +25,4 @@ export const routes: Route[] = [
     path: 'coming-soon',
     loadChildren: () => import('./domains/coming-soon/routes'),
   },
-
-  {
-    path: 'documentation',
-    loadChildren: () => import('@/app/domains/documentation/routes'),
-  },
 ];

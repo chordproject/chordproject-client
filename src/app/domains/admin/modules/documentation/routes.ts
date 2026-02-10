@@ -19,29 +19,24 @@ const routes: Routes = [
             redirectTo: 'introduction',
           },
           {
-            path: 'introduction',
-            loadComponent: () =>
-              import('./modules/getting-started/introduction'),
-          },
-          {
-            path: 'prerequisites',
-            loadComponent: () =>
-              import('./modules/getting-started/prerequisites'),
-          },
-          {
             path: 'installation',
             loadComponent: () =>
-              import('./modules/getting-started/installation'),
+              import('./features/getting-started/installation'),
           },
           {
-            path: 'serving',
-            loadComponent: () => import('./modules/getting-started/serving'),
+            path: 'development',
+            loadComponent: () =>
+              import('./features/getting-started/development'),
+          },
+          {
+            path: 'building',
+            loadComponent: () => import('./features/getting-started/building'),
           },
         ],
       },
       {
         path: 'changelog',
-        loadComponent: () => import('./modules/changelog/changelog'),
+        loadComponent: () => import('./features/changelog/changelog'),
       },
     ],
   },

@@ -131,4 +131,34 @@ export const NAVIGATION: NavigationItem[] = [
       },
     ],
   },
+  {
+    id: 'documentation',
+    label: 'Documentation',
+    children: [
+      {
+        id: 'documentation/changelog',
+        label: 'Changelog',
+        icon: 'logs',
+        route: 'documentation/changelog',
+      },
+      {
+        id: 'documentation/getting-started/installation',
+        label: 'Installation',
+        icon: 'download',
+        route: 'documentation/getting-started/installation',
+      },
+      {
+        id: 'documentation/getting-started/development',
+        label: 'Development',
+        icon: 'code',
+        route: 'documentation/getting-started/development',
+      },
+      {
+        id: 'documentation/getting-started/building',
+        label: 'Building',
+        icon: 'blocks',
+        route: 'documentation/getting-started/building',
+      },
+    ],
+  },
 ];

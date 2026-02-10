@@ -1,14 +1,74 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatCard } from '@angular/material/card';
 
 @Component({
-  selector: 'changelog',
-  templateUrl: './changelog.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [],
+  selector: 'docs-changelog',
+  imports: [MatCard],
+  template: `
+    <div
+      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col overflow-hidden"
+    >
+      <!-- Header -->
+      <div class="flex items-center gap-x-4 px-6 py-4 lg:px-10 lg:py-8">
+        <div class="text-xl font-bold tracking-tighter sm:text-2xl">
+          CHANGELOG
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-y-12 px-6 pb-4 lg:px-10 lg:pb-8">
+        @for (item of changelog; track item) {
+          <mat-card
+            appearance="outlined"
+            class="p-8"
+          >
+            <div class="text-lg font-semibold">{{ item.version }}</div>
+            <div class="text-neutral-500">
+              {{ item.releaseDate }}
+            </div>
+            <hr class="mt-6" />
+            @for (change of item.changes; track change.type) {
+              <div class="prose mt-8">
+                <div class="font-medium text-neutral-500">
+                  {{ change.type }}
+                </div>
+                <ul>
+                  @for (listItem of change.list; track listItem) {
+                    <li>{{ listItem }}</li>
+                  }
+                </ul>
+              </div>
+            }
+          </mat-card>
+        }
+      </div>
+    </div>
+  `,
 })
-export default class Changelog {
-  changelog: any[] = [
+export default class DocsChangelog {
+  protected changelog = [
+    // v21.0.0
+    {
+      version: 'v21.0.0',
+      releaseDate: 'Feb 10, 2026',
+      changes: [
+        {
+          type: 'Breaking Changes',
+          list: [
+            'Complete rewrite of Fuse Angular',
+            'Greatly simplified the applications and pages and removed all functional logic',
+          ],
+        },
+        {
+          type: 'Added',
+          list: [
+            'Angular v21',
+            'Modern Angular support',
+            'Zoneless, Strict & Standalone',
+            'SSR support',
+          ],
+        },
+      ],
+    },
     // v20.0.0
     {
       version: 'v20.0.0',

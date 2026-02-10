@@ -57,6 +57,14 @@ const routes: Routes = [
         loadChildren: () => import('./modules/extras/error/routes'),
       },
 
+      // -----------------------------------------------------------------------
+      // Documentation
+      // -----------------------------------------------------------------------
+      {
+        path: 'documentation',
+        loadChildren: () => import('./modules/documentation/routes'),
+      },
+
       // 404
       {
         path: '404',
