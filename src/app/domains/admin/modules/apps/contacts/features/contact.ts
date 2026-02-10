@@ -10,20 +10,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContactsService } from '@/app/domains/admin/modules/apps/contacts/data/contacts';
 import Contacts from '@/app/domains/admin/modules/apps/contacts/features/contacts';
 
 @Component({
   selector: 'contact',
-  imports: [
-    DatePipe,
-    MatIcon,
-    MatIconButton,
-    MatTooltip,
-    ReactiveFormsModule,
-    RouterLink,
-  ],
+  imports: [DatePipe, MatIcon, MatIconButton, MatTooltip, ReactiveFormsModule],
   template: `
     @let contact = this.contact();
     <div class="flex w-full flex-col">
