@@ -54,7 +54,7 @@ const routes: Routes = [
       },
       {
         path: 'notes',
-        loadChildren: () => import('./modules/apps/notes/notes.routes'),
+        loadChildren: () => import('./modules/apps/notes/routes'),
       },
       {
         path: 'scrumboard',
