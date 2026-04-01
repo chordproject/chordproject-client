@@ -23,7 +23,7 @@ import { NotesService } from '@/app/domains/admin/modules/apps/notes/data/notes'
   ],
   template: `
     <div
-      class="@container mx-auto flex w-full flex-auto flex-col px-6 py-4 lg:px-10 lg:py-8"
+      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col p-6 lg:px-10 lg:py-8"
     >
       <!-- Header -->
       <div class="flex items-center gap-x-4">
@@ -54,7 +54,7 @@ import { NotesService } from '@/app/domains/admin/modules/apps/notes/data/notes'
           @for (note of notes; track note.id) {
             <mat-card
               appearance="outlined"
-              class="relative isolate flex min-h-30 flex-col gap-y-2 overflow-hidden p-4 ring-neutral-200 hover:ring-2 dark:ring-neutral-700"
+              class="relative isolate flex min-h-30 flex-col gap-y-1 overflow-hidden p-4 ring-neutral-200 hover:ring-2 dark:ring-neutral-700"
             >
               <a
                 class="absolute inset-0 z-10"
@@ -73,7 +73,7 @@ import { NotesService } from '@/app/domains/admin/modules/apps/notes/data/notes'
               }
 
               <div
-                class="mt-auto flex items-center justify-between gap-x-2 pt-2"
+                class="mt-auto flex items-center justify-between gap-x-2 pt-4"
               >
                 @if (note.labels && note.labels.length > 0) {
                   <div class="flex flex-wrap items-center gap-2">

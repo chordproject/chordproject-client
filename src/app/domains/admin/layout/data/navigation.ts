@@ -3,6 +3,7 @@ import { IsActiveMatchOptions } from '@angular/router';
 export type NavigationItem = {
   id: string;
   label: string;
+  description?: string;
   route?: string;
   icon?: string;
   badge?: string;
@@ -16,6 +17,7 @@ export const NAVIGATION: NavigationItem[] = [
   {
     id: 'dashboards',
     label: 'Dashboards',
+    description: 'Overview of key metrics',
     children: [
       {
         id: 'dashboards/project',
@@ -40,6 +42,7 @@ export const NAVIGATION: NavigationItem[] = [
   {
     id: 'general',
     label: 'General',
+    description: 'Commonly used apps',
     children: [
       {
         id: 'general/academy',
@@ -85,12 +88,20 @@ export const NAVIGATION: NavigationItem[] = [
   {
     id: 'extras',
     label: 'Extras',
+    description: 'Additional pages and features',
     children: [
       {
         id: 'extras/settings',
         label: 'Settings',
         icon: 'settings',
         route: '/admin/settings',
+        activeOptions: { exact: false },
+      },
+      {
+        id: 'extras/notifications',
+        label: 'Notifications',
+        icon: 'bell',
+        route: '/admin/notifications',
         activeOptions: { exact: false },
       },
       {
@@ -134,6 +145,7 @@ export const NAVIGATION: NavigationItem[] = [
   {
     id: 'documentation',
     label: 'Documentation',
+    description: 'Resources for developers',
     children: [
       {
         id: 'documentation/changelog',

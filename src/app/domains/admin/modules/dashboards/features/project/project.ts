@@ -5,13 +5,18 @@ import { MatCard, MatCardContent, MatCardHeader } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/list';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { TranslocoPipe } from '@jsverse/transloco';
 import {
   ApexAxisChartSeries,
   ApexChart,
   ApexDataLabels,
   ApexGrid,
+  ApexLegend,
+  ApexNonAxisChartSeries,
   ApexPlotOptions,
+  ApexStates,
   ApexStroke,
+  ApexTheme,
   ApexTooltip,
   ApexXAxis,
   ApexYAxis,
@@ -38,26 +43,27 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
     MatMenuTrigger,
     ProjectDashboardBudgetTable,
     MatButton,
+    TranslocoPipe,
   ],
   template: `
     <div
-      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-6 pt-2 sm:gap-6 lg:p-10 lg:pt-8"
+      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-6 sm:gap-6 lg:p-10 lg:pt-8"
     >
       <!-- Header -->
       <div class="flex items-center justify-between gap-x-3">
         <div class="flex flex-col gap-y-0.5">
           <div class="text-xl font-semibold tracking-tighter sm:text-2xl">
-            Overview of Project Alpha
+            {{ 'dashboard.project.title' | transloco }}
           </div>
           <div class="text-neutral-500">
-            Summary of project performance and statistics
+            {{ 'dashboard.project.description' | transloco }}
           </div>
         </div>
 
         <!-- Spacer -->
         <div class="flex-auto"></div>
 
-        <button matButton="outlined">
+        <button matButton="filled">
           <mat-icon svgIcon="settings-2" />
           Customize
         </button>
@@ -176,7 +182,7 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
               </div>
             </mat-card-header>
             <mat-card-content>
-              <div class="text-4xl font-semibold tabular-nums">
+              <div class="text-5xl font-semibold">
                 {{ item.value | number }}
               </div>
               <div class="mt-2 flex items-center gap-x-1">

@@ -28,11 +28,13 @@ import { Scheme, Theming } from '@/app/core/theming';
           mat-menu-item
           (click)="updateScheme(item.value)"
         >
-          <mat-pseudo-checkbox
-            appearance="minimal"
-            [state]="scheme() === item.value ? 'checked' : 'unchecked'"
-          />
-          <span class="ml-1">{{ item.label }}</span>
+          <span class="flex items-center gap-x-1">
+            <span class="flex-auto">{{ item.label }}</span>
+            <mat-pseudo-checkbox
+              appearance="minimal"
+              [state]="scheme() === item.value ? 'checked' : 'unchecked'"
+            />
+          </span>
         </button>
       }
     </mat-menu>

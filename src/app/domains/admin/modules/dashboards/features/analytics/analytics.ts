@@ -11,12 +11,17 @@ import {
   ApexAxisChartSeries,
   ApexChart,
   ApexDataLabels,
+  ApexFill,
   ApexGrid,
+  ApexLegend,
+  ApexNonAxisChartSeries,
+  ApexPlotOptions,
+  ApexStates,
   ApexStroke,
   ApexTooltip,
   ApexXAxis,
   ApexYAxis,
-  NgApexchartsModule,
+  ChartComponent,
 } from 'ng-apexcharts';
 import { Theming } from '@/app/core/theming';
 import { AnalyticsDashboardService } from '@/app/domains/admin/modules/dashboards/data/analytics';
@@ -28,15 +33,15 @@ import { AnalyticsDashboardService } from '@/app/domains/admin/modules/dashboard
     MatIconModule,
     MatMenuModule,
     MatButtonToggleModule,
-    NgApexchartsModule,
     MatTooltipModule,
     DecimalPipe,
     MatCard,
     MatDivider,
+    ChartComponent,
   ],
   template: `
     <div
-      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-6 pt-2 sm:gap-6 lg:p-10 lg:pt-8"
+      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-6 sm:gap-6 lg:p-10 lg:pt-8"
     >
       <!-- Header -->
       <div class="flex items-center justify-between gap-x-3">
@@ -1019,10 +1024,10 @@ export default class AnalyticsDashboard {
         seriesIndex,
         w,
       }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[seriesIndex]};"></div>
-                                                    <div class="ml-2  leading-none">${w.config.labels[seriesIndex]}:</div>
-                                                    <div class="ml-2  font-bold leading-none">${w.config.series[seriesIndex]}%</div>
-                                                </div>`,
+          <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[seriesIndex]};"></div>
+          <div class="ml-2  leading-none">${w.config.labels[seriesIndex]}:</div>
+          <div class="ml-2  font-bold leading-none">${w.config.series[seriesIndex]}%</div>
+      </div>`,
     })),
   };
 
@@ -1082,10 +1087,10 @@ export default class AnalyticsDashboard {
         seriesIndex,
         w,
       }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[seriesIndex]};"></div>
-                                                    <div class="ml-2  leading-none">${w.config.labels[seriesIndex]}:</div>
-                                                    <div class="ml-2  font-bold leading-none">${w.config.series[seriesIndex]}%</div>
-                                                </div>`,
+        <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[seriesIndex]};"></div>
+        <div class="ml-2  leading-none">${w.config.labels[seriesIndex]}:</div>
+        <div class="ml-2  font-bold leading-none">${w.config.series[seriesIndex]}%</div>
+      </div>`,
     })),
   };
 }

@@ -8,6 +8,7 @@ import {
 } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { Media } from '@/app/core/media';
+import { LanguageSwitcher } from '@/app/domains/admin/layout/ui/language-switcher';
 import { Notifications } from '@/app/domains/admin/layout/ui/notifications';
 import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
@@ -24,11 +25,12 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
     AdminSidebar,
     SchemeSwitcher,
     Notifications,
+    LanguageSwitcher,
   ],
   template: `
-    <mat-sidenav-container class="flex-auto">
+    <mat-sidenav-container>
       <mat-sidenav
-        class="w-64"
+        class="w-70 border-r border-neutral-200 scheme-dark dark:border-neutral-800 dark:bg-neutral-900"
         [mode]="isMobile() ? 'over' : 'side'"
         [opened]="!isMobile()"
         [disableClose]="!isMobile()"
@@ -38,48 +40,48 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
         <admin-sidebar />
       </mat-sidenav>
 
-      <mat-sidenav-content
-        class="overflow-hidden lg:my-2 lg:mr-2 lg:rounded-xl lg:border lg:shadow-xs"
-      >
-        <div class="flex flex-auto flex-col">
-          <!-- Banner -->
-          <div class="w-full bg-emerald-600 p-5 font-medium text-white">
-            Want more?
-            <a
-              class="underline underline-offset-2"
-              href="https://builderkit.dev?utm_source=fuse&utm_medium=banner&utm_campaign=fuse50"
-            >
-              Check out BuilderKit, the next generation of toolkit for building
-              beautiful Angular applications.
-            </a>
-            Use promo code
-            <span class="rounded-lg bg-emerald-300 px-2 py-1 text-emerald-950"
-              >FUSE50</span
-            >
-            for 50% off your purchase!
-          </div>
-
-          <!-- Header -->
-          <div class="flex items-center px-4 py-3 lg:hidden">
-            <button
-              matIconButton
-              (click)="sidenav.toggle()"
-            >
-              <mat-icon svgIcon="panel-left" />
-            </button>
-
-            <!-- Spacer -->
-            <div class="flex-auto"></div>
-
-            <div class="flex items-center gap-x-2">
-              <notifications />
-              <scheme-switcher />
-            </div>
-          </div>
-
-          <!-- Content -->
-          <router-outlet />
+      <mat-sidenav-content>
+        <!-- Banner -->
+        <div
+          class="relative w-full bg-emerald-600 px-6 py-4 font-medium text-white"
+        >
+          <a
+            class="absolute inset-0 z-10"
+            href="https://builderkit.dev?utm_source=fuse&utm_medium=banner&utm_campaign=upgrade"
+            ><span></span
+          ></a>
+          Check out BuilderKit; the next generation of toolkit for building
+          beautiful Angular applications. Use promo code
+          <span
+            class="rounded-lg bg-emerald-300 px-1.5 py-0.5 text-base font-semibold text-emerald-950"
+            >FUSE</span
+          >
+          on checkout for
+          <span class="underline underline-offset-2">20%</span> off your
+          purchase!
         </div>
+
+        <!-- Toolbar -->
+        <div class="flex items-center border-b px-4 py-2.5">
+          <button
+            matIconButton
+            (click)="sidenav.toggle()"
+          >
+            <mat-icon svgIcon="panel-left" />
+          </button>
+
+          <!-- Spacer -->
+          <div class="flex-auto"></div>
+
+          <div class="flex items-center gap-x-2">
+            <language-switcher />
+            <scheme-switcher />
+            <notifications />
+          </div>
+        </div>
+
+        <!-- Content -->
+        <router-outlet />
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,

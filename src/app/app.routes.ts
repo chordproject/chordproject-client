@@ -3,8 +3,7 @@ import { Route } from '@angular/router';
 export const routes: Route[] = [
   // Website routes
   {
-    path: '',
-    pathMatch: 'full',
+    path: 'home',
     loadChildren: () => import('./domains/website/routes'),
   },
 
@@ -15,6 +14,11 @@ export const routes: Route[] = [
   },
 
   // Admin
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'admin',
+  },
   {
     path: 'admin',
     loadChildren: () => import('./domains/admin/routes'),

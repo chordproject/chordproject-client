@@ -35,8 +35,15 @@ import {
       @for (section of navigation(); track section.id) {
         <div class="flex flex-col px-4">
           <!-- Section title -->
-          <div class="px-2.5 py-1.5 text-sm font-medium text-neutral-500">
+          <div class="px-2.5 py-1.5 text-sm font-semibold text-blue-400">
             {{ section.label }}
+
+            <!-- Section description -->
+            @if (section.description) {
+              <div class="text-xs font-medium text-neutral-400">
+                {{ section.description }}
+              </div>
+            }
           </div>
 
           <!-- Section content -->
@@ -90,14 +97,21 @@ import {
                 }
 
                 <!-- Label -->
-                <div class="flex-auto font-medium">
+                <div class="flex flex-auto flex-col font-medium">
                   {{ node.label }}
+
+                  <!-- Description -->
+                  @if (node.description) {
+                    <div class="text-xs">
+                      {{ node.description }}
+                    </div>
+                  }
                 </div>
 
                 <!-- Badge -->
                 @if (node.badge) {
                   <div
-                    class="rounded bg-neutral-200 px-1.5 py-0.5 text-xs font-medium tabular-nums dark:bg-neutral-700"
+                    class="rounded bg-pink-400 px-1.5 py-0.5 text-xs font-semibold dark:bg-pink-700"
                   >
                     {{ node.badge }}
                   </div>

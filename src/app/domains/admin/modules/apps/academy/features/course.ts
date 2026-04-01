@@ -27,15 +27,13 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
     TabContent,
   ],
   host: {
-    class: 'lg:max-h-[calc(1dvh-1rem)]',
+    class: 'lg:h-[calc(1dvh-57px)]',
   },
   template: `
     @let course = this.course();
     @let currentStep = this.currentStep();
 
-    <mat-sidenav-container
-      class="h-full flex-auto [&_.mat-drawer-backdrop]:fixed"
-    >
+    <mat-sidenav-container class="[&_.mat-drawer-backdrop]:fixed">
       <!-- Drawer -->
       <mat-sidenav
         class="w-90 bg-white dark:bg-neutral-900"
@@ -146,7 +144,7 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
       </mat-sidenav>
 
       <!-- Drawer content -->
-      <mat-sidenav-content class="flex h-full flex-col border-l">
+      <mat-sidenav-content class="flex flex-col border-l">
         <!-- Header -->
         <div
           class="flex flex-0 items-center border-b py-2 pr-6 pl-4 sm:py-4 md:pr-8 md:pl-6 lg:hidden lg:border-b-0 dark:bg-transparent"

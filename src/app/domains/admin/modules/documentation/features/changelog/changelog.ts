@@ -27,7 +27,7 @@ import { MatCard } from '@angular/material/card';
             </div>
             <hr class="mt-6" />
             @for (change of item.changes; track change.type) {
-              <div class="prose mt-8">
+              <div class="prose mt-8 text-base">
                 <div class="font-medium text-neutral-500">
                   {{ change.type }}
                 </div>
@@ -46,6 +46,33 @@ import { MatCard } from '@angular/material/card';
 })
 export default class DocsChangelog {
   protected changelog = [
+    // v21.1.0
+    {
+      version: 'v21.1.0',
+      releaseDate: 'Apr 1, 2026',
+      changes: [
+        {
+          type: 'Added',
+          list: [
+            'Multi-language support using Transloco',
+            'Toolbar',
+            'Notifications page',
+          ],
+        },
+        {
+          type: 'Changed',
+          list: [
+            'Updated dependencies',
+            'Dropped base font size to 13px',
+            'Improved the routing',
+            'Improved the sidebar design',
+            'Improved the layout',
+            'Improved the Academy app design',
+            'Improved the Notes app design',
+          ],
+        },
+      ],
+    },
     // v21.0.0
     {
       version: 'v21.0.0',

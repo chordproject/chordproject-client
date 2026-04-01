@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Navigation } from '@/app/domains/admin/layout/ui/navigation';
-import { Notifications } from '@/app/domains/admin/layout/ui/notifications';
 import { User } from '@/app/domains/admin/layout/ui/user';
 
 @Component({
   selector: 'admin-sidebar',
-  imports: [Navigation, User, Notifications, MatButton, MatIcon],
+  imports: [Navigation, User, MatButton, MatIcon],
   host: {
     class: 'flex w-full flex-auto flex-col',
   },
@@ -31,15 +30,10 @@ import { User } from '@/app/domains/admin/layout/ui/user';
           Angular
         </div>
       </div>
-
-      <!-- Spacer -->
-      <div class="flex-auto"></div>
-
-      <notifications />
     </div>
 
     <!-- Navigation -->
-    <navigation class="my-4 flex-auto" />
+    <navigation class="mt-8 mb-4 flex-auto" />
 
     <!-- Spacer -->
     <div class="flex-auto"></div>

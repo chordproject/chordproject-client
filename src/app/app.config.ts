@@ -1,6 +1,8 @@
+import { TranslocoHttpLoader } from '@/app/core/transloco/transloco-http-loader';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   ApplicationConfig,
+  isDevMode,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -16,6 +18,7 @@ import {
 } from '@angular/router';
 import { provideIcons } from '@/app/core/icons/provider';
 import { provideTheming } from '@/app/core/theming';
+import { provideTransloco } from '@jsverse/transloco';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -42,8 +45,28 @@ export const appConfig: ApplicationConfig = {
     provideIcons(),
     provideTheming({
       scheme: 'system',
-      primary: '#4f46e5',
+      primary: '#1565C0',
       error: '#dc2626',
+    }),
+
+    // Third-party
+    provideTransloco({
+      config: {
+        availableLangs: [
+          {
+            id: 'en',
+            label: 'English',
+          },
+          {
+            id: 'es',
+            label: 'Español',
+          },
+        ],
+        defaultLang: 'en',
+        reRenderOnLangChange: true,
+        prodMode: !isDevMode(),
+      },
+      loader: TranslocoHttpLoader,
     }),
   ],
 };

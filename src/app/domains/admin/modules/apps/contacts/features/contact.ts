@@ -199,7 +199,7 @@ import Contacts from '@/app/domains/admin/modules/apps/contacts/features/contact
                   svgIcon="notebook-pen"
                 />
                 <div
-                  class="prose ml-6 leading-5 *:first:mt-0"
+                  class="prose ml-6 text-base leading-5 *:first:mt-0"
                   [innerHTML]="contact.notes"
                 ></div>
               </div>

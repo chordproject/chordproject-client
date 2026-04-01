@@ -11,7 +11,7 @@ import {
 import { form, FormField } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogClose } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -19,7 +19,14 @@ import { NotesService } from '@/app/domains/admin/modules/apps/notes/data/notes'
 
 @Component({
   selector: 'note',
-  imports: [FormField, CdkTextareaAutosize, MatButton, MatIcon, MatCheckbox],
+  imports: [
+    FormField,
+    CdkTextareaAutosize,
+    MatButton,
+    MatIcon,
+    MatCheckbox,
+    MatDialogClose,
+  ],
   template: `
     <ng-template #content>
       @let note = this.note();
@@ -92,8 +99,18 @@ import { NotesService } from '@/app/domains/admin/modules/apps/notes/data/notes'
 
         <!-- Buttons -->
         <div class="mt-4 flex items-center justify-end gap-x-2">
-          <button matButton="outlined">Cancel</button>
-          <button matButton="filled">Save</button>
+          <button
+            matButton="outlined"
+            matDialogClose
+          >
+            Cancel
+          </button>
+          <button
+            matButton="filled"
+            matDialogClose
+          >
+            Save
+          </button>
         </div>
       </div>
     </ng-template>

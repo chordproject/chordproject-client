@@ -3,6 +3,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatInput, MatPrefix } from '@angular/material/input';
 import {
   MatSidenav,
   MatSidenavContainer,
@@ -25,9 +26,12 @@ import { Contact } from '@/app/domains/admin/modules/apps/contacts/data/model';
     MatSidenavContainer,
     MatSidenav,
     MatSidenavContent,
+    MatFormField,
+    MatInput,
+    MatPrefix,
   ],
   host: {
-    class: 'max-h-[calc(1dvh-1rem)]',
+    class: 'lg:h-[calc(1dvh-57px)]',
   },
   template: `
     <div
@@ -74,6 +78,18 @@ import { Contact } from '@/app/domains/admin/modules/apps/contacts/data/model';
 
             <!-- Spacer -->
             <div class="flex-auto"></div>
+
+            <!-- Search -->
+            <mat-form-field class="w-40 sm:w-64">
+              <mat-icon
+                matPrefix
+                svgIcon="search"
+              />
+              <input
+                placeholder="Search contacts"
+                matInput
+              />
+            </mat-form-field>
 
             <!-- Actions -->
             <button matButton="filled">

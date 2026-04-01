@@ -9,10 +9,10 @@
   --mat-sys-body-large-tracking: 0.031rem;
   --mat-sys-body-large-weight: 400;
 
-  --mat-sys-body-medium: 400 0.875rem / 1.25rem var(--font-sans);
+  --mat-sys-body-medium: 400 0.8125rem / 1.25rem var(--font-sans);
   --mat-sys-body-medium-font: var(--font-sans);
   --mat-sys-body-medium-line-height: 1.25rem;
-  --mat-sys-body-medium-size: 0.875rem;
+  --mat-sys-body-medium-size: 0.8125rem;
   --mat-sys-body-medium-tracking: 0.016rem;
   --mat-sys-body-medium-weight: 400;
 
@@ -65,12 +65,12 @@
   --mat-sys-headline-small-tracking: 0;
   --mat-sys-headline-small-weight: 400;
 
-  --mat-sys-label-large: 500 0.875rem / 1.25rem var(--font-sans);
+  --mat-sys-label-large: 500 0.8125rem / 1.25rem var(--font-sans);
   --mat-sys-label-large-font: var(--font-sans);
   --mat-sys-label-large-line-height: 1.25rem;
-  --mat-sys-label-large-size: 0.875rem;
+  --mat-sys-label-large-size: 0.8125rem;
   --mat-sys-label-large-tracking: 0.006rem;
-  --mat-sys-label-large-weight: 500;
+  --mat-sys-label-large-weight: 600;
   --mat-sys-label-large-weight-prominent: 700;
 
   --mat-sys-label-medium: 500 0.75rem / 1rem var(--font-sans);
@@ -102,10 +102,10 @@
   --mat-sys-title-medium-tracking: 0.009rem;
   --mat-sys-title-medium-weight: 500;
 
-  --mat-sys-title-small: 500 0.875rem / 1.25rem var(--font-sans);
+  --mat-sys-title-small: 500 0.8125rem / 1.25rem var(--font-sans);
   --mat-sys-title-small-font: var(--font-sans);
   --mat-sys-title-small-line-height: 1.25rem;
-  --mat-sys-title-small-size: 0.875rem;
+  --mat-sys-title-small-size: 0.8125rem;
   --mat-sys-title-small-tracking: 0.006rem;
   --mat-sys-title-small-weight: 500;
 
@@ -894,7 +894,7 @@
 
     /* Mobile font size adjustment */
     @media screen and (max-width: 640px) {
-      --form-field-font-size: var(--text-xl); /* 16px */
+      --form-field-font-size: var(--text-lg); /* 16px */
     }
   }
 
@@ -1011,7 +1011,7 @@
 
   /* Mobile font size adjustment */
   @media screen and (max-width: 640px) {
-    --mat-select-trigger-text-size: var(--text-xl); /* 16px */
+    --mat-select-trigger-text-size: var(--text-lg); /* 16px */
   }
 
   /* ------------------------------------------------------------------------ */

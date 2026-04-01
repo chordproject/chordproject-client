@@ -53,6 +53,10 @@ const routes: Routes = [
         loadChildren: () => import('./modules/extras/settings/routes'),
       },
       {
+        path: 'notifications',
+        loadChildren: () => import('./modules/extras/notifications/routes'),
+      },
+      {
         path: 'error',
         loadChildren: () => import('./modules/extras/error/routes'),
       },

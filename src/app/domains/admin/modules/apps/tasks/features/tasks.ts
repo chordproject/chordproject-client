@@ -10,6 +10,7 @@ import { DatePipe, TitleCasePipe } from '@angular/common';
 import { Component, inject, computed, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormField, MatInput, MatPrefix } from '@angular/material/input';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -36,9 +37,12 @@ import { TasksService } from '@/app/domains/admin/modules/apps/tasks/data/tasks'
     MatMenu,
     MatMenuItem,
     MatMenuTrigger,
+    MatFormField,
+    MatInput,
+    MatPrefix,
   ],
   host: {
-    class: 'max-h-[calc(1dvh-1rem)]',
+    class: 'h-[calc(1dvh-57px)]',
   },
   template: `
     <div
@@ -78,6 +82,18 @@ import { TasksService } from '@/app/domains/admin/modules/apps/tasks/data/tasks'
             <!-- Spacer -->
             <div class="flex-auto"></div>
 
+            <!-- Search -->
+            <mat-form-field class="w-40 sm:w-64">
+              <mat-icon
+                matPrefix
+                svgIcon="search"
+              />
+              <input
+                placeholder="Search tasks"
+                matInput
+              />
+            </mat-form-field>
+
             <!-- Actions -->
             <div>
               <button
@@ -110,12 +126,12 @@ import { TasksService } from '@/app/domains/admin/modules/apps/tasks/data/tasks'
                 <div
                   [id]="'task-' + task.id"
                   class="group w-full select-none hover:bg-neutral-100 dark:hover:bg-white/2.5"
-                  [class.h-12]="task.type === 'section'"
+                  [class.h-10]="task.type === 'section'"
                   [class.bg-neutral-50]="task.type === 'section'"
                   [class.dark:bg-neutral-800]="task.type === 'section'"
                   [class.font-semibold]="task.type === 'section'"
-                  [class.text-lg]="task.type === 'section'"
-                  [class.h-16]="task.type === 'task'"
+                  [class.text-md]="task.type === 'section'"
+                  [class.h-14]="task.type === 'task'"
                   [class.text-neutral-500]="task.completed"
                   [class.border-t]="first"
                   cdkDrag

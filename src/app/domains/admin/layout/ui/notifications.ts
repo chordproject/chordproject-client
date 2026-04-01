@@ -42,45 +42,52 @@ import { formatDistance, sub } from 'date-fns';
         class="z-10 flex max-h-120 w-full max-w-xs flex-col overflow-y-auto rounded-lg bg-white shadow-(--mat-sys-level2) dark:bg-neutral-800"
       >
         <!-- Header -->
-        <div class="flex items-center p-4 pb-0 pl-6">
-          <div class="text-xl font-semibold tracking-tighter">
-            Notifications
-          </div>
-          <div class="flex-auto"></div>
-          <button
-            matIconButton
-            [matMenuTriggerFor]="notificationsMenu"
-          >
-            <mat-icon svgIcon="ellipsis-vertical" />
-          </button>
-          <mat-menu #notificationsMenu="matMenu">
-            <button mat-menu-item>
-              <mat-icon svgIcon="check-check" />
-              Mark all as read
-            </button>
-            <button mat-menu-item>
-              <mat-icon svgIcon="settings" />
-              Notification settings
-            </button>
-          </mat-menu>
-        </div>
-
-        <!-- Filters -->
-        <div class="mt-4 flex items-center gap-x-2 px-6">
-          @for (filter of filters; track filter.value) {
+        <div class="flex flex-col bg-neutral-100 dark:bg-neutral-800">
+          <div class="flex items-center p-4 pb-0 pl-6">
+            <div class="flex items-center gap-x-3">
+              <mat-icon
+                class="size-4.5"
+                svgIcon="bell"
+              />
+              <div class="text-xl font-semibold tracking-tighter">
+                Notifications
+              </div>
+            </div>
+            <div class="flex-auto"></div>
             <button
-              [matButton]="
-                currentFilter().value === filter.value ? 'filled' : 'text'
-              "
-              class="small"
-              (click)="currentFilter.set(filter)"
+              matIconButton
+              [matMenuTriggerFor]="notificationsMenu"
             >
-              {{ filter.label }}
+              <mat-icon svgIcon="ellipsis-vertical" />
             </button>
-          }
-        </div>
+            <mat-menu #notificationsMenu="matMenu">
+              <button mat-menu-item>
+                <mat-icon svgIcon="check-check" />
+                Mark all as read
+              </button>
+              <button mat-menu-item>
+                <mat-icon svgIcon="settings" />
+                Notification settings
+              </button>
+            </mat-menu>
+          </div>
 
-        <mat-divider class="mt-3" />
+          <!-- Filters -->
+          <div class="flex items-center gap-x-2 px-6 pt-3 pb-4">
+            @for (filter of filters; track filter.value) {
+              <button
+                [matButton]="
+                  currentFilter().value === filter.value ? 'filled' : 'text'
+                "
+                class="small"
+                (click)="currentFilter.set(filter)"
+              >
+                {{ filter.label }}
+              </button>
+            }
+          </div>
+          <mat-divider />
+        </div>
 
         <!-- List -->
         <div class="flex flex-col">

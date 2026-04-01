@@ -33,25 +33,35 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
     MatDivider,
   ],
   template: `
-    <div
-      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 px-6 pt-2 sm:gap-6 lg:p-10 lg:pt-8"
-    >
-      <!-- Header -->
-      <div class="flex flex-col gap-y-0.5">
-        <div class="text-xl font-semibold tracking-tighter sm:text-2xl">
+    <!-- Header -->
+    <div class="overflow-hidden bg-linear-to-r from-blue-800 to-blue-950">
+      <div
+        class="@container relative mx-auto flex w-full max-w-7xl flex-auto flex-col gap-y-1 px-6 py-10 lg:px-10 lg:py-14"
+      >
+        <mat-icon
+          class="absolute top-1/2 right-12 z-0 size-40 -translate-y-1/2 text-blue-700/60 *:[svg]:stroke-1"
+          svgIcon="graduation-cap"
+        />
+        <div
+          class="relative z-10 text-xl font-semibold tracking-tighter text-white sm:text-3xl"
+        >
           What do you want to learn today?
         </div>
-        <div class="text-neutral-500">
+        <div class="relative z-10 text-md font-medium text-blue-400">
           Our courses will step you through the process of a building small
           applications, or adding new features to existing applications.
         </div>
       </div>
+    </div>
 
+    <div
+      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-6 sm:gap-6 lg:p-10 lg:pt-8"
+    >
       <!-- Courses -->
       <div class="flex flex-auto flex-col">
         <!-- Filters -->
         <div
-          class="flex w-full max-w-xs flex-col items-center justify-between sm:max-w-none sm:flex-row"
+          class="flex w-full max-w-xs flex-col items-start justify-between sm:max-w-none sm:flex-row sm:items-center"
         >
           <mat-form-field class="w-full sm:w-36">
             <mat-select [value]="'all'">
@@ -74,7 +84,7 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
             />
           </mat-form-field>
           <mat-slide-toggle
-            class="mt-8 sm:mt-0 sm:ml-auto"
+            class="mt-6 sm:mt-0 sm:ml-auto"
             hideIcon
           >
             Hide completed
@@ -83,7 +93,7 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
 
         <!-- Courses -->
         <div
-          class="mt-6 grid grid-cols-1 gap-8 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3"
+          class="mt-6 grid grid-cols-1 gap-8 sm:mt-8 @lg:grid-cols-2 @4xl:grid-cols-3 @5xl:grid-cols-4"
         >
           @for (course of data.courses; track course.id) {
             <!-- Course -->
