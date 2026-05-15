@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'notifications',
-  imports: [MatButton, RouterLink, MatIcon],
+  imports: [MatButton, MatIcon],
   template: `
     <div
       class="@container mx-auto flex w-full max-w-5xl flex-auto flex-col gap-4 p-6 sm:gap-8 lg:p-10"
@@ -51,7 +50,7 @@ import { RouterLink } from '@angular/router';
               </div>
               <div class="text-neutral-500">Mar 31, 7:30 PM</div>
               <div
-                class="mt-4 flex flex-col gap-y-2 rounded-md bg-neutral-100 px-4 py-3"
+                class="mt-4 flex flex-col gap-y-2 rounded-md bg-neutral-100 px-4 py-3 dark:bg-neutral-700"
               >
                 <p class="font-medium">
                   Congratulations! Your submission has been accepted.
