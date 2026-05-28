@@ -31,7 +31,7 @@ import { Contact } from '@/app/domains/admin/modules/apps/contacts/data/model';
     MatPrefix,
   ],
   host: {
-    class: 'lg:h-[calc(1dvh-57px)]',
+    class: 'lg:h-full',
   },
   template: `
     <div
@@ -58,7 +58,7 @@ import { Contact } from '@/app/domains/admin/modules/apps/contacts/data/model';
           [class.border-r]="!!selectedContact()"
         >
           <!-- Header -->
-          <div class="flex items-center gap-x-4 px-6 py-4 lg:px-10 lg:py-8">
+          <div class="flex items-center gap-x-4 px-6 py-4 lg:px-8 lg:py-8">
             <div class="flex flex-col gap-y-0.5">
               <div class="text-xl font-semibold tracking-tighter sm:text-2xl">
                 Contacts

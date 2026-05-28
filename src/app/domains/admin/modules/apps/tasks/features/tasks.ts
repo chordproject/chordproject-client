@@ -42,7 +42,7 @@ import { TasksService } from '@/app/domains/admin/modules/apps/tasks/data/tasks'
     MatPrefix,
   ],
   host: {
-    class: 'h-[calc(1dvh-57px)]',
+    class: 'lg:h-full',
   },
   template: `
     <div
@@ -69,7 +69,7 @@ import { TasksService } from '@/app/domains/admin/modules/apps/tasks/data/tasks'
           [class.border-r]="!!selectedTask()"
         >
           <!-- Header -->
-          <div class="flex items-center gap-x-4 px-6 py-4 lg:px-10 lg:py-8">
+          <div class="flex items-center gap-x-4 px-6 py-4 lg:px-8 lg:py-8">
             <div class="flex flex-col gap-y-0.5">
               <div class="text-xl font-semibold tracking-tighter sm:text-2xl">
                 Tasks

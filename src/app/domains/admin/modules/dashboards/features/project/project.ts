@@ -47,7 +47,7 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
   ],
   template: `
     <div
-      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-6 sm:gap-6 lg:p-10 lg:pt-8"
+      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-6 sm:gap-6 lg:px-8 lg:pt-8 lg:pb-10"
     >
       <!-- Header -->
       <div class="flex items-center justify-between gap-x-3">

@@ -9,13 +9,13 @@ import { MatCard } from '@angular/material/card';
       class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col overflow-hidden"
     >
       <!-- Header -->
-      <div class="flex items-center gap-x-4 px-6 py-4 lg:px-10 lg:py-8">
+      <div class="flex items-center gap-x-4 px-6 py-4 lg:px-8 lg:py-8">
         <div class="text-xl font-bold tracking-tighter sm:text-2xl">
           CHANGELOG
         </div>
       </div>
 
-      <div class="flex flex-col gap-y-12 px-6 pb-4 lg:px-10 lg:pb-8">
+      <div class="flex flex-col gap-y-12 px-6 pb-4 lg:px-8 lg:pb-8">
         @for (item of changelog; track item) {
           <mat-card
             appearance="outlined"

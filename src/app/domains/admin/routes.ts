@@ -41,6 +41,10 @@ const routes: Routes = [
         loadChildren: () => import('./modules/apps/notes/routes'),
       },
       {
+        path: 'orders',
+        loadChildren: () => import('./modules/apps/orders/routes'),
+      },
+      {
         path: 'tasks',
         loadChildren: () => import('./modules/apps/tasks/routes'),
       },

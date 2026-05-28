@@ -40,7 +40,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
         <admin-sidebar />
       </mat-sidenav>
 
-      <mat-sidenav-content>
+      <mat-sidenav-content class="flex flex-col lg:h-dvh lg:overflow-hidden">
         <!-- Banner -->
         <div
           class="relative w-full bg-emerald-600 px-6 py-4 font-medium text-white"
@@ -82,7 +82,9 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
         </div>
 
         <!-- Content -->
-        <router-outlet />
+        <div class="flex flex-col lg:min-h-0 lg:flex-auto lg:overflow-auto">
+          <router-outlet />
+        </div>
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,

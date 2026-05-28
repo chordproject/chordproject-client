@@ -29,4 +29,10 @@ export const routes: Route[] = [
     path: 'coming-soon',
     loadChildren: () => import('./domains/coming-soon/routes'),
   },
+
+  // Maintenance
+  {
+    path: 'maintenance',
+    loadChildren: () => import('./domains/maintenance/routes'),
+  },
 ];

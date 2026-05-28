@@ -27,7 +27,7 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
     TabContent,
   ],
   host: {
-    class: 'lg:h-[calc(1dvh-57px)]',
+    class: 'lg:h-full',
   },
   template: `
     @let course = this.course();
@@ -283,8 +283,8 @@ export default class AcademyCourse {
 
   // State
   protected data = this.academyService.data;
-  protected course = computed(
-    () => this.data.courses.find((course) => course.id === this.courseId())!
+  protected course = computed(() =>
+    this.data.courses.find((course) => course.id === this.courseId())!
   );
   protected currentStep = signal(0);
   protected isMobile = computed(() =>

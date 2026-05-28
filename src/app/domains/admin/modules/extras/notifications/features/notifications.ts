@@ -7,7 +7,7 @@ import { MatIcon } from '@angular/material/icon';
   imports: [MatButton, MatIcon],
   template: `
     <div
-      class="@container mx-auto flex w-full max-w-5xl flex-auto flex-col gap-4 p-6 sm:gap-8 lg:p-10"
+      class="@container mx-auto flex w-full max-w-5xl flex-auto flex-col gap-4 p-6 sm:gap-8 lg:px-8 lg:py-10"
     >
       <!-- Header -->
       <div class="flex flex-col justify-between gap-y-0.5">

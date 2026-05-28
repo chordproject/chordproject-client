@@ -222,8 +222,8 @@ export default class Contact {
 
   // State
   protected data = this.contactsService.data;
-  protected contact = computed(
-    () => this.data.contacts.find((contact) => contact.id === this.contactId())!
+  protected contact = computed(() =>
+    this.data.contacts.find((contact) => contact.id === this.contactId())!
   );
 
   constructor() {

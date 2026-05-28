@@ -24,7 +24,7 @@ import { RouterLink } from '@angular/router';
   ],
   template: `
     <div
-      class="@container mx-auto flex w-full max-w-4xl flex-auto flex-col items-start p-6 pt-10 lg:p-10 lg:pt-16"
+      class="@container mx-auto flex w-full max-w-4xl flex-auto flex-col items-start p-6 pt-10 lg:px-8 lg:pt-16 lg:pb-10"
     >
       <!-- Header -->
       <div class="relative flex flex-col">

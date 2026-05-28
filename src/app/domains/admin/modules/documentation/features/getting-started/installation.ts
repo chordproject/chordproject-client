@@ -11,14 +11,14 @@ import { MatIconModule } from '@angular/material/icon';
       class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col overflow-hidden"
     >
       <!-- Header -->
-      <div class="flex items-center gap-x-4 px-6 py-4 lg:px-10 lg:py-8">
+      <div class="flex items-center gap-x-4 px-6 py-4 lg:px-8 lg:py-8">
         <div class="text-xl font-medium tracking-tighter sm:text-2xl">
           Installation
         </div>
       </div>
 
       <!-- Content -->
-      <div class="prose max-w-3xl flex-auto px-6 pb-4 lg:px-10 lg:pb-8">
+      <div class="prose max-w-3xl flex-auto px-6 pb-4 lg:px-8 lg:pb-8">
         <h4>1. Unzip</h4>
         <p>
           Unzip the file you have downloaded from Themeforest and then unzip the

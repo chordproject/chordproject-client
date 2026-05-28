@@ -171,8 +171,8 @@ export default class Task {
 
   // State
   protected data = this.tasksService.data;
-  protected task = computed(
-    () => this.data.tasks.find((task) => task.id === this.taskId())!
+  protected task = computed(() =>
+    this.data.tasks.find((task) => task.id === this.taskId())!
   );
   protected taskModel = linkedSignal(() => this.task());
   protected taskForm = form(this.taskModel);

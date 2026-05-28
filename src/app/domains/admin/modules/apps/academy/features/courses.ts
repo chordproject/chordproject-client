@@ -36,7 +36,7 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
     <!-- Header -->
     <div class="overflow-hidden bg-linear-to-r from-blue-800 to-blue-950">
       <div
-        class="@container relative mx-auto flex w-full max-w-7xl flex-auto flex-col gap-y-1 px-6 py-10 lg:px-10 lg:py-14"
+        class="@container relative mx-auto flex w-full max-w-7xl flex-auto flex-col gap-y-1 px-6 py-10 lg:px-8 lg:py-14"
       >
         <mat-icon
           class="absolute top-1/2 right-12 z-0 size-40 -translate-y-1/2 text-blue-700/60 *:[svg]:stroke-1"
@@ -55,7 +55,7 @@ import { AcademyService } from '@/app/domains/admin/modules/apps/academy/data/ac
     </div>
 
     <div
-      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-6 sm:gap-6 lg:p-10 lg:pt-8"
+      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col gap-4 p-6 sm:gap-6 lg:px-8 lg:pt-8 lg:pb-10"
     >
       <!-- Courses -->
       <div class="flex flex-auto flex-col">

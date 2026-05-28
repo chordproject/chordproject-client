@@ -23,7 +23,7 @@ import { NotesService } from '@/app/domains/admin/modules/apps/notes/data/notes'
   ],
   template: `
     <div
-      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col p-6 lg:px-10 lg:py-8"
+      class="@container mx-auto flex w-full max-w-7xl flex-auto flex-col p-6 lg:px-8 lg:py-8"
     >
       <!-- Header -->
       <div class="flex items-center gap-x-4">

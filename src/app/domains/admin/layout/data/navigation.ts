@@ -76,6 +76,12 @@ export const NAVIGATION: NavigationItem[] = [
         route: '/admin/notes',
       },
       {
+        id: 'general/orders',
+        label: 'Orders',
+        icon: 'shopping-cart',
+        route: '/admin/orders',
+      },
+      {
         id: 'general/tasks',
         label: 'Tasks',
         icon: 'list-todo',
@@ -139,6 +145,12 @@ export const NAVIGATION: NavigationItem[] = [
         label: 'Coming soon',
         icon: 'traffic-cone',
         route: '/coming-soon',
+      },
+      {
+        id: 'extras/maintenance',
+        label: 'Maintenance',
+        icon: 'wrench',
+        route: '/maintenance',
       },
     ],
   },

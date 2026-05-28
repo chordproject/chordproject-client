@@ -994,6 +994,7 @@
   /* ------------------------------------------------------------------------ */
   --mat-select-trigger-text-size: var(--text-base); /* 14px */
   --mat-select-trigger-text-line-height: var(--leading-5); /* 20px */
+  --mat-select-trigger-text-tracking: var(--tracking-normal);
 
   --mat-select-panel-background-color: light-dark(
     var(--color-white),

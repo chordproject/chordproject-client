@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fuse",
+      "url": "http://localhost:3873",
+      "port": 3873
+    }
+  ]
+}
