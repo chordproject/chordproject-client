@@ -1,4 +1,5 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { DatePipe } from '@angular/common';
 import {
   afterNextRender,
   Component,
@@ -26,12 +27,22 @@ import { NotesService } from '@/app/domains/admin/modules/apps/notes/data/notes'
     MatIcon,
     MatCheckbox,
     MatDialogClose,
+    DatePipe,
   ],
   template: `
     <ng-template #content>
       @let note = this.note();
 
       <div class="flex w-full flex-col p-4">
+        <!-- Image -->
+        @if (note.image) {
+          <img
+            class="-mx-4 -mt-4 mb-3 w-[calc(100%+2rem)] max-w-none object-cover"
+            [src]="note.image"
+            alt="Note image"
+          />
+        }
+
         <!-- Title -->
         <input
           type="text"
@@ -94,6 +105,21 @@ import { NotesService } from '@/app/domains/admin/modules/apps/notes/data/notes'
               <mat-icon svgIcon="square-pen" />
               Edit
             </button>
+          </div>
+        }
+
+        <!-- Reminder -->
+        @if (note.reminder) {
+          <div class="mt-2 flex flex-wrap items-center gap-2 p-2">
+            <div
+              class="flex items-center gap-x-1 rounded-lg bg-neutral-200 px-2 py-1 text-xs font-medium text-neutral-500 dark:bg-black/20"
+            >
+              <mat-icon
+                class="size-3.5"
+                svgIcon="bell"
+              />
+              {{ note.reminder | date: 'MMM d, y' }}
+            </div>
           </div>
         }
 

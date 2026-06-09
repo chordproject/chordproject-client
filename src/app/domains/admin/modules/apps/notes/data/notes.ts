@@ -40,7 +40,7 @@ export class NotesService {
       title: 'Design Update',
       content: 'Update the design of the theme',
       tasks: null,
-      image: null,
+      image: 'images/cards/18-640x480.jpg',
       reminder: null,
       labels: ['Priority'],
       archived: false,
@@ -192,7 +192,7 @@ export class NotesService {
       title: 'Retirement Party',
       content: "Organize the dad's surprise retirement party",
       tasks: null,
-      image: null,
+      image: 'images/cards/22-640x480.jpg',
       reminder: add(set(this.now, { hours: 14, minutes: 56 }), {
         days: 25,
       }).toDateString(),
@@ -265,8 +265,10 @@ export class NotesService {
       title: 'Dinner',
       content: 'Dinner with parents',
       tasks: null,
-      image: null,
-      reminder: null,
+      image: 'images/cards/25-640x480.jpg',
+      reminder: add(set(this.now, { hours: 19, minutes: 30 }), {
+        days: 3,
+      }).toDateString(),
       labels: ['Family', 'Priority'],
       archived: false,
       createdAt: sub(set(this.now, { hours: 7, minutes: 12 }), {

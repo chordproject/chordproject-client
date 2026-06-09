@@ -98,7 +98,7 @@ import { Contact } from '@/app/domains/admin/modules/apps/contacts/data/model';
             </button>
           </div>
 
-          <!-- Tasks -->
+          <!-- Contacts -->
           <div class="relative">
             @if (contacts && data.contacts.length > 0) {
               @for (contact of contacts; track contact.id; let i = $index) {
@@ -108,26 +108,26 @@ import { Contact } from '@/app/domains/admin/modules/apps/contacts/data/model';
                   contact.name.charAt(0) !== contacts[i - 1].name.charAt(0)
                 ) {
                   <div
-                    class="-mt-px border-t border-b bg-neutral-50 px-6 py-1 font-medium text-neutral-500 uppercase md:px-8 dark:bg-neutral-900"
+                    class="sticky -top-px -mt-px border-t border-b bg-neutral-50 px-6 py-1 font-medium text-neutral-500 uppercase md:px-8 dark:bg-neutral-900"
                   >
                     {{ contact.name.charAt(0) }}
                   </div>
                 }
                 <!-- Contact -->
                 <a
-                  class="flex cursor-pointer items-center border-b px-6 py-4 hover:bg-neutral-100 md:px-8 dark:hover:bg-white/2.5"
+                  class="flex cursor-pointer items-center border-b px-6 py-2 hover:bg-neutral-100 md:px-8 dark:hover:bg-white/2.5"
                   [routerLink]="['./', contact.id]"
                 >
                   @if (contact.photo) {
                     <img
-                      class="size-10 shrink-0 rounded-full object-cover"
+                      class="size-8 shrink-0 rounded-full object-cover"
                       [src]="contact.photo"
                       alt="Contact avatar"
                     />
                   }
                   @if (!contact.photo) {
                     <div
-                      class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-lg text-neutral-600 uppercase dark:bg-neutral-700 dark:text-neutral-200"
+                      class="flex size-8 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-lg text-neutral-600 uppercase dark:bg-neutral-700 dark:text-neutral-200"
                     >
                       {{ contact.name.charAt(0) }}
                     </div>
