@@ -11,6 +11,7 @@ import { Media } from '@/app/core/media';
 import { LanguageSwitcher } from '@/app/domains/admin/layout/ui/language-switcher';
 import { Notifications } from '@/app/domains/admin/layout/ui/notifications';
 import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
+import { Shortcuts } from '@/app/domains/admin/layout/ui/shortcuts';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
 
 @Component({
@@ -26,6 +27,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
     SchemeSwitcher,
     Notifications,
     LanguageSwitcher,
+    Shortcuts,
   ],
   template: `
     <mat-sidenav-container>
@@ -70,6 +72,11 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
           >
             <mat-icon svgIcon="panel-left" />
           </button>
+
+          <!-- Separator -->
+          <div class="mx-3 h-5 border-l"></div>
+
+          <shortcuts />
 
           <!-- Spacer -->
           <div class="flex-auto"></div>
