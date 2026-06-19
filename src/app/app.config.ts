@@ -1,4 +1,3 @@
-import { TranslocoHttpLoader } from '@/app/core/transloco/transloco-http-loader';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   ApplicationConfig,
@@ -16,9 +15,10 @@ import {
   withComponentInputBinding,
   withInMemoryScrolling,
 } from '@angular/router';
+import { provideTransloco } from '@jsverse/transloco';
 import { provideIcons } from '@/app/core/icons/provider';
 import { provideTheming } from '@/app/core/theming';
-import { provideTransloco } from '@jsverse/transloco';
+import { TranslocoHttpLoader } from '@/app/core/transloco/transloco-http-loader';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {

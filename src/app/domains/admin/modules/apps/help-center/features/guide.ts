@@ -64,7 +64,10 @@ import { RouterLink } from '@angular/router';
 
         <h3>Header Level 3</h3>
 
-        <img src="images/pages/help-center/image-1.jpg" />
+        <img
+          src="images/pages/help-center/image-1.jpg"
+          alt="Guide image"
+        />
         <p class="text-muted">
           <em
             >Nullam sagittis nulla in diam finibus, sed pharetra velit
