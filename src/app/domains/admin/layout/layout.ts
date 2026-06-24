@@ -45,7 +45,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
       <mat-sidenav-content class="flex flex-col lg:h-dvh lg:overflow-hidden">
         <!-- Banner -->
         <div
-          class="relative w-full bg-emerald-600 px-6 py-4 font-medium text-white"
+          class="relative isolate w-full bg-emerald-600 px-6 py-4 font-medium text-white"
         >
           <a
             class="absolute inset-0 z-10"

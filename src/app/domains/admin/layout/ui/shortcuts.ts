@@ -14,6 +14,7 @@ import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { LocalStorage } from '@/app/core/local-storage';
+import { Media } from '@/app/core/media';
 import {
   NAVIGATION,
   NavigationItem,
@@ -59,8 +60,8 @@ const DEFAULT_SHORTCUTS = [
       [matMenuTriggerFor]="shortcutsMenu"
       (menuOpened)="focusSearch()"
       (menuClosed)="search.set('')"
-      [matBadge]="'+' + overflowCount()"
-      [matBadgeHidden]="!overflowCount()"
+      [matBadge]="badgeLabel()"
+      [matBadgeHidden]="!badgeCount()"
       #trigger="matMenuTrigger"
     >
       <mat-icon
@@ -137,6 +138,7 @@ const DEFAULT_SHORTCUTS = [
 export class Shortcuts {
   // Dependencies
   private localStorage = inject(LocalStorage);
+  private media = inject(Media);
 
   // State
   protected search = signal('');
@@ -154,6 +156,13 @@ export class Shortcuts {
   );
   protected overflowCount = computed(
     () => this.bookmarkedItems().length - this.visibleBookmarks().length
+  );
+  protected isMobile = computed(() => this.media.match(`(max-width: 639px)`)());
+  protected badgeCount = computed(() =>
+    this.isMobile() ? this.bookmarkedItems().length : this.overflowCount()
+  );
+  protected badgeLabel = computed(() =>
+    this.isMobile() ? `${this.badgeCount()}` : `+${this.badgeCount()}`
   );
   protected filteredItems = computed(() => {
     const search = this.search().trim().toLowerCase();
