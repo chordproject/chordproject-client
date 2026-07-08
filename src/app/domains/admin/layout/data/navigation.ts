@@ -82,6 +82,13 @@ export const NAVIGATION: NavigationItem[] = [
         route: '/admin/orders',
       },
       {
+        id: 'general/scrumboard',
+        label: 'Scrumboard',
+        icon: 'square-kanban',
+        route: '/admin/scrumboard',
+        activeOptions: { exact: false },
+      },
+      {
         id: 'general/tasks',
         label: 'Tasks',
         icon: 'list-todo',

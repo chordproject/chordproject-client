@@ -45,6 +45,10 @@ const routes: Routes = [
         loadChildren: () => import('./modules/apps/orders/routes'),
       },
       {
+        path: 'scrumboard',
+        loadChildren: () => import('./modules/apps/scrumboard/routes'),
+      },
+      {
         path: 'tasks',
         loadChildren: () => import('./modules/apps/tasks/routes'),
       },
