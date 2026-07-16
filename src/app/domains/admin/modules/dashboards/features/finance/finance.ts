@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormField, MatInput } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -29,6 +30,8 @@ import {
     CurrencyPipe,
     DatePipe,
     MatCard,
+    MatFormField,
+    MatInput,
   ],
   template: `
     <div
@@ -89,6 +92,35 @@ import {
           </div>
         </div>
       </div>
+
+      <!-- Ask AI -->
+      <mat-card
+        class="gap-y-3 px-5 py-4"
+        appearance="outlined"
+      >
+        <div class="flex items-center gap-x-3">
+          <mat-icon
+            class="size-5 text-primary-600 dark:text-primary-500"
+            svgIcon="sparkles"
+          />
+          <mat-form-field class="flex-auto">
+            <input
+              type="text"
+              placeholder="Ask about your finances..."
+              matInput
+            />
+          </mat-form-field>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          @for (question of aiExampleQuestions; track question) {
+            <div
+              class="rounded-full bg-neutral-100 px-3 py-1 text-sm whitespace-nowrap dark:bg-neutral-800"
+            >
+              {{ question }}
+            </div>
+          }
+        </div>
+      </mat-card>
 
       <div class="grid w-full grid-cols-1 gap-6 xl:grid-cols-2">
         <div class="grid gap-8 sm:grid-flow-col xl:grid-flow-row">
@@ -589,6 +621,11 @@ export default class FinanceDashboard {
 
   // State
   protected data = this.financeDashboardService.data;
+  protected aiExampleQuestions: string[] = [
+    'Why are bills over their limit?',
+    'Forecast next quarter',
+    'Where can I cut expenses?',
+  ];
   protected recentTransactionsDataSource = new MatTableDataSource(
     this.data.recentTransactions
   );

@@ -164,6 +164,51 @@ import { ProjectDashboardBudgetTable } from '@/app/domains/admin/modules/dashboa
         </div>
       </mat-card>
 
+      <!-- AI Summary -->
+      <mat-card
+        appearance="filled"
+        class="flex flex-col"
+      >
+        <mat-card-header>
+          <div class="flex flex-auto items-center gap-x-2">
+            <mat-icon
+              class="size-4 text-primary-600 dark:text-primary-500"
+              svgIcon="sparkles"
+            />
+            <div class="font-medium tracking-tight">AI Summary</div>
+            <div class="ml-auto">
+              <button
+                class="tiny"
+                matIconButton
+              >
+                <mat-icon svgIcon="refresh-cw" />
+              </button>
+            </div>
+          </div>
+        </mat-card-header>
+        <mat-card-content class="flex flex-auto flex-col">
+          <div class="text-neutral-500">
+            Issue volume outpaced resolution again this week: 214 issues were
+            opened while only 75 were closed, and 44 are still in progress. Bugs
+            now account for 44.71% of all task types, and 16 of the 21 open
+            tasks are overdue. Clearing the 26 issues waiting on triage is the
+            highest-leverage move before the next release.
+          </div>
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            @for (suggestion of aiSummarySuggestions; track suggestion) {
+              <div
+                class="rounded-md bg-neutral-100 px-2 py-1 text-sm whitespace-nowrap dark:bg-neutral-800"
+              >
+                {{ suggestion }}
+              </div>
+            }
+          </div>
+
+          <div class="mt-4 text-xs text-neutral-500">Generated just now</div>
+        </mat-card-content>
+      </mat-card>
+
       <!-- Summary Stats -->
       <div
         class="grid gap-4 sm:gap-6 @max-md:grid-cols-1 @md:grid-cols-2 @4xl:grid-cols-4"
@@ -368,6 +413,13 @@ export default class ProjectDashboard {
 
   // Data
   protected data = this.projectDashboardService.data;
+
+  // AI summary suggestions
+  protected aiSummarySuggestions: string[] = [
+    'Draft sprint update',
+    'Summarize blockers',
+    'Suggest triage order',
+  ];
 
   // Issues chart
   protected issuesChart: {

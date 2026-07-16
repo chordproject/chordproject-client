@@ -208,6 +208,34 @@ import { AnalyticsDashboardService } from '@/app/domains/admin/modules/dashboard
         </mat-card>
       </div>
 
+      <!-- AI Insights -->
+      <mat-card
+        class="p-6"
+        appearance="outlined"
+      >
+        <div class="flex items-center gap-x-2">
+          <mat-icon
+            class="size-5 text-primary-600 dark:text-primary-500"
+            svgIcon="sparkles"
+          />
+          <div class="truncate text-lg font-medium tracking-tight">
+            AI Insights
+          </div>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-y-4">
+          @for (insight of aiInsights; track insight) {
+            <div class="flex items-start gap-x-3">
+              <mat-icon
+                class="size-5 shrink-0 text-neutral-500"
+                [svgIcon]="insight.icon"
+              />
+              <div class="text-neutral-500">{{ insight.text }}</div>
+            </div>
+          }
+        </div>
+      </mat-card>
+
       <!-- Section title -->
       <div class="mt-12 w-full">
         <div class="text-xl font-semibold tracking-tighter sm:text-2xl">
@@ -513,6 +541,22 @@ export default class AnalyticsDashboard {
 
   // Data
   protected data = this.analyticsDashboardService.data;
+
+  // AI insights
+  protected aiInsights: { icon: string; text: string }[] = [
+    {
+      icon: 'trending-down',
+      text: 'Conversions closed the period at 4,123, still 2% below target and the weakest of your three headline metrics.',
+    },
+    {
+      icon: 'triangle-alert',
+      text: 'Visits (62,083) are running well ahead of impressions (46,085), a gap that usually points to duplicated session tracking.',
+    },
+    {
+      icon: 'lightbulb',
+      text: 'The predicted visitors-to-page-views ratio of 55% is 10 points above the 45% average, so lifting the 472 overall score is within reach this quarter.',
+    },
+  ];
 
   // Visitors
   protected visitorsChart: {
