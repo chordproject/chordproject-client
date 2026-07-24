@@ -25,6 +25,10 @@ const routes: Routes = [
         loadChildren: () => import('./modules/apps/academy/routes'),
       },
       {
+        path: 'ai-chat',
+        loadChildren: () => import('./modules/apps/ai-chat/routes'),
+      },
+      {
         path: 'contacts',
         loadChildren: () => import('./modules/apps/contacts/routes'),
       },

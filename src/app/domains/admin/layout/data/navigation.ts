@@ -52,6 +52,13 @@ export const NAVIGATION: NavigationItem[] = [
         activeOptions: { exact: false },
       },
       {
+        id: 'general/ai-chat',
+        label: 'AI Chat',
+        icon: 'sparkles',
+        route: '/admin/ai-chat',
+        activeOptions: { exact: false },
+      },
+      {
         id: 'general/contacts',
         label: 'Contacts',
         icon: 'contact-round',
