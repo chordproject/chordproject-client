@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/list';
 import {
   MatSidenav,
   MatSidenavContainer,
@@ -8,6 +9,7 @@ import {
 } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { Media } from '@/app/core/media';
+import { Assistant } from '@/app/domains/admin/layout/ui/assistant';
 import { LanguageSwitcher } from '@/app/domains/admin/layout/ui/language-switcher';
 import { Notifications } from '@/app/domains/admin/layout/ui/notifications';
 import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
@@ -28,6 +30,8 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
     Notifications,
     LanguageSwitcher,
     Shortcuts,
+    Assistant,
+    MatDivider,
   ],
   template: `
     <mat-sidenav-container>
@@ -85,6 +89,11 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
             <language-switcher />
             <scheme-switcher />
             <notifications />
+            <mat-divider
+              vertical
+              class="mx-1 h-5"
+            />
+            <assistant />
           </div>
         </div>
 

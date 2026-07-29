@@ -56,7 +56,7 @@ import { AiChatService } from '@/app/domains/admin/modules/apps/ai-chat/data/ai-
         >
           <div class="flex h-full w-full flex-col">
             <!-- Panel header -->
-            <div class="flex items-center gap-x-2 px-4 py-4">
+            <div class="flex items-center gap-x-2 py-4 pr-3 pl-4">
               <div class="flex-auto text-lg font-semibold tracking-tighter">
                 AI Chat
               </div>
