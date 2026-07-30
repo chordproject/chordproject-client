@@ -1,7 +1,7 @@
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, inject, signal } from '@angular/core';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
@@ -19,7 +19,6 @@ const CONVERSATION_ID = 'b7d0e3a5';
     MatIconButton,
     MatTooltip,
     RouterLink,
-    MatButton,
   ],
   template: `
     <button
