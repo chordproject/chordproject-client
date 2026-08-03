@@ -46,6 +46,40 @@ import { MatCard } from '@angular/material/card';
 })
 export default class DocsChangelog {
   protected changelog = [
+    // v22.0.0
+    {
+      version: 'v22.0.0',
+      releaseDate: 'Aug 3, 2026',
+      changes: [
+        {
+          type: 'Added',
+          list: [
+            'AI Chat app with conversation history, mock streaming and code blocks',
+            'Global AI Assistant panel on the toolbar',
+            'AI summary, insights and ask-AI elements on the dashboards',
+            'Scrumboard app with board and list views, drag & drop, and card comments',
+            'Orders app with a sortable, paginated orders table',
+            'Shortcuts component with bookmarkable apps and pages on the toolbar',
+            'Maintenance page',
+          ],
+        },
+        {
+          type: 'Changed',
+          list: [
+            'Updated dependencies',
+            'Restructured the layout scrolling; the banner and toolbar now stay fixed on large screens',
+            'Aligned application header paddings with the toolbar',
+            'Improved the Notes app cards with images, tasks and reminders',
+            'Improved the Contacts app list density',
+          ],
+        },
+        {
+          type: 'Fixed',
+          list: ['Various small fixes and improvements'],
+        },
+      ],
+    },
+
     // v21.1.0
     {
       version: 'v21.1.0',
