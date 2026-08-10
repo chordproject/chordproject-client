@@ -1,0 +1,22 @@
+@import '@fullcalendar/angular/skeleton.css';
+@import '@fullcalendar/angular/themes/classic/theme.css';
+
+/* Modified classic palette */
+/* Source: '@fullcalendar/angular/themes/classic/palette.css' */
+:root {
+  --fc-classic-event: var(--color-neutral-200);
+  --fc-classic-event-contrast: var(--color-neutral-800);
+  --fc-classic-highlight: var(--color-primary-50);
+  --fc-classic-now: var(--color-red-500);
+  --fc-classic-border: var(--color-neutral-200);
+  --fc-classic-strong-border: var(--color-neutral-300);
+}
+
+.scheme-dark {
+  --fc-classic-event: var(--color-neutral-800);
+  --fc-classic-event-contrast: var(--color-neutral-100);
+  --fc-classic-highlight: var(--color-primary-950);
+  --fc-classic-now: var(--color-red-400);
+  --fc-classic-border: var(--color-neutral-800);
+  --fc-classic-strong-border: var(--color-neutral-700);
+}

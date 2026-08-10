@@ -29,6 +29,10 @@ const routes: Routes = [
         loadChildren: () => import('./modules/apps/ai-chat/routes'),
       },
       {
+        path: 'calendar',
+        loadChildren: () => import('./modules/apps/calendar/routes'),
+      },
+      {
         path: 'contacts',
         loadChildren: () => import('./modules/apps/contacts/routes'),
       },

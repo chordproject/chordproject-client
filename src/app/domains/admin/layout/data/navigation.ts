@@ -59,6 +59,13 @@ export const NAVIGATION: NavigationItem[] = [
         activeOptions: { exact: false },
       },
       {
+        id: 'general/calendar',
+        label: 'Calendar',
+        icon: 'calendar-days',
+        route: '/admin/calendar',
+        activeOptions: { exact: false },
+      },
+      {
         id: 'general/contacts',
         label: 'Contacts',
         icon: 'contact-round',
