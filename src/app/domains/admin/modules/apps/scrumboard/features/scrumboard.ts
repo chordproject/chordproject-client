@@ -92,7 +92,7 @@ import { ScrumboardService } from '@/app/domains/admin/modules/apps/scrumboard/d
         >
           <!-- Header -->
           <div
-            class="flex items-center gap-x-4 border-b px-6 py-4 lg:px-8 lg:py-8"
+            class="flex flex-wrap items-center gap-4 border-b px-6 py-4 lg:px-8 lg:py-8"
           >
             <div class="flex flex-col gap-y-0.5">
               <div class="text-xl font-semibold tracking-tighter sm:text-2xl">
@@ -115,7 +115,7 @@ import { ScrumboardService } from '@/app/domains/admin/modules/apps/scrumboard/d
             <div class="flex-auto"></div>
 
             <!-- Assignees -->
-            <div class="hidden items-center -space-x-2 @2xl:flex">
+            <div class="hidden items-center -space-x-2 @4xl:flex">
               @for (avatar of avatars; track avatar) {
                 <img
                   class="size-8 shrink-0 rounded-full object-cover ring-2 ring-white dark:ring-neutral-900"
@@ -126,7 +126,7 @@ import { ScrumboardService } from '@/app/domains/admin/modules/apps/scrumboard/d
             </div>
 
             <!-- Search -->
-            <mat-form-field class="w-40 sm:w-64">
+            <mat-form-field class="order-last w-full @2xl:order-none @2xl:w-64">
               <mat-icon
                 matPrefix
                 svgIcon="search"

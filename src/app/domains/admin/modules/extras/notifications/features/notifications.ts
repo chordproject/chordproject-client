@@ -34,7 +34,7 @@ import { MatIcon } from '@angular/material/icon';
           <!-- Item -->
           <div class="relative flex gap-x-4 pb-12">
             <div
-              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200"
+              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200 dark:bg-neutral-600"
             ></div>
             <div
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-500"
@@ -67,7 +67,7 @@ import { MatIcon } from '@angular/material/icon';
           <!-- Item -->
           <div class="relative flex gap-x-4 pb-12">
             <div
-              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200"
+              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200 dark:bg-neutral-600"
             ></div>
             <div
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-500"
@@ -89,7 +89,7 @@ import { MatIcon } from '@angular/material/icon';
           <!-- Item -->
           <div class="relative flex gap-x-4 pb-12">
             <div
-              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200"
+              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200 dark:bg-neutral-600"
             ></div>
             <div
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-500"
@@ -110,7 +110,7 @@ import { MatIcon } from '@angular/material/icon';
           <!-- Item -->
           <div class="relative flex gap-x-4">
             <div
-              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200"
+              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200 dark:bg-neutral-600"
             ></div>
             <div
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-500"
@@ -140,7 +140,7 @@ import { MatIcon } from '@angular/material/icon';
           <!-- Item -->
           <div class="relative flex gap-x-4 pb-12">
             <div
-              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200"
+              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200 dark:bg-neutral-600"
             ></div>
             <div
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-500"
@@ -161,7 +161,7 @@ import { MatIcon } from '@angular/material/icon';
           <!-- Item -->
           <div class="relative flex gap-x-4">
             <div
-              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200"
+              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200 dark:bg-neutral-600"
             ></div>
             <div
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-500"
@@ -191,7 +191,7 @@ import { MatIcon } from '@angular/material/icon';
           <!-- Item -->
           <div class="relative flex gap-x-4 pb-12">
             <div
-              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200"
+              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200 dark:bg-neutral-600"
             ></div>
             <div
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-500"
@@ -212,7 +212,7 @@ import { MatIcon } from '@angular/material/icon';
           <!-- Item -->
           <div class="relative flex gap-x-4 pb-12">
             <div
-              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200"
+              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200 dark:bg-neutral-600"
             ></div>
             <div
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-500"
@@ -233,7 +233,7 @@ import { MatIcon } from '@angular/material/icon';
           <!-- Item -->
           <div class="relative flex gap-x-4">
             <div
-              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200"
+              class="absolute inset-y-0 left-5 -z-10 w-0.5 -translate-x-px bg-neutral-200 dark:bg-neutral-600"
             ></div>
             <div
               class="flex size-10 shrink-0 items-center justify-center rounded-full bg-neutral-500"

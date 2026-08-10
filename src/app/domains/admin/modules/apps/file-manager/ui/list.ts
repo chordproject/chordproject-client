@@ -32,7 +32,7 @@ import { Item } from '@/app/domains/admin/modules/apps/file-manager/data/model';
       <!-- Folders -->
       @for (folder of folders(); track folder.id) {
         <div
-          class="relative isolate grid grid-cols-5 items-center gap-x-2 border-b px-3 py-1 hover:bg-neutral-100 md:grid-cols-10"
+          class="relative isolate grid grid-cols-5 items-center gap-x-2 border-b px-3 py-1 hover:bg-neutral-100 md:grid-cols-10 dark:hover:bg-white/2.5"
         >
           <!-- Link -->
           <a
@@ -93,7 +93,7 @@ import { Item } from '@/app/domains/admin/modules/apps/file-manager/data/model';
 
       @for (file of files(); track file.id) {
         <div
-          class="relative isolate grid grid-cols-5 items-center gap-x-2 border-b px-3 py-1 hover:bg-neutral-100 md:grid-cols-10"
+          class="relative isolate grid grid-cols-5 items-center gap-x-2 border-b px-3 py-1 hover:bg-neutral-100 md:grid-cols-10 dark:hover:bg-white/2.5"
         >
           <!-- Name -->
           <div class="col-span-3 flex items-center gap-x-2 md:col-span-7">
