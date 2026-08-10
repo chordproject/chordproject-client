@@ -21,11 +21,7 @@ import {
 } from '@/app/domains/admin/layout/data/navigation';
 
 const STORAGE_KEY = 'shortcuts';
-const DEFAULT_SHORTCUTS = [
-  'dashboards/project',
-  'general/contacts',
-  'general/tasks',
-];
+const DEFAULT_SHORTCUTS = ['general/example'];
 
 @Component({
   selector: 'shortcuts',

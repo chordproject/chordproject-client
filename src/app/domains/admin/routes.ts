@@ -6,79 +6,23 @@ const routes: Routes = [
     path: '',
     component: AdminLayout,
     children: [
-      // Redirect empty path to '/auth/sign-in'
-      { path: '', pathMatch: 'full', redirectTo: '/auth/sign-in' },
+      // Redirect empty path to '/admin/example'
+      { path: '', pathMatch: 'full', redirectTo: 'example' },
 
       // -----------------------------------------------------------------------
-      // Dashboards
+      // Example
       // -----------------------------------------------------------------------
       {
-        path: 'dashboards',
-        loadChildren: () => import('./modules/dashboards/routes'),
-      },
-
-      // -----------------------------------------------------------------------
-      // General
-      // -----------------------------------------------------------------------
-      {
-        path: 'academy',
-        loadChildren: () => import('./modules/apps/academy/routes'),
-      },
-      {
-        path: 'ai-chat',
-        loadChildren: () => import('./modules/apps/ai-chat/routes'),
-      },
-      {
-        path: 'contacts',
-        loadChildren: () => import('./modules/apps/contacts/routes'),
-      },
-      {
-        path: 'file-manager',
-        loadChildren: () => import('./modules/apps/file-manager/routes'),
-      },
-      {
-        path: 'help-center',
-        loadChildren: () => import('./modules/apps/help-center/routes'),
-      },
-      {
-        path: 'notes',
-        loadChildren: () => import('./modules/apps/notes/routes'),
-      },
-      {
-        path: 'orders',
-        loadChildren: () => import('./modules/apps/orders/routes'),
-      },
-      {
-        path: 'scrumboard',
-        loadChildren: () => import('./modules/apps/scrumboard/routes'),
-      },
-      {
-        path: 'tasks',
-        loadChildren: () => import('./modules/apps/tasks/routes'),
+        path: 'example',
+        loadChildren: () => import('./modules/example/routes'),
       },
 
       // -----------------------------------------------------------------------
       // Extras
       // -----------------------------------------------------------------------
       {
-        path: 'settings',
-        loadChildren: () => import('./modules/extras/settings/routes'),
-      },
-      {
-        path: 'notifications',
-        loadChildren: () => import('./modules/extras/notifications/routes'),
-      },
-      {
         path: 'error',
         loadChildren: () => import('./modules/extras/error/routes'),
-      },
-
-      // -----------------------------------------------------------------------
-      // Documentation
-      // -----------------------------------------------------------------------
-      {
-        path: 'documentation',
-        loadChildren: () => import('./modules/documentation/routes'),
       },
 
       // 404

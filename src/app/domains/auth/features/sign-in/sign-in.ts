@@ -49,7 +49,7 @@ export default class AuthSignIn {
 
     submit(this.signInForm, async () => {
       // Navigate to a route, demo purposes only
-      this.router.navigateByUrl('/admin/dashboards');
+      this.router.navigateByUrl('/admin/example');
     });
   }
 }
