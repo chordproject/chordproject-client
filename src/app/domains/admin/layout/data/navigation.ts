@@ -87,6 +87,13 @@ export const NAVIGATION: NavigationItem[] = [
         activeOptions: { exact: false },
       },
       {
+        id: 'general/mailbox',
+        label: 'Mailbox',
+        icon: 'mail',
+        route: '/admin/mailbox',
+        activeOptions: { exact: false },
+      },
+      {
         id: 'general/notes',
         label: 'Notes',
         icon: 'notebook-pen',
