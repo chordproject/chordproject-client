@@ -69,6 +69,10 @@ const routes: Routes = [
       // Extras
       // -----------------------------------------------------------------------
       {
+        path: 'profile',
+        loadChildren: () => import('./modules/extras/profile/routes'),
+      },
+      {
         path: 'settings',
         loadChildren: () => import('./modules/extras/settings/routes'),
       },

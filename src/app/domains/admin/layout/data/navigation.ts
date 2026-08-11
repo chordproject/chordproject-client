@@ -130,6 +130,13 @@ export const NAVIGATION: NavigationItem[] = [
     description: 'Additional pages and features',
     children: [
       {
+        id: 'extras/profile',
+        label: 'Profile',
+        icon: 'circle-user-round',
+        route: '/admin/profile',
+        activeOptions: { exact: false },
+      },
+      {
         id: 'extras/settings',
         label: 'Settings',
         icon: 'settings',
