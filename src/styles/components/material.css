@@ -885,12 +885,22 @@
     .mat-mdc-form-field-icon-prefix,
     .mat-mdc-form-field-text-suffix,
     .mat-mdc-form-field-icon-suffix {
-      /* Icon button */
+      /* Icon button (e.g. datepicker/timepicker toggles) */
       .mat-mdc-icon-button {
-        --icon-button-size: fit-content;
-        --icon-button-padding: 0;
-        --icon-button-bg-color-hover: transparent;
-        --icon-button-bg-color-active: transparent;
+        --mat-icon-button-state-layer-size: var(--form-field-line-height);
+        --mat-icon-button-hover-state-layer-opacity: 0;
+        --mat-icon-button-focus-state-layer-opacity: 0;
+        --mat-icon-button-pressed-state-layer-opacity: 0;
+        --mat-icon-button-touch-target-display: none;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+
+        &:hover {
+          color: var(--form-field-text-color);
+        }
       }
     }
 
@@ -923,6 +933,7 @@
   /* ------------------------------------------------------------------------ */
   --mat-list-active-indicator-shape: 0.5rem;
   --mat-list-list-item-one-line-container-height: 2.25rem;
+  --mat-list-list-item-container-shape: 0.5rem;
   --mat-list-list-item-label-text-size: var(--text-base);
   --mat-list-list-item-label-text-tracking: var(--tracking-normal);
   --mat-list-active-indicator-color: light-dark(

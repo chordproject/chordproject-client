@@ -49,7 +49,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
         >
           <a
             class="absolute inset-0 z-10"
-            href="https://builderkit.dev?utm_source=fuse&utm_medium=banner&utm_campaign=upgrade"
+            href="https://builderkit.dev?utm_source=angular-material.fusetheme.com&utm_medium=banner&utm_campaign=fuse"
             target="_blank"
             ><span></span
           ></a>
