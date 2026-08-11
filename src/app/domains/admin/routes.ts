@@ -45,6 +45,10 @@ const routes: Routes = [
         loadChildren: () => import('./modules/apps/help-center/routes'),
       },
       {
+        path: 'mailbox',
+        loadChildren: () => import('./modules/apps/mailbox/routes'),
+      },
+      {
         path: 'notes',
         loadChildren: () => import('./modules/apps/notes/routes'),
       },
