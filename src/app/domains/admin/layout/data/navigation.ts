@@ -130,6 +130,13 @@ export const NAVIGATION: NavigationItem[] = [
     description: 'Additional pages and features',
     children: [
       {
+        id: 'extras/invoice',
+        label: 'Invoice',
+        icon: 'receipt-text',
+        route: '/admin/invoice',
+        activeOptions: { exact: false },
+      },
+      {
         id: 'extras/profile',
         label: 'Profile',
         icon: 'circle-user-round',

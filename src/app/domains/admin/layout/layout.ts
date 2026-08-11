@@ -36,7 +36,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
   template: `
     <mat-sidenav-container>
       <mat-sidenav
-        class="w-70 border-r border-neutral-200 scheme-dark dark:border-neutral-800 dark:bg-neutral-900"
+        class="w-70 border-r border-neutral-200 scheme-dark dark:border-neutral-800 dark:bg-neutral-900 print:hidden"
         [mode]="isMobile() ? 'over' : 'side'"
         [opened]="!isMobile()"
         [disableClose]="!isMobile()"
@@ -46,10 +46,12 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
         <admin-sidebar />
       </mat-sidenav>
 
-      <mat-sidenav-content class="flex flex-col lg:h-dvh lg:overflow-hidden">
+      <mat-sidenav-content
+        class="flex flex-col lg:h-dvh lg:overflow-hidden print:ml-0! print:h-auto print:overflow-visible"
+      >
         <!-- Banner -->
         <div
-          class="relative isolate w-full bg-emerald-600 px-6 py-4 font-medium text-white"
+          class="relative isolate w-full bg-emerald-600 px-6 py-4 font-medium text-white print:hidden"
         >
           <a
             class="absolute inset-0 z-10"
@@ -69,7 +71,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
         </div>
 
         <!-- Toolbar -->
-        <div class="flex items-center border-b px-4 py-2.5">
+        <div class="flex items-center border-b px-4 py-2.5 print:hidden">
           <button
             matIconButton
             (click)="sidenav.toggle()"
@@ -98,7 +100,9 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
         </div>
 
         <!-- Content -->
-        <div class="flex flex-col lg:min-h-0 lg:flex-auto lg:overflow-auto">
+        <div
+          class="flex flex-col lg:min-h-0 lg:flex-auto lg:overflow-auto print:overflow-visible"
+        >
           <router-outlet />
         </div>
       </mat-sidenav-content>

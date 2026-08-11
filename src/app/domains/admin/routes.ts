@@ -69,6 +69,10 @@ const routes: Routes = [
       // Extras
       // -----------------------------------------------------------------------
       {
+        path: 'invoice',
+        loadChildren: () => import('./modules/extras/invoice/routes'),
+      },
+      {
         path: 'profile',
         loadChildren: () => import('./modules/extras/profile/routes'),
       },
