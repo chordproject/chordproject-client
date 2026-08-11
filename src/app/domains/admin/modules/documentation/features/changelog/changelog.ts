@@ -21,14 +21,14 @@ import { MatCard } from '@angular/material/card';
             appearance="outlined"
             class="p-8"
           >
-            <div class="text-lg font-semibold">{{ item.version }}</div>
+            <div class="text-xl font-semibold">{{ item.version }}</div>
             <div class="text-neutral-500">
               {{ item.releaseDate }}
             </div>
             <hr class="mt-6" />
             @for (change of item.changes; track change.type) {
               <div class="prose mt-8 text-base">
-                <div class="font-medium text-neutral-500">
+                <div class="text-lg font-medium">
                   {{ change.type }}
                 </div>
                 <ul>
@@ -46,6 +46,39 @@ import { MatCard } from '@angular/material/card';
 })
 export default class DocsChangelog {
   protected changelog = [
+    // v22.1.0
+    {
+      version: 'v22.1.0',
+      releaseDate: 'Aug 11, 2026',
+      changes: [
+        {
+          type: 'Added',
+          list: [
+            'Calendar app built on FullCalendar 7',
+            'Mailbox app',
+            'Profile page',
+            'Invoice page',
+          ],
+        },
+        {
+          type: 'Changed',
+          list: [
+            'Updated dependencies',
+            'Switched the neutral palette to zinc',
+            'Improved the Scrumboard header',
+          ],
+        },
+        {
+          type: 'Fixed',
+          list: [
+            'Form field suffix icon buttons now use the proper Material tokens',
+            'Various dark mode fixes',
+            'Various small fixes and improvements',
+          ],
+        },
+      ],
+    },
+
     // v22.0.0
     {
       version: 'v22.0.0',
