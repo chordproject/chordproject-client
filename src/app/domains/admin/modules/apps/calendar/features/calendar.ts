@@ -243,7 +243,7 @@ export default class Calendar {
 
     // Styling -----------------------------------------------------------------
     // Highlight styles
-    highlightClass: 'rounded-lg bg-primary-50 dark:bg-primary-950',
+    highlightClass: 'rounded-lg bg-primary-50/50 dark:bg-primary-950/50',
 
     // All day styles
     allDayHeaderInnerClass: 'text-sm',
