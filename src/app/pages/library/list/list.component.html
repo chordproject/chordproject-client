@@ -35,7 +35,7 @@
             </div>
             <!-- Add song button -->
             <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['/songs/create']">
-                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <mat-icon [svgIcon]="'plus'"></mat-icon>
                 <span class="ml-2 mr-1">Add</span>
             </button>
         </div>
@@ -66,7 +66,7 @@
                 <div class="flex flex-col items-center justify-center p-8 sm:p-16">
                     <mat-icon
                         class="mb-4 text-warn-500 icon-size-12"
-                        [svgIcon]="'heroicons_outline:exclamation-circle'"
+                        [svgIcon]="'circle-alert'"
                     ></mat-icon>
                     <p class="text-lg font-medium">Something went wrong while loading songs</p>
                     <p class="text-secondary mt-2">Please refresh the page to try again</p>

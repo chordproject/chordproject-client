@@ -19,17 +19,17 @@
                         (click)="toggleEditMode(true)"
                         [matTooltip]="'Quick edit'"
                     >
-                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:pencil-square'"></mat-icon>
+                        <mat-icon class="icon-size-5" [svgIcon]="'square-pen'"></mat-icon>
                     </button>
                     <button
                         mat-icon-button
                         [matTooltip]="'Open in full reader'"
                         [routerLink]="['/songs/read', song.uid]"
                     >
-                        <mat-icon [svgIcon]="'heroicons_outline:arrow-top-right-on-square'"></mat-icon>
+                        <mat-icon [svgIcon]="'external-link'"></mat-icon>
                     </button>
                     <button mat-icon-button class="flex-shrink-0" [matTooltip]="'Close'" [routerLink]="['../']">
-                        <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+                        <mat-icon [svgIcon]="'x'"></mat-icon>
                     </button>
                 </div>
             </div>

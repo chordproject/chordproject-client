@@ -2,14 +2,14 @@
     <!-- Bar search -->
     @if (!opened) {
         <button mat-icon-button (click)="open($event)">
-            <mat-icon [svgIcon]="'heroicons_outline:magnifying-glass'"></mat-icon>
+            <mat-icon [svgIcon]="'search'"></mat-icon>
         </button>
     }
     @if (opened) {
         <div class="absolute inset-0 z-99 flex flex-col bg-gray-200 dark:bg-[#273549]" @slideInTop @slideOutTop>
             <mat-icon
                 class="absolute top-1/2 ml-6 -translate-y-1/2 transform sm:ml-8"
-                [svgIcon]="'heroicons_outline:magnifying-glass'"
+                [svgIcon]="'search'"
             ></mat-icon>
             <input
                 class="h-full w-full px-16 sm:px-18"
@@ -24,7 +24,7 @@
                 mat-icon-button
                 (click)="close()"
             >
-                <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+                <mat-icon [svgIcon]="'x'"></mat-icon>
             </button>
 
             <div class="relative">
@@ -41,7 +41,7 @@
 @if (appearance === 'basic') {
     <div class="w-full sm:min-w-120">
         <mat-form-field class="w-full fuse-mat-bold max-w-80 sm:max-w-120" [subscriptSizing]="'dynamic'">
-            <mat-icon matPrefix [svgIcon]="'heroicons_outline:magnifying-glass'"></mat-icon>
+            <mat-icon matPrefix [svgIcon]="'search'"></mat-icon>
             <input
                 matInput
                 [formControl]="searchControl"
