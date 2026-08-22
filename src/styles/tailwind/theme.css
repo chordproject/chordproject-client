@@ -144,4 +144,8 @@
   --color-error-800: var(--theme-color-error-800);
   --color-error-900: var(--theme-color-error-900);
   --color-error-950: var(--theme-color-error-950);
+
+  /* Home page background watermark */
+  --background-image-logo-light: url('/chp/logo/logo-text-light.svg');
+  --background-image-logo-dark: url('/chp/logo/logo-text-dark.svg');
 }

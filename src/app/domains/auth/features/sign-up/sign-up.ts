@@ -12,6 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from '@/app/core/firebase/auth/auth.service';
 
 @Component({
   selector: 'auth-sign-up',
@@ -29,6 +31,7 @@ import { Router, RouterLink } from '@angular/router';
 export default class AuthSignUp {
   // Dependencies
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   // State
   protected signUpFormModel = signal({
@@ -49,8 +52,13 @@ export default class AuthSignUp {
     event.preventDefault();
 
     submit(this.signUpForm, async () => {
-      // Navigate to a route, demo purposes only
-      this.router.navigateByUrl('/auth/sign-in');
+      const { email, password } = this.signUpFormModel();
+      try {
+        await firstValueFrom(this.authService.createUser(email, password));
+        this.router.navigateByUrl('/auth/sign-in');
+      } catch {
+        // Error already surfaced to the user via AuthService's snackbar.
+      }
     });
   }
 }

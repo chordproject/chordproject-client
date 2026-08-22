@@ -1,18 +1,17 @@
 {
     "home": {
-        "about_title": "About this project",
-        "about_description": "<strong>ChordProject</strong> is a digital songbook that allows music enthusiasts to create, edit, organize, and discover new songs using the <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format. You can also share your own songs with other users and use the platform as an ideal tool for rehearsals or live performances. Unlike a printed songbook, this platform is dynamic, evolving and growing with you.",
-        "overview_title": "Overview",
-        "overview_description": "This application is designed to manage <strong>songs</strong> (with <strong>chords</strong>) and <strong>songbooks</strong>.",
+        "about_title": "About ChordProject",
+        "about_description": "<strong>ChordProject</strong> is your pocket digital songbook: write, organize, and play your songs with chords in <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format, on any device.",
+        "overview_title": "What can you do?",
         "features": [
-            "Lets you write and view songs with chords clearly and neatly using the ChordPro format.",
-            "Allows you to read, edit, or print songs with chord diagrams.",
-            "Ensures chords are always correctly positioned, regardless of font or screen size.",
-            "Stores songs online, with updates instantly reflected on all devices.",
-            "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, and more.",
-            "Transposition follows musical rules, not just mathematical shifting.",
-            "Lets you organize songs into customizable <strong>songbooks</strong>."
+            "Chords always perfectly aligned, on any screen or font size.",
+            "Live mode, with autoscroll and quick font size adjustment.",
+            "Your songs saved online and synced across all your devices.",
+            "Organize your songs into custom <strong>songbooks</strong>."
         ],
-        "platform_description": "ChordProject has a sister site, <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, dedicated exclusively to <strong>Christian music</strong>, while ChordProject is for general use."
+        "platform_title": "Looking for Christian music?",
+        "platform_description": "Visit our sister site <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
+        "contribute_title": "Have an idea to improve it?",
+        "contribute_description": "It's an <strong>open source</strong> project - send your Pull Request on <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>. Don't code? You can use AI to help write it."
     }
 }

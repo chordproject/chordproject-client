@@ -8,8 +8,8 @@ import {
 } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { Media } from '@/app/core/media';
+import { GithubLink } from '@/app/domains/admin/layout/ui/github-link';
 import { LanguageSwitcher } from '@/app/domains/admin/layout/ui/language-switcher';
-import { Notifications } from '@/app/domains/admin/layout/ui/notifications';
 import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
 import { Shortcuts } from '@/app/domains/admin/layout/ui/shortcuts';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
@@ -25,14 +25,14 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
     MatSidenavContent,
     AdminSidebar,
     SchemeSwitcher,
-    Notifications,
     LanguageSwitcher,
     Shortcuts,
+    GithubLink,
   ],
   template: `
     <mat-sidenav-container>
       <mat-sidenav
-        class="w-70 border-r border-neutral-200 scheme-dark dark:border-neutral-800 dark:bg-neutral-900 print:hidden"
+        class="w-64 border-r border-neutral-200 scheme-dark dark:border-neutral-800 dark:bg-neutral-900 print:hidden"
         [mode]="isMobile() ? 'over' : 'side'"
         [opened]="!isMobile()"
         [disableClose]="!isMobile()"
@@ -45,27 +45,6 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
       <mat-sidenav-content
         class="flex flex-col lg:h-dvh lg:overflow-hidden print:ml-0! print:h-auto print:overflow-visible"
       >
-        <!-- Banner -->
-        <div
-          class="relative isolate w-full bg-emerald-600 px-6 py-4 font-medium text-white print:hidden"
-        >
-          <a
-            class="absolute inset-0 z-10"
-            href="https://builderkit.dev?utm_source=angular-material.fusetheme.com&utm_medium=banner&utm_campaign=fuse"
-            target="_blank"
-            ><span></span
-          ></a>
-          Check out BuilderKit; the next generation of toolkit for building
-          beautiful Angular applications. Use promo code
-          <span
-            class="rounded-lg bg-emerald-300 px-1.5 py-0.5 text-base font-semibold text-emerald-950"
-            >FUSE</span
-          >
-          on checkout for
-          <span class="underline underline-offset-2">20%</span> off your
-          purchase!
-        </div>
-
         <!-- Toolbar -->
         <div class="flex items-center border-b px-4 py-2.5 print:hidden">
           <button
@@ -86,7 +65,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
           <div class="flex items-center gap-x-2">
             <language-switcher />
             <scheme-switcher />
-            <notifications />
+            <github-link />
           </div>
         </div>
 

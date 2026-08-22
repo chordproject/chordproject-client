@@ -6,8 +6,8 @@
       <!-- Logo -->
       <img
         class="w-12"
-        src="/images/logo/logo.svg"
-        alt="Fuse logo"
+        src="/chp/logo/logo.svg"
+        alt="ChordProject logo"
       />
 
       <!-- Title -->
@@ -132,33 +132,12 @@
             type="button"
             matButton="outlined"
             class="flex-auto"
+            (click)="signInWithGoogle()"
           >
             Google
           </button>
-          <button
-            type="button"
-            matButton="outlined"
-            class="flex-auto"
-          >
-            Apple
-          </button>
-          <button
-            type="button"
-            matButton="outlined"
-            class="flex-auto"
-          >
-            GitHub
-          </button>
         </div>
       </form>
-
-      <!-- Alert -->
-      <div
-        class="mt-8 rounded-lg bg-zinc-200 p-4 text-neutral-700 dark:bg-neutral-800 dark:text-white"
-      >
-        You are browsing <strong>Fuse Demo</strong>. Simply click on the "Sign
-        in" button to access the Demo and Documentation.
-      </div>
     </div>
   </div>
 

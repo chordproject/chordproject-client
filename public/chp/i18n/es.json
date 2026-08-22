@@ -1,18 +1,17 @@
 {
     "home": {
-        "about_title": "Acerca de este proyecto",
-        "about_description": "<strong>ChordProject</strong> es un cancionero digital que permite a músicos entusiastas crear, editar, organizar y descubrir nuevas canciones usando el formato <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>. Además, puedes compartir tus propias canciones con otros usuarios y utilizar la plataforma como una herramienta ideal para ensayar o acompañar presentaciones en vivo. A diferencia de un cancionero impreso, esta plataforma es dinámica, evoluciona y crece junto contigo.",
-        "overview_title": "Descripción general",
-        "overview_description": "Esta aplicación está diseñada para administrar <strong>canciones</strong> (con <strong>acordes</strong>) y <strong>cancioneros</strong>.",
+        "about_title": "Acerca de ChordProject",
+        "about_description": "<strong>ChordProject</strong> es tu cancionero digital de bolsillo: escribe, organiza y toca tus canciones con acordes en formato <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>, desde cualquier dispositivo.",
+        "overview_title": "¿Qué puedes hacer?",
         "features": [
-            "Permite escribir y visualizar canciones con acordes de forma clara y ordenada usando el formato ChordPro.",
-            "Permite leer, editar o imprimir canciones con diagramas de acordes.",
-            "Garantiza que los acordes estén siempre posicionados correctamente, independientemente del tamaño de fuente o pantalla.",
-            "Almacena canciones en línea, con actualizaciones reflejadas instantáneamente en todos los dispositivos.",
-            "Incluye un visor con herramientas para actuaciones en vivo, como desplazamiento automático, ajuste de tamaño de fuente y más.",
-            "La transposición sigue reglas musicales, no solo cambios matemáticos.",
-            "Permite organizar canciones en <strong>cancioneros</strong> personalizables."
+            "Acordes siempre bien alineados, en cualquier pantalla o tamaño de letra.",
+            "Modo en vivo, con scroll automático y ajuste rápido del tamaño de letra.",
+            "Tu repertorio guardado en línea y sincronizado en todos tus dispositivos.",
+            "Tus canciones organizadas en <strong>cancioneros</strong> personalizados."
         ],
-        "platform_description": "ChordProject tiene un sitio hermano, <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, dedicado exclusivamente a la <strong>música cristiana</strong>, mientras que ChordProject es para uso general."
+        "platform_title": "¿Buscas música cristiana?",
+        "platform_description": "Visita nuestro sitio hermano <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
+        "contribute_title": "¿Tienes una idea para mejorarlo?",
+        "contribute_description": "Es un proyecto <strong>open source</strong>: envía tu Pull Request en <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>. ¿No programas? Puedes apoyarte en IA para escribir el código."
     }
 }

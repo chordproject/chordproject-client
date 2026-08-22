@@ -561,3 +561,80 @@
     font-size: var(--text-lg) !important;
   }
 }
+
+@utility prose-sm {
+  font-size: var(--text-md) !important;
+  line-height: var(--leading-6) !important;
+
+  :where(p):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    margin-block-start: --spacing(3) !important;
+    margin-block-end: --spacing(3) !important;
+  }
+
+  :where(ul, ol):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    margin-block-start: --spacing(3) !important;
+    margin-block-end: --spacing(3) !important;
+  }
+
+  :where(li):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    margin-block-start: --spacing(1) !important;
+    margin-block-end: --spacing(1) !important;
+  }
+
+  :where([class~='lead']):not(
+    :where([class~='not-prose'], [class~='not-prose'] *)
+  ) {
+    font-size: var(--text-lg) !important;
+    line-height: var(--leading-6) !important;
+  }
+
+  :where(h1):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    font-size: var(--text-3xl) !important;
+    line-height: var(--leading-8) !important;
+    margin-block-start: --spacing(4) !important;
+    margin-block-end: --spacing(2) !important;
+  }
+
+  :where(h2):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    font-size: var(--text-xl) !important;
+    font-weight: var(--font-weight-semibold) !important;
+    line-height: var(--leading-7) !important;
+    margin-block-start: --spacing(4) !important;
+    margin-block-end: --spacing(2) !important;
+  }
+
+  :where(h3):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    font-size: var(--text-lg) !important;
+    font-weight: var(--font-weight-semibold) !important;
+    margin-block-start: --spacing(3) !important;
+    margin-block-end: --spacing(2) !important;
+  }
+
+  :where(h4):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    font-size: var(--text-base) !important;
+    font-weight: var(--font-weight-semibold) !important;
+    margin-block-start: --spacing(3) !important;
+    margin-block-end: --spacing(2) !important;
+  }
+
+  :where(figcaption):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    font-size: var(--text-sm) !important;
+    line-height: var(--leading-4) !important;
+  }
+
+  :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    font-size: var(--text-md) !important;
+  }
+
+  :where(h2 code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    font-size: var(--text-lg) !important;
+  }
+
+  :where(h3 code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    font-size: var(--text-base) !important;
+  }
+
+  :where(pre):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+    font-size: var(--text-md) !important;
+  }
+}

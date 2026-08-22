@@ -27,6 +27,8 @@ import { PartialSong } from 'app/models/partialsong';
 export class HomeComponent implements OnInit, OnDestroy {
     features: string[] = [];
     latestSongs$: Observable<PartialSong[]>;
+    // Fixed-size grid of decorative background logos (size/spacing controlled purely via CSS).
+    watermarkTiles = Array.from({ length: 240 });
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(

@@ -17,6 +17,8 @@ import {
   NAVIGATION,
   NavigationItem,
 } from '@/app/domains/admin/layout/data/navigation';
+import { AdminSongbooksNavigation } from '@/app/domains/admin/layout/data/songbooks-navigation';
+import { UserService } from '@/app/core/user/user.service';
 
 @Component({
   selector: 'navigation',
@@ -33,21 +35,10 @@ import {
   template: `
     <div class="flex flex-col gap-y-4">
       @for (section of navigation(); track section.id) {
-        <div class="flex flex-col px-4">
-          <!-- Section title -->
-          <div class="px-2.5 py-1.5 text-sm font-semibold text-blue-400">
-            {{ section.label }}
-
-            <!-- Section description -->
-            @if (section.description) {
-              <div class="text-xs font-medium text-neutral-400">
-                {{ section.description }}
-              </div>
-            }
-          </div>
-
-          <!-- Section content -->
-          <ul
+        @if (section.children && section.children.length > 0) {
+          <div class="flex flex-col px-4">
+            <!-- Section content -->
+            <ul
             ngTree
             class="mt-1 flex flex-col gap-y-1"
             [nav]="true"
@@ -153,6 +144,7 @@ import {
             }
           </ng-template>
         </div>
+        }
       }
     </div>
   `,
@@ -160,6 +152,8 @@ import {
 export class Navigation {
   // Dependencies
   private router = inject(Router);
+  private songbooksNavigation = inject(AdminSongbooksNavigation);
+  private userService = inject(UserService);
 
   // State
   protected navigation = signal<NavigationItem[]>(NAVIGATION);
@@ -169,8 +163,32 @@ export class Navigation {
       take(1)
     )
   );
+  protected songbooks = toSignal(this.songbooksNavigation.items$, {
+    initialValue: null,
+  });
+  protected isAuthenticated = toSignal(this.userService.isAuthenticated(), {
+    initialValue: false,
+  });
 
   constructor() {
+    // Replace the static "Songbooks" entry with the signed-in user's songbooks
+    effect(() => {
+      const songbooks = this.songbooks();
+      if (!songbooks) {
+        return;
+      }
+
+      this.navigation.update((items) => this.withSongbooks(items, songbooks));
+    });
+
+    // Hide the Sign in / Sign up links once the user is authenticated
+    effect(() => {
+      const isAuthenticated = this.isAuthenticated();
+      this.navigation.update((items) =>
+        this.withAuthVisibility(items, isAuthenticated)
+      );
+    });
+
     // Expand active route on initial load
     effect(() => {
       const navigationEnd = this.navigationEnd();
@@ -180,6 +198,45 @@ export class Navigation {
 
       this.navigation.set(this.expandActiveRoute(this.navigation()));
     });
+  }
+
+  /**
+   * Replace the static "Songbooks" entry's route with a dynamic tree of the
+   * signed-in user's songbooks.
+   */
+  private withSongbooks(
+    items: NavigationItem[],
+    songbooks: NavigationItem[]
+  ): NavigationItem[] {
+    return items.map((section) => ({
+      ...section,
+      children: section.children?.map((item) =>
+        item.id === 'general/songbooks'
+          ? { ...item, route: undefined, children: songbooks }
+          : item
+      ),
+    }));
+  }
+
+  /**
+   * Hide the Sign in / Sign up entries once a user is signed in.
+   */
+  private withAuthVisibility(
+    items: NavigationItem[],
+    isAuthenticated: boolean
+  ): NavigationItem[] {
+    return items.map((section) =>
+      section.id === 'extras'
+        ? {
+            ...section,
+            children: section.children?.filter(
+              (item) =>
+                !isAuthenticated ||
+                (item.id !== 'extras/sign-in' && item.id !== 'extras/sign-up')
+            ),
+          }
+        : section
+    );
   }
 
   /**

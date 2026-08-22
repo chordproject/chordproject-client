@@ -17,7 +17,6 @@ export const NAVIGATION: NavigationItem[] = [
   {
     id: 'general',
     label: 'General',
-    description: 'Your application pages',
     children: [
       {
         id: 'general/home',
@@ -48,14 +47,7 @@ export const NAVIGATION: NavigationItem[] = [
   {
     id: 'extras',
     label: 'Extras',
-    description: 'Additional pages and features',
     children: [
-      {
-        id: 'extras/error',
-        label: 'Error page',
-        icon: 'circle-x',
-        route: 'error/404',
-      },
       {
         id: 'extras/sign-in',
         label: 'Sign in',
@@ -67,18 +59,6 @@ export const NAVIGATION: NavigationItem[] = [
         label: 'Sign up',
         icon: 'log-out',
         route: '/auth/sign-up',
-      },
-      {
-        id: 'extras/forgot-password',
-        label: 'Forgot password',
-        icon: 'rectangle-ellipsis',
-        route: '/auth/forgot-password',
-      },
-      {
-        id: 'extras/reset-password',
-        label: 'Reset password',
-        icon: 'rotate-ccw-key',
-        route: '/auth/reset-password',
       },
     ],
   },

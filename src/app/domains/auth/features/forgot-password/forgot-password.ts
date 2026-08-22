@@ -12,7 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
+import { AuthService } from '@/app/core/firebase/auth/auth.service';
 
 @Component({
   selector: 'auth-forgot-password',
@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
 })
 export default class AuthForgotPassword {
   // Dependencies
-  private router = inject(Router);
+  private authService = inject(AuthService);
 
   // State
   protected forgotPasswordFormModel = signal({
@@ -44,8 +44,8 @@ export default class AuthForgotPassword {
     event.preventDefault();
 
     submit(this.forgotPasswordForm, async () => {
-      // Navigate to a route, demo purposes only
-      this.router.navigateByUrl('/auth/reset-password');
+      const { email } = this.forgotPasswordFormModel();
+      this.authService.forgotPassword(email).subscribe();
     });
   }
 }

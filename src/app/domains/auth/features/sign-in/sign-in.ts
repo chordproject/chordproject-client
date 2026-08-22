@@ -13,6 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from '@/app/core/firebase/auth/auth.service';
 
 @Component({
   selector: 'auth-sign-in',
@@ -31,11 +33,12 @@ import { Router, RouterLink } from '@angular/router';
 export default class AuthSignIn {
   // Dependencies
   private router = inject(Router);
+  private authService = inject(AuthService);
 
   // State
   protected signInFormModel = signal({
-    email: 'hughes.brian@company.com',
-    password: 'Secure-Password-123$%^',
+    email: '',
+    password: '',
   });
   protected signInForm = form(this.signInFormModel, (form) => {
     required(form.email, { message: 'You must enter an email address' });
@@ -48,8 +51,19 @@ export default class AuthSignIn {
     event.preventDefault();
 
     submit(this.signInForm, async () => {
-      // Navigate to a route, demo purposes only
-      this.router.navigateByUrl('/admin/example');
+      const { email, password } = this.signInFormModel();
+      try {
+        await firstValueFrom(this.authService.signInWithEmail(email, password));
+        this.router.navigateByUrl('/admin/home');
+      } catch {
+        // Error already surfaced to the user via AuthService's snackbar.
+      }
+    });
+  }
+
+  signInWithGoogle() {
+    this.authService.signInWithGoogle().subscribe({
+      next: () => this.router.navigateByUrl('/admin/home'),
     });
   }
 }
