@@ -11,7 +11,23 @@ export const routes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'admin',
+    redirectTo: 'admin/home',
+  },
+  {
+    path: 'home',
+    redirectTo: 'admin/home',
+  },
+  {
+    path: 'library',
+    redirectTo: 'admin/library',
+  },
+  {
+    path: 'songs',
+    redirectTo: 'admin/songs',
+  },
+  {
+    path: 'songbook',
+    redirectTo: 'admin/songbook',
   },
   {
     path: 'admin',

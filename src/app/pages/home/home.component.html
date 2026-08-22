@@ -1,0 +1,98 @@
+<div class="flex min-w-0 flex-auto flex-col">
+    <!-- Header -->
+    <div class="relative overflow-hidden px-4 pb-28 pt-8 sm:px-16 sm:pb-48 sm:pt-20">
+        <!-- Background -->
+        <div
+            class="absolute left-[5%] top-[-30%] h-[200%] w-[90%] bg-logo-light dark:bg-logo-dark"
+            style="transform: rotate(-16deg)"
+        ></div>
+        <div class="relative z-10 flex flex-col items-center">
+            <search [appearance]="'basic'"></search>
+        </div>
+    </div>
+
+    <div class="flex flex-col items-center px-6 pb-6 sm:px-10 sm:pb-10">
+        <!-- Cards -->
+        <div
+            class="-mt-16 grid w-full max-w-sm grid-cols-1 gap-y-8 sm:-mt-24 md:max-w-7xl md:grid-cols-2 md:gap-x-6 md:gap-y-0"
+        >
+            <!-- Recent card -->
+            <div
+                class="bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg"
+            >
+                <div class="flex flex-col items-center p-8 text-center">
+                    <div class="absolute right-0 top-0 -m-6 h-24 w-24">
+                        <mat-icon
+                            class="text-blue-400 opacity-25 icon-size-24"
+                            [svgIcon]="'heroicons_outline:arrow-up-circle'"
+                        ></mat-icon>
+                    </div>
+
+                    <div class="text-2xl font-semibold">Recently Added</div>
+                </div>
+                <div class="flex flex-auto flex-col bg-gray-50 dark:border-t dark:bg-transparent">
+                    @if (latestSongs$ | async; as songs) {
+                        @if (songs.length > 0) {
+                            <div class="w-full">
+                                @for (song of songs; track song.uid) {
+                                    <chp-song-item
+                                        [song]="song"
+                                        [routerLink]="['/songs/read', song.uid]"
+                                        class="block w-full"
+                                    >
+                                    </chp-song-item>
+                                }
+                            </div>
+                        } @else {
+                            <div class="flex flex-col items-center justify-center py-8">
+                                <mat-icon
+                                    class="mb-4 text-warn-500 icon-size-12"
+                                    [svgIcon]="'heroicons_outline:exclamation-circle'"
+                                ></mat-icon>
+                                <p class="text-lg font-medium text-center">Something went wrong while loading songs</p>
+                                <p class="text-secondary mt-2">Please refresh the page to try again</p>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <!-- About card -->
+            <div
+                class="bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg"
+            >
+                <div class="absolute right-0 top-0 -m-6 h-24 w-24">
+                    <mat-icon
+                        class="text-blue-400 opacity-25 icon-size-24"
+                        [svgIcon]="'heroicons_outline:information-circle'"
+                    ></mat-icon>
+                </div>
+                <div class="flex flex-col items-center p-8 text-center">
+                    <div class="text-2xl font-semibold">
+                        {{ 'home.about_title' | transloco }}
+                    </div>
+                </div>
+                <div
+                    class="flex flex-auto flex-col bg-gray-50 px-8 py-4 text-primary-500 dark:border-t dark:bg-transparent dark:text-primary-400"
+                >
+                    <div class="flex h-full w-full flex-col items-center justify-center">
+                        <div class="w-full max-w-3xl">
+                            <div class="prose prose-sm mx-auto max-w-none">
+                                <p [innerHTML]="'home.about_description' | transloco"></p>
+                                <h2>{{ 'home.overview_title' | transloco }}</h2>
+                                <p [innerHTML]="'home.overview_description' | transloco"></p>
+
+                                <ul>
+                                    @for (item of features; track $index) {
+                                        <li [innerHTML]="item"></li>
+                                    }
+                                </ul>
+
+                                <p [innerHTML]="'home.platform_description' | transloco"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+@if (deviceType === 'phone') {
+    <div class="fixed bottom-0 z-10 w-full border-t">
+        <div class="flex justify-center gap-6 bg-gray-50 px-4 py-3 dark:bg-[#273549]">
+            <chp-edit-tool (editSongEvent)="editSongEvent.emit()"></chp-edit-tool>
+            <chp-transpose-tool
+                [initialKey]="song?.songKey"
+                (transposeEvent)="transposeEvent.emit($event)"
+            ></chp-transpose-tool>
+            <chp-zoom-tool (zoomEvent)="onZoomEvent($event)"></chp-zoom-tool>
+            <chp-fullscreen-tool (fullScreenEvent)="fullScreenEvent.emit()"></chp-fullscreen-tool>
+            <chp-settings-tool (settingsEvent)="settingsEvent.emit()"></chp-settings-tool>
+        </div>
+    </div>
+} @else {
+    <div class="flex gap-2 bg-gray-50 px-4 py-3 dark:bg-[#273549]">
+        <chp-edit-tool (editSongEvent)="editSongEvent.emit()"></chp-edit-tool>
+        <div class="border-l border-gray-300 dark:border-gray-600"></div>
+        <chp-transpose-tool
+            [isMobile]="false"
+            [initialKey]="song?.songKey"
+            (transposeEvent)="transposeEvent.emit($event)"
+        ></chp-transpose-tool>
+        <div class="border-l border-gray-300 dark:border-gray-600"></div>
+        <chp-fullscreen-tool (fullScreenEvent)="fullScreenEvent.emit()"></chp-fullscreen-tool>
+        <div class="border-l border-gray-300 dark:border-gray-600"></div>
+        <chp-zoom-tool [isMobile]="false" (zoomEvent)="onZoomEvent($event)"></chp-zoom-tool>
+        <div class="border-l border-gray-300 dark:border-gray-600"></div>
+        <chp-settings-tool (settingsEvent)="settingsEvent.emit()"></chp-settings-tool>
+    </div>
+}

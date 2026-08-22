@@ -1,0 +1,178 @@
+.content {
+    padding: 1em 1.5em 4em;
+}
+
+$colors: (
+    'default': #000,
+    'orange': #ffb920,
+    'red': #c5251d,
+    'green': #47a833,
+    'purple': #7d28fd,
+    'blue': #1f56d6,
+);
+
+@each $name, $value in $colors {
+    ::ng-deep {
+        [class*='chords-color-#{$name}'] .above-lyrics {
+            color: $value;
+        }
+        
+        [class*='comments-color-#{$name}'] .comment-line,
+        [class*='comments-color-#{$name}'] .section-title {
+            color: $value;
+        }
+    }
+}
+
+::ng-deep {
+    .show-columns {
+        column-width: auto;
+    }
+
+    /* Native breakpoints replacing Nebular mixins */
+    @media (min-width: 576px) {
+        .show-columns .song-content {
+            column-count: 2;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .show-columns .song-content {
+            column-count: 3;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .show-columns .song-content {
+            column-count: 4;
+        }
+    }
+
+    $font-sizes: (
+        '0': 0.6em,
+        '1': 0.8em,
+        '2': 1em,
+        '3': 1.2em,
+        '4': 1.4em,
+        '5': 1.6em,
+    );
+
+    // font-size
+    @each $name, $value in $font-sizes {
+        [class*='chords-font-size-#{$name}'] .above-lyrics {
+            font-size: $value;
+            padding: calc(0.15 * #{$value})
+                calc(0.3 * #{$value})
+                calc(0.05 * #{$value})
+                0;
+        }
+
+        [class*='lyrics-font-size-#{$name}'] .lyrics {
+            font-size: $value;
+            padding: calc(0.15 * #{$value}) 0;
+        }
+
+        [class*='lyrics-font-size-#{$name}'] .word {
+            margin-right: calc(0.3 * #{$value});
+        }
+
+        [class*='comments-font-size-#{$name}'] .comment-line,
+        [class*='comments-font-size-#{$name}'] .section-title {
+            font-size: $value;
+            padding: calc(0.1 * #{$value}) 0;
+        }
+    }
+
+    // font-style
+    .chords-font-style-italic .above-lyrics {
+        font-style: italic;
+    }
+
+    .lyrics-font-style-italic .lyrics {
+        font-style: italic;
+    }
+
+    .section-title {
+        margin-bottom: 1em;
+    }
+
+    .comment-line {
+        margin: 1em 0;
+    }
+
+    .comments-font-style-italic .comment-line,
+    .comments-font-style-italic .section-title {
+        font-style: italic;
+    }
+
+    // font-weight
+    .chords-font-weight-bold .above-lyrics {
+        font-weight: bold;
+    }
+
+    .lyrics-font-weight-bold .lyrics {
+        font-weight: bold;
+    }
+
+    .comments-font-weight-bold .comment-line,
+    .comments-font-weight-bold .section-title {
+        font-weight: bold;
+    }
+
+    // default style
+    .metadata {
+        margin: 0;
+        margin-bottom: 0.5em;
+        font-style: italic;
+    }
+
+    .title-metadata,
+    .subtitle-metadata,
+    .artist-metadata {
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    .lyrics-line {
+        display: flex;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        break-inside: avoid;
+    }
+
+    .chord-lyrics {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+    }
+
+    .above-lyrics {
+        padding: 0.2em 0.3em 0.1em 0;
+    }
+
+    .word {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        margin-right: 0.3em;
+    }
+
+    .empty-line {
+        margin-top: 1.5em;
+    }
+
+    .chorus-section {
+        border-radius: 1em 0 0 1em;
+        padding: 1em 1.5em;
+    }
+
+    .section {
+        margin: 3em 0;
+        break-inside: auto;
+    }
+
+    .tab-section {
+        font-family: 'Courier New', Courier, monospace;
+        break-inside: avoid;
+    }
+}

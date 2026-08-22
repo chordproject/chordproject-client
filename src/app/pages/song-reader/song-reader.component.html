@@ -1,0 +1,46 @@
+<div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
+    <mat-drawer-container class="bg-card h-full flex-auto dark:bg-transparent">
+        <mat-drawer
+            class="w-full md:w-160 dark:bg-gray-900"
+            [mode]="drawerMode"
+            [opened]="false"
+            [position]="'end'"
+            [disableClose]="true"
+            #matDrawer
+        >
+            <router-outlet></router-outlet>
+        </mat-drawer>
+        <mat-drawer-content class="flex flex-col">
+            <div class="flex-auto">
+                <!-- Header -->
+                @if (song) {
+                    <div
+                        class="flex flex-auto flex-col justify-between border-b px-6 py-8 sm:flex-row md:flex-col md:px-8"
+                    >
+                        <!-- Title -->
+                        <div>
+                            <div class="text-4xl font-extrabold leading-none tracking-tight">{{ song.title }}</div>
+                            <div class="text-secondary ml-0.5 font-medium">
+                                {{ song.artists | join: ' - ' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-card relative flex flex-col border-b">
+                        <chp-viewer-toolbar
+                            [song]="song"
+                            [deviceType]="deviceType"
+                            (editSongEvent)="editSong()"
+                            (transposeEvent)="viewer.transpose($event)"
+                            (zoomEvent)="viewer.zoom($event)"
+                            (fullScreenEvent)="toggleFullScreen()"
+                            (settingsEvent)="toggleSettings()"
+                        >
+                        </chp-viewer-toolbar>
+                        <chp-viewer #viewer [content]="song.content" class="order-0"> </chp-viewer>
+                    </div>
+                }
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

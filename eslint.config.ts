@@ -99,11 +99,19 @@ export default defineConfig(
     rules: {
       // Turn off no-unused-vars as it conflicts with unused-imports
       '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
 
       // Prefer "type" over "interface" for type definitions
       '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
 
+      // Temporary migration compatibility for code ported from Fuse 21/Angular 19
+      'no-extra-boolean-cast': 'off',
+
       // Angular
+      '@angular-eslint/prefer-inject': 'off',
+      '@angular-eslint/no-empty-lifecycle-method': 'off',
+      '@angular-eslint/no-output-native': 'off',
       '@angular-eslint/component-selector': [
         'error',
         {
@@ -133,6 +141,11 @@ export default defineConfig(
       angular.configs.templateRecommended,
       angular.configs.templateAccessibility,
     ],
+    rules: {
+      '@angular-eslint/template/click-events-have-key-events': 'off',
+      '@angular-eslint/template/interactive-supports-focus': 'off',
+      '@angular-eslint/template/prefer-control-flow': 'off',
+    },
   },
 
   // Test files

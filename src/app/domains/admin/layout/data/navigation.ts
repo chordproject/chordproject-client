@@ -20,10 +20,28 @@ export const NAVIGATION: NavigationItem[] = [
     description: 'Your application pages',
     children: [
       {
-        id: 'general/example',
-        label: 'Example',
-        icon: 'layout-dashboard',
-        route: '/admin/example',
+        id: 'general/home',
+        label: 'Home',
+        icon: 'house',
+        route: '/admin/home',
+      },
+      {
+        id: 'general/library',
+        label: 'Library',
+        icon: 'music',
+        route: '/admin/library',
+      },
+      {
+        id: 'general/create',
+        label: 'Create',
+        icon: 'code-xml',
+        route: '/admin/songs/create',
+      },
+      {
+        id: 'general/songbooks',
+        label: 'Songbooks',
+        icon: 'book-open',
+        route: '/admin/songbook',
       },
     ],
   },

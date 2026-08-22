@@ -6,15 +6,32 @@ const routes: Routes = [
     path: '',
     component: AdminLayout,
     children: [
-      // Redirect empty path to '/admin/example'
-      { path: '', pathMatch: 'full', redirectTo: 'example' },
+      { path: '', pathMatch: 'full', redirectTo: 'home' },
 
-      // -----------------------------------------------------------------------
-      // Example
-      // -----------------------------------------------------------------------
       {
-        path: 'example',
-        loadChildren: () => import('./modules/example/routes'),
+        path: 'home',
+        loadChildren: () => import('app/pages/home/home.routes'),
+      },
+      {
+        path: 'library',
+        loadChildren: () => import('app/pages/library/library.routes'),
+      },
+      {
+        path: 'songs',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('app/pages/song-editor/song-editor.routes'),
+          },
+          {
+            path: '',
+            loadChildren: () => import('app/pages/song-reader/song-reader.routes'),
+          },
+        ],
+      },
+      {
+        path: 'songbook',
+        loadChildren: () => import('app/pages/songbook/songbook.routes'),
       },
 
       // -----------------------------------------------------------------------

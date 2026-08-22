@@ -16,6 +16,7 @@ import { provideTransloco } from '@jsverse/transloco';
 import { provideIcons } from '@/app/core/icons/provider';
 import { provideTheming } from '@/app/core/theming';
 import { TranslocoHttpLoader } from '@/app/core/transloco/transloco-http-loader';
+import { provideFirebase } from 'app/core/firebase/firebase.provider';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -40,6 +41,7 @@ export const appConfig: ApplicationConfig = {
 
     // Core
     provideIcons(),
+    provideFirebase(),
     provideTheming({
       scheme: 'system',
       primary: '#1565C0',
@@ -51,15 +53,19 @@ export const appConfig: ApplicationConfig = {
       config: {
         availableLangs: [
           {
+            id: 'es',
+            label: 'Español',
+          },
+          {
             id: 'en',
             label: 'English',
           },
           {
-            id: 'es',
-            label: 'Español',
+            id: 'fr',
+            label: 'Français',
           },
         ],
-        defaultLang: 'en',
+        defaultLang: 'es',
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
       },
