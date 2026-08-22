@@ -20,25 +20,25 @@ export const NAVIGATION: NavigationItem[] = [
     children: [
       {
         id: 'general/home',
-        label: 'Home',
+        label: 'nav.home',
         icon: 'house',
         route: '/admin/home',
       },
       {
         id: 'general/library',
-        label: 'Library',
+        label: 'nav.library',
         icon: 'music',
         route: '/admin/library',
       },
       {
         id: 'general/create',
-        label: 'Create',
+        label: 'nav.create',
         icon: 'code-xml',
         route: '/admin/songs/create',
       },
       {
         id: 'general/songbooks',
-        label: 'Songbooks',
+        label: 'nav.songbooks',
         icon: 'book-open',
         route: '/admin/songbook',
       },
@@ -50,13 +50,13 @@ export const NAVIGATION: NavigationItem[] = [
     children: [
       {
         id: 'extras/sign-in',
-        label: 'Sign in',
+        label: 'nav.sign_in',
         icon: 'log-in',
         route: '/auth/sign-in',
       },
       {
         id: 'extras/sign-up',
-        label: 'Sign up',
+        label: 'nav.sign_up',
         icon: 'log-out',
         route: '/auth/sign-up',
       },

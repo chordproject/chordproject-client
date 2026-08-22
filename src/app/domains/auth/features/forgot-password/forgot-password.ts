@@ -12,6 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '@/app/core/firebase/auth/auth.service';
 
 @Component({
@@ -25,6 +26,7 @@ import { AuthService } from '@/app/core/firebase/auth/auth.service';
     MatCheckboxModule,
     FormField,
     MatCard,
+    TranslocoModule,
   ],
 })
 export default class AuthForgotPassword {
@@ -36,8 +38,8 @@ export default class AuthForgotPassword {
     email: '',
   });
   protected forgotPasswordForm = form(this.forgotPasswordFormModel, (form) => {
-    required(form.email, { message: 'You must enter an email address' });
-    email(form.email, { message: 'You must enter a valid email address' });
+    required(form.email, { message: 'auth.email_required' });
+    email(form.email, { message: 'auth.email_invalid' });
   });
 
   forgotPassword(event: Event) {

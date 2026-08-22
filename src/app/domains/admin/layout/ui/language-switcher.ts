@@ -15,9 +15,6 @@ import { LangDefinition, TranslocoService } from '@jsverse/transloco';
     MatPseudoCheckbox,
   ],
   template: `
-    <span class="fi fi-gr"></span>
-    <span class="fi fi-gr"></span>
-
     <button
       matIconButton
       [matMenuTriggerFor]="langMenu"
@@ -81,6 +78,9 @@ export class LanguageSwitcher {
       }
       case 'es': {
         return 'ES';
+      }
+      case 'fr': {
+        return 'FR';
       }
       default: {
         return 'US';

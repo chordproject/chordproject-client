@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { TranslocoModule } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@/app/core/firebase/auth/auth.service';
 
@@ -28,6 +29,7 @@ import { AuthService } from '@/app/core/firebase/auth/auth.service';
     MatCheckboxModule,
     FormField,
     MatDivider,
+    TranslocoModule,
   ],
 })
 export default class AuthSignIn {
@@ -41,10 +43,10 @@ export default class AuthSignIn {
     password: '',
   });
   protected signInForm = form(this.signInFormModel, (form) => {
-    required(form.email, { message: 'You must enter an email address' });
-    email(form.email, { message: 'You must enter a valid email address' });
+    required(form.email, { message: 'auth.email_required' });
+    email(form.email, { message: 'auth.email_invalid' });
 
-    required(form.password, { message: 'You must enter a password' });
+    required(form.password, { message: 'auth.password_required' });
   });
 
   signIn(event: Event) {

@@ -13,6 +13,7 @@ import {
   RouterLinkActive,
 } from '@angular/router';
 import { filter, take } from 'rxjs';
+import { TranslocoModule } from '@jsverse/transloco';
 import {
   NAVIGATION,
   NavigationItem,
@@ -31,6 +32,7 @@ import { UserService } from '@/app/core/user/user.service';
     TreeItemGroup,
     RouterLink,
     CdkMonitorFocus,
+    TranslocoModule,
   ],
   template: `
     <div class="flex flex-col gap-y-4">
@@ -67,7 +69,7 @@ import { UserService } from '@/app/core/user/user.service';
                 class="navigation-item flex cursor-pointer items-center gap-x-2 rounded-lg px-2.5 py-2 select-none hover:bg-neutral-700/10 dark:hover:bg-neutral-300/10"
                 [parent]="parent"
                 [value]="node.id"
-                [label]="node.label"
+                [label]="node.label | transloco"
                 [disabled]="node.disabled"
                 [selectable]="!node.children"
                 [(expanded)]="node.expanded"
@@ -89,7 +91,7 @@ import { UserService } from '@/app/core/user/user.service';
 
                 <!-- Label -->
                 <div class="flex flex-auto flex-col font-medium">
-                  {{ node.label }}
+                  {{ node.label | transloco }}
 
                   <!-- Description -->
                   @if (node.description) {

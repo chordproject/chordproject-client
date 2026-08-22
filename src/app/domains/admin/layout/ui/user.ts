@@ -5,6 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/list';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { Router } from '@angular/router';
+import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '@/app/core/firebase/auth/auth.service';
 import { Scheme, Theming } from '@/app/core/theming';
 import { UserService } from '@/app/core/user/user.service';
@@ -18,6 +19,7 @@ import { UserService } from '@/app/core/user/user.service';
     MatMenuItem,
     MatPseudoCheckbox,
     MatMenuTrigger,
+    TranslocoModule,
   ],
   template: `
     <button
@@ -39,10 +41,10 @@ import { UserService } from '@/app/core/user/user.service';
       }
       <div class="flex min-w-0 flex-auto flex-col select-none">
         <div class="truncate font-medium">
-          {{ displayName() }}
+          {{ displayName() | transloco }}
         </div>
         <div class="text-on-surface-variant truncate text-sm">
-          {{ user()?.email || 'Not signed in' }}
+          {{ user()?.email || ('user_menu.not_signed_in' | transloco) }}
         </div>
       </div>
       <mat-icon
@@ -76,24 +78,24 @@ import { UserService } from '@/app/core/user/user.service';
         }
         <div class="ml-3 flex min-w-0 flex-auto flex-col select-none">
           <div class="truncate font-medium">
-            {{ displayName() }}
+            {{ displayName() | transloco }}
           </div>
           <div class="text-on-surface-variant truncate text-xs">
-            {{ user()?.email || 'Not signed in' }}
+            {{ user()?.email || ('user_menu.not_signed_in' | transloco) }}
           </div>
         </div>
       </button>
       <mat-divider />
       <button mat-menu-item>
         <mat-icon svgIcon="user-round" />
-        Account
+        {{ 'user_menu.account' | transloco }}
       </button>
       <button
         mat-menu-item
         (click)="changePassword()"
       >
         <mat-icon svgIcon="rectangle-ellipsis" />
-        Change password
+        {{ 'user_menu.change_password' | transloco }}
       </button>
       <mat-divider />
       <button
@@ -101,7 +103,7 @@ import { UserService } from '@/app/core/user/user.service';
         [matMenuTriggerFor]="appearanceMenu"
       >
         <mat-icon svgIcon="sun-moon" />
-        Appearance
+        {{ 'user_menu.appearance' | transloco }}
       </button>
       <mat-divider />
       <button
@@ -109,7 +111,7 @@ import { UserService } from '@/app/core/user/user.service';
         (click)="signOut()"
       >
         <mat-icon svgIcon="log-out" />
-        Sign out
+        {{ 'user_menu.sign_out' | transloco }}
       </button>
     </mat-menu>
 
@@ -124,7 +126,7 @@ import { UserService } from '@/app/core/user/user.service';
             class="mr-2"
             [state]="scheme() === item.value ? 'checked' : 'unchecked'"
           />
-          <span>{{ item.label }}</span>
+          <span>{{ item.label | transloco }}</span>
         </button>
       }
     </mat-menu>
@@ -143,14 +145,14 @@ export class User {
   protected displayName = computed(() => {
     const user = this.user();
     if (!user) {
-      return 'Guest';
+      return 'user_menu.guest';
     }
-    return user.name || user.email?.split('@')[0] || 'User';
+    return user.name || user.email?.split('@')[0] || 'user_menu.default_name';
   });
   protected schemes: { label: string; value: Scheme }[] = [
-    { label: 'Light', value: 'light' },
-    { label: 'Dark', value: 'dark' },
-    { label: 'System', value: 'system' },
+    { label: 'scheme.light', value: 'light' },
+    { label: 'scheme.dark', value: 'dark' },
+    { label: 'scheme.system', value: 'system' },
   ];
 
   updateScheme(scheme: Scheme) {

@@ -1,15 +1,19 @@
 import { Component, computed, inject } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { TranslocoModule } from '@jsverse/transloco';
 import { Theming } from '@/app/core/theming';
 
 @Component({
   selector: 'scheme-switcher',
-  imports: [MatIcon, MatIconButton],
+  imports: [MatIcon, MatIconButton, TranslocoModule],
   template: `
     <button
       matIconButton
-      [attr.aria-label]="isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
+      [attr.aria-label]="
+        (isDark() ? 'scheme.switch_to_light' : 'scheme.switch_to_dark')
+          | transloco
+      "
       (click)="toggleScheme()"
     >
       <mat-icon [svgIcon]="isDark() ? 'sun' : 'moon'" />

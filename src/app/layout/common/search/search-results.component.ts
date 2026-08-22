@@ -3,12 +3,13 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
     selector: 'search-results',
     templateUrl: './search-results.component.html',
     standalone: true,
-    imports: [CommonModule, MatAutocompleteModule, RouterModule, MatOptionModule],
+    imports: [CommonModule, MatAutocompleteModule, RouterModule, MatOptionModule, TranslocoModule],
 })
 export class SearchResultsComponent {
     @Input() resultSets: any;

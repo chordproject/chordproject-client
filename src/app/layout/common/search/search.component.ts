@@ -27,6 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Subject, debounceTime, filter, forkJoin, map, takeUntil } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations/public-api';
+import { TranslocoModule } from '@jsverse/transloco';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
 import { SearchResultSets } from 'app/models/searchResultSets';
@@ -49,6 +50,7 @@ import { SearchResultsComponent } from './search-results.component';
         MatFormFieldModule,
         MatInputModule,
         SearchResultsComponent,
+        TranslocoModule,
     ],
     providers: [
         {

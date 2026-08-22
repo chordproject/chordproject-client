@@ -14,7 +14,7 @@
             <input
                 class="h-full w-full px-16 sm:px-18"
                 [formControl]="searchControl"
-                [placeholder]="'Search by title, lyrics or songbook...'"
+                [placeholder]="'search.placeholder_bar' | transloco"
                 (keydown)="onKeydown($event)"
                 [matAutocomplete]="searchResults?.matAutocomplete"
                 #barSearchInput
@@ -45,7 +45,7 @@
             <input
                 matInput
                 [formControl]="searchControl"
-                [placeholder]="'Search by title, lyrics or songbook'"
+                [placeholder]="'search.placeholder_basic' | transloco"
                 [matAutocomplete]="searchResults?.matAutocomplete"
                 (keydown)="onKeydown($event)"
             />

@@ -1,5 +1,8 @@
 {
     "home": {
+        "recently_added": "Añadidas recientemente",
+        "error_title": "Ocurrió un error al cargar las canciones",
+        "error_subtitle": "Por favor recarga la página para intentarlo de nuevo",
         "about_title": "Acerca de ChordProject",
         "about_description": "<strong>ChordProject</strong> es tu cancionero digital de bolsillo: escribe, organiza y toca tus canciones con acordes en formato <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>, desde cualquier dispositivo.",
         "overview_title": "¿Qué puedes hacer?",
@@ -13,5 +16,76 @@
         "platform_description": "Visita nuestro sitio hermano <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
         "contribute_title": "¿Tienes una idea para mejorarlo?",
         "contribute_description": "Es un proyecto <strong>open source</strong>: envía tu Pull Request en <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>. ¿No programas? Puedes apoyarte en IA para escribir el código."
+    },
+    "nav": {
+        "home": "Inicio",
+        "library": "Biblioteca",
+        "create": "Crear",
+        "songbooks": "Cancioneros",
+        "sign_in": "Iniciar sesión",
+        "sign_up": "Registrarse"
+    },
+    "search": {
+        "placeholder_bar": "Busca por título, letra o cancionero...",
+        "placeholder_basic": "Busca por título, letra o cancionero",
+        "no_results": "¡No se encontraron resultados!",
+        "songs": "CANCIONES",
+        "songs_content": "CONTENIDO DE CANCIONES",
+        "songbooks": "CANCIONEROS",
+        "songbooks_content": "CONTENIDO DE CANCIONEROS"
+    },
+    "shortcuts": {
+        "search_placeholder": "Buscar una app o página",
+        "no_results": "No se encontraron resultados"
+    },
+    "user_menu": {
+        "account": "Cuenta",
+        "change_password": "Cambiar contraseña",
+        "appearance": "Apariencia",
+        "sign_out": "Cerrar sesión",
+        "guest": "Invitado",
+        "not_signed_in": "No conectado",
+        "default_name": "Usuario"
+    },
+    "scheme": {
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Sistema",
+        "switch_to_light": "Cambiar a tema claro",
+        "switch_to_dark": "Cambiar a tema oscuro"
+    },
+    "auth": {
+        "email_label": "Correo electrónico",
+        "password_label": "Contraseña",
+        "email_required": "Debes ingresar un correo electrónico",
+        "email_invalid": "Debes ingresar un correo electrónico válido",
+        "password_required": "Debes ingresar una contraseña",
+        "sign_in_title": "Iniciar sesión",
+        "no_account": "¿No tienes una cuenta?",
+        "sign_up_link": "Regístrate",
+        "remember_me": "Recuérdame",
+        "forgot_password_link": "¿Olvidaste tu contraseña?",
+        "sign_in_button": "Iniciar sesión",
+        "continue_with": "O continúa con",
+        "google": "Google",
+        "sign_up_title": "Crear cuenta",
+        "have_account": "¿Ya tienes una cuenta?",
+        "sign_in_link": "Inicia sesión",
+        "name_label": "Nombre",
+        "company_label": "Empresa",
+        "name_required": "Debes ingresar tu nombre",
+        "company_required": "Debes ingresar el nombre de tu empresa",
+        "agree_with": "Acepto los",
+        "terms": "Términos",
+        "and": "y",
+        "privacy_policy": "Política de privacidad",
+        "create_account_button": "Crear mi cuenta",
+        "forgot_password_title": "Olvidé mi contraseña",
+        "forgot_password_subtitle": "Completa el formulario para restablecer tu contraseña",
+        "reset_password_button": "Restablecer contraseña",
+        "reset_password_title": "Restablecer contraseña",
+        "reset_password_subtitle": "Crea una nueva contraseña para tu cuenta",
+        "password_validation_label": "Confirmar contraseña",
+        "passwords_mismatch": "Las contraseñas no coinciden"
     }
 }

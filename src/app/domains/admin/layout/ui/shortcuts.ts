@@ -13,6 +13,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
+import { TranslocoModule } from '@jsverse/transloco';
 import { LocalStorage } from '@/app/core/local-storage';
 import { Media } from '@/app/core/media';
 import {
@@ -34,6 +35,7 @@ const DEFAULT_SHORTCUTS = ['general/example'];
     MatDivider,
     RouterLink,
     MatBadge,
+    TranslocoModule,
   ],
   host: {
     class: 'flex items-center',
@@ -45,7 +47,7 @@ const DEFAULT_SHORTCUTS = ['general/example'];
         class="hidden sm:inline-flex"
         matIconButton
         [routerLink]="item.route"
-        [matTooltip]="item.label"
+        [matTooltip]="item.label | transloco"
       >
         <mat-icon [svgIcon]="item.icon ?? 'circle'" />
       </button>
@@ -78,7 +80,7 @@ const DEFAULT_SHORTCUTS = ['general/example'];
         <input
           class="border-0 bg-transparent py-2 outline-none"
           type="text"
-          placeholder="Search for an app or page"
+          [placeholder]="'shortcuts.search_placeholder' | transloco"
           [value]="search()"
           (input)="search.set($any($event.target).value)"
           (click)="$event.stopPropagation()"
@@ -105,7 +107,7 @@ const DEFAULT_SHORTCUTS = ['general/example'];
                 class="size-4"
                 [svgIcon]="item.icon ?? 'circle'"
               />
-              <span class="flex-auto">{{ item.label }}</span>
+              <span class="flex-auto">{{ item.label | transloco }}</span>
             </button>
             <button
               matIconButton
@@ -124,7 +126,7 @@ const DEFAULT_SHORTCUTS = ['general/example'];
 
         @if (!filteredItems().length) {
           <div class="px-4 py-6 text-center text-neutral-500">
-            No results found
+            {{ 'shortcuts.no_results' | transloco }}
           </div>
         }
       </div>

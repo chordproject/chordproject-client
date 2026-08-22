@@ -1,5 +1,8 @@
 {
     "home": {
+        "recently_added": "Recently Added",
+        "error_title": "Something went wrong while loading songs",
+        "error_subtitle": "Please refresh the page to try again",
         "about_title": "About ChordProject",
         "about_description": "<strong>ChordProject</strong> is your pocket digital songbook: write, organize, and play your songs with chords in <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format, on any device.",
         "overview_title": "What can you do?",
@@ -13,5 +16,76 @@
         "platform_description": "Visit our sister site <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
         "contribute_title": "Have an idea to improve it?",
         "contribute_description": "It's an <strong>open source</strong> project - send your Pull Request on <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>. Don't code? You can use AI to help write it."
+    },
+    "nav": {
+        "home": "Home",
+        "library": "Library",
+        "create": "Create",
+        "songbooks": "Songbooks",
+        "sign_in": "Sign in",
+        "sign_up": "Sign up"
+    },
+    "search": {
+        "placeholder_bar": "Search by title, lyrics or songbook...",
+        "placeholder_basic": "Search by title, lyrics or songbook",
+        "no_results": "No results found!",
+        "songs": "SONGS",
+        "songs_content": "SONGS CONTENT",
+        "songbooks": "SONGBOOKS",
+        "songbooks_content": "SONGBOOKS CONTENT"
+    },
+    "shortcuts": {
+        "search_placeholder": "Search for an app or page",
+        "no_results": "No results found"
+    },
+    "user_menu": {
+        "account": "Account",
+        "change_password": "Change password",
+        "appearance": "Appearance",
+        "sign_out": "Sign out",
+        "guest": "Guest",
+        "not_signed_in": "Not signed in",
+        "default_name": "User"
+    },
+    "scheme": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System",
+        "switch_to_light": "Switch to light theme",
+        "switch_to_dark": "Switch to dark theme"
+    },
+    "auth": {
+        "email_label": "Email address",
+        "password_label": "Password",
+        "email_required": "You must enter an email address",
+        "email_invalid": "You must enter a valid email address",
+        "password_required": "You must enter a password",
+        "sign_in_title": "Sign in",
+        "no_account": "Don't have an account?",
+        "sign_up_link": "Sign up",
+        "remember_me": "Remember me",
+        "forgot_password_link": "Forgot password?",
+        "sign_in_button": "Sign in",
+        "continue_with": "Or continue with",
+        "google": "Google",
+        "sign_up_title": "Sign up",
+        "have_account": "Already have an account?",
+        "sign_in_link": "Sign in",
+        "name_label": "Name",
+        "company_label": "Company",
+        "name_required": "You must enter your name",
+        "company_required": "You must enter your company name",
+        "agree_with": "I agree with",
+        "terms": "Terms",
+        "and": "and",
+        "privacy_policy": "Privacy Policy",
+        "create_account_button": "Create my account",
+        "forgot_password_title": "Forgot password",
+        "forgot_password_subtitle": "Fill the form to reset your password",
+        "reset_password_button": "Reset password",
+        "reset_password_title": "Reset password",
+        "reset_password_subtitle": "Create a new password for your account",
+        "password_validation_label": "Password validation",
+        "passwords_mismatch": "The passwords do not match"
     }
 }

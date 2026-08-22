@@ -1,5 +1,8 @@
 {
     "home": {
+        "recently_added": "Ajoutées récemment",
+        "error_title": "Une erreur s'est produite lors du chargement des chansons",
+        "error_subtitle": "Veuillez rafraîchir la page pour réessayer",
         "about_title": "À propos de ChordProject",
         "about_description": "<strong>ChordProject</strong> est votre carnet de chansons numérique de poche : écrivez, organisez et jouez vos chansons avec accords au format <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>, sur n'importe quel appareil.",
         "overview_title": "Que pouvez-vous faire ?",
@@ -13,5 +16,76 @@
         "platform_description": "Visitez notre site frère <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
         "contribute_title": "Une idée pour l'améliorer ?",
         "contribute_description": "C'est un projet <strong>open source</strong> : proposez votre Pull Request sur <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>. Vous ne codez pas ? Vous pouvez vous aider de l'IA pour l'écrire."
+    },
+    "nav": {
+        "home": "Accueil",
+        "library": "Bibliothèque",
+        "create": "Créer",
+        "songbooks": "Carnets",
+        "sign_in": "Se connecter",
+        "sign_up": "S'inscrire"
+    },
+    "search": {
+        "placeholder_bar": "Rechercher par titre, paroles ou carnet...",
+        "placeholder_basic": "Rechercher par titre, paroles ou carnet",
+        "no_results": "Aucun résultat trouvé !",
+        "songs": "CHANSONS",
+        "songs_content": "CONTENU DES CHANSONS",
+        "songbooks": "CARNETS",
+        "songbooks_content": "CONTENU DES CARNETS"
+    },
+    "shortcuts": {
+        "search_placeholder": "Rechercher une application ou une page",
+        "no_results": "Aucun résultat trouvé"
+    },
+    "user_menu": {
+        "account": "Compte",
+        "change_password": "Changer le mot de passe",
+        "appearance": "Apparence",
+        "sign_out": "Se déconnecter",
+        "guest": "Invité",
+        "not_signed_in": "Non connecté",
+        "default_name": "Utilisateur"
+    },
+    "scheme": {
+        "light": "Clair",
+        "dark": "Sombre",
+        "system": "Système",
+        "switch_to_light": "Passer au thème clair",
+        "switch_to_dark": "Passer au thème sombre"
+    },
+    "auth": {
+        "email_label": "Adresse e-mail",
+        "password_label": "Mot de passe",
+        "email_required": "Vous devez saisir une adresse e-mail",
+        "email_invalid": "Vous devez saisir une adresse e-mail valide",
+        "password_required": "Vous devez saisir un mot de passe",
+        "sign_in_title": "Connexion",
+        "no_account": "Vous n'avez pas de compte ?",
+        "sign_up_link": "Inscrivez-vous",
+        "remember_me": "Se souvenir de moi",
+        "forgot_password_link": "Mot de passe oublié ?",
+        "sign_in_button": "Se connecter",
+        "continue_with": "Ou continuez avec",
+        "google": "Google",
+        "sign_up_title": "Inscription",
+        "have_account": "Vous avez déjà un compte ?",
+        "sign_in_link": "Connectez-vous",
+        "name_label": "Nom",
+        "company_label": "Entreprise",
+        "name_required": "Vous devez saisir votre nom",
+        "company_required": "Vous devez saisir le nom de votre entreprise",
+        "agree_with": "J'accepte les",
+        "terms": "Conditions",
+        "and": "et",
+        "privacy_policy": "Politique de confidentialité",
+        "create_account_button": "Créer mon compte",
+        "forgot_password_title": "Mot de passe oublié",
+        "forgot_password_subtitle": "Remplissez le formulaire pour réinitialiser votre mot de passe",
+        "reset_password_button": "Réinitialiser le mot de passe",
+        "reset_password_title": "Réinitialiser le mot de passe",
+        "reset_password_subtitle": "Créez un nouveau mot de passe pour votre compte",
+        "password_validation_label": "Confirmer le mot de passe",
+        "passwords_mismatch": "Les mots de passe ne correspondent pas"
     }
 }

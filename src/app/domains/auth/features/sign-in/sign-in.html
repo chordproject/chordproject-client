@@ -12,15 +12,15 @@
 
       <!-- Title -->
       <div class="leading-tight mt-8 text-4xl font-extrabold tracking-tight">
-        Sign in
+        {{ 'auth.sign_in_title' | transloco }}
       </div>
       <div class="mt-0.5 flex items-baseline font-medium">
-        <div class="text-neutral-500">Don't have an account?</div>
+        <div class="text-neutral-500">{{ 'auth.no_account' | transloco }}</div>
         <a
           class="ml-1 underline"
           routerLink="/auth/sign-up"
         >
-          Sign up
+          {{ 'auth.sign_up_link' | transloco }}
         </a>
       </div>
 
@@ -32,7 +32,7 @@
         <div class="flex flex-col gap-y-4">
           <!-- Email field -->
           <mat-form-field class="w-full">
-            <mat-label>Email address</mat-label>
+            <mat-label>{{ 'auth.email_label' | transloco }}</mat-label>
             <input
               id="email"
               matInput
@@ -43,7 +43,7 @@
                 signInForm.email().touched() && signInForm.email().invalid()
               ) {
                 @for (error of signInForm.email().errors(); track error) {
-                  {{ error.message }}
+                  {{ error.message | transloco }}
                 }
               }
             </mat-error>
@@ -54,7 +54,7 @@
             appearance="fill"
             class="w-full"
           >
-            <mat-label>Password</mat-label>
+            <mat-label>{{ 'auth.password_label' | transloco }}</mat-label>
             <input
               id="password"
               matInput
@@ -91,7 +91,7 @@
                 signInForm.password().invalid()
               ) {
                 @for (error of signInForm.password().errors(); track error) {
-                  {{ error.message }}
+                  {{ error.message | transloco }}
                 }
               }
             </mat-error>
@@ -100,12 +100,12 @@
 
         <!-- Actions -->
         <div class="mt-2 flex w-full items-center justify-between">
-          <mat-checkbox class="-ml-2">Remember me</mat-checkbox>
+          <mat-checkbox class="-ml-2">{{ 'auth.remember_me' | transloco }}</mat-checkbox>
           <a
             class="font-medium underline"
             routerLink="/auth/forgot-password"
           >
-            Forgot password?
+            {{ 'auth.forgot_password_link' | transloco }}
           </a>
         </div>
 
@@ -116,13 +116,13 @@
           class="mt-6 w-full"
           [disabled]="signInForm().invalid()"
         >
-          Sign in
+          {{ 'auth.sign_in_button' | transloco }}
         </button>
 
         <!-- Separator -->
         <div class="mt-8 flex items-center gap-x-4">
           <mat-divider class="flex-auto" />
-          <div class="text-neutral-500">Or continue with</div>
+          <div class="text-neutral-500">{{ 'auth.continue_with' | transloco }}</div>
           <mat-divider class="flex-auto" />
         </div>
 
@@ -134,74 +134,10 @@
             class="flex-auto"
             (click)="signInWithGoogle()"
           >
-            Google
+            {{ 'auth.google' | transloco }}
           </button>
         </div>
       </form>
-    </div>
-  </div>
-
-  <div
-    class="relative hidden flex-auto items-center justify-center overflow-hidden border-l bg-neutral-950 p-8 sm:px-12 md:flex"
-  >
-    <!-- Background -->
-    <!-- Rings -->
-    <!-- prettier-ignore -->
-    <svg class="absolute inset-0 pointer-events-none"
-         viewBox="0 0 960 540" width="100%" height="100%" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-      <g class="text-neutral-700/25" fill="none" stroke="currentColor" stroke-width="100">
-        <circle r="234" cx="196" cy="23"></circle>
-        <circle r="234" cx="790" cy="491"></circle>
-      </g>
-    </svg>
-
-    <!-- Dots -->
-    <!-- prettier-ignore -->
-    <svg class="absolute -top-16 -right-16 text-neutral-700"
-         viewBox="0 0 220 192" width="220" height="192" fill="none">
-      <defs>
-        <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-          <rect x="0" y="0" width="4" height="4" fill="currentColor"></rect>
-        </pattern>
-      </defs>
-      <rect width="220" height="192" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
-    </svg>
-
-    <!-- Content -->
-    <div class="relative z-10 w-full max-w-2xl">
-      <div class="text-5xl font-bold text-white">Welcome to our community</div>
-      <div class="text-medium mt-6 text-xl text-neutral-500">
-        Fuse helps developers to build organized and well coded dashboards full
-        of beautiful and rich modules. Join us and start building your
-        application today.
-      </div>
-      <div class="mt-12 flex items-center">
-        <div class="flex shrink-0 items-center -space-x-1.5">
-          <img
-            class="h-10 w-10 rounded-full object-cover ring-1"
-            src="/images/photos/female-18.jpg"
-            alt="Avatar image"
-          />
-          <img
-            class="h-10 w-10 rounded-full object-cover ring-1"
-            src="/images/photos/female-11.jpg"
-            alt="Avatar image"
-          />
-          <img
-            class="h-10 w-10 rounded-full object-cover ring-1"
-            src="/images/photos/male-09.jpg"
-            alt="Avatar image"
-          />
-          <img
-            class="h-10 w-10 rounded-full object-cover ring-1"
-            src="/images/photos/male-16.jpg"
-            alt="Avatar image"
-          />
-        </div>
-        <div class="ml-4 font-medium tracking-tight text-neutral-500">
-          More than 17k people joined us, it's your turn
-        </div>
-      </div>
     </div>
   </div>
 </div>

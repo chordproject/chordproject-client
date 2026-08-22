@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'auth-reset-password',
@@ -25,6 +26,7 @@ import { Router } from '@angular/router';
     MatCheckboxModule,
     FormField,
     MatCard,
+    TranslocoModule,
   ],
 })
 export default class AuthResetPassword {
@@ -37,9 +39,9 @@ export default class AuthResetPassword {
     passwordValidation: '',
   });
   protected resetPasswordForm = form(this.resetPasswordFormModel, (form) => {
-    required(form.password, { message: 'You must enter a password' });
+    required(form.password, { message: 'auth.password_required' });
     required(form.passwordValidation, {
-      message: 'You must enter a password',
+      message: 'auth.password_required',
     });
     validate(form.passwordValidation, (ctx) => {
       const password = ctx.valueOf(form.password);
@@ -50,7 +52,7 @@ export default class AuthResetPassword {
       if (password !== passwordValidation) {
         return {
           kind: 'mismatch',
-          message: 'The passwords do not match',
+          message: 'auth.passwords_mismatch',
         };
       }
 
