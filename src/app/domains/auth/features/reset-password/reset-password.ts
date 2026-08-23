@@ -12,8 +12,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
+import { AuthService } from 'app/core/firebase/auth/auth.service';
 
 @Component({
   selector: 'auth-reset-password',
@@ -32,6 +34,8 @@ import { TranslocoModule } from '@jsverse/transloco';
 export default class AuthResetPassword {
   // Dependencies
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
 
   // State
   protected resetPasswordFormModel = signal({
@@ -64,8 +68,16 @@ export default class AuthResetPassword {
     event.preventDefault();
 
     submit(this.resetPasswordForm, async () => {
-      // Navigate to a route, demo purposes only
-      this.router.navigateByUrl('/auth/sign-in');
+      const oobCode = this.route.snapshot.queryParamMap.get('oobCode');
+      if (!oobCode) {
+        return;
+      }
+
+      await this.authService.confirmPasswordReset(
+        oobCode,
+        this.resetPasswordFormModel().password
+      );
+      await this.router.navigateByUrl('/auth/sign-in');
     });
   }
 }

@@ -1,6 +1,6 @@
 <mat-autocomplete
     #matAutocomplete="matAutocomplete"
-    class="max-h-128 rounded-b border-t bg-gray-50 shadow-md sm:px-2 dark:bg-[#273549]"
+    class="max-h-128 rounded-b border-t bg-neutral-50 shadow-md sm:px-2 dark:bg-neutral-900"
     [autoSelectActiveOption]="true"
     [disableRipple]="true"
 >
@@ -46,7 +46,7 @@
         @for (song of resultSets.songsContent; track song.uid) {
             <mat-option
                 class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-primary-100"
-                [routerLink]="['/songs/read', song.uid]"
+                        [routerLink]="['/songs/read', song.uid]"
                 [value]="song.title"
             >
                 <div>
@@ -93,7 +93,7 @@
             @for (song of group.songs; track song.uid) {
                 <mat-option
                     class="group relative mb-1 rounded-md px-8 py-0 text-md dark:hover:bg-hover hover:bg-primary-100"
-                    [routerLink]="['/songs/read', song.uid]"
+                        [routerLink]="['/songs/read', song.uid]"
                     [value]="song.title"
                 >
                     <div>

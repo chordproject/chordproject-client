@@ -4,7 +4,7 @@ import { MatPseudoCheckbox } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/list';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '@/app/core/firebase/auth/auth.service';
 import { Scheme, Theming } from '@/app/core/theming';
@@ -20,6 +20,7 @@ import { UserService } from '@/app/core/user/user.service';
     MatPseudoCheckbox,
     MatMenuTrigger,
     TranslocoModule,
+    RouterLink,
   ],
   template: `
     <button
@@ -86,18 +87,20 @@ import { UserService } from '@/app/core/user/user.service';
         </div>
       </button>
       <mat-divider />
-      <button mat-menu-item>
-        <mat-icon svgIcon="user-round" />
-        {{ 'user_menu.account' | transloco }}
-      </button>
-      <button
-        mat-menu-item
-        (click)="changePassword()"
-      >
-        <mat-icon svgIcon="rectangle-ellipsis" />
-        {{ 'user_menu.change_password' | transloco }}
-      </button>
-      <mat-divider />
+      @if (user()) {
+        <button mat-menu-item>
+          <mat-icon svgIcon="user-round" />
+          {{ 'user_menu.account' | transloco }}
+        </button>
+        <button
+          mat-menu-item
+          (click)="changePassword()"
+        >
+          <mat-icon svgIcon="rectangle-ellipsis" />
+          {{ 'user_menu.change_password' | transloco }}
+        </button>
+        <mat-divider />
+      }
       <button
         mat-menu-item
         [matMenuTriggerFor]="appearanceMenu"
@@ -106,13 +109,23 @@ import { UserService } from '@/app/core/user/user.service';
         {{ 'user_menu.appearance' | transloco }}
       </button>
       <mat-divider />
-      <button
-        mat-menu-item
-        (click)="signOut()"
-      >
-        <mat-icon svgIcon="log-out" />
-        {{ 'user_menu.sign_out' | transloco }}
-      </button>
+      @if (user()) {
+        <button
+          mat-menu-item
+          (click)="signOut()"
+        >
+          <mat-icon svgIcon="log-out" />
+          {{ 'user_menu.sign_out' | transloco }}
+        </button>
+      } @else {
+        <button
+          mat-menu-item
+          routerLink="/auth/sign-in"
+        >
+          <mat-icon svgIcon="log-in" />
+          {{ 'nav.sign_in' | transloco }}
+        </button>
+      }
     </mat-menu>
 
     <mat-menu #appearanceMenu="matMenu">

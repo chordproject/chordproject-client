@@ -7,30 +7,14 @@ export const routes: Route[] = [
     loadChildren: () => import('./domains/auth/routes'),
   },
 
-  // Admin
+  // Main application
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'admin/home',
+    redirectTo: 'home',
   },
   {
-    path: 'home',
-    redirectTo: 'admin/home',
-  },
-  {
-    path: 'library',
-    redirectTo: 'admin/library',
-  },
-  {
-    path: 'songs',
-    redirectTo: 'admin/songs',
-  },
-  {
-    path: 'songbook',
-    redirectTo: 'admin/songbook',
-  },
-  {
-    path: 'admin',
+    path: '',
     loadChildren: () => import('./domains/admin/routes'),
   },
 ];

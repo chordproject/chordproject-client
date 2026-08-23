@@ -36,14 +36,16 @@ export class AdminSongbooksNavigation {
                   ? children.map((child) => ({
                       id: `songbook-${child.uid}`,
                       label: child.name,
-                      route: `/admin/songbook/${child.uid}`,
+                      dynamic: true,
+                      route: `/songbook/${child.uid}`,
                     }))
                   : undefined;
 
               return {
                 id: `songbook-${root.uid}`,
                 label: root.name,
-                route: childItems ? undefined : `/admin/songbook/${root.uid}`,
+                dynamic: true,
+                route: childItems ? undefined : `/songbook/${root.uid}`,
                 children: childItems,
               };
             })

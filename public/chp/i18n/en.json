@@ -25,6 +25,17 @@
         "sign_in": "Sign in",
         "sign_up": "Sign up"
     },
+    "confirmation": {
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "default_title": "Confirm action",
+        "default_message": "Are you sure you want to confirm this action?"
+    },
+    "editor": {
+        "delete_song_title": "Delete song",
+        "delete_song_message": "Are you sure you want to delete this song? This action cannot be undone!",
+        "delete_song_confirm": "Delete"
+    },
     "search": {
         "placeholder_bar": "Search by title, lyrics or songbook...",
         "placeholder_basic": "Search by title, lyrics or songbook",

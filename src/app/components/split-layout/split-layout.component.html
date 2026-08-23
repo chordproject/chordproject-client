@@ -11,7 +11,7 @@
             (click)="togglePreview()"
             style="
                 background: transparent !important;
-                border-color: #cbd5e1 !important;
+                border-color: light-dark(var(--color-neutral-300), var(--color-neutral-700)) !important;
                 border-width: 2px !important;
                 border-radius: 12px !important;
                 box-shadow: none !important;
@@ -30,7 +30,7 @@
                         ? 'heroicons_solid:arrow-uturn-left'
                         : 'heroicons_solid:arrow-uturn-right'
                 "
-                class="text-gray-300"
+                class="text-neutral-500 dark:text-neutral-400"
             >
             </mat-icon>
         </button>
@@ -40,16 +40,15 @@
         direction="horizontal"
         useTransition="true"
         gutterSize="30"
-        [style.--_as-gutter-background-color]="
-            isDarkMode ? '#273549' : '#f1f5f9'
+        [style.--as-gutter-background-color]="
+            isDarkMode ? 'var(--color-neutral-800)' : 'var(--color-neutral-100)'
         "
     >
         <as-split-area
             [size]="60"
             [visible]="!isMobile || showPrimaryArea"
             minSize="30"
-            class="border"
-            [style.borderColor]="isDarkMode ? '#334155' : 'var(--fuse-border)'"
+            class="border border-neutral-300 dark:border-neutral-700"
         >
             <ng-container *ngTemplateOutlet="leftTemplate"> </ng-container>
         </as-split-area>
@@ -57,8 +56,7 @@
             [size]="40"
             [visible]="!isMobile || !showPrimaryArea"
             minSize="30"
-            class="border"
-            [style.borderColor]="isDarkMode ? '#334155' : 'var(--fuse-border)'"
+            class="border border-neutral-300 dark:border-neutral-700"
         >
             <ng-container *ngTemplateOutlet="rightTemplate"> </ng-container>
         </as-split-area>

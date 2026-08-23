@@ -9,6 +9,7 @@ import {
     OnDestroy,
     OnInit,
     Output,
+    signal,
     SimpleChanges,
     ViewChild,
     ViewEncapsulation,
@@ -26,7 +27,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Subject, debounceTime, filter, forkJoin, map, takeUntil } from 'rxjs';
-import { fuseAnimations } from '@fuse/animations/public-api';
 import { TranslocoModule } from '@jsverse/transloco';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
@@ -38,7 +38,6 @@ import { SearchResultsComponent } from './search-results.component';
     templateUrl: './search.component.html',
     encapsulation: ViewEncapsulation.None,
     exportAs: 'fuseSearch',
-    animations: fuseAnimations,
     standalone: true,
     imports: [
         MatButtonModule,
@@ -68,8 +67,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     @Input() minLength = 2;
     @Output() search: EventEmitter<SearchResultSets> = new EventEmitter<SearchResultSets>();
 
-    resultSets: SearchResultSets | null = null;
-    opened = false;
+    resultSets = signal<SearchResultSets | null>(null);
+    opened = signal(false);
     searchControl: UntypedFormControl = new UntypedFormControl();
     private _matAutocomplete: MatAutocomplete;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -86,7 +85,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         return {
             'search-appearance-bar': this.appearance === 'bar',
             'search-appearance-basic': this.appearance === 'basic',
-            'search-opened': this.opened,
+            'search-opened': this.opened(),
         };
     }
 
@@ -127,7 +126,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
                     // the length of the value is smaller than the minLength
                     // so the autocomplete panel can be closed
                     if (!value || value.length < this.minLength) {
-                        this.resultSets = null;
+                        this.resultSets.set(null);
                     }
                     return value;
                 }),
@@ -147,7 +146,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
                     const songUids = new Set(resultSets.songs.map((song) => song.uid));
                     resultSets.songsContent = resultSets.songsContent.filter((song) => !songUids.has(song.uid));
                     // Store the result sets
-                    this.resultSets = resultSets;
+                    this.resultSets.set(resultSets);
 
                     // Execute the event
                     this.search.next(resultSets);
@@ -173,23 +172,23 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     open(event: Event): void {
         event.stopPropagation();
         // Return if it's already opened
-        if (this.opened) {
+        if (this.opened()) {
             return;
         }
         // Open the search
-        this.opened = true;
+        this.opened.set(true);
     }
 
     close(): void {
         // Return if it's already closed
-        if (!this.opened) {
+        if (!this.opened()) {
             return;
         }
         // Clear the search input
         this.searchControl.setValue('');
 
         // Close the search
-        this.opened = false;
+        this.opened.set(false);
     }
 
     @HostListener('document:click', ['$event'])

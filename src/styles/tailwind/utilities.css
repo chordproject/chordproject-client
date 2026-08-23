@@ -638,3 +638,10 @@
     font-size: var(--text-md) !important;
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/* Secondary (muted) text color                                               */
+/* -------------------------------------------------------------------------- */
+@utility text-secondary {
+  color: light-dark(var(--color-neutral-500), var(--color-neutral-400));
+}

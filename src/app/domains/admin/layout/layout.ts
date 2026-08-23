@@ -1,4 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
@@ -6,13 +7,15 @@ import {
   MatSidenavContainer,
   MatSidenavContent,
 } from '@angular/material/sidenav';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter, map } from 'rxjs';
 import { Media } from '@/app/core/media';
 import { GithubLink } from '@/app/domains/admin/layout/ui/github-link';
 import { LanguageSwitcher } from '@/app/domains/admin/layout/ui/language-switcher';
 import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
 import { Shortcuts } from '@/app/domains/admin/layout/ui/shortcuts';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
+import { SearchComponent } from 'app/layout/common/search/search.component';
 
 @Component({
   selector: 'admin-layout',
@@ -28,6 +31,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
     LanguageSwitcher,
     Shortcuts,
     GithubLink,
+    SearchComponent,
   ],
   template: `
     <mat-sidenav-container>
@@ -46,7 +50,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
         class="flex flex-col lg:h-dvh lg:overflow-hidden print:ml-0! print:h-auto print:overflow-visible"
       >
         <!-- Toolbar -->
-        <div class="flex items-center border-b px-4 py-2.5 print:hidden">
+        <div class="relative flex items-center border-b px-4 py-2.5 print:hidden">
           <button
             matIconButton
             (click)="sidenav.toggle()"
@@ -58,6 +62,13 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
           <div class="mx-3 h-5 border-l"></div>
 
           <shortcuts />
+
+          <!-- Separator -->
+          <div class="mx-3 h-5 border-l"></div>
+
+          @if (!isHome()) {
+            <search [appearance]="'bar'"></search>
+          }
 
           <!-- Spacer -->
           <div class="flex-auto"></div>
@@ -71,7 +82,7 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
 
         <!-- Content -->
         <div
-          class="flex flex-col lg:min-h-0 lg:flex-auto lg:overflow-auto print:overflow-visible"
+          class="relative flex flex-col lg:min-h-0 lg:flex-auto lg:overflow-auto print:overflow-visible"
         >
           <router-outlet />
         </div>
@@ -82,9 +93,17 @@ import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
 export class AdminLayout {
   // Dependencies
   private media = inject(Media);
+  private router = inject(Router);
 
   // State
   protected isMobile = computed(() =>
     this.media.match(`(max-width: 1023px)`)()
+  );
+  protected isHome = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map((event) => event.urlAfterRedirects.startsWith('/home'))
+    ),
+    { initialValue: this.router.url.startsWith('/home') }
   );
 }

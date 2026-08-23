@@ -28,13 +28,14 @@
         'comments-color-' +
         viewSettings?.commentsFontStyle?.color
     "
-    class="flex h-full flex-col bg-card"
+    class="flex h-full flex-col bg-white dark:bg-neutral-900"
+    style="background-color: light-dark(var(--color-white), var(--color-neutral-900))"
 >
     @if (!isLoading) {
         <div
             [innerHtml]="songHtml | safeHtml"
             [style.font-size.%]="fontSize"
-            class="content flex-1 [&_.chorus-section]:bg-gradient-to-r [&_.chorus-section]:from-[#edf1f7] [&_.chorus-section]:to-[#fff] dark:[&_.chorus-section]:from-[#151a30] dark:[&_.chorus-section]:to-[#222b45] [&_.lyrics]:text-black dark:[&_.lyrics]:text-white"
+            class="content flex-1 [&_.chorus-section]:bg-neutral-100 dark:[&_.chorus-section]:bg-neutral-800 [&_.chorus-section]:shadow-sm [&_.chorus-section]:ring-1 [&_.chorus-section]:ring-neutral-200/60 dark:[&_.chorus-section]:ring-neutral-700/60 [&_.lyrics]:text-neutral-900 dark:[&_.lyrics]:text-neutral-100"
         ></div>
         <div class="h-6"></div>
     }

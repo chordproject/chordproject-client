@@ -70,12 +70,11 @@ export class EditorService {
     confirmAndDelete(song: Song): Observable<boolean> {
         return this.confirmationService
             .open({
-                title: 'Delete song',
-                message:
-                    'Are you sure you want to delete this song? This action cannot be undone!',
+                title: 'editor.delete_song_title',
+                message: 'editor.delete_song_message',
                 actions: {
                     confirm: {
-                        label: 'Delete',
+                        label: 'editor.delete_song_confirm',
                     },
                 },
             })

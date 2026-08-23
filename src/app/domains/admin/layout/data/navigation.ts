@@ -3,6 +3,7 @@ import { IsActiveMatchOptions } from '@angular/router';
 export type NavigationItem = {
   id: string;
   label: string;
+  dynamic?: boolean;
   description?: string;
   route?: string;
   icon?: string;
@@ -22,25 +23,25 @@ export const NAVIGATION: NavigationItem[] = [
         id: 'general/home',
         label: 'nav.home',
         icon: 'house',
-        route: '/admin/home',
+        route: '/home',
       },
       {
         id: 'general/library',
         label: 'nav.library',
         icon: 'music',
-        route: '/admin/library',
+        route: '/library',
       },
       {
         id: 'general/create',
         label: 'nav.create',
         icon: 'code-xml',
-        route: '/admin/songs/create',
+        route: '/songs/create',
       },
       {
         id: 'general/songbooks',
         label: 'nav.songbooks',
         icon: 'book-open',
-        route: '/admin/songbook',
+        route: '/songbook',
       },
     ],
   },

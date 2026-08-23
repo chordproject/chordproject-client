@@ -2,11 +2,11 @@ export const environment = {
     production: false,
     source: 'chp',
     firebase: {
-        apiKey: 'AIzaSyApw72WL43CM9thOf71QEaUIL1CVl2M-gg',
-        authDomain: 'gochord-1.firebaseapp.com',
-        projectId: 'gochord-1',
-        storageBucket: 'gochord-1.appspot.com',
-        messagingSenderId: '877298403628',
-        appId: '1:877298403628:web:49c06ead01c01b0dcbc489'
+        apiKey: 'AIzaSyBuha7bWk2dL4g1PyH02J0necG6S5Dm3o0',
+        authDomain: 'homenajesus-app.firebaseapp.com',
+        projectId: 'homenajesus-app',
+        storageBucket: 'homenajesus-app.firebasestorage.app',
+        messagingSenderId: '818905447126',
+        appId: '1:818905447126:web:a3e37c0bbc971bb084e777'
     },
 };

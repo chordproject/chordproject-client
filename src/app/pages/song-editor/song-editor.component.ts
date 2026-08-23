@@ -82,7 +82,10 @@ export class SongEditorComponent implements OnInit, OnDestroy {
 
     saveSong(): void {
         const updatedSong = this._editorService.prepareSongFromContent(this.song.content);
-        this.song = { ...this.song, ...updatedSong };
+        this.song = {
+            ...this.song,
+            ...Object.fromEntries(Object.entries(updatedSong).filter(([, value]) => value !== undefined)),
+        };
         this._songService.save(this.song).then((res) => {
             this.song.uid = res;
         });

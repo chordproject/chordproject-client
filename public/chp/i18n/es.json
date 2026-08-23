@@ -25,6 +25,17 @@
         "sign_in": "Iniciar sesión",
         "sign_up": "Registrarse"
     },
+    "confirmation": {
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "default_title": "Confirmar acción",
+        "default_message": "¿Estás seguro de que quieres confirmar esta acción?"
+    },
+    "editor": {
+        "delete_song_title": "Eliminar canción",
+        "delete_song_message": "¿Estás seguro de que quieres eliminar esta canción? ¡Esta acción no se puede deshacer!",
+        "delete_song_confirm": "Eliminar"
+    },
     "search": {
         "placeholder_bar": "Busca por título, letra o cancionero...",
         "placeholder_basic": "Busca por título, letra o cancionero",

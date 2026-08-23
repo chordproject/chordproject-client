@@ -14,11 +14,12 @@ import {
     setDoc,
     where,
 } from 'firebase/firestore';
-import { BehaviorSubject, Observable, Subject, combineLatest, firstValueFrom, from, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, firstValueFrom, from, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { UserService } from 'app/core/user/user.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
+import { Tag } from 'app/models/tag';
 import { environment } from 'environments/environment';
 import { FirebaseService } from '../firebase.service';
 
@@ -190,7 +191,10 @@ export class SongService {
 
             song.authorId = userUid;
 
-            await setDoc(doc(this._firestore, 'songs', song.uid), { ...song });
+            const songData = Object.fromEntries(
+                Object.entries(song).filter(([, value]) => value !== undefined)
+            );
+            await setDoc(doc(this._firestore, 'songs', song.uid), songData);
             this.showSnackbar('Song saved successfully');
             return song.uid;
         } catch (error) {
@@ -246,7 +250,9 @@ export class SongService {
     }
 
     getTags() {
-        //TODO
-        return null;
+        return from(getDocs(query(collection(this._firestore, 'tags'), orderBy('title')))).pipe(
+            map((snapshot) => snapshot.docs.map((tagDoc) => ({ id: tagDoc.id, ...tagDoc.data() }) as Tag)),
+            catchError(() => of([] as Tag[]))
+        );
     }
 }

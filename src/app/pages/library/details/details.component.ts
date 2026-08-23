@@ -158,7 +158,10 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
 
     updateSong(): void {
         const updatedSong = this.editorService.prepareSongFromContent(this.songContent);
-        this.song = { ...this.song, ...updatedSong };
+        this.song = {
+            ...this.song,
+            ...Object.fromEntries(Object.entries(updatedSong).filter(([, value]) => value !== undefined)),
+        };
         this._songsService.save(this.song).then(() => {
             this.toggleEditMode(false);
         });

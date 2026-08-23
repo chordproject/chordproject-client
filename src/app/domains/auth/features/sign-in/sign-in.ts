@@ -56,7 +56,7 @@ export default class AuthSignIn {
       const { email, password } = this.signInFormModel();
       try {
         await firstValueFrom(this.authService.signInWithEmail(email, password));
-        this.router.navigateByUrl('/admin/home');
+        this.router.navigateByUrl('/home');
       } catch {
         // Error already surfaced to the user via AuthService's snackbar.
       }
@@ -65,7 +65,7 @@ export default class AuthSignIn {
 
   signInWithGoogle() {
     this.authService.signInWithGoogle().subscribe({
-      next: () => this.router.navigateByUrl('/admin/home'),
+      next: () => this.router.navigateByUrl('/home'),
     });
   }
 }

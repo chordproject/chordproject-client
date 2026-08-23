@@ -1,36 +1,40 @@
 @if (appearance === 'bar') {
     <!-- Bar search -->
-    @if (!opened) {
+    @if (!opened()) {
         <button mat-icon-button (click)="open($event)">
             <mat-icon [svgIcon]="'search'"></mat-icon>
         </button>
     }
-    @if (opened) {
-        <div class="absolute inset-0 z-99 flex flex-col bg-gray-200 dark:bg-[#273549]" @slideInTop @slideOutTop>
-            <mat-icon
-                class="absolute top-1/2 ml-6 -translate-y-1/2 transform sm:ml-8"
-                [svgIcon]="'search'"
-            ></mat-icon>
-            <input
-                class="h-full w-full px-16 sm:px-18"
-                [formControl]="searchControl"
-                [placeholder]="'search.placeholder_bar' | transloco"
-                (keydown)="onKeydown($event)"
-                [matAutocomplete]="searchResults?.matAutocomplete"
-                #barSearchInput
-            />
-            <button
-                class="absolute right-5 top-1/2 -mt-5 h-10 w-10 shrink-0 sm:right-7"
-                mat-icon-button
-                (click)="close()"
+    @if (opened()) {
+        <div class="absolute inset-0 z-99 flex flex-col justify-center bg-neutral-200 px-4 dark:bg-neutral-900">
+            <div
+                class="relative flex items-center rounded-lg border border-neutral-300 bg-white shadow-sm focus-within:border-primary-500 focus-within:ring-1 focus-within:ring-primary-500/30 dark:border-neutral-700 dark:bg-neutral-800"
             >
-                <mat-icon [svgIcon]="'x'"></mat-icon>
-            </button>
+                <mat-icon
+                    class="pointer-events-none absolute left-4 text-neutral-500"
+                    [svgIcon]="'search'"
+                ></mat-icon>
+                <input
+                    class="h-12 w-full bg-transparent px-12 outline-none"
+                    [formControl]="searchControl"
+                    [placeholder]="'search.placeholder_bar' | transloco"
+                    (keydown)="onKeydown($event)"
+                    [matAutocomplete]="searchResults?.matAutocomplete"
+                    #barSearchInput
+                />
+                <button
+                    class="absolute right-2 h-9 w-9 shrink-0"
+                    mat-icon-button
+                    (click)="close()"
+                >
+                    <mat-icon [svgIcon]="'x'"></mat-icon>
+                </button>
+            </div>
 
             <div class="relative">
                 <search-results
                     #searchResults
-                    [resultSets]="resultSets"
+                    [resultSets]="resultSets()"
                     [searchValue]="searchControl.value"
                 ></search-results>
             </div>
@@ -51,6 +55,6 @@
             />
         </mat-form-field>
 
-        <search-results #searchResults [resultSets]="resultSets" [searchValue]="searchControl.value"></search-results>
+        <search-results #searchResults [resultSets]="resultSets()" [searchValue]="searchControl.value"></search-results>
     </div>
 }

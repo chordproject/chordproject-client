@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     Auth,
+    confirmPasswordReset,
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     onAuthStateChanged,
@@ -102,6 +103,13 @@ export class AuthService {
                     throw error;
                 })
         );
+    }
+
+    confirmPasswordReset(oobCode: string, password: string): Promise<void> {
+        return confirmPasswordReset(this._auth, oobCode, password).catch((error) => {
+            this.showSnackbar(`Password reset failed: ${error.message}`);
+            throw error;
+        });
     }
 
     signOut(): Observable<void> {

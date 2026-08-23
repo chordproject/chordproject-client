@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ChpViewerToolbarComponent } from 'app/components/viewer/viewer-toolbar/viewer-toolbar.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
@@ -59,7 +59,7 @@ export class SongReaderComponent implements OnInit, OnDestroy {
                     if (uid) {
                         return this._songService.get(uid);
                     }
-                    return [null]; // Emit null si no hay uid
+                    return of(null);
                 })
             )
             .subscribe((data) => {
