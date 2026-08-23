@@ -37,6 +37,35 @@
         "default_title": "Confirm action",
         "default_message": "Are you sure you want to confirm this action?"
     },
+    "common": {
+        "close": "Close"
+    },
+    "reader": {
+        "add_to_songbook": "Add to songbook...",
+        "song_not_available": "Song is not available",
+        "loading_song": "Loading song...",
+        "remove_from_songbook": "Remove from {{name}}"
+    },
+    "song_service": {
+        "title_required": "Title is required",
+        "song_saved": "Song saved successfully",
+        "song_deleted": "Song deleted successfully",
+        "authentication_required": "Authentication required",
+        "song_tags_updated": "Song tags updated",
+        "unexpected_error": "An unexpected error occurred"
+    },
+    "songbook_service": {
+        "content_load_failed": "Failed to load songbook content",
+        "name_required": "Name is required",
+        "songbook_saved": "Songbook saved successfully",
+        "song_already_in_songbook": "Song already belongs to this songbook",
+        "song_added": "Song added to songbook",
+        "song_not_found": "Song not found in songbook",
+        "song_removed": "Song removed from songbook",
+        "no_songs_found": "No songs found in songbook",
+        "authentication_required": "Authentication required",
+        "unexpected_error": "An unexpected error occurred"
+    },
     "editor": {
         "delete_song_title": "Delete song",
         "delete_song_message": "Are you sure you want to delete this song? This action cannot be undone!",

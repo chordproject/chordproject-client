@@ -15,6 +15,7 @@ export class Song extends BaseDocument {
     lyrics?: string;
     songKey: string;
     subtitle?: string;
+    tags?: string[];
     tempo?: number;
     time?: string;
     title?: string;

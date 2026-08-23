@@ -17,12 +17,66 @@
                     <div
                         class="flex flex-auto flex-col justify-between border-b px-6 py-8 sm:flex-row md:flex-col md:px-8"
                     >
-                        <!-- Title -->
-                        <div>
-                            <div class="text-4xl font-extrabold leading-none tracking-tight">{{ song.title }}</div>
-                            <div class="text-secondary ml-0.5 font-medium">
-                                {{ song.artists | join: ' - ' }}
+                        <div class="flex w-full flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                            <!-- Title -->
+                            <div>
+                                <div class="text-4xl font-extrabold leading-none tracking-tight">{{ song.title }}</div>
+                                <div class="text-secondary ml-0.5 font-medium">
+                                    {{ song.artists | join: ' - ' }}
+                                </div>
+                                @if (associatedSongbooks.length) {
+                                    <div class="mt-3 flex flex-wrap gap-2">
+                                        @for (songbook of associatedSongbooks; track songbook.uid) {
+                                            <div
+                                                class="flex max-w-full items-center gap-1 rounded-full bg-neutral-100 px-3 py-1 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+                                            >
+                                                <span class="truncate">{{ songbook.name }}</span>
+                                                <button
+                                                    type="button"
+                                                    class="flex size-5 shrink-0 items-center justify-center rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                                                    [attr.aria-label]="'reader.remove_from_songbook' | transloco: { name: songbook.name }"
+                                                    (click)="removeSongFromSongbook(songbook)"
+                                                >
+                                                    <mat-icon class="size-4" [svgIcon]="'x'"></mat-icon>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                @if (associatedTags.length) {
+                                    <div class="mt-2 flex flex-wrap gap-2">
+                                        @for (tag of associatedTags; track tag.id) {
+                                            <span
+                                                class="rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 dark:bg-primary-900/30 dark:text-primary-200"
+                                            >
+                                                {{ tag.title }}
+                                            </span>
+                                        }
+                                    </div>
+                                }
                             </div>
+
+                            <mat-form-field class="w-full lg:w-80" subscriptSizing="dynamic">
+                                <input
+                                    matInput
+                                    [formControl]="songbookSearchControl"
+                                    [placeholder]="'reader.add_to_songbook' | transloco"
+                                    [matAutocomplete]="songbookAutocomplete"
+                                />
+                                <mat-autocomplete
+                                    #songbookAutocomplete="matAutocomplete"
+                                    [displayWith]="displaySongbook"
+                                    (optionSelected)="addCurrentSongToSongbook($event.option.value)"
+                                >
+                                    @if (filteredSongbooks$ | async; as songbooks) {
+                                        @for (songbook of songbooks; track songbook.uid) {
+                                            <mat-option [value]="songbook">
+                                                {{ songbook.name }}
+                                            </mat-option>
+                                        }
+                                    }
+                                </mat-autocomplete>
+                            </mat-form-field>
                         </div>
                     </div>
 
@@ -37,7 +91,19 @@
                             (settingsEvent)="toggleSettings()"
                         >
                         </chp-viewer-toolbar>
-                        <chp-viewer #viewer [content]="song.content" class="order-0"> </chp-viewer>
+                        <chp-viewer #viewer [content]="viewerContent" class="order-0"> </chp-viewer>
+                    </div>
+                } @else {
+                    <div class="flex h-full min-h-80 items-center justify-center px-6">
+                        <div class="text-center">
+                            <div class="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+                                @if (songLoadError) {
+                                    {{ 'reader.song_not_available' | transloco }}
+                                } @else {
+                                    {{ 'reader.loading_song' | transloco }}
+                                }
+                            </div>
+                        </div>
                     </div>
                 }
             </div>

@@ -7,7 +7,16 @@
 </chp-split-layout>
 
 <ng-template #songList>
-    @if (songbook$ | async; as songbook) {
+    @if (songbookLoadError()) {
+        <div class="bg-card flex h-full flex-col items-center justify-center p-8 text-center">
+            <mat-icon
+                class="mb-4 size-12 text-error-500"
+                [svgIcon]="'circle-alert'"
+            ></mat-icon>
+            <p class="text-lg font-medium">No se pudo cargar este cancionero</p>
+            <p class="text-secondary mt-2">Por favor recarga la pagina para intentarlo de nuevo</p>
+        </div>
+    } @else if (songbook$ | async; as songbook) {
         <div class="flex h-full flex-col dark:border-[#334155]">
             <!-- Sección superior -->
             <div
@@ -21,7 +30,24 @@
             </div>
             <!-- Sección inferior -->
             <div class="bg-card flex-1">
-                @if (songsList(); as songs) {
+                @if (songsLoadError()) {
+                    <div class="flex h-full flex-col items-center justify-center p-8 text-center">
+                        <mat-icon
+                            class="mb-4 size-12 text-error-500"
+                            [svgIcon]="'circle-alert'"
+                        ></mat-icon>
+                        <p class="text-lg font-medium">No se pudieron cargar las canciones</p>
+                        <p class="text-secondary mt-2">Por favor recarga la pagina para intentarlo de nuevo</p>
+                    </div>
+                } @else if (songsList().length === 0) {
+                    <div class="flex h-full flex-col items-center justify-center p-8 text-center">
+                        <mat-icon
+                            class="mb-4 size-12 text-neutral-400"
+                            [svgIcon]="'book-open'"
+                        ></mat-icon>
+                        <p class="text-lg font-medium">Este cancionero no tiene canciones</p>
+                    </div>
+                } @else if (songsList(); as songs) {
                     <div
                         [cdkDropListDisabled]="!songbook.isReorderable"
                         cdkDropList

@@ -2,7 +2,8 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, of, takeUntil } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { switchMap } from 'rxjs/operators';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
@@ -20,6 +21,8 @@ import { Songbook } from 'app/models/songbook';
 export class SongbookComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     selectedSong = signal<PartialSong | null>(null);
+    songbookLoadError = signal(false);
+    songsLoadError = signal(false);
 
     @ViewChild(ChpSplitLayoutComponent) splitLayout: ChpSplitLayoutComponent;
 
@@ -40,8 +43,16 @@ export class SongbookComponent implements OnInit, OnDestroy {
 
     private loadSongbook(): void {
         this.songbook$ = this._route.paramMap.pipe(
+            switchMap((params) => {
+                this.songbookLoadError.set(false);
+                return this._songbookService.get(params.get('uid')).pipe(
+                    catchError(() => {
+                        this.songbookLoadError.set(true);
+                        return of(null);
+                    })
+                );
+            }),
             takeUntil(this._unsubscribeAll),
-            switchMap((params) => this._songbookService.get(params.get('uid')))
         );
     }
 
@@ -51,7 +62,13 @@ export class SongbookComponent implements OnInit, OnDestroy {
             switchMap((params) => {
                 // Reset selected song when route changes
                 this.selectedSong.set(null);
-                return this._songbookService.getContent(params.get('uid'));
+                this.songsLoadError.set(false);
+                return this._songbookService.getContent(params.get('uid')).pipe(
+                    catchError(() => {
+                        this.songsLoadError.set(true);
+                        return of([]);
+                    })
+                );
             })
         );
 

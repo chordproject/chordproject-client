@@ -26,91 +26,64 @@ La aplicación nueva se probará inicialmente contra `homenajesus-app`. La separ
 
 ## Prioridad de trabajo
 
-1. Visualización y datos de songbooks.
-   La carga y visualización básica ya funciona. Queda auditar y migrar todos los datos Firebase necesarios, especialmente `relations`.
-2. Etiquetas.
-3. Administración de songbooks.
-4. Revisar y refactorizar el ecosistema `chordpro-parser`/viewer.
+1. Etiquetas.
+2. Administración de songbooks.
+3. Revisar y refactorizar el ecosistema `chordpro-parser`/viewer.
    Incluye transposición musical, fullscreen, zoom, autoscroll, personalización y configuración del viewer, diagramas, tuner y comparación con alternativas externas.
-5. Revisar y refactorizar `chordproject-editor`.
+4. Revisar y refactorizar `chordproject-editor`.
    Incluye decidir el futuro del editor y replantear la ayuda según las reglas reales de ChordPro.
-6. Preparar builds y branding separados para HomenaJesus y ChordProject.
+5. Preparar builds y branding separados para HomenaJesus y ChordProject.
    Incluye comparar y versionar Firebase Rules, probar ambos dominios en staging y preparar la migración progresiva con rollback.
-7. Crear el testing básico posterior a la migración.
-8. Retirar gradualmente la aplicación antigua.
+6. Crear el testing básico posterior a la migración.
+7. Retirar gradualmente la aplicación antigua.
+8. Definir la estrategia para programar repertorios/eventos en vivo reutilizables por fecha.
 
 Las prioridades 4 y 5 comienzan con investigación y comparación de los repositorios externos antes de implementar cambios estructurales.
 
 ---
 
-## P0 - Visualización de songbooks
+## P1 - Clasificación y asociaciones de canciones
 
-### Estado actual
+### Decisión de alcance pendiente
 
-- La ruta `/songbook/:uid` debe cargar el songbook, su lista de canciones y el viewer.
+- Para el flujo actual, “tag” significa un cancionero asociado. No se debe duplicar esta información en un segundo sistema de etiquetas sin una decisión explícita.
+- Falta decidir si se conservará la colección técnica `tags` como clasificación independiente o si se retirará/deprecará en favor de las relaciones `songbook_songs`.
+- Si se conservan ambos conceptos, falta definir cuándo usar cada uno y cómo se presentarán para no confundir al usuario.
 
-### Trabajo pendiente
+### Completado
 
-- Auditar y migrar desde los proyectos de origen todos los datos necesarios para que la visualización funcione, especialmente los documentos de `relations`.
-- Comparar conteos de songbooks, relaciones y canciones antes y después de la migración a `homenajesus-app`.
-- Manejar songbooks vacíos, canciones eliminadas y relaciones rotas.
-- Manejar errores de lectura de songbook y relaciones sin dejar un panel completamente vacío sin explicación.
-- Mantener lectura pública cuando corresponda y autenticación únicamente para operaciones de escritura.
+- Reader muestra los cancioneros asociados como chips.
+- Reader permite agregar una canción a un cancionero.
+- Reader evita crear asociaciones duplicadas.
+- Reader permite quitar una asociación.
+- Las relaciones se guardan como objetos planos compatibles con Firestore.
+- Se corrigió el uso del ID real de Firestore para las opciones del autocompletado.
+- Library drawer quedó como preview sin gestión ni visualización de tags.
+- Los mensajes principales del flujo de canciones y cancioneros están localizados en `en`, `es` y `fr`.
 
-### Terminado cuando
+### Pendiente
 
-- Abrir cualquier songbook existente muestra su nombre y sus canciones.
-- La migración de datos necesaria para visualizar songbooks está completa y verificada en `homenajesus-app`.
-- Songbooks vacíos y relaciones rotas muestran estados manejables.
-- La navegación y selección funcionan con songbooks reales.
-
----
-
-## P1 - Etiquetas
-
-### Estado actual
-
-- Existe el modelo `Tag` en `src/app/models/tag.ts`.
-- `SongService.getTags()` ya consulta la colección `tags` de Firestore.
-- La ruta de Library tiene un resolver para cargar tags.
-- El detalle de canción todavía contiene restos del código antiguo, pero la UI completa de administración de tags no está migrada.
-- El código antiguo hacía referencia a una dependencia de chips y a métodos que ya no existen en el servicio actual.
-
-### Trabajo pendiente
-
-- Diseñar la experiencia de tags con Angular Material 22, preferentemente usando `MatChipsModule`, `MatChipInput` y controles Material compatibles con Fuse.
-- Integrar la UI en el detalle de canción y definir claramente los estados:
-    - tags actualmente asignados;
-    - tags disponibles;
-    - filtro de tags;
-    - creación de un tag nuevo;
-    - edición del nombre;
-    - eliminación;
-    - agregar un tag a la canción;
-    - quitar un tag de la canción.
-- Definir el contrato Firestore para la colección `tags`.
-- Implementar en `SongService` las operaciones necesarias para tags:
-    - crear;
-    - actualizar;
-    - eliminar;
-    - listar.
-- Decidir si la eliminación de un tag debe quitarlo primero de todas las canciones relacionadas o si se permiten referencias huérfanas.
-- Mantener la lista de tags consistente después de crear, editar o eliminar sin recargar toda la página.
-- Revisar la forma de guardar `song.tags` y evitar duplicados.
-- Manejar nombres vacíos, espacios, mayúsculas/minúsculas y duplicados.
-- Verificar permisos de lectura y escritura con las reglas Firestore reales.
-- Eliminar del componente de detalle los métodos antiguos comentados o adaptarlos al nuevo contrato, pero no conservar stubs sin comportamiento.
-- Mantener el diseño coherente con Fuse y evitar colores o clases heredadas de Nebular.
+- Definir y aplicar una vista previa limitada en el drawer de Library:
+    - recorte o fade del contenido largo;
+    - indicador visual de preview;
+    - acción clara para abrir Reader completo.
+- Ocultar de las sugerencias del Reader los cancioneros ya asociados, o mostrarlos deshabilitados con un estado comprensible.
+- Añadir confirmación antes de quitar una asociación.
+- Confirmar el contrato y las reglas Firestore de `songbook_songs` contra los datos reales de `homenajesus-app`, incluyendo relaciones antiguas y registros marcados como `deleted`.
+- Verificar permisos de lectura y escritura con las reglas Firebase reales.
+- Si se conserva la colección `tags`, completar y decidir la política de:
+    - crear, renombrar y eliminar tags;
+    - asignar y quitar tags de una canción;
+    - filtrar tags;
+    - eliminar referencias huérfanas al borrar un tag.
+- Localizar los labels y tooltips restantes del Reader y de la administración de asociaciones.
 
 ### Terminado cuando
 
-- Se pueden listar tags existentes.
-- Se puede filtrar la lista.
-- Se puede crear y asignar un tag.
-- Se puede quitar un tag de una canción.
-- Se puede renombrar un tag.
-- Se puede eliminar un tag según la política definida.
-- Los cambios persisten en `homenajesus-app` y respetan las reglas Firebase.
+- La decisión entre cancioneros asociados y tags independientes está documentada y aplicada consistentemente.
+- La preview de Library comunica claramente que la experiencia completa está en Reader.
+- Las asociaciones existentes, nuevas y eliminadas se comportan correctamente con los datos y reglas reales de Firebase.
+- No se pueden crear duplicados y el usuario entiende qué asociaciones puede agregar o quitar.
 
 ---
 
@@ -139,7 +112,7 @@ Las prioridades 4 y 5 comienzan con investigación y comparación de los reposit
 - Revisar `isReorderable` y la persistencia del orden de canciones.
 - Confirmar el modelo de propiedad, autor y relaciones entre songbooks y canciones.
 - Confirmar el comportamiento cuando se elimina un songbook que contiene canciones.
-- Integrar la administración con el modelo de relaciones que quede definido en P0.
+- Integrar la administración con el modelo de relaciones vigente (`songbook_songs`).
 - Mantener lectura pública cuando corresponda y autenticación para operaciones de escritura.
 
 ### Terminado cuando
@@ -494,7 +467,6 @@ Incorporar un afinador para ayudar al usuario antes o durante la interpretación
 - El proyecto antiguo `gochord-1` no debe tomarse como configuración correcta de producción de HomenaJesus.
 - La aplicación antigua separaba builds/configuraciones para `chp` y `hj`.
 - La aplicación nueva tiene una configuración única y `source: 'chp'`.
-- No todos los datos relacionados, especialmente `relations`, han sido migrados a `homenajesus-app`.
 
 ### Trabajo pendiente
 
@@ -520,13 +492,12 @@ Incorporar un afinador para ayudar al usuario antes o durante la interpretación
 - Auditar colecciones y documentos en los proyectos de origen y destino:
     - `songs`;
     - `songbooks`;
-    - `relations`;
+    - `songbook_songs` (equivalente funcional de `relations`);
     - `tags`;
     - usuarios;
     - favoritos heredados, aunque `liked` no se vaya a migrar como funcionalidad.
 - Respaldar los datos antes de modificar producción.
 - Crear un inventario de conteos y relaciones antes y después de la migración.
-- Migrar los documentos `relations` faltantes a `homenajesus-app`.
 - Definir tratamiento de documentos duplicados, referencias rotas y timestamps.
 - Comparar las Firebase Rules de los proyectos que se usaban en los sitios antiguos con las reglas activas de `homenajesus-app`.
 - Versionar las reglas Firebase una vez validadas.
@@ -542,6 +513,64 @@ Incorporar un afinador para ayudar al usuario antes o durante la interpretación
 - Canciones, songbooks, tags y relations aparecen completas.
 - Las reglas de seguridad están comparadas, aprobadas y versionadas.
 - Existe un procedimiento de rollback.
+
+---
+
+## P6 - Estrategia de repertorios / eventos en vivo
+
+### Objetivo
+
+Permitir programar repertorios por evento/fecha, reutilizarlos en futuras ocasiones y mantener compatibilidad entre:
+
+- un modelo genérico en ChordProject (eventos, performances, repertorios);
+- un perfil litúrgico en HomenaJesus (misa, evangelio, tiempos litúrgicos y reglas pastorales).
+
+### Estado actual
+
+- El sistema actual organiza canciones en songbooks, pero no existe una entidad explícita para "repertorio programado por fecha".
+- La UX de songbooks ya sirve como referencia para la navegación, selección y orden de canciones.
+
+### Trabajo pendiente
+
+- Definir un modelo base multiplataforma para repertorios/eventos que no dependa de vocabulario religioso.
+- Definir un perfil de dominio para HomenaJesus con campos adicionales litúrgicos.
+- Diseñar el contrato de datos mínimo para un repertorio:
+    - `uid`;
+    - `title` (ejemplo: "El hijo pródigo");
+    - `description` o mensaje central;
+    - `date` principal;
+    - `additionalDates` opcionales;
+    - `source`/site;
+    - `songs` (asignación de canciones y orden);
+    - `tags` o metadatos de clasificación.
+- Definir campos opcionales de perfil litúrgico (solo HomenaJesus):
+    - cita del evangelio;
+    - tiempo litúrgico (adviento, cuaresma, etc.);
+    - notas pastorales.
+- Definir una estructura de "slots" para guiar la selección sin acoplarla al núcleo:
+    - slots requeridos para misa (entrada, penitencial, ofertorio, santo, cordero, comunión, salida);
+    - slots condicionales (gloria fuera de adviento/cuaresma, aleluya según tiempo litúrgico, etc.);
+    - slots opcionales (ejemplo: padre nuestro).
+- Decidir si los slots serán reglas configurables por "tipo de evento" en lugar de hardcodear reglas litúrgicas en el core.
+- Diseñar UX inicial reutilizando el patrón de songbooks:
+    - listado de repertorios;
+    - detalle de repertorio;
+    - asignar/quitar canciones;
+    - reordenar canciones;
+    - duplicar repertorio para nueva fecha.
+- Definir estrategia de recurrencia y reutilización anual:
+    - clonar repertorio completo;
+    - sugerir repertorios previos por cercanía de calendario/tiempo litúrgico;
+    - conservar historial de cambios.
+- Definir permisos de lectura/escritura para repertorios y su relación con autor/equipo.
+- Mantener compatibilidad con la separación futura de branding y Firebase entre HomenaJesus y ChordProject.
+
+### Terminado cuando
+
+- Existe una decisión de arquitectura sobre modelo genérico + perfil litúrgico.
+- Se definió y documentó el contrato de datos de repertorio.
+- Hay una propuesta UX validada para crear, programar, reutilizar y editar repertorios.
+- La solución permite usar conceptos litúrgicos en HomenaJesus sin imponerlos a ChordProject.
 
 ---
 
@@ -606,14 +635,14 @@ No se crearán tests ahora. Al terminar la migración funcional se añadirá ún
 
 ## Orden de cierre para reemplazar producción
 
-1. Completar la visualización de songbooks y auditar/migrar los datos Firebase, especialmente `relations`.
-2. Completar etiquetas.
-3. Completar administración de songbooks.
-4. Revisar y refactorizar el ecosistema `chordpro-parser`/viewer, incluyendo transposición, viewer, diagramas y tuner.
-5. Revisar y refactorizar `chordproject-editor`, incluyendo la ayuda basada en reglas ChordPro.
-6. Preparar builds y branding separados para HomenaJesus y ChordProject.
-7. Comparar y versionar Firebase Rules.
-8. Probar ambos dominios en staging.
-9. Ejecutar la migración progresiva con rollback disponible.
+1. Completar etiquetas.
+2. Completar administración de songbooks.
+3. Revisar y refactorizar el ecosistema `chordpro-parser`/viewer, incluyendo transposición, viewer, diagramas y tuner.
+4. Revisar y refactorizar `chordproject-editor`, incluyendo la ayuda basada en reglas ChordPro.
+5. Preparar builds y branding separados para HomenaJesus y ChordProject.
+6. Comparar y versionar Firebase Rules.
+7. Probar ambos dominios en staging.
+8. Ejecutar la migración progresiva con rollback disponible.
+9. Definir e implementar la estrategia de repertorios/eventos en vivo reutilizables por fecha.
 10. Crear el testing básico posterior.
 11. Retirar gradualmente la aplicación antigua.

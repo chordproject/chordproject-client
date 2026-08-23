@@ -51,9 +51,6 @@ export default [
     {
         path: '',
         component: LibraryComponent,
-        resolve: {
-            tags: () => inject(SongService).getTags(),
-        },
         children: [
             {
                 path: '',

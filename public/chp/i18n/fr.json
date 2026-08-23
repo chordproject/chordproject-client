@@ -37,6 +37,35 @@
         "default_title": "Confirmer l'action",
         "default_message": "Êtes-vous sûr de vouloir confirmer cette action ?"
     },
+    "common": {
+        "close": "Fermer"
+    },
+    "reader": {
+        "add_to_songbook": "Ajouter au carnet...",
+        "song_not_available": "La chanson n'est pas disponible",
+        "loading_song": "Chargement de la chanson...",
+        "remove_from_songbook": "Retirer de {{name}}"
+    },
+    "song_service": {
+        "title_required": "Le titre est obligatoire",
+        "song_saved": "Chanson enregistrée avec succès",
+        "song_deleted": "Chanson supprimée avec succès",
+        "authentication_required": "Authentification requise",
+        "song_tags_updated": "Tags de la chanson mis à jour",
+        "unexpected_error": "Une erreur inattendue s'est produite"
+    },
+    "songbook_service": {
+        "content_load_failed": "Échec du chargement du contenu du carnet",
+        "name_required": "Le nom est obligatoire",
+        "songbook_saved": "Carnet enregistré avec succès",
+        "song_already_in_songbook": "La chanson appartient déjà à ce carnet",
+        "song_added": "Chanson ajoutée au carnet",
+        "song_not_found": "Chanson introuvable dans le carnet",
+        "song_removed": "Chanson retirée du carnet",
+        "no_songs_found": "Aucune chanson trouvée dans le carnet",
+        "authentication_required": "Authentification requise",
+        "unexpected_error": "Une erreur inattendue s'est produite"
+    },
     "editor": {
         "delete_song_title": "Supprimer la chanson",
         "delete_song_message": "Êtes-vous sûr de vouloir supprimer cette chanson ? Cette action est irréversible !",

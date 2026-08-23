@@ -37,6 +37,35 @@
         "default_title": "Confirmar acción",
         "default_message": "¿Estás seguro de que quieres confirmar esta acción?"
     },
+    "common": {
+        "close": "Cerrar"
+    },
+    "reader": {
+        "add_to_songbook": "Agregar al cancionero...",
+        "song_not_available": "La canción no está disponible",
+        "loading_song": "Cargando canción...",
+        "remove_from_songbook": "Quitar de {{name}}"
+    },
+    "song_service": {
+        "title_required": "El título es obligatorio",
+        "song_saved": "Canción guardada correctamente",
+        "song_deleted": "Canción eliminada correctamente",
+        "authentication_required": "Se requiere autenticación",
+        "song_tags_updated": "Tags de la canción actualizados",
+        "unexpected_error": "Ocurrió un error inesperado"
+    },
+    "songbook_service": {
+        "content_load_failed": "No se pudo cargar el contenido del cancionero",
+        "name_required": "El nombre es obligatorio",
+        "songbook_saved": "Cancionero guardado correctamente",
+        "song_already_in_songbook": "La canción ya pertenece a este cancionero",
+        "song_added": "Canción agregada al cancionero",
+        "song_not_found": "La canción no se encontró en el cancionero",
+        "song_removed": "Canción quitada del cancionero",
+        "no_songs_found": "No se encontraron canciones en el cancionero",
+        "authentication_required": "Se requiere autenticación",
+        "unexpected_error": "Ocurrió un error inesperado"
+    },
     "editor": {
         "delete_song_title": "Eliminar canción",
         "delete_song_message": "¿Estás seguro de que quieres eliminar esta canción? ¡Esta acción no se puede deshacer!",

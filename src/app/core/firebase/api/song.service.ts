@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     Firestore,
@@ -15,7 +16,7 @@ import {
     where,
 } from 'firebase/firestore';
 import { BehaviorSubject, Observable, Subject, combineLatest, firstValueFrom, from, of, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { UserService } from 'app/core/user/user.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
@@ -29,6 +30,7 @@ import { FirebaseService } from '../firebase.service';
 export class SongService {
     private _firestore: Firestore;
     private _snackBar: MatSnackBar;
+    private _translocoService: TranslocoService;
     private _userService: UserService;
     private _song = new BehaviorSubject<Song | null>(null);
     private _songsChanged = new Subject<void>();
@@ -45,6 +47,7 @@ export class SongService {
         const firebase = inject(FirebaseService);
         this._firestore = firebase.firestore;
         this._snackBar = inject(MatSnackBar);
+        this._translocoService = inject(TranslocoService);
         this._userService = inject(UserService);
     }
 
@@ -174,7 +177,7 @@ export class SongService {
         }
 
         if (!song.title) {
-            this.showSnackbar('Title is required', 3000, 'warning');
+            this.showSnackbar('song_service.title_required', 3000, 'warning');
             return null;
         }
 
@@ -195,7 +198,7 @@ export class SongService {
                 Object.entries(song).filter(([, value]) => value !== undefined)
             );
             await setDoc(doc(this._firestore, 'songs', song.uid), songData);
-            this.showSnackbar('Song saved successfully');
+            this.showSnackbar('song_service.song_saved');
             return song.uid;
         } catch (error) {
             this.handleError(error);
@@ -210,7 +213,7 @@ export class SongService {
 
         try {
             await deleteDoc(doc(this._firestore, 'songs', id));
-            this.showSnackbar('Song deleted successfully');
+            this.showSnackbar('song_service.song_deleted');
             this._songsChanged.next();
             return true;
         } catch (error) {
@@ -222,19 +225,24 @@ export class SongService {
     private async verifyAuthentication(): Promise<boolean> {
         const isAuthenticated = await firstValueFrom(this._userService.isAuthenticated());
         if (!isAuthenticated) {
-            this.showSnackbar('Authentication required', 3000, 'warning');
+            this.showSnackbar('song_service.authentication_required', 3000, 'warning');
             return false;
         }
         return true;
     }
 
-    private showSnackbar(message: string, duration = 3000, type?: string): void {
-        this._snackBar.open(message, 'Close', {
-            duration,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            panelClass: type ? [type] : [],
-        });
+    private showSnackbar(messageKey: string, duration = 3000, type?: string): void {
+        this._translocoService
+            .selectTranslate(messageKey)
+            .pipe(switchMap((message) => this._translocoService.selectTranslate('common.close').pipe(map((closeLabel) => ({ message, closeLabel })))), take(1))
+            .subscribe(({ message, closeLabel }) => {
+                this._snackBar.open(message, closeLabel, {
+                    duration,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    panelClass: type ? [type] : [],
+                });
+            });
     }
 
     private handleError(error: any): Observable<never> {
@@ -245,7 +253,7 @@ export class SongService {
             errorMessage = error.message;
         }
 
-        this.showSnackbar(errorMessage, 3000, 'error');
+        this.showSnackbar('song_service.unexpected_error', 3000, 'error');
         return throwError(() => new Error(errorMessage));
     }
 
@@ -254,5 +262,60 @@ export class SongService {
             map((snapshot) => snapshot.docs.map((tagDoc) => ({ id: tagDoc.id, ...tagDoc.data() }) as Tag)),
             catchError(() => of([] as Tag[]))
         );
+    }
+
+    createTag(title: string): Observable<Tag> {
+        const cleanTitle = (title || '').trim();
+        const slug = cleanTitle
+            .toLocaleLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/\s+/g, ' ');
+
+        if (!cleanTitle) {
+            return throwError(() => new Error('Tag title is required'));
+        }
+
+        return from(
+            (async () => {
+                if (!(await this.verifyAuthentication())) {
+                    throw new Error('Authentication required');
+                }
+
+                const tagRef = doc(collection(this._firestore, 'tags'));
+                await setDoc(tagRef, {
+                    title: cleanTitle,
+                    slug,
+                    creationDate: serverTimestamp(),
+                    lastUpdateDate: serverTimestamp(),
+                });
+
+                return { id: tagRef.id, title: cleanTitle } as Tag;
+            })()
+        ).pipe(catchError((error) => this.handleError(error)));
+    }
+
+    updateSongTags(songId: string, tagIds: string[]): Promise<boolean> {
+        return (async () => {
+            if (!(await this.verifyAuthentication())) {
+                return false;
+            }
+
+            try {
+                await setDoc(
+                    doc(this._firestore, 'songs', songId),
+                    {
+                        tags: [...new Set(tagIds)],
+                        lastUpdateDate: serverTimestamp(),
+                    },
+                    { merge: true }
+                );
+                this.showSnackbar('song_service.song_tags_updated');
+                return true;
+            } catch (error) {
+                this.handleError(error);
+                return false;
+            }
+        })();
     }
 }

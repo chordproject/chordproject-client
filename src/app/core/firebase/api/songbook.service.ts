@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Auth } from 'firebase/auth';
 import {
@@ -15,7 +16,7 @@ import {
     writeBatch,
 } from 'firebase/firestore';
 import { Observable, combineLatest, from, of, throwError } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { PartialSong } from 'app/models/partialsong';
 import { Relation } from 'app/models/relation';
 import { Songbook } from 'app/models/songbook';
@@ -28,6 +29,7 @@ import { SongService } from './song.service';
 export class SongbookService {
     private _firestore: Firestore;
     private _auth: Auth;
+    private _translocoService: TranslocoService;
 
     constructor(
         private _firebase: FirebaseService,
@@ -36,6 +38,7 @@ export class SongbookService {
     ) {
         this._firestore = this._firebase.firestore;
         this._auth = this._firebase.auth;
+        this._translocoService = inject(TranslocoService);
     }
 
     get(id: string): Observable<Songbook> {
@@ -147,8 +150,8 @@ export class SongbookService {
             }),
             catchError((error) => {
                 console.error('Error fetching songbook content:', error);
-                this.showSnackbar('Failed to load songbook content');
-                return of([]);
+                this.showSnackbar('songbook_service.content_load_failed');
+                return throwError(() => error);
             })
         );
     }
@@ -159,7 +162,7 @@ export class SongbookService {
         }
 
         if (!songbook.name) {
-            this.showSnackbar('Name is required');
+            this.showSnackbar('songbook_service.name_required');
             return null;
         }
 
@@ -177,7 +180,7 @@ export class SongbookService {
             await setDoc(doc(this._firestore, 'songbooks', songbook.uid), {
                 ...songbook,
             });
-            this.showSnackbar('Songbook saved successfully');
+            this.showSnackbar('songbook_service.songbook_saved');
             return songbook.uid;
         } catch (error) {
             this.handleError(error);
@@ -195,11 +198,28 @@ export class SongbookService {
         }
 
         try {
+            const existingRelations = await getDocs(
+                query(
+                    collection(this._firestore, 'songbook_songs'),
+                    where('songbookId', '==', songbookId),
+                    where('songId', '==', songId)
+                )
+            );
+
+            const activeRelation = existingRelations.docs.find((relationDoc) => relationDoc.data().deleted !== true);
+            if (activeRelation) {
+                this.showSnackbar('songbook_service.song_already_in_songbook');
+                return activeRelation.id;
+            }
+
             const relationId = doc(
                 collection(this._firestore, 'songbook_songs')
             ).id;
 
-            const relation = new Relation(songbookId, songId);
+            const relation: Record<string, string | number> = {
+                songbookId,
+                songId,
+            };
             if (order !== undefined) {
                 relation.order = order;
             }
@@ -212,12 +232,37 @@ export class SongbookService {
                 doc(this._firestore, 'songbook_songs', relationId),
                 relation
             );
-            this.showSnackbar('Song added to songbook');
+            this.showSnackbar('songbook_service.song_added');
             return relationId;
         } catch (error) {
             this.handleError(error);
             return null;
         }
+    }
+
+    getSongbooksForSong(songId: string): Observable<Songbook[]> {
+        const relationsQuery = query(
+            collection(this._firestore, 'songbook_songs'),
+            where('songId', '==', songId)
+        );
+
+        return from(getDocs(relationsQuery)).pipe(
+            switchMap((relationsSnapshot) => {
+                const songbookIds = relationsSnapshot.docs
+                    .filter((relationDoc) => relationDoc.data().deleted !== true)
+                    .map((relationDoc) => relationDoc.data().songbookId)
+                    .filter(Boolean);
+
+                if (songbookIds.length === 0) {
+                    return of([]);
+                }
+
+                return this.getAll().pipe(
+                    map((songbooks) => songbooks.filter((songbook) => songbookIds.includes(songbook.uid)))
+                );
+            }),
+            catchError((error) => this.handleError(error))
+        );
     }
 
     async removeSong(songbookId: string, songId: string): Promise<boolean> {
@@ -235,7 +280,7 @@ export class SongbookService {
             const snapshot = await getDocs(q);
 
             if (snapshot.empty) {
-                this.showSnackbar('Song not found in songbook');
+                this.showSnackbar('songbook_service.song_not_found');
                 return false;
             }
 
@@ -249,7 +294,7 @@ export class SongbookService {
                 { merge: true }
             );
 
-            this.showSnackbar('Song removed from songbook');
+            this.showSnackbar('songbook_service.song_removed');
             return true;
         } catch (error) {
             this.handleError(error);
@@ -276,7 +321,7 @@ export class SongbookService {
                     const snapshot = await getDocs(q);
 
                     if (snapshot.empty) {
-                        this.showSnackbar('No songs found in songbook');
+                        this.showSnackbar('songbook_service.no_songs_found');
                         return false;
                     }
 
@@ -325,7 +370,7 @@ export class SongbookService {
                 let songbooks = snapshot.docs.map((doc) => {
                     const data = doc.data() || {};
                     return {
-                        uid: data.uid,
+                        uid: doc.id,
                         name: data.name,
                     } as Songbook;
                 });
@@ -368,6 +413,7 @@ export class SongbookService {
                 return combineLatest(
                     songbooks.map((songbook) =>
                         this.getContent(songbook.uid).pipe(
+                            catchError(() => of([])),
                             map((songs) => {
                                 const filteredSongs = songs.filter(
                                     (song) =>
@@ -399,18 +445,30 @@ export class SongbookService {
     private verifyAuthentication(): boolean {
         const user = this._auth.currentUser;
         if (!user) {
-            this.showSnackbar('Authentication required');
+            this.showSnackbar('songbook_service.authentication_required');
             return false;
         }
         return true;
     }
 
-    private showSnackbar(message: string, duration = 3000): void {
-        this._snackBar.open(message, 'Close', {
-            duration: duration,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-        });
+    private showSnackbar(messageKey: string, duration = 3000): void {
+        this._translocoService
+            .selectTranslate(messageKey)
+            .pipe(
+                switchMap((message) =>
+                    this._translocoService
+                        .selectTranslate('common.close')
+                        .pipe(map((closeLabel) => ({ message, closeLabel })))
+                ),
+                take(1)
+            )
+            .subscribe(({ message, closeLabel }) => {
+                this._snackBar.open(message, closeLabel, {
+                    duration,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'bottom',
+                });
+            });
     }
 
     private handleError(error: any): Observable<never> {
@@ -421,7 +479,7 @@ export class SongbookService {
             errorMessage = error.message;
         }
 
-        this.showSnackbar(errorMessage);
+        this.showSnackbar('songbook_service.unexpected_error');
         return throwError(() => new Error(errorMessage));
     }
 }
