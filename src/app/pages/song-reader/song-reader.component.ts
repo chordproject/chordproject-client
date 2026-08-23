@@ -169,7 +169,6 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         }
     }
 
-    toggleFullScreen(): void {}
     toggleSettings(): void {}
 
     removeSongFromSongbook(songbook: Songbook): void {

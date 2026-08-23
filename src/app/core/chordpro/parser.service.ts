@@ -28,7 +28,11 @@ export class ParserService {
         return formatter.format(song).join('');
     }
 
-    transposeSong(song: Song, newKey: string): Song {
+    transposeSong(song: Song, direction: 'up' | 'down'): Song {
+        return Transposer.transpose(song, direction);
+    }
+
+    transposeSongToKey(song: Song, newKey: string): Song {
         const targetNote = MusicNote.parse(newKey);
         const currentKey = song.key ?? song.getPossibleKey();
 
@@ -36,37 +40,37 @@ export class ParserService {
             return song;
         }
 
-        const semitoneByNote = new Map<string, number>([
-            ['C', 0],
-            ['C#', 1],
-            ['Db', 1],
-            ['D', 2],
-            ['D#', 3],
-            ['Eb', 3],
-            ['E', 4],
-            ['F', 5],
-            ['F#', 6],
-            ['Gb', 6],
-            ['G', 7],
-            ['G#', 8],
-            ['Ab', 8],
-            ['A', 9],
-            ['A#', 10],
-            ['Bb', 10],
-            ['B', 11],
-        ]);
-        const currentSemitone = semitoneByNote.get(currentKey.note.toString());
-        const targetSemitone = semitoneByNote.get(targetNote.toString());
+        const pitchClasses: Record<string, number> = {
+            C: 0,
+            'C#': 1,
+            Db: 1,
+            D: 2,
+            'D#': 3,
+            Eb: 3,
+            E: 4,
+            F: 5,
+            'F#': 6,
+            Gb: 6,
+            G: 7,
+            'G#': 8,
+            Ab: 8,
+            A: 9,
+            'A#': 10,
+            Bb: 10,
+            B: 11,
+        };
+        const currentPitchClass = pitchClasses[currentKey.note.toString()];
+        const targetPitchClass = pitchClasses[targetNote.toString()];
 
-        if (currentSemitone === undefined || targetSemitone === undefined) {
+        if (currentPitchClass === undefined || targetPitchClass === undefined) {
             return song;
         }
 
         let transposedSong = song;
-        const upSteps = (targetSemitone - currentSemitone + 12) % 12;
-        const downSteps = (currentSemitone - targetSemitone + 12) % 12;
-        const direction = upSteps <= downSteps ? 'up' : 'down';
-        const steps = Math.min(upSteps, downSteps);
+        const upwardSteps = (targetPitchClass - currentPitchClass + 12) % 12;
+        const downwardSteps = (currentPitchClass - targetPitchClass + 12) % 12;
+        const direction = upwardSteps <= downwardSteps ? 'up' : 'down';
+        const steps = Math.min(upwardSteps, downwardSteps);
 
         for (let step = 0; step < steps; step++) {
             transposedSong = Transposer.transpose(transposedSong, direction);

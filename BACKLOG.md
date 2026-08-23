@@ -126,21 +126,19 @@ Las prioridades 4 y 5 comienzan con investigación y comparación de los reposit
 
 ---
 
-## P3 - Revisar y refactorizar el ecosistema `chordpro-parser`/viewer: transposición musical
+## P3 - Viewer y ecosistema `chordpro-parser`
 
 ### Estado actual
 
-- La aplicación actual ya permite transponer canciones.
-- La implementación actual depende de reglas y transformaciones heredadas del parser/transposer.
+- La aplicación actual ya permite transponer canciones, cambiar el zoom y usar fullscreen desde la toolbar.
+- La implementación rápida reutiliza el parser/transposer instalado y mantiene un adaptador en `ParserService`.
 - Existe la sospecha de que parte del comportamiento está basado en cálculos simplificados y no modela suficientemente las reglas musicales.
-- Se usará otro repositorio como referencia cuando sea identificado.
+- La revisión profunda del parser y de otros repositorios de referencia queda pospuesta.
 
 ### Trabajo pendiente
 
-- Clonar y revisar el repositorio de referencia [ChordBook](https://github.com/chordbook/chordbook).
-- Comparar su implementación de transposición con `src/app/core/chordpro/parser.service.ts`, el transposer del parser y los modelos actuales.
-- Identificar qué partes son reutilizables conceptualmente y qué partes dependen de modelos o servicios propios de ChordBook.
-- Revisar la licencia, dependencias y compatibilidad antes de copiar cualquier código.
+- Revisar más adelante repositorios de referencia y comparar sus implementaciones con el parser actual.
+- Revisar la licencia, dependencias y compatibilidad antes de reutilizar cualquier código.
 - Comparar su modelo de notas, tonalidades, alteraciones, modos y acordes con el actual.
 - Definir el comportamiento esperado para:
     - acordes mayores y menores;
@@ -158,7 +156,7 @@ Las prioridades 4 y 5 comienzan con investigación y comparación de los reposit
 - Validar que el contenido original no se muta accidentalmente.
 - Decidir si la transposición usa preferencias de sostenidos o bemoles según la tonalidad.
 - Comparar resultados con canciones reales de HomenaJesus.
-- Actualizar el viewer y el editor solo después de estabilizar el modelo musical.
+- Mantener la implementación rápida del viewer estable mientras no se haga la revisión profunda del parser.
 
 ### Terminado cuando
 
@@ -166,7 +164,7 @@ Las prioridades 4 y 5 comienzan con investigación y comparación de los reposit
 - Se conservan correctamente alteraciones, tensiones y slash chords.
 - La tonalidad mostrada coincide con los acordes resultantes.
 - Repetir la operación no degrada el contenido.
-- El comportamiento está validado con ejemplos reales antes de tocar el viewer completo.
+- La implementación rápida está disponible; la validación musical exhaustiva queda pendiente.
 - Existe una decisión documentada sobre si se refactoriza el transposer actual, se adapta una implementación externa o se diseña una solución nueva.
 
 ---
@@ -175,17 +173,20 @@ Las prioridades 4 y 5 comienzan con investigación y comparación de los reposit
 
 ### Estado actual
 
-- La acción existe en la toolbar del viewer.
-- La implementación debe validarse y completarse como comportamiento real.
+- La acción existe en la toolbar y funciona mediante la Fullscreen API sobre el contenedor del viewer.
 
-### Trabajo pendiente
+### Completado
 
 - Implementar fullscreen con la Fullscreen API.
-- Manejar entrada, salida y errores de fullscreen.
-- Actualizar el icono y tooltip según el estado actual.
-- Recalcular el tamaño del viewer al entrar o salir.
-- Verificar compatibilidad en escritorio y dispositivos móviles.
-- Evitar conflictos con el drawer y `angular-split`.
+- Manejar entrada y salida mediante `fullscreenchange`.
+- Actualizar el icono según el estado actual.
+- Evitar que el fullscreen incluya innecesariamente toda la aplicación.
+
+### Pendiente
+
+- Manejar errores de permisos o APIs no disponibles.
+- Verificar compatibilidad en Safari/iOS y dispositivos móviles.
+- Confirmar redimensionamiento y comportamiento con drawer y `angular-split`.
 - Mantener el estado correcto al cambiar de canción o ruta.
 
 ### Terminado cuando
@@ -201,13 +202,17 @@ Las prioridades 4 y 5 comienzan con investigación y comparación de los reposit
 
 ### Estado actual
 
-- Existe una herramienta de zoom en el viewer.
-- Falta comprobar equivalencia con el comportamiento deseado del producto antiguo.
+- Existe una herramienta de zoom funcional en el viewer.
+- El rango actual es de `50%` a `200%`, con incrementos de `10%` y valor inicial de `100%`.
 
-### Trabajo pendiente
+### Completado
 
 - Definir límites mínimo y máximo.
 - Definir el incremento por acción.
+- Aplicar el valor al contenido y actualizar correctamente el viewer con `OnPush`.
+
+### Pendiente
+
 - Mantener lectura cómoda en claro y oscuro.
 - Verificar que el cambio no rompa columnas, saltos ni ancho del contenido.
 - Revisar comportamiento en móvil y tablet cuando aparezca un caso real.
@@ -647,3 +652,10 @@ No se crearán tests ahora. Al terminar la migración funcional se añadirá ún
 9. Definir e implementar la estrategia de repertorios/eventos en vivo reutilizables por fecha.
 10. Crear el testing básico posterior.
 11. Retirar gradualmente la aplicación antigua.
+
+## Ideas futuras inspiradas en Fuse
+
+- Buscar periódicamente nuevas ideas de producto y mejoras de experiencia a partir de los patrones disponibles en la plantilla Fuse, sin copiar funcionalidades de forma automática.
+- Evaluar si el antiguo acceso de `Shortcuts` puede convertirse en una funcionalidad útil y propia del sitio, por ejemplo como favoritos de páginas, cancioneros, canciones o acciones frecuentes.
+- Revisar otros patrones de Fuse que puedan aportar valor real: navegación contextual, búsqueda global, personalización del espacio de trabajo, estados vacíos y accesos rápidos.
+- Priorizar estas ideas según su utilidad para músicos y administradores, evitando añadir controles que aumenten la complejidad sin resolver una necesidad concreta.

@@ -13,7 +13,6 @@ import { Media } from '@/app/core/media';
 import { GithubLink } from '@/app/domains/admin/layout/ui/github-link';
 import { LanguageSwitcher } from '@/app/domains/admin/layout/ui/language-switcher';
 import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
-import { Shortcuts } from '@/app/domains/admin/layout/ui/shortcuts';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
 import { SearchComponent } from 'app/layout/common/search/search.component';
 
@@ -30,7 +29,6 @@ import { SearchComponent } from 'app/layout/common/search/search.component';
     AdminSidebar,
     SchemeSwitcher,
     LanguageSwitcher,
-    Shortcuts,
     GithubLink,
     SearchComponent,
   ],
@@ -72,14 +70,6 @@ import { SearchComponent } from 'app/layout/common/search/search.component';
           >
             <mat-icon svgIcon="panel-left" />
           </button>
-
-          <!-- Separator -->
-          <div class="mx-3 h-5 border-l"></div>
-
-          <shortcuts />
-
-          <!-- Separator -->
-          <div class="mx-3 h-5 border-l"></div>
 
           @if (!isHome()) {
             <search [appearance]="'bar'"></search>

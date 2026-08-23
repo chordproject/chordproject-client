@@ -13,7 +13,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 })
 export class TransposeToolComponent {
     @Input() isMobile = true;
-    @Output() transposeEvent = new EventEmitter<string>();
+    @Output() transposeEvent = new EventEmitter<'up' | 'down'>();
 
     private readonly pitchClassMap: Record<string, number> = {
         C: 0,
@@ -65,7 +65,6 @@ export class TransposeToolComponent {
         this._isMinorKey = value.includes('m');
         this._initialKey = this.normalizeKey(baseKey);
         this.currentKey = this._initialKey;
-        this._updateKeyDisplayAndEmit(); // Emitir evento al inicializar
     }
     get initialKey(): string {
         return this._initialKey;
@@ -80,26 +79,31 @@ export class TransposeToolComponent {
     }
 
     transposeUp(): void {
+        if (!this.currentKey) {
+            return;
+        }
         this.currentKey = this.transposeKey(this.currentKey, 1);
-        this.transposeEvent.emit(this.currentKey);
+        this.transposeEvent.emit('up');
     }
 
     transposeDown(): void {
+        if (!this.currentKey) {
+            return;
+        }
         this.currentKey = this.transposeKey(this.currentKey, -1);
-        this.transposeEvent.emit(this.currentKey);
+        this.transposeEvent.emit('down');
     }
 
     private transposeKey(key: string, steps: number): string {
         const baseKey = key.replace('m', '');
         const pitchClass = this.pitchClassMap[baseKey];
+        if (pitchClass === undefined) {
+            return key;
+        }
         const newPitchClass = (pitchClass + steps + 12) % 12;
         const newKey = this.reversePitchClassMap[newPitchClass];
 
         return this._isMinorKey ? `${newKey}m` : newKey;
     }
 
-    private _updateKeyDisplayAndEmit(): void {
-        const displayKey = this._isMinorKey ? `${this.currentKey}m` : this.currentKey;
-        this.transposeEvent.emit(displayKey);
-    }
 }

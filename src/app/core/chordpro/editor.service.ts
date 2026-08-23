@@ -55,7 +55,7 @@ export class EditorService {
 
         if (song.songKey) {
             const letter = song.songKey.includes('m') ? 'A' : 'C';
-            const defaultKeySong = this.parserService.transposeSong(
+            const defaultKeySong = this.parserService.transposeSongToKey(
                 parsedSong,
                 letter
             );

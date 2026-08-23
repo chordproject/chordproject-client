@@ -1,3 +1,3 @@
 <button mat-icon-button [matTooltip]="'viewer_toolbar.full_screen' | transloco" (click)="fullScreenEvent.emit()">
-    <mat-icon [svgIcon]="'maximize-2'"></mat-icon>
+    <mat-icon [svgIcon]="isFullScreen ? 'minimize-2' : 'maximize-2'"></mat-icon>
 </button>

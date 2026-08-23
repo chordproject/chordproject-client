@@ -8,8 +8,8 @@
             class="absolute left-1/2 -translate-x-1/2 rounded-lg bg-white p-2 shadow-lg dark:bg-gray-800"
             [ngClass]="{ 'bottom-[calc(100%)]': isMobile }"
         >
-            <mat-slider discrete min="8" max="24" (valueChange)="onZoomEvent($event)">
-                <input matSliderThumb [value]="fontSize" />
+            <mat-slider discrete min="50" max="200" step="10">
+                <input matSliderThumb [value]="fontSize" (valueChange)="onZoomEvent($event)" />
             </mat-slider>
         </div>
     }

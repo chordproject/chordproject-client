@@ -7,7 +7,10 @@
                 (transposeEvent)="transposeEvent.emit($event)"
             ></chp-transpose-tool>
             <chp-zoom-tool (zoomEvent)="onZoomEvent($event)"></chp-zoom-tool>
-            <chp-fullscreen-tool (fullScreenEvent)="fullScreenEvent.emit()"></chp-fullscreen-tool>
+            <chp-fullscreen-tool
+                [isFullScreen]="isFullScreen"
+                (fullScreenEvent)="fullScreenEvent.emit()"
+            ></chp-fullscreen-tool>
             <chp-settings-tool (settingsEvent)="settingsEvent.emit()"></chp-settings-tool>
         </div>
     </div>
@@ -21,7 +24,10 @@
             (transposeEvent)="transposeEvent.emit($event)"
         ></chp-transpose-tool>
         <div class="border-l border-gray-300 dark:border-gray-600"></div>
-        <chp-fullscreen-tool (fullScreenEvent)="fullScreenEvent.emit()"></chp-fullscreen-tool>
+        <chp-fullscreen-tool
+            [isFullScreen]="isFullScreen"
+            (fullScreenEvent)="fullScreenEvent.emit()"
+        ></chp-fullscreen-tool>
         <div class="border-l border-gray-300 dark:border-gray-600"></div>
         <chp-zoom-tool [isMobile]="false" (zoomEvent)="onZoomEvent($event)"></chp-zoom-tool>
         <div class="border-l border-gray-300 dark:border-gray-600"></div>

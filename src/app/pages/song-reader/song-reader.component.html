@@ -84,10 +84,11 @@
                         <chp-viewer-toolbar
                             [song]="song"
                             [deviceType]="deviceType"
+                            [isFullScreen]="viewer.isFullScreen"
                             (editSongEvent)="editSong()"
                             (transposeEvent)="viewer.transpose($event)"
                             (zoomEvent)="viewer.zoom($event)"
-                            (fullScreenEvent)="toggleFullScreen()"
+                            (fullScreenEvent)="viewer.toggleFullScreen()"
                             (settingsEvent)="toggleSettings()"
                         >
                         </chp-viewer-toolbar>

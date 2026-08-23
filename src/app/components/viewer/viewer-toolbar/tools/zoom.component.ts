@@ -17,7 +17,7 @@ export class ZoomToolComponent {
     @Input() isMobile = true;
     @Output() zoomEvent = new EventEmitter<number>();
     showSizeSlider = false;
-    fontSize = 14;
+    fontSize = 100;
 
     toggleSizeSlider(): void {
         this.showSizeSlider = !this.showSizeSlider;

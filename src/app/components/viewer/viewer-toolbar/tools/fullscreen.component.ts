@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -12,5 +12,6 @@ import { TranslocoModule } from '@jsverse/transloco';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FullscreenToolComponent {
+    @Input() isFullScreen = false;
     @Output() fullScreenEvent = new EventEmitter<void>();
 }
