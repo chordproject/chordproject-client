@@ -29,6 +29,7 @@
         viewSettings?.commentsFontStyle?.color
     "
     class="flex h-full flex-col bg-white dark:bg-neutral-900"
+    [class.compact-preview]="compactPreview"
     style="background-color: light-dark(var(--color-white), var(--color-neutral-900))"
 >
     @if (!isLoading) {

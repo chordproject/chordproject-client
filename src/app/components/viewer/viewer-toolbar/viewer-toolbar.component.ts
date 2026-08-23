@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslocoModule } from '@jsverse/transloco';
 import { Song } from 'app/models/song';
 import { EditToolComponent } from './tools/edit.component';
 import { FullscreenToolComponent } from './tools/fullscreen.component';
@@ -20,6 +21,7 @@ import { ZoomToolComponent } from './tools/zoom.component';
         MatButtonModule,
         MatIconModule,
         MatTooltipModule,
+        TranslocoModule,
         MatSliderModule,
         EditToolComponent,
         TransposeToolComponent,

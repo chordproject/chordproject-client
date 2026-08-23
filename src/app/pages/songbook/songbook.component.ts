@@ -1,13 +1,19 @@
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject, of, takeUntil } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { switchMap } from 'rxjs/operators';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
+import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
+import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
+import { EditorService } from 'app/core/chordpro/editor.service';
+import { SongService } from 'app/core/firebase/api/song.service';
+import { Song } from 'app/models/song';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Songbook } from 'app/models/songbook';
@@ -16,7 +22,7 @@ import { Songbook } from 'app/models/songbook';
     selector: 'chp-songbook',
     standalone: true,
     templateUrl: './songbook.component.html',
-    imports: [CommonModule, DragDropModule, ChpViewerComponent, ChpSongItemComponent, ChpSplitLayoutComponent],
+    imports: [CommonModule, DragDropModule, MatIconModule, ChpEditorComponent, ChpSongPreviewComponent, ChpSongItemComponent, ChpSplitLayoutComponent],
 })
 export class SongbookComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -29,11 +35,15 @@ export class SongbookComponent implements OnInit, OnDestroy {
     songbook$: Observable<Songbook>;
     songs$: Observable<PartialSong[]>;
     songsList = signal<PartialSong[]>([]);
+    editingPreview = signal(false);
+    previewContent = '';
 
     constructor(
         private _route: ActivatedRoute,
         private _router: Router,
-        private _songbookService: SongbookService
+        private _songbookService: SongbookService,
+        private _songService: SongService,
+        private _editorService: EditorService
     ) {}
 
     ngOnInit(): void {
@@ -111,6 +121,60 @@ export class SongbookComponent implements OnInit, OnDestroy {
         if (this.splitLayout?.isMobile) {
             this.splitLayout.togglePreview();
         }
+    }
+
+    closePreview(): void {
+        this.selectedSong.set(null);
+        this.editingPreview.set(false);
+    }
+
+    startQuickEdit(): void {
+        const song = this.selectedSong();
+        if (!song) {
+            return;
+        }
+
+        this.previewContent = song.content || '';
+        this.editingPreview.set(true);
+    }
+
+    closeQuickEdit(): void {
+        this.editingPreview.set(false);
+    }
+
+    async saveQuickEdit(): Promise<void> {
+        const selectedSong = this.selectedSong();
+        if (!selectedSong?.uid) {
+            return;
+        }
+
+        const updatedSong = this._editorService.prepareSongFromContent(this.previewContent);
+        const savedSong = await this._songService.save({
+            ...selectedSong,
+            ...updatedSong,
+        } as Song);
+
+        if (savedSong) {
+            this.selectedSong.set({
+                ...selectedSong,
+                ...updatedSong,
+                content: this.previewContent,
+            });
+            this.editingPreview.set(false);
+        }
+    }
+
+    removePreviewSong(): void {
+        const selectedSong = this.selectedSong();
+        if (!selectedSong) {
+            return;
+        }
+
+        this._editorService.confirmAndDelete(selectedSong as Song).subscribe((success) => {
+            if (success) {
+                this.closePreview();
+            }
+        });
     }
 
     onDblClick(song: PartialSong): void {

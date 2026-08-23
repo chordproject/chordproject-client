@@ -10,8 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, switchMap, takeUntil } from 'rxjs';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
+import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
-import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
@@ -21,7 +21,7 @@ import { Song } from 'app/models/song';
     standalone: true,
     templateUrl: './song-editor.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCardModule, ChpSplitLayoutComponent, ChpViewerComponent, ChpEditorComponent],
+    imports: [MatCardModule, ChpSplitLayoutComponent, ChpSongPreviewComponent, ChpEditorComponent],
 })
 export class SongEditorComponent implements OnInit, OnDestroy {
     song: Song = new Song();

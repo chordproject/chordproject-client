@@ -102,8 +102,10 @@ export class SongsListComponent implements OnInit, OnDestroy {
     }
 
     onSongClick(song: PartialSong): void {
-        // Si ya hay un drawer abierto y estamos seleccionando la misma canción, no hacer nada
         if (this.selectedSong && this.selectedSong.uid === song.uid) {
+            if (!this._libraryComponent.matDrawer.opened) {
+                this._libraryComponent.matDrawer.open();
+            }
             return;
         }
 

@@ -1,5 +1,5 @@
 <div class="relative">
-    <button mat-icon-button [matTooltip]="'Change Size'" (click)="toggleSizeSlider()">
+    <button mat-icon-button [matTooltip]="'viewer_toolbar.change_size' | transloco" (click)="toggleSizeSlider()">
         <mat-icon [svgIcon]="'zoom-in'"></mat-icon>
     </button>
     @if (showSizeSlider) {

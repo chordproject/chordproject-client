@@ -40,6 +40,19 @@
     "common": {
         "close": "Fermer"
     },
+    "preview": {
+        "quick_edit": "Modification rapide",
+        "open_full_editor": "Ouvrir dans l'éditeur complet",
+        "close": "Fermer l'aperçu"
+    },
+    "viewer_toolbar": {
+        "edit": "Modifier",
+        "full_screen": "Plein écran",
+        "settings": "Paramètres",
+        "transpose_down": "Baisser le ton",
+        "transpose_up": "Monter le ton",
+        "change_size": "Modifier la taille"
+    },
     "reader": {
         "add_to_songbook": "Ajouter au carnet...",
         "song_not_available": "La chanson n'est pas disponible",

@@ -40,6 +40,19 @@
     "common": {
         "close": "Close"
     },
+    "preview": {
+        "quick_edit": "Quick edit",
+        "open_full_editor": "Open in full editor",
+        "close": "Close preview"
+    },
+    "viewer_toolbar": {
+        "edit": "Edit",
+        "full_screen": "Full screen",
+        "settings": "Settings",
+        "transpose_down": "Transpose down",
+        "transpose_up": "Transpose up",
+        "change_size": "Change size"
+    },
     "reader": {
         "add_to_songbook": "Add to songbook...",
         "song_not_available": "Song is not available",

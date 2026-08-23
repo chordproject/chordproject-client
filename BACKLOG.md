@@ -52,14 +52,14 @@ Las prioridades 4 y 5 comienzan con investigación y comparación de los reposit
 
 ### Completado
 
-- Reader muestra los cancioneros asociados como chips.
-- Reader permite agregar una canción a un cancionero.
-- Reader evita crear asociaciones duplicadas.
-- Reader permite quitar una asociación.
-- Las relaciones se guardan como objetos planos compatibles con Firestore.
-- Se corrigió el uso del ID real de Firestore para las opciones del autocompletado.
+- Reader muestra, agrega y quita cancioneros asociados como chips.
+- Reader evita asociaciones duplicadas y guarda relaciones compatibles con Firestore.
 - Library drawer quedó como preview sin gestión ni visualización de tags.
-- Los mensajes principales del flujo de canciones y cancioneros están localizados en `en`, `es` y `fr`.
+- Las tres previews usan el componente compartido `chp-song-preview` con metadata y acciones configurables.
+- Las previews de Library, Songbook y Editor tienen cabecera, divisor y metadata secundaria consistentes.
+- El split de Songbook permite quick edit inline y navegación al editor completo.
+- Reader oculta la metadata duplicada que ya aparece en su cabecera.
+- Los mensajes de canciones, cancioneros, previews y herramientas del Reader están localizados en `en`, `es` y `fr`.
 
 ### Pendiente
 
@@ -71,12 +71,13 @@ Las prioridades 4 y 5 comienzan con investigación y comparación de los reposit
 - Añadir confirmación antes de quitar una asociación.
 - Confirmar el contrato y las reglas Firestore de `songbook_songs` contra los datos reales de `homenajesus-app`, incluyendo relaciones antiguas y registros marcados como `deleted`.
 - Verificar permisos de lectura y escritura con las reglas Firebase reales.
-- Si se conserva la colección `tags`, completar y decidir la política de:
+- Decidir el futuro de la colección técnica `tags`, ya que el producto actualmente trata los cancioneros asociados como tags.
+- Si se conserva `tags` como clasificación independiente, definir y completar su gestión:
     - crear, renombrar y eliminar tags;
     - asignar y quitar tags de una canción;
     - filtrar tags;
     - eliminar referencias huérfanas al borrar un tag.
-- Localizar los labels y tooltips restantes del Reader y de la administración de asociaciones.
+- Revisar la localización de labels y mensajes que todavía pertenezcan a otros componentes fuera del flujo de previews y Reader.
 
 ### Terminado cuando
 

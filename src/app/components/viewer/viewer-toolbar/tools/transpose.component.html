@@ -1,5 +1,5 @@
 <div class="flex items-center gap-1">
-    <button mat-icon-button [matTooltip]="'Transpose down'" (click)="transposeDown()">
+    <button mat-icon-button [matTooltip]="'viewer_toolbar.transpose_down' | transloco" (click)="transposeDown()">
         <mat-icon [svgIcon]="'chevron-down'"></mat-icon>
     </button>
     @if (!isMobile) {
@@ -7,7 +7,7 @@
             <span class="text-sm font-medium">{{ currentKey }}</span>
         </div>
     }
-    <button mat-icon-button [matTooltip]="'Transpose up'" (click)="transposeUp()">
+    <button mat-icon-button [matTooltip]="'viewer_toolbar.transpose_up' | transloco" (click)="transposeUp()">
         <mat-icon [svgIcon]="'chevron-up'"></mat-icon>
     </button>
 </div>

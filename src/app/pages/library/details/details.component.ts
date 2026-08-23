@@ -6,14 +6,11 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
-import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
+import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
@@ -25,11 +22,7 @@ import { LibraryComponent } from '../library.component';
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        MatButtonModule,
-        MatTooltipModule,
-        RouterLink,
-        MatIconModule,
-        ChpViewerComponent,
+        ChpSongPreviewComponent,
         ChpEditorComponent,
     ],
 })
@@ -64,7 +57,6 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
             // Mark for check
             this._changeDetectorRef.markForCheck();
         });
-
     }
 
     ngOnDestroy(): void {
@@ -75,6 +67,10 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
 
     closeDrawer(): Promise<MatDrawerToggleResult> {
         return this._libraryComponent.matDrawer.close();
+    }
+
+    closePreview(): void {
+        this._router.navigate(['../'], { relativeTo: this._activatedRoute });
     }
 
     toggleEditMode(editMode: boolean | null = null): void {

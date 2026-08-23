@@ -40,7 +40,7 @@ const canDeactivateSongsDetails = (
         nextRoute = nextRoute.firstChild;
     }
 
-    if (nextRoute.paramMap.get('uid')) {
+    if (nextState.url.includes('(drawer:')) {
         return true;
     }
 

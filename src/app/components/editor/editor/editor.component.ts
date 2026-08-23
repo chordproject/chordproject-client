@@ -7,12 +7,10 @@ import {
     EventEmitter,
     Inject,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     PLATFORM_ID,
-    SimpleChanges,
     ViewChild,
 } from '@angular/core';
 import * as ChordProjectEditor from 'chordproject-editor';
@@ -25,7 +23,7 @@ import { ChpEditorToolbarComponent } from '../editor-toolbar/editor-toolbar.comp
     templateUrl: './editor.component.html',
     imports: [ChpEditorToolbarComponent],
 })
-export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     @Output() contentChange = new EventEmitter<string>();
     @Output() close = new EventEmitter<void>();
     @Output() save = new EventEmitter<void>();
@@ -90,15 +88,6 @@ export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit, OnC
         }
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['content']) {
-            const newContent = changes['content'].currentValue;
-            if (this._editor && newContent !== undefined) {
-                this.setEditorContent(newContent);
-            }
-        }
-    }
-
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
@@ -160,10 +149,12 @@ export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit, OnC
 
     @Input()
     set content(content: string) {
-        this._content = content ?? '';
-        // Si el editor ya está inicializado, actualiza el contenido
-        if (this._editor) {
-            this.setEditorContent(this._content);
+        const newContent = content ?? '';
+        this._content = newContent;
+
+        // Do not reset Ace's selection when Angular returns the editor's own change.
+        if (this._editor && this._editor.getValue() !== newContent) {
+            this.setEditorContent(newContent);
         }
         // Si no, el contenido se aplicará en ngAfterViewInit
     }

@@ -4,12 +4,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
     selector: 'chp-zoom-tool',
     standalone: true,
     templateUrl: './zoom.component.html',
-    imports: [CommonModule, MatButtonModule, MatIconModule, MatSliderModule, MatTooltipModule],
+    imports: [CommonModule, MatButtonModule, MatIconModule, MatSliderModule, MatTooltipModule, TranslocoModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ZoomToolComponent {

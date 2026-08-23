@@ -91,7 +91,13 @@
                             (settingsEvent)="toggleSettings()"
                         >
                         </chp-viewer-toolbar>
-                        <chp-viewer #viewer [content]="viewerContent" class="order-0"> </chp-viewer>
+                        <chp-viewer
+                            #viewer
+                            [content]="viewerContent"
+                            [showMetadata]="false"
+                            class="order-0"
+                        >
+                        </chp-viewer>
                     </div>
                 } @else {
                     <div class="flex h-full min-h-80 items-center justify-center px-6">

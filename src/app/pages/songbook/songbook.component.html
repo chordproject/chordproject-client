@@ -22,8 +22,8 @@
             <div
                 class="relative w-full border-b border-neutral-200 bg-neutral-100 px-8 pr-4 sm:pl-12 dark:border-neutral-700 dark:bg-neutral-800"
             >
-                <div class="mx-auto flex w-full max-w-3xl items-center pb-3 pt-3">
-                    <h1 class="min-w-0 truncate text-4xl font-bold">
+                <div class="mx-auto flex w-full max-w-3xl items-center justify-center pb-3 pt-3">
+                    <h1 class="min-w-0 truncate text-center text-4xl font-bold">
                         {{ songbook.name }}
                     </h1>
                 </div>
@@ -77,6 +77,24 @@
 
 <ng-template #viewer>
     @if (selectedSong(); as song) {
-        <chp-viewer [content]="song.content" isPreview="true"> </chp-viewer>
+        @if (editingPreview()) {
+            <chp-editor
+                [mode]="'quick'"
+                [(content)]="previewContent"
+                (close)="closeQuickEdit()"
+                (save)="saveQuickEdit()"
+                (remove)="removePreviewSong()"
+            ></chp-editor>
+        } @else {
+            <chp-song-preview
+                [song]="song"
+                [showQuickEdit]="true"
+                [showFullEditor]="true"
+                [showClose]="true"
+                (quickEdit)="startQuickEdit()"
+                (openFullEditor)="onDblClick(song)"
+                (close)="closePreview()"
+            ></chp-song-preview>
+        }
     }
 </ng-template>

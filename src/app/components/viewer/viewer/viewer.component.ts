@@ -17,6 +17,16 @@ export class ChpViewerComponent implements AfterViewInit {
     @ViewChild('viewerContent') contentElementRef: ElementRef;
 
     @Input() isPreview = false;
+    @Input() compactPreview = false;
+    private _showMetadata = true;
+    @Input()
+    set showMetadata(value: boolean) {
+        this._showMetadata = value !== false;
+        this.formatSong();
+    }
+    get showMetadata(): boolean {
+        return this._showMetadata;
+    }
     @Input()
     set content(value: string) {
         this._content = value;
@@ -79,7 +89,7 @@ export class ChpViewerComponent implements AfterViewInit {
 
         const songHtml = this.parserService.formatToHtml(
             this._currentSong,
-            this.isPreview,
+            this.showMetadata,
             this.isPreview ? true : this.viewSettings.showChords,
             this.isPreview ? true : this.viewSettings.showTabs
         );

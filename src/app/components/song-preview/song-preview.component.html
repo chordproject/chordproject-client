@@ -1,0 +1,86 @@
+<div class="flex h-full min-h-0 flex-col bg-white dark:bg-neutral-900">
+    <div class="shrink-0 bg-white px-6 pb-4 pt-5 dark:bg-neutral-900 sm:px-8">
+        <div class="mx-auto flex w-full max-w-3xl items-start justify-between gap-3">
+            <div class="min-w-0">
+                <h2 class="truncate text-2xl font-bold leading-tight text-neutral-900 dark:text-neutral-100">
+                    {{ song?.title || '' }}
+                </h2>
+                @if (song?.artists?.length) {
+                    <p class="mt-1 truncate text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                        {{ song.artists.join(' - ') }}
+                    </p>
+                }
+            </div>
+            @if (showQuickEdit || showFullEditor || showClose) {
+                <div class="flex shrink-0 items-center gap-1">
+                    @if (showQuickEdit) {
+                        <button
+                            type="button"
+                            mat-icon-button
+                            [matTooltip]="'preview.quick_edit' | transloco"
+                            (click)="quickEdit.emit()"
+                        >
+                            <mat-icon class="size-5" [svgIcon]="'square-pen'"></mat-icon>
+                        </button>
+                    }
+                    @if (showFullEditor) {
+                        <button
+                            type="button"
+                            mat-icon-button
+                            [matTooltip]="'preview.open_full_editor' | transloco"
+                            (click)="openFullEditor.emit()"
+                        >
+                            <mat-icon class="size-5" [svgIcon]="'external-link'"></mat-icon>
+                        </button>
+                    }
+                    @if (showClose) {
+                        <button
+                            type="button"
+                            mat-icon-button
+                            [matTooltip]="'preview.close' | transloco"
+                            (click)="close.emit()"
+                        >
+                            <mat-icon class="size-5" [svgIcon]="'x'"></mat-icon>
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+        <div class="mx-auto mt-4 w-[calc(100%-1rem)] max-w-3xl border-b border-neutral-200 dark:border-neutral-700"></div>
+        <div class="mx-auto flex w-full max-w-3xl flex-wrap gap-x-5 gap-y-1 pt-3 text-sm text-neutral-500 dark:text-neutral-400">
+            @if (song?.subtitle) {
+                <span>{{ song.subtitle }}</span>
+            }
+            @if (song?.tempo) {
+                <span>Tempo: {{ song.tempo }}</span>
+            }
+            @if (song?.songKey) {
+                <span>Key: {{ song.songKey }}</span>
+            }
+            @if (song?.time) {
+                <span>Time: {{ song.time }}</span>
+            }
+            @if (song?.capo) {
+                <span>Capo: {{ song.capo }}</span>
+            }
+            @if (song?.year) {
+                <span>Year: {{ song.year }}</span>
+            }
+            @if (song?.composers?.length) {
+                <span>Composer: {{ song.composers.join(' - ') }}</span>
+            }
+            @if (song?.lyricists?.length) {
+                <span>Lyricist: {{ song.lyricists.join(' - ') }}</span>
+            }
+            @if (song?.arrangers?.length) {
+                <span>Arranger: {{ song.arrangers.join(' - ') }}</span>
+            }
+        </div>
+    </div>
+    <div class="min-h-0 flex-1">
+        <div class="mx-auto h-full w-full max-w-3xl">
+            <chp-viewer [content]="content" isPreview="true" [showMetadata]="false" [compactPreview]="true">
+            </chp-viewer>
+        </div>
+    </div>
+</div>

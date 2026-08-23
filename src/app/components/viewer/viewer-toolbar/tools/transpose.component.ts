@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
     selector: 'chp-transpose-tool',
     standalone: true,
     templateUrl: './transpose.component.html',
-    imports: [MatButtonModule, MatIconModule, MatTooltipModule],
+    imports: [MatButtonModule, MatIconModule, MatTooltipModule, TranslocoModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransposeToolComponent {
