@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { TranslocoService } from '@jsverse/transloco';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslocoService } from '@jsverse/transloco';
 import {
     Firestore,
     collection,
@@ -90,7 +90,15 @@ export class SongService {
 
     searchByTitle(searchTerm?: string, limitResults?: number): Observable<PartialSong[]> {
         const songsRef = collection(this._firestore, 'songs');
-        const q = query(songsRef, orderBy('title'));
+        const q = searchTerm
+            ? query(
+                  songsRef,
+                  orderBy('title'),
+                  where('title', '>=', searchTerm),
+                  where('title', '<=', `${searchTerm}\uf8ff`),
+                  ...(limitResults ? [limit(limitResults)] : [])
+              )
+            : query(songsRef, orderBy('title'));
         return from(getDocs(q)).pipe(
             map((snapshot) => {
                 const normalizar = (str: string) =>
@@ -127,6 +135,39 @@ export class SongService {
                     songs = songs.slice(0, limitResults);
                 }
                 return songs;
+            }),
+            catchError((error) => this.handleError(error))
+        );
+    }
+
+    searchByTitleContains(searchTerm: string, limitResults = 20): Observable<PartialSong[]> {
+        const songsRef = collection(this._firestore, 'songs');
+        return from(getDocs(query(songsRef, orderBy('title')))).pipe(
+            map((snapshot) => {
+                const normalizedTerm = (searchTerm || '')
+                    .toLocaleLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .trim();
+                if (!normalizedTerm) {
+                    return [];
+                }
+
+                return snapshot.docs
+                    .map((document) => ({ uid: document.id, ...document.data() }) as PartialSong)
+                    .filter((song) => {
+                        const normalizedTitle = (song.title || '')
+                            .toLocaleLowerCase()
+                            .normalize('NFD')
+                            .replace(/[\u0300-\u036f]/g, '');
+                        return normalizedTitle.includes(normalizedTerm);
+                    })
+                    .sort((first, second) =>
+                        (first.title || '').localeCompare(second.title || '', 'es', {
+                            sensitivity: 'base',
+                        })
+                    )
+                    .slice(0, limitResults);
             }),
             catchError((error) => this.handleError(error))
         );

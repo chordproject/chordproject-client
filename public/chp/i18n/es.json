@@ -22,6 +22,7 @@
         "library": "Biblioteca",
         "create": "Crear",
         "songbooks": "Cancioneros",
+        "repertoires": "Repertorios",
         "sign_in": "Iniciar sesión",
         "sign_up": "Registrarse"
     },
@@ -30,6 +31,51 @@
         "no_songs": "No hay canciones",
         "song": "canción",
         "songs": "canciones"
+    },
+    "repertoire_page": {
+        "eyebrow": "Planificación",
+        "title": "Repertorios",
+        "description": "Crea tipos de evento y define los espacios que organizan cada repertorio.",
+        "event_types": "Tipos de evento",
+        "event_types_description": "Estructuras reutilizables para eventos.",
+        "no_event_types": "Aún no hay tipos de evento.",
+        "new_event_type": "Nuevo tipo de evento",
+        "add_event_type": "Agregar tipo de evento",
+        "selected_event_type": "Tipo de evento seleccionado",
+        "no_spaces": "No hay espacios definidos para este tipo de evento.",
+        "new_space": "Nuevo espacio",
+        "add_space": "Agregar espacio",
+        "reorder_space": "Reordenar espacio",
+        "edit_space": "Editar espacio",
+        "save_space": "Guardar espacio",
+        "cancel_edit": "Cancelar edición",
+        "new_repertoire": "Nuevo repertorio",
+        "new_repertoire_description": "Crea un repertorio con fecha a partir de este tipo de evento.",
+        "title_label": "Título",
+        "description_label": "Descripción o referencia",
+        "date_label": "Fecha",
+        "create": "Crear",
+        "select_event_type": "Selecciona o crea un tipo de evento",
+        "select_event_type_description": "Aquí aparecerán sus espacios configurables.",
+        "repertoires": "Repertorios",
+        "repertoires_description": "Colecciones programadas creadas hasta ahora.",
+        "no_repertoires": "Aún no hay repertorios creados."
+        ,"show_setup": "Configurar repertorios"
+        ,"hide_setup": "Ocultar configuración"
+        ,"back_to_repertoires": "Volver a repertorios"
+        ,"loading": "Cargando repertorio..."
+        ,"event_spaces": "Espacios del evento"
+        ,"assign_songs_description": "Asigna una canción a cada espacio de este repertorio."
+        ,"song": "Canción"
+        ,"select_song": "Selecciona una canción"
+        ,"search_song": "Busca una canción por título..."
+        ,"add_song": "Añade una canción por título..."
+        ,"no_song_matches": "No se encontraron canciones"
+        ,"remove_song": "Quitar canción"
+        ,"skip_space": "Marcar como no utilizado"
+        ,"use_space": "Volver a utilizar este espacio"
+        ,"not_found": "No se encontró este repertorio."
+        ,"load_error": "No se pudo cargar este repertorio."
     },
     "confirmation": {
         "cancel": "Cancelar",
@@ -82,7 +128,10 @@
     "editor": {
         "delete_song_title": "Eliminar canción",
         "delete_song_message": "¿Estás seguro de que quieres eliminar esta canción? ¡Esta acción no se puede deshacer!",
-        "delete_song_confirm": "Eliminar"
+        "delete_song_confirm": "Eliminar",
+        "unsaved_changes_title": "Cambios sin guardar",
+        "unsaved_changes_message": "Tienes cambios sin guardar. ¿Estás seguro de que quieres salir de esta página?",
+        "unsaved_changes_discard": "Descartar cambios"
     },
     "search": {
         "placeholder_bar": "Busca por título, letra o cancionero...",

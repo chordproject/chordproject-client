@@ -33,6 +33,10 @@ const routes: Routes = [
         path: 'songbook',
         loadChildren: () => import('app/pages/songbook/songbook.routes'),
       },
+      {
+        path: 'repertoires',
+        loadChildren: () => import('app/pages/repertoire/repertoire.routes'),
+      },
 
       // -----------------------------------------------------------------------
       // Extras

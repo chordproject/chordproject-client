@@ -8,10 +8,12 @@ export default [
             {
                 path: '',
                 component: SongEditorComponent,
+                canDeactivate: [(component: SongEditorComponent) => component.canDeactivate()],
             },
             {
                 path: ':uid',
                 component: SongEditorComponent,
+                canDeactivate: [(component: SongEditorComponent) => component.canDeactivate()],
             },
         ],
     },

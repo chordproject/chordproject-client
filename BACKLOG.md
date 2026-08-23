@@ -109,6 +109,7 @@ Las prioridades 4 y 5 comienzan con investigación y comparación de los reposit
 - Mostrar la jerarquía padre/hijo de forma comprensible.
 - Mostrar la cantidad de canciones de cada songbook.
 - Permitir seleccionar un songbook y cargar sus hijos.
+- Permitir buscar canciones también por artista, además de los criterios de búsqueda existentes.
 - Mantener la navegación lateral sincronizada después de crear, renombrar o eliminar.
 - Revisar `isReorderable` y la persistencia del orden de canciones.
 - Confirmar el modelo de propiedad, autor y relaciones entre songbooks y canciones.
@@ -535,10 +536,16 @@ Permitir programar repertorios por evento/fecha, reutilizarlos en futuras ocasio
 
 - El sistema actual organiza canciones en songbooks, pero no existe una entidad explícita para "repertorio programado por fecha".
 - La UX de songbooks ya sirve como referencia para la navegación, selección y orden de canciones.
+- El contrato base está definido en `EventType`, `EventSlot`, `Repertoire` y `RepertoireSong`, sin vocabulario específico de misa o liturgia.
+- Existe `RepertoireService` con lecturas y guardado base para los cuatro tipos de documento.
+- La UI permite crear tipos de evento, definir y reordenar sus espacios, y crear repertorios por fecha.
+- El detalle permite asignar varias canciones a un mismo espacio, quitarlas individualmente y marcar espacios como no utilizados.
+- La búsqueda de canciones admite coincidencias dentro del título e ignora diferencias de acentuación.
 
 ### Trabajo pendiente
 
-- Definir un modelo base multiplataforma para repertorios/eventos que no dependa de vocabulario religioso.
+- Validar las colecciones Firestore para `event_types`, `event_slots`, `repertoires` y `repertoire_songs` con datos de prueba.
+- Definir índices, reglas de seguridad, permisos de autor/equipo y estrategia de eliminación.
 - Definir un perfil de dominio para HomenaJesus con campos adicionales litúrgicos.
 - Diseñar el contrato de datos mínimo para un repertorio:
     - `uid`;
@@ -553,17 +560,8 @@ Permitir programar repertorios por evento/fecha, reutilizarlos en futuras ocasio
     - cita del evangelio;
     - tiempo litúrgico (adviento, cuaresma, etc.);
     - notas pastorales.
-- Definir una estructura de "slots" para guiar la selección sin acoplarla al núcleo:
-    - slots requeridos para misa (entrada, penitencial, ofertorio, santo, cordero, comunión, salida);
-    - slots condicionales (gloria fuera de adviento/cuaresma, aleluya según tiempo litúrgico, etc.);
-    - slots opcionales (ejemplo: padre nuestro).
-- Decidir si los slots serán reglas configurables por "tipo de evento" en lugar de hardcodear reglas litúrgicas en el core.
-- Diseñar UX inicial reutilizando el patrón de songbooks:
-    - listado de repertorios;
-    - detalle de repertorio;
-    - asignar/quitar canciones;
-    - reordenar canciones;
-    - duplicar repertorio para nueva fecha.
+- Definir los perfiles de slots requeridos, condicionales y opcionales que HomenaJesus ofrecerá inicialmente.
+- Añadir duplicación de repertorios para una nueva fecha reutilizando sus asignaciones.
 - Definir estrategia de recurrencia y reutilización anual:
     - clonar repertorio completo;
     - sugerir repertorios previos por cercanía de calendario/tiempo litúrgico;

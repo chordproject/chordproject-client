@@ -2,13 +2,15 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    HostListener,
     OnDestroy,
     OnInit,
     ViewContainerRef,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, map, switchMap, takeUntil } from 'rxjs';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
@@ -26,15 +28,29 @@ import { Song } from 'app/models/song';
 export class SongEditorComponent implements OnInit, OnDestroy {
     song: Song = new Song();
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    private _savedContent = '';
+    private _allowDeactivate = false;
 
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _viewContainerRef: ViewContainerRef,
         private _songService: SongService,
         private _editorService: EditorService,
+        private _confirmationService: FuseConfirmationService,
         private _route: ActivatedRoute,
         private _router: Router
     ) {}
+
+    @HostListener('document:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent): void {
+        if (event.key.toLowerCase() !== 's' || (!event.ctrlKey && !event.metaKey)) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        this.saveSong();
+    }
 
     ngOnInit(): void {
         // Siempre limpiar las referencias
@@ -57,6 +73,7 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
                 if (data) {
                     this.song = data;
+                    this._savedContent = this.song.content ?? '';
                     this._changeDetectorRef.markForCheck();
                 }
             });
@@ -88,12 +105,33 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         };
         this._songService.save(this.song).then((res) => {
             this.song.uid = res;
+            this._savedContent = this.song.content ?? '';
         });
+    }
+
+    canDeactivate(): boolean | Observable<boolean> {
+        if (this._allowDeactivate || (this.song.content ?? '') === this._savedContent) {
+            return true;
+        }
+
+        return this._confirmationService
+            .open({
+                title: 'editor.unsaved_changes_title',
+                message: 'editor.unsaved_changes_message',
+                actions: {
+                    confirm: {
+                        label: 'editor.unsaved_changes_discard',
+                    },
+                },
+            })
+            .afterClosed()
+            .pipe(map((result) => result === 'confirmed'));
     }
 
     removeSong(): void {
         this._editorService.confirmAndDelete(this.song).subscribe((success) => {
             if (success) {
+                this._allowDeactivate = true;
                 this._router.navigate(['/library']);
             }
             this._changeDetectorRef.markForCheck();

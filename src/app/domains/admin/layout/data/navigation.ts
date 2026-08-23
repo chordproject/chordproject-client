@@ -43,6 +43,12 @@ export const NAVIGATION: NavigationItem[] = [
         icon: 'book-open',
         route: '/songbook',
       },
+      {
+        id: 'general/repertoires',
+        label: 'nav.repertoires',
+        icon: 'calendar-days',
+        route: '/repertoires',
+      },
     ],
   },
   {

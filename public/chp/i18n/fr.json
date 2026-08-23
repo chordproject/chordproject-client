@@ -22,6 +22,7 @@
         "library": "Bibliothèque",
         "create": "Créer",
         "songbooks": "Carnets",
+        "repertoires": "Répertoires",
         "sign_in": "Se connecter",
         "sign_up": "S'inscrire"
     },
@@ -30,6 +31,51 @@
         "no_songs": "Aucune chanson",
         "song": "chanson",
         "songs": "chansons"
+    },
+    "repertoire_page": {
+        "eyebrow": "Planification",
+        "title": "Répertoires",
+        "description": "Créez des types d'événements et définissez les espaces qui organisent chaque répertoire.",
+        "event_types": "Types d'événements",
+        "event_types_description": "Structures réutilisables pour les événements.",
+        "no_event_types": "Aucun type d'événement pour le moment.",
+        "new_event_type": "Nouveau type d'événement",
+        "add_event_type": "Ajouter un type d'événement",
+        "selected_event_type": "Type d'événement sélectionné",
+        "no_spaces": "Aucun espace défini pour ce type d'événement.",
+        "new_space": "Nouvel espace",
+        "add_space": "Ajouter un espace",
+        "reorder_space": "Réorganiser l'espace",
+        "edit_space": "Modifier l'espace",
+        "save_space": "Enregistrer l'espace",
+        "cancel_edit": "Annuler la modification",
+        "new_repertoire": "Nouveau répertoire",
+        "new_repertoire_description": "Créez un répertoire daté à partir de ce type d'événement.",
+        "title_label": "Titre",
+        "description_label": "Description ou référence",
+        "date_label": "Date",
+        "create": "Créer",
+        "select_event_type": "Sélectionnez ou créez un type d'événement",
+        "select_event_type_description": "Ses espaces configurables apparaîtront ici.",
+        "repertoires": "Répertoires",
+        "repertoires_description": "Collections programmées créées jusqu'à présent.",
+        "no_repertoires": "Aucun répertoire créé pour le moment."
+        ,"show_setup": "Configurer les répertoires"
+        ,"hide_setup": "Masquer la configuration"
+        ,"back_to_repertoires": "Retour aux répertoires"
+        ,"loading": "Chargement du répertoire..."
+        ,"event_spaces": "Espaces de l'événement"
+        ,"assign_songs_description": "Attribuez une chanson à chaque espace de ce répertoire."
+        ,"song": "Chanson"
+        ,"select_song": "Sélectionnez une chanson"
+        ,"search_song": "Rechercher une chanson par titre..."
+        ,"add_song": "Ajouter une chanson par titre..."
+        ,"no_song_matches": "Aucune chanson trouvée"
+        ,"remove_song": "Retirer la chanson"
+        ,"skip_space": "Marquer comme inutilisé"
+        ,"use_space": "Réutiliser cet espace"
+        ,"not_found": "Ce répertoire est introuvable."
+        ,"load_error": "Ce répertoire n'a pas pu être chargé."
     },
     "confirmation": {
         "cancel": "Annuler",
@@ -82,7 +128,10 @@
     "editor": {
         "delete_song_title": "Supprimer la chanson",
         "delete_song_message": "Êtes-vous sûr de vouloir supprimer cette chanson ? Cette action est irréversible !",
-        "delete_song_confirm": "Supprimer"
+        "delete_song_confirm": "Supprimer",
+        "unsaved_changes_title": "Modifications non enregistrées",
+        "unsaved_changes_message": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?",
+        "unsaved_changes_discard": "Abandonner les modifications"
     },
     "search": {
         "placeholder_bar": "Rechercher par titre, paroles ou carnet...",
