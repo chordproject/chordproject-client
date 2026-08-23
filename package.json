@@ -10,8 +10,7 @@
     "chordproject"
   ],
   "homepage": "https://chordproject.com",
-  "license": "https://themeforest.net/licenses/standard",
-  "author": "Sercan Yemen <hi@srcn.dev> (https://themeforest.net/user/srcn)",
+  "author": "Jaime Mora (jrmora)",
   "scripts": {
     "build": "ng build",
     "lint": "ng lint",

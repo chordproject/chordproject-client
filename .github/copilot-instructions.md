@@ -1,0 +1,15 @@
+- No agregar comentarios obvios.
+- Al generar mensajes de commit, limitarse a las funcionalidades que se están implementando; no agregar detalles como "para mejorar funcionalidad" o "para mejorar el rendimiento".
+- Los mensajes de commit para Git deben ser cortos.
+- Los nuevos componentes deben tener su template en un archivo propio y siempre usar standalone; no crear módulos ni archivos de estilos.
+- Los componentes deberían seguir patrones del codebase como:
+	- Implementación de `OnDestroy` con su método `ngOnDestroy()`.
+	- Un método `trackByFn` para optimizar los `@for`.
+	- Un `Subject` privado `_unsubscribeAll` para manejar las suscripciones.
+	- La inyección de dependencias debe hacerse en el constructor.
+- Al realizar correcciones generales en el codebase, no se debe alterar nada al interior de la carpeta `src/@fuse`.
+- Al generar código Angular, usar preferentemente:
+	- `@if (condition) {}` en vez de `*ngIf`.
+	- `@for (item of items) {}` en vez de `*ngFor`.
+	- `@empty {}` como bloque alternativo para `@for`.
+- Todo el código propuesto debe evitar redundancia al máximo; no repetir código innecesariamente.

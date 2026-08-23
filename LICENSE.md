@@ -1,6 +1,11 @@
 Envato Standard License
 
-Copyright (c) Sercan Yemen <hi@srcn.dev>
+Copyright (c) Jaime Mora (jrmora) for ChordProject application code and
+modifications.
 
-This project is protected by Envato's Standard License. For more information,
-check the official license page at [https://themeforest.net/licenses/standard](https://themeforest.net/licenses/standard)
+This project includes the Fuse Angular template and related third-party
+components. Those parts remain protected by Envato's Standard License and may
+not be redistributed outside the permissions granted by that license.
+
+For the official license terms, see:
+https://themeforest.net/licenses/standard

@@ -43,3 +43,13 @@ Thumbs.db
 
 # Claude
 .claude/launch.json
+
+# Firebase
+.firebase/
+firebase-debug.log
+serviceAccountKey.json
+service-account*.json
+
+# Local environment overrides
+src/environments/environment.local.ts
+src/environments/environment.*.local.ts
