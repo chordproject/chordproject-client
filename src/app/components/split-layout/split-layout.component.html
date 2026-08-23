@@ -3,8 +3,10 @@
 >
     <!-- Toggle between left and right content on mobile -->
     <div
-        class="fixed top-1/2 z-[1050] [right:-5px] md:hidden"
-        [class.left]="!showPrimaryArea"
+        class="fixed top-1/2 z-[1050]"
+        [class.hidden]="!isMobile || !hasSecondaryContent"
+        [style.right.px]="showPrimaryArea ? -5 : null"
+        [style.left.px]="showPrimaryArea ? null : -5"
     >
         <button
             mat-stroked-button
@@ -27,8 +29,8 @@
             <mat-icon
                 [svgIcon]="
                     showPrimaryArea
-                        ? 'heroicons_solid:arrow-uturn-left'
-                        : 'heroicons_solid:arrow-uturn-right'
+                        ? 'arrow-left'
+                        : 'arrow-right'
                 "
                 class="text-neutral-500 dark:text-neutral-400"
             >
@@ -39,14 +41,14 @@
     <as-split
         direction="horizontal"
         useTransition="true"
-        gutterSize="30"
+        [gutterSize]="hasSecondaryContent ? 30 : 0"
         [style.--as-gutter-background-color]="
             isDarkMode ? 'var(--color-neutral-800)' : 'var(--color-neutral-100)'
         "
     >
         <as-split-area
-            [size]="60"
-            [visible]="!isMobile || showPrimaryArea"
+            [size]="hasSecondaryContent ? 60 : 100"
+            [visible]="!hasSecondaryContent || !isMobile || showPrimaryArea"
             minSize="30"
             class="border border-neutral-300 dark:border-neutral-700"
         >
@@ -54,7 +56,7 @@
         </as-split-area>
         <as-split-area
             [size]="40"
-            [visible]="!isMobile || !showPrimaryArea"
+            [visible]="hasSecondaryContent && (!isMobile || !showPrimaryArea)"
             minSize="30"
             class="border border-neutral-300 dark:border-neutral-700"
         >

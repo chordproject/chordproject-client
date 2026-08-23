@@ -1,4 +1,9 @@
-<chp-split-layout class="h-full w-full flex-auto" [leftTemplate]="songList" [rightTemplate]="viewer">
+<chp-split-layout
+    class="h-full w-full flex-auto"
+    [leftTemplate]="songList"
+    [rightTemplate]="viewer"
+    [hasSecondaryContent]="!!selectedSong()"
+>
 </chp-split-layout>
 
 <ng-template #songList>

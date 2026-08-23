@@ -1,5 +1,5 @@
 - No agregar comentarios obvios.
-- Al generar mensajes de commit, describir claramente el contenido real que se va a subir, incluyendo las funcionalidades, correcciones o archivos relevantes cuando aporte contexto, pero no mencionar los cambios realizados en este archivo de instrucciones.
+- Al generar mensajes de commit, escribir siempre en inglés y describir claramente el contenido real incluido en el commit, incluyendo las funcionalidades, correcciones o archivos relevantes cuando aporte contexto. No mencionar nunca `.github/copilot-instructions.md` ni ningún cambio, estado local o actualización relacionado con ese archivo.
 - Evitar frases cliché o genéricas como "para mejorar mantenimiento y lisibilidad", "para mejorar funcionalidad" o "para mejorar el rendimiento"; el mensaje debe explicar qué cambió y ser lo bastante detallado para identificar los cambios posteriormente, sin agregar información que no corresponda al commit.
 - Los nuevos componentes deben tener su template en un archivo propio y siempre usar standalone; no crear módulos ni archivos de estilos.
 - Los componentes deberían seguir patrones del codebase como:

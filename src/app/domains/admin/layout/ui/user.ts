@@ -42,7 +42,11 @@ import { UserService } from '@/app/core/user/user.service';
       }
       <div class="flex min-w-0 flex-auto flex-col select-none">
         <div class="truncate font-medium">
-          {{ displayName() | transloco }}
+          @if (displayNameTranslationKey(); as key) {
+            {{ key | transloco }}
+          } @else {
+            {{ displayName() }}
+          }
         </div>
         <div class="text-on-surface-variant truncate text-sm">
           {{ user()?.email || ('user_menu.not_signed_in' | transloco) }}
@@ -79,7 +83,11 @@ import { UserService } from '@/app/core/user/user.service';
         }
         <div class="ml-3 flex min-w-0 flex-auto flex-col select-none">
           <div class="truncate font-medium">
-            {{ displayName() | transloco }}
+            @if (displayNameTranslationKey(); as key) {
+              {{ key | transloco }}
+            } @else {
+              {{ displayName() }}
+            }
           </div>
           <div class="text-on-surface-variant truncate text-xs">
             {{ user()?.email || ('user_menu.not_signed_in' | transloco) }}
@@ -155,12 +163,25 @@ export class User {
   // State
   protected scheme = computed(() => this.theming.scheme());
   protected user = toSignal(this.userService.user$);
-  protected displayName = computed(() => {
+  protected displayNameTranslationKey = computed(() => {
     const user = this.user();
     if (!user) {
       return 'user_menu.guest';
     }
-    return user.name || user.email?.split('@')[0] || 'user_menu.default_name';
+
+    if (!user.name && !user.email) {
+      return 'user_menu.default_name';
+    }
+
+    return null;
+  });
+  protected displayName = computed(() => {
+    const user = this.user();
+    if (!user) {
+      return '';
+    }
+
+    return user.name || user.email?.split('@')[0] || '';
   });
   protected schemes: { label: string; value: Scheme }[] = [
     { label: 'scheme.light', value: 'light' },

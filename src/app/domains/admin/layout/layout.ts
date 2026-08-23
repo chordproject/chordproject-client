@@ -7,7 +7,7 @@ import {
   MatSidenavContainer,
   MatSidenavContent,
 } from '@angular/material/sidenav';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { Media } from '@/app/core/media';
 import { GithubLink } from '@/app/domains/admin/layout/ui/github-link';
@@ -26,6 +26,7 @@ import { SearchComponent } from 'app/layout/common/search/search.component';
     MatSidenavContainer,
     MatSidenav,
     MatSidenavContent,
+    RouterLink,
     AdminSidebar,
     SchemeSwitcher,
     LanguageSwitcher,
@@ -47,10 +48,24 @@ import { SearchComponent } from 'app/layout/common/search/search.component';
       </mat-sidenav>
 
       <mat-sidenav-content
-        class="flex flex-col lg:h-dvh lg:overflow-hidden print:ml-0! print:h-auto print:overflow-visible"
+        class="flex h-dvh flex-col overflow-hidden print:ml-0! print:h-auto print:overflow-visible"
       >
         <!-- Toolbar -->
         <div class="relative flex items-center border-b px-4 py-2.5 print:hidden">
+          @if (isMobile() && !sidenav.opened) {
+            <a
+              [routerLink]="['/home']"
+              class="mr-3 inline-flex items-center"
+              aria-label="ChordProject"
+            >
+              <img
+                src="/chp/logo/logo.svg"
+                alt="ChordProject"
+                class="size-7"
+              />
+            </a>
+          }
+
           <button
             matIconButton
             (click)="sidenav.toggle()"
@@ -82,7 +97,7 @@ import { SearchComponent } from 'app/layout/common/search/search.component';
 
         <!-- Content -->
         <div
-          class="relative flex flex-col lg:min-h-0 lg:flex-auto lg:overflow-auto print:overflow-visible"
+          class="relative flex min-h-0 flex-auto flex-col overflow-auto print:overflow-visible"
         >
           <router-outlet />
         </div>

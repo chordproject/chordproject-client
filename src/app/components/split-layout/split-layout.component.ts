@@ -26,9 +26,22 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 })
 export class ChpSplitLayoutComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    private _hasSecondaryContent = true;
 
     @Input() leftTemplate: TemplateRef<any>;
     @Input() rightTemplate: TemplateRef<any>;
+    @Input()
+    set hasSecondaryContent(value: boolean) {
+        this._hasSecondaryContent = value !== false;
+
+        if (!this._hasSecondaryContent && !this.showPrimaryArea) {
+            this.showPrimaryArea = true;
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+    get hasSecondaryContent(): boolean {
+        return this._hasSecondaryContent;
+    }
 
     @Output() isMobileChange = new EventEmitter<boolean>();
 
