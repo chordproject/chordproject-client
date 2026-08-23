@@ -1,29 +1,21 @@
-export interface FuseConfirmationConfig {
-    title?: string;
-    message?: string;
-    icon?: {
-        show?: boolean;
-        name?: string;
-        color?:
-            | 'primary'
-            | 'accent'
-            | 'warn'
-            | 'basic'
-            | 'info'
-            | 'success'
-            | 'warning'
-            | 'error';
+export type FuseConfirmationConfig = {
+  title?: string;
+  message?: string;
+  icon?: {
+    show?: boolean;
+    name?: string;
+    color?: 'primary' | 'error' | 'neutral';
+  };
+  actions?: {
+    confirm?: {
+      show?: boolean;
+      label?: string;
+      color?: 'primary' | 'error';
     };
-    actions?: {
-        confirm?: {
-            show?: boolean;
-            label?: string;
-            color?: 'primary' | 'accent' | 'warn';
-        };
-        cancel?: {
-            show?: boolean;
-            label?: string;
-        };
+    cancel?: {
+      show?: boolean;
+      label?: string;
     };
-    dismissible?: boolean;
-}
+  };
+  dismissible?: boolean;
+};

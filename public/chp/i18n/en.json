@@ -1,18 +1,102 @@
 {
     "home": {
-        "about_title": "About this project",
-        "about_description": "<strong>ChordProject</strong> is a digital songbook that allows music enthusiasts to create, edit, organize, and discover new songs using the <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format. You can also share your own songs with other users and use the platform as an ideal tool for rehearsals or live performances. Unlike a printed songbook, this platform is dynamic, evolving and growing with you.",
-        "overview_title": "Overview",
-        "overview_description": "This application is designed to manage <strong>songs</strong> (with <strong>chords</strong>) and <strong>songbooks</strong>.",
+        "recently_added": "Recently Added",
+        "error_title": "Something went wrong while loading songs",
+        "error_subtitle": "Please refresh the page to try again",
+        "about_title": "About ChordProject",
+        "about_description": "<strong>ChordProject</strong> is your pocket digital songbook: write, organize, and play your songs with chords in <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format, on any device.",
+        "overview_title": "What can you do?",
         "features": [
-            "Lets you write and view songs with chords clearly and neatly using the ChordPro format.",
-            "Allows you to read, edit, or print songs with chord diagrams.",
-            "Ensures chords are always correctly positioned, regardless of font or screen size.",
-            "Stores songs online, with updates instantly reflected on all devices.",
-            "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, and more.",
-            "Transposition follows musical rules, not just mathematical shifting.",
-            "Lets you organize songs into customizable <strong>songbooks</strong>."
+            "Chords always perfectly aligned, on any screen or font size.",
+            "Live mode, with autoscroll and quick font size adjustment.",
+            "Your songs saved online and synced across all your devices.",
+            "Organize your songs into custom <strong>songbooks</strong>."
         ],
-        "platform_description": "ChordProject has a sister site, <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, dedicated exclusively to <strong>Christian music</strong>, while ChordProject is for general use."
+        "platform_title": "Looking for Christian music?",
+        "platform_description": "Visit our sister site <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
+        "contribute_title": "Have an idea to improve it?",
+        "contribute_description": "It's an <strong>open source</strong> project - send your Pull Request on <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>. Don't code? You can use AI to help write it."
+    },
+    "nav": {
+        "home": "Home",
+        "library": "Library",
+        "create": "Create",
+        "songbooks": "Songbooks",
+        "sign_in": "Sign in",
+        "sign_up": "Sign up"
+    },
+    "confirmation": {
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "default_title": "Confirm action",
+        "default_message": "Are you sure you want to confirm this action?"
+    },
+    "editor": {
+        "delete_song_title": "Delete song",
+        "delete_song_message": "Are you sure you want to delete this song? This action cannot be undone!",
+        "delete_song_confirm": "Delete"
+    },
+    "search": {
+        "placeholder_bar": "Search by title, lyrics or songbook...",
+        "placeholder_basic": "Search by title, lyrics or songbook",
+        "no_results": "No results found!",
+        "songs": "SONGS",
+        "songs_content": "SONGS CONTENT",
+        "songbooks": "SONGBOOKS",
+        "songbooks_content": "SONGBOOKS CONTENT"
+    },
+    "shortcuts": {
+        "search_placeholder": "Search for an app or page",
+        "no_results": "No results found"
+    },
+    "user_menu": {
+        "account": "Account",
+        "change_password": "Change password",
+        "appearance": "Appearance",
+        "sign_out": "Sign out",
+        "guest": "Guest",
+        "not_signed_in": "Not signed in",
+        "default_name": "User"
+    },
+    "scheme": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System",
+        "switch_to_light": "Switch to light theme",
+        "switch_to_dark": "Switch to dark theme"
+    },
+    "auth": {
+        "email_label": "Email address",
+        "password_label": "Password",
+        "email_required": "You must enter an email address",
+        "email_invalid": "You must enter a valid email address",
+        "password_required": "You must enter a password",
+        "sign_in_title": "Sign in",
+        "no_account": "Don't have an account?",
+        "sign_up_link": "Sign up",
+        "remember_me": "Remember me",
+        "forgot_password_link": "Forgot password?",
+        "sign_in_button": "Sign in",
+        "continue_with": "Or continue with",
+        "google": "Google",
+        "sign_up_title": "Sign up",
+        "have_account": "Already have an account?",
+        "sign_in_link": "Sign in",
+        "name_label": "Name",
+        "company_label": "Company",
+        "name_required": "You must enter your name",
+        "company_required": "You must enter your company name",
+        "agree_with": "I agree with",
+        "terms": "Terms",
+        "and": "and",
+        "privacy_policy": "Privacy Policy",
+        "create_account_button": "Create my account",
+        "forgot_password_title": "Forgot password",
+        "forgot_password_subtitle": "Fill the form to reset your password",
+        "reset_password_button": "Reset password",
+        "reset_password_title": "Reset password",
+        "reset_password_subtitle": "Create a new password for your account",
+        "password_validation_label": "Password validation",
+        "passwords_mismatch": "The passwords do not match"
     }
 }

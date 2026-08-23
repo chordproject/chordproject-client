@@ -8,13 +8,13 @@ import {
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
-import { Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'song-editor',
@@ -82,7 +82,10 @@ export class SongEditorComponent implements OnInit, OnDestroy {
 
     saveSong(): void {
         const updatedSong = this._editorService.prepareSongFromContent(this.song.content);
-        this.song = { ...this.song, ...updatedSong };
+        this.song = {
+            ...this.song,
+            ...Object.fromEntries(Object.entries(updatedSong).filter(([, value]) => value !== undefined)),
+        };
         this._songService.save(this.song).then((res) => {
             this.song.uid = res;
         });

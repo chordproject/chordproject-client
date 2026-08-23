@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Song } from 'app/models/song';
 import { Observable, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { Song } from 'app/models/song';
 import { SongService } from '../firebase/api/song.service';
 import { ParserService } from './parser.service';
 
@@ -70,12 +70,11 @@ export class EditorService {
     confirmAndDelete(song: Song): Observable<boolean> {
         return this.confirmationService
             .open({
-                title: 'Delete song',
-                message:
-                    'Are you sure you want to delete this song? This action cannot be undone!',
+                title: 'editor.delete_song_title',
+                message: 'editor.delete_song_message',
                 actions: {
                     confirm: {
-                        label: 'Delete',
+                        label: 'editor.delete_song_confirm',
                     },
                 },
             })

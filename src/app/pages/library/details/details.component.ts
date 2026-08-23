@@ -26,6 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { FuseFindByKeyPipe } from '@fuse/pipes/find-by-key/find-by-key.pipe';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
@@ -34,7 +35,6 @@ import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
 import { Tag } from 'app/models/tag';
-import { Subject, takeUntil } from 'rxjs';
 import { LibraryComponent } from '../library.component';
 
 @Component({
@@ -66,15 +66,15 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
-    editMode: boolean = false;
+    editMode = false;
     tags: Tag[];
-    tagsEditMode: boolean = false;
+    tagsEditMode = false;
     filteredTags: Tag[];
     song: Song;
     songs: Song[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    songContent: string = '';
+    songContent = '';
 
     constructor(
         private _activatedRoute: ActivatedRoute,
@@ -158,7 +158,10 @@ export class SongsDetailsComponent implements OnInit, OnDestroy {
 
     updateSong(): void {
         const updatedSong = this.editorService.prepareSongFromContent(this.songContent);
-        this.song = { ...this.song, ...updatedSong };
+        this.song = {
+            ...this.song,
+            ...Object.fromEntries(Object.entries(updatedSong).filter(([, value]) => value !== undefined)),
+        };
         this._songsService.save(this.song).then(() => {
             this.toggleEditMode(false);
         });

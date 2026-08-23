@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
     AfterViewInit,
@@ -15,9 +15,9 @@ import {
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
-import { FuseConfigService } from '@fuse/services/config';
 import * as ChordProjectEditor from 'chordproject-editor';
 import { Subject, takeUntil } from 'rxjs';
+import { FuseConfigService } from '@fuse/services/config';
 import { ChpEditorToolbarComponent } from '../editor-toolbar/editor-toolbar.component';
 
 @Component({
@@ -44,13 +44,13 @@ export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit, OnC
     _content = '';
     oldContent: any;
     timeoutSaving: any;
-    isDarkMode: boolean = false;
+    isDarkMode = false;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
         private _fuseConfigService: FuseConfigService,
         @Inject(DOCUMENT) private _document: Document,
-        @Inject(PLATFORM_ID) private _platformId: Object
+        @Inject(PLATFORM_ID) private _platformId: object
     ) {
         // Check initial dark mode state immediately
         if (isPlatformBrowser(this._platformId)) {

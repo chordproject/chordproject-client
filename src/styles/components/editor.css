@@ -1,0 +1,98 @@
+/* -------------------------------------------------------------------------- */
+/* ChordPro editor                                                           */
+/* -------------------------------------------------------------------------- */
+#chordProjectEditor.ace-clouds {
+  background-color: var(--color-white);
+  color: var(--color-neutral-950);
+}
+
+#chordProjectEditor.ace-clouds .ace_gutter {
+  background-color: var(--color-neutral-50);
+  color: var(--color-neutral-500);
+}
+
+#chordProjectEditor.ace-clouds .ace_marker-layer .ace_active-line,
+#chordProjectEditor.ace-clouds .ace_gutter-active-line {
+  background-color: var(--color-neutral-100);
+}
+
+#chordProjectEditor.ace-clouds .ace_marker-layer .ace_selection {
+  background-color: var(--color-primary-100);
+}
+
+#chordProjectEditor.ace-clouds .ace_keyword,
+#chordProjectEditor.ace-clouds .ace_keyword.ace_operator {
+  color: var(--color-error-600);
+}
+
+#chordProjectEditor.ace-clouds .ace_meta,
+#chordProjectEditor.ace-clouds .ace_entity {
+  color: var(--color-primary-600);
+}
+
+#chordProjectEditor.ace-clouds .ace_string {
+  color: var(--color-neutral-700);
+}
+
+#chordProjectEditor.ace-clouds .ace_comment {
+  color: #4d9f68;
+}
+
+#chordProjectEditor.ace-clouds .ace_constant {
+  color: var(--color-neutral-600);
+}
+
+#chordProjectEditor.ace-clouds .ace_invalid {
+  color: var(--color-error-700);
+  background-color: var(--color-error-100);
+}
+
+#chordProjectEditor.ace-cobalt {
+  background-color: var(--color-neutral-900);
+  color: var(--color-neutral-100);
+}
+
+#chordProjectEditor.ace-cobalt .ace_gutter {
+  background-color: var(--color-neutral-900);
+  color: var(--color-neutral-400);
+}
+
+#chordProjectEditor.ace-cobalt .ace_marker-layer .ace_active-line,
+#chordProjectEditor.ace-cobalt .ace_gutter-active-line {
+  background-color: var(--color-neutral-800);
+}
+
+#chordProjectEditor.ace-cobalt .ace_marker-layer .ace_selection {
+  background-color: color-mix(in oklch, var(--color-primary-600) 35%, transparent);
+}
+
+#chordProjectEditor.ace-cobalt .ace_keyword,
+#chordProjectEditor.ace-cobalt .ace_keyword.ace_operator {
+  color: var(--color-error-400);
+}
+
+#chordProjectEditor.ace-cobalt .ace_meta,
+#chordProjectEditor.ace-cobalt .ace_entity {
+  color: var(--color-primary-300);
+}
+
+#chordProjectEditor.ace-cobalt .ace_string {
+  color: var(--color-neutral-300);
+}
+
+#chordProjectEditor.ace-cobalt .ace_comment {
+  color: #79c98d;
+}
+
+#chordProjectEditor.ace-cobalt .ace_constant {
+  color: var(--color-neutral-400);
+}
+
+#chordProjectEditor.ace-cobalt .ace_invalid {
+  color: var(--color-error-200);
+  background-color: color-mix(in oklch, var(--color-error-600) 30%, transparent);
+}
+
+#chordProjectEditor.ace-cobalt .ace_cursor {
+  color: var(--color-neutral-100);
+}

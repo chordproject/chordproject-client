@@ -2,14 +2,14 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Songbook } from 'app/models/songbook';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'chp-songbook',

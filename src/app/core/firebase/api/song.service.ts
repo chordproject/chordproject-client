@@ -1,9 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserService } from 'app/core/user/user.service';
-import { PartialSong } from 'app/models/partialsong';
-import { Song } from 'app/models/song';
-import { environment } from 'environments/environment';
 import {
     Firestore,
     collection,
@@ -18,8 +14,13 @@ import {
     setDoc,
     where,
 } from 'firebase/firestore';
-import { BehaviorSubject, Observable, Subject, combineLatest, firstValueFrom, from, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, firstValueFrom, from, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { UserService } from 'app/core/user/user.service';
+import { PartialSong } from 'app/models/partialsong';
+import { Song } from 'app/models/song';
+import { Tag } from 'app/models/tag';
+import { environment } from 'environments/environment';
 import { FirebaseService } from '../firebase.service';
 
 @Injectable({
@@ -29,7 +30,7 @@ export class SongService {
     private _firestore: Firestore;
     private _snackBar: MatSnackBar;
     private _userService: UserService;
-    private _song: BehaviorSubject<Song | null> = new BehaviorSubject(null);
+    private _song = new BehaviorSubject<Song | null>(null);
     private _songsChanged = new Subject<void>();
 
     get song$(): Observable<Song> {
@@ -158,7 +159,7 @@ export class SongService {
         );
     }
 
-    getLatest(pageSize: number = 10): Observable<PartialSong[]> {
+    getLatest(pageSize = 10): Observable<PartialSong[]> {
         const q = query(collection(this._firestore, 'songs'), orderBy('creationDate', 'desc'), limit(pageSize));
 
         return from(getDocs(q)).pipe(
@@ -190,7 +191,10 @@ export class SongService {
 
             song.authorId = userUid;
 
-            await setDoc(doc(this._firestore, 'songs', song.uid), { ...song });
+            const songData = Object.fromEntries(
+                Object.entries(song).filter(([, value]) => value !== undefined)
+            );
+            await setDoc(doc(this._firestore, 'songs', song.uid), songData);
             this.showSnackbar('Song saved successfully');
             return song.uid;
         } catch (error) {
@@ -224,7 +228,7 @@ export class SongService {
         return true;
     }
 
-    private showSnackbar(message: string, duration: number = 3000, type?: string): void {
+    private showSnackbar(message: string, duration = 3000, type?: string): void {
         this._snackBar.open(message, 'Close', {
             duration,
             horizontalPosition: 'center',
@@ -246,7 +250,9 @@ export class SongService {
     }
 
     getTags() {
-        //TODO
-        return null;
+        return from(getDocs(query(collection(this._firestore, 'tags'), orderBy('title')))).pipe(
+            map((snapshot) => snapshot.docs.map((tagDoc) => ({ id: tagDoc.id, ...tagDoc.data() }) as Tag)),
+            catchError(() => of([] as Tag[]))
+        );
     }
 }

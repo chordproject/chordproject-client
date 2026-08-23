@@ -12,10 +12,10 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { FuseConfigService } from '@fuse/services/config';
-import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { AngularSplitModule } from 'angular-split';
 import { Subject, takeUntil } from 'rxjs';
+import { FuseConfigService } from '@fuse/services/config';
+import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 
 @Component({
     selector: 'chp-split-layout',

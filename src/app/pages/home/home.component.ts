@@ -4,11 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SearchComponent } from 'app/layout/common/search/search.component';
 import { PartialSong } from 'app/models/partialsong';
-import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-home',
@@ -27,6 +27,8 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
     features: string[] = [];
     latestSongs$: Observable<PartialSong[]>;
+    // Fixed-size grid of decorative background logos (size/spacing controlled purely via CSS).
+    watermarkTiles = Array.from({ length: 240 });
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(

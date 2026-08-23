@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { User } from 'app/core/user/user.types';
 import { BehaviorSubject, map, Observable } from 'rxjs';
+import { User } from 'app/core/user/user.types';
 import { AuthService } from '../firebase/auth/auth.service';
 
 @Injectable({ providedIn: 'root' })

@@ -1,0 +1,167 @@
+<div class="flex flex-auto">
+  <div
+    class="flex flex-auto items-center justify-center bg-white p-4 sm:p-12 dark:bg-neutral-950"
+  >
+    <div class="flex w-full max-w-80 flex-col sm:min-w-80">
+      <!-- Logo -->
+      <img
+        class="w-12"
+        src="/chp/logo/logo.svg"
+        alt="ChordProject logo"
+      />
+
+      <!-- Title -->
+      <div class="leading-tight mt-8 text-4xl font-extrabold tracking-tight">
+        {{ 'auth.sign_up_title' | transloco }}
+      </div>
+      <div class="mt-0.5 flex items-baseline font-medium">
+        <div class="text-neutral-500">{{ 'auth.have_account' | transloco }}</div>
+        <a
+          class="ml-1 underline"
+          routerLink="/auth/sign-in"
+        >
+          {{ 'auth.sign_in_link' | transloco }}
+        </a>
+      </div>
+
+      <!-- Sign up form -->
+      <form
+        class="mt-8"
+        (submit)="signUp($event)"
+      >
+        <div class="flex flex-col gap-y-4">
+          <!-- Name field -->
+          <mat-form-field class="w-full">
+            <mat-label>{{ 'auth.name_label' | transloco }}</mat-label>
+            <input
+              id="name"
+              matInput
+              [formField]="signUpForm.name"
+            />
+            <mat-error>
+              @if (signUpForm.name().touched() && signUpForm.name().invalid()) {
+                @for (error of signUpForm.name().errors(); track error) {
+                  {{ error.message | transloco }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Company field -->
+          <mat-form-field class="w-full">
+            <mat-label>{{ 'auth.company_label' | transloco }}</mat-label>
+            <input
+              id="company"
+              matInput
+              [formField]="signUpForm.company"
+            />
+            <mat-error>
+              @if (
+                signUpForm.company().touched() && signUpForm.company().invalid()
+              ) {
+                @for (error of signUpForm.company().errors(); track error) {
+                  {{ error.message | transloco }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Email field -->
+          <mat-form-field class="w-full">
+            <mat-label>{{ 'auth.email_label' | transloco }}</mat-label>
+            <input
+              id="email"
+              matInput
+              [formField]="signUpForm.email"
+            />
+            <mat-error>
+              @if (
+                signUpForm.email().touched() && signUpForm.email().invalid()
+              ) {
+                @for (error of signUpForm.email().errors(); track error) {
+                  {{ error.message | transloco }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Password field -->
+          <mat-form-field
+            appearance="fill"
+            class="w-full"
+          >
+            <mat-label>{{ 'auth.password_label' | transloco }}</mat-label>
+            <input
+              id="password"
+              matInput
+              type="password"
+              [formField]="signUpForm.password"
+              #passwordField
+            />
+            <button
+              matIconButton
+              type="button"
+              (click)="
+                passwordField.type === 'password'
+                  ? (passwordField.type = 'text')
+                  : (passwordField.type = 'password')
+              "
+              matSuffix
+            >
+              @if (passwordField.type === 'password') {
+                <mat-icon
+                  class="size-5"
+                  svgIcon="eye"
+                ></mat-icon>
+              }
+              @if (passwordField.type === 'text') {
+                <mat-icon
+                  class="size-5"
+                  svgIcon="eye-off"
+                ></mat-icon>
+              }
+            </button>
+            <mat-error>
+              @if (
+                signUpForm.password().touched() &&
+                signUpForm.password().invalid()
+              ) {
+                @for (error of signUpForm.password().errors(); track error) {
+                  {{ error.message | transloco }}
+                }
+              }
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- ToS and PP -->
+        <div class="mt-2 inline-flex w-full items-end">
+          <mat-checkbox class="-ml-2">
+            <span>{{ 'auth.agree_with' | transloco }}</span>
+            <a
+              class="ml-1 underline"
+              [routerLink]="['./']"
+              >{{ 'auth.terms' | transloco }}
+            </a>
+            <span>{{ 'auth.and' | transloco }}</span>
+            <a
+              class="ml-1 underline"
+              [routerLink]="['./']"
+              >{{ 'auth.privacy_policy' | transloco }}
+            </a>
+          </mat-checkbox>
+        </div>
+
+        <!-- Submit button -->
+        <button
+          type="submit"
+          matButton="filled"
+          class="mt-6 w-full"
+          [disabled]="signUpForm().invalid()"
+        >
+          {{ 'auth.create_account_button' | transloco }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

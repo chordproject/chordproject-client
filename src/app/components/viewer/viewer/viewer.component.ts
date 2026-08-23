@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Song } from 'chordproject-parser';
 import { ParserService } from 'app/core/chordpro/parser.service';
 import { ViewSettingsService } from 'app/core/chordpro/viewsettings.service';
 import { SafeHtmlPipe } from 'app/pipes/safeHtml.pipe';
 import { ViewSettings } from 'app/tools/view-customization/view-settings';
-import { Song } from 'chordproject-parser';
 
 @Component({
     selector: 'chp-viewer',

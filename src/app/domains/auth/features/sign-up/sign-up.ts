@@ -1,0 +1,66 @@
+import { Component, inject, signal } from '@angular/core';
+import {
+  email,
+  form,
+  FormField,
+  required,
+  submit,
+} from '@angular/forms/signals';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { Router, RouterLink } from '@angular/router';
+import { TranslocoModule } from '@jsverse/transloco';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from '@/app/core/firebase/auth/auth.service';
+
+@Component({
+  selector: 'auth-sign-up',
+  templateUrl: './sign-up.html',
+  imports: [
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCheckboxModule,
+    FormField,
+    TranslocoModule,
+  ],
+})
+export default class AuthSignUp {
+  // Dependencies
+  private router = inject(Router);
+  private authService = inject(AuthService);
+
+  // State
+  protected signUpFormModel = signal({
+    name: '',
+    email: '',
+    password: '',
+    company: '',
+  });
+  protected signUpForm = form(this.signUpFormModel, (form) => {
+    required(form.name, { message: 'auth.name_required' });
+    required(form.email, { message: 'auth.email_required' });
+    email(form.email, { message: 'auth.email_invalid' });
+    required(form.password, { message: 'auth.password_required' });
+    required(form.company, { message: 'auth.company_required' });
+  });
+
+  signUp(event: Event) {
+    event.preventDefault();
+
+    submit(this.signUpForm, async () => {
+      const { email, password } = this.signUpFormModel();
+      try {
+        await firstValueFrom(this.authService.createUser(email, password));
+        this.router.navigateByUrl('/auth/sign-in');
+      } catch {
+        // Error already surfaced to the user via AuthService's snackbar.
+      }
+    });
+  }
+}

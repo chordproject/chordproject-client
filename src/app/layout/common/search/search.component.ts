@@ -9,10 +9,11 @@ import {
     OnDestroy,
     OnInit,
     Output,
+    signal,
     SimpleChanges,
     ViewChild,
     ViewEncapsulation,
-    inject,
+    inject, OnChanges,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import {
@@ -25,11 +26,11 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { fuseAnimations } from '@fuse/animations/public-api';
+import { Subject, debounceTime, filter, forkJoin, map, takeUntil } from 'rxjs';
+import { TranslocoModule } from '@jsverse/transloco';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
 import { SearchResultSets } from 'app/models/searchResultSets';
-import { Subject, debounceTime, filter, forkJoin, map, takeUntil } from 'rxjs';
 import { SearchResultsComponent } from './search-results.component';
 
 @Component({
@@ -37,7 +38,6 @@ import { SearchResultsComponent } from './search-results.component';
     templateUrl: './search.component.html',
     encapsulation: ViewEncapsulation.None,
     exportAs: 'fuseSearch',
-    animations: fuseAnimations,
     standalone: true,
     imports: [
         MatButtonModule,
@@ -49,6 +49,7 @@ import { SearchResultsComponent } from './search-results.component';
         MatFormFieldModule,
         MatInputModule,
         SearchResultsComponent,
+        TranslocoModule,
     ],
     providers: [
         {
@@ -60,14 +61,14 @@ import { SearchResultsComponent } from './search-results.component';
         },
     ],
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     @Input() appearance: 'basic' | 'bar' = 'basic';
-    @Input() debounce: number = 300;
-    @Input() minLength: number = 2;
+    @Input() debounce = 300;
+    @Input() minLength = 2;
     @Output() search: EventEmitter<SearchResultSets> = new EventEmitter<SearchResultSets>();
 
-    resultSets: SearchResultSets | null = null;
-    opened: boolean = false;
+    resultSets = signal<SearchResultSets | null>(null);
+    opened = signal(false);
     searchControl: UntypedFormControl = new UntypedFormControl();
     private _matAutocomplete: MatAutocomplete;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -84,7 +85,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         return {
             'search-appearance-bar': this.appearance === 'bar',
             'search-appearance-basic': this.appearance === 'basic',
-            'search-opened': this.opened,
+            'search-opened': this.opened(),
         };
     }
 
@@ -125,7 +126,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                     // the length of the value is smaller than the minLength
                     // so the autocomplete panel can be closed
                     if (!value || value.length < this.minLength) {
-                        this.resultSets = null;
+                        this.resultSets.set(null);
                     }
                     return value;
                 }),
@@ -145,7 +146,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                     const songUids = new Set(resultSets.songs.map((song) => song.uid));
                     resultSets.songsContent = resultSets.songsContent.filter((song) => !songUids.has(song.uid));
                     // Store the result sets
-                    this.resultSets = resultSets;
+                    this.resultSets.set(resultSets);
 
                     // Execute the event
                     this.search.next(resultSets);
@@ -171,23 +172,23 @@ export class SearchComponent implements OnInit, OnDestroy {
     open(event: Event): void {
         event.stopPropagation();
         // Return if it's already opened
-        if (this.opened) {
+        if (this.opened()) {
             return;
         }
         // Open the search
-        this.opened = true;
+        this.opened.set(true);
     }
 
     close(): void {
         // Return if it's already closed
-        if (!this.opened) {
+        if (!this.opened()) {
             return;
         }
         // Clear the search input
         this.searchControl.setValue('');
 
         // Close the search
-        this.opened = false;
+        this.opened.set(false);
     }
 
     @HostListener('document:click', ['$event'])

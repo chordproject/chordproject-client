@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import {
     FontColor,
     FontSize,
     FontStyle,
 } from 'app/tools/font-customization/font-style';
 import { ViewSettings } from 'app/tools/view-customization/view-settings';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -16,8 +16,8 @@ export class ViewSettingsService {
 
     constructor() {
         this.initDefaultSettings();
-        this._viewSettings = localStorage.viewSettings
-            ? JSON.parse(localStorage.viewSettings)
+        this._viewSettings = localStorage['viewSettings']
+            ? JSON.parse(localStorage['viewSettings'])
             : (this._viewSettings = this.getDefaultViewSettings());
         this.viewSettingsSubject = new BehaviorSubject<ViewSettings>(
             this._viewSettings

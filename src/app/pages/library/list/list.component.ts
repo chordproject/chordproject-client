@@ -13,10 +13,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { PartialSong } from 'app/models/partialsong';
-import { merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { LibraryComponent } from '../library.component';
 
 @Component({
@@ -39,7 +39,7 @@ import { LibraryComponent } from '../library.component';
 })
 export class SongsListComponent implements OnInit, OnDestroy {
     songs$: Observable<PartialSong[]>;
-    songsCount: number = 0;
+    songsCount = 0;
     searchInputControl: UntypedFormControl = new UntypedFormControl();
     selectedSong: PartialSong;
     private _unsubscribeAll: Subject<any> = new Subject<any>();

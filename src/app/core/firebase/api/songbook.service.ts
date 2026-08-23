@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PartialSong } from 'app/models/partialsong';
-import { Relation } from 'app/models/relation';
-import { Songbook } from 'app/models/songbook';
 import { Auth } from 'firebase/auth';
 import {
     Firestore,
@@ -19,6 +16,9 @@ import {
 } from 'firebase/firestore';
 import { Observable, combineLatest, from, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { PartialSong } from 'app/models/partialsong';
+import { Relation } from 'app/models/relation';
+import { Songbook } from 'app/models/songbook';
 import { FirebaseService } from '../firebase.service';
 import { SongService } from './song.service';
 
@@ -311,7 +311,7 @@ export class SongbookService {
 
     searchSongbooks(
         searchTerm?: string,
-        limitResults: number = 3
+        limitResults = 3
     ): Observable<Songbook[]> {
         const songbooksRef = collection(this._firebase.firestore, 'songbooks');
         const q = query(songbooksRef, orderBy('name'));
@@ -351,8 +351,8 @@ export class SongbookService {
 
     searchSongsInSongbooks(
         searchTerm: string,
-        limitSongbooks: number = 3,
-        limitSongsPerSongbook: number = 3
+        limitSongbooks = 3,
+        limitSongsPerSongbook = 3
     ): Observable<{ songbook: Songbook; songs: PartialSong[] }[]> {
         return this.getAll().pipe(
             switchMap((songbooks) => {
@@ -405,7 +405,7 @@ export class SongbookService {
         return true;
     }
 
-    private showSnackbar(message: string, duration: number = 3000): void {
+    private showSnackbar(message: string, duration = 3000): void {
         this._snackBar.open(message, 'Close', {
             duration: duration,
             horizontalPosition: 'center',

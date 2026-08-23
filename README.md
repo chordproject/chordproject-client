@@ -1,44 +1,59 @@
-<div align="center">
-<a href="https://chordproject.com"><img src="./public/chp/logo.svg" alt="Logo"></a>
-<a href="https://chordproject.com"><img src="./public/chp/logo-text-light.svg" alt="Text Logo"></a>
+# Fuse - Angular Starter Kit & Admin Template
 
-<a href="https://chordproject.com">chordproject.com</a>
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli).
 
-</div>
+## Development server
 
-# ChordProject Client
+To start a local development server, run:
 
-Web client for ChordProject, an Angular application for creating, editing, and organizing songs using ChordPro notation. It features live sync, chord diagrams, auto-scroll, transposition, and customizable songbooks for live performance and personal use.
+```bash
+ng serve
+```
 
-## Overview
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-This application is built to manage songs (with chords) and songbooks. It parses and formats marked-up music with [ChordPro](https://chordpro.org) notation.
+## Code scaffolding
 
-## Features
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-- Live synchronization across devices.
-- Accurate chord positioning and formatting.
-- Integrated editor for reading, editing, and printing songs.
-- Customizable viewer, autoscroll, font size adjustment, chord diagrams.
-- Transposition (musical rules-based, not math-based).
-- Dynamic songbook management.
+```bash
+ng generate component component-name
+```
 
-## Platform Details
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-ChordProject caters to a broad audience. Its sister site, [homenajesus.com](https://homenajesus.com), specializes in Christian music, while [chordproject.com](https://chordproject.com) serves general use.
+```bash
+ng generate --help
+```
 
-[Visit HomenaJesus](https://homenajesus.com)
+## Building
 
-## Contribute
+To build the project run:
 
-1. Clone the repository.
-2. Install dependencies using npm.
-3. Run the development server with `ng serve`.
+```bash
+ng build
+```
 
-## Inspiration
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-- [UkeGeeks](https://github.com/buzcarter/UkeGeeks)
-- [ChordBook](https://github.com/chordbook/chordbook)
-- [Fuse Angular Material](https://angular-material.fusetheme.com/)
+## Running unit tests
 
-Also thanks to the ideas and collaboration of [bkeepers](https://github.com/bkeepers) and [edwinzap](https://github.com/edwinzap).
+To execute unit tests with the Vitest, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

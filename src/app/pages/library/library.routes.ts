@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, Routes } from '@angular/router';
-import { SongService } from 'app/core/firebase/api/song.service';
 import { catchError, throwError } from 'rxjs';
+import { SongService } from 'app/core/firebase/api/song.service';
 import { SongsDetailsComponent } from './details/details.component';
 import { LibraryComponent } from './library.component';
 import { SongsListComponent } from './list/list.component';

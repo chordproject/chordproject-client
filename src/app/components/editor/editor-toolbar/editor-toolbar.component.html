@@ -1,25 +1,25 @@
-<div class="flex flex-0 items-center justify-between border-b bg-gray-50 px-4 py-3 dark:bg-transparent">
+<div class="flex flex-0 items-center justify-between border-b bg-neutral-50 px-4 py-3 dark:bg-neutral-900">
     <div class="flex items-center gap-2">
         <button mat-icon-button [matTooltip]="'Save'" (click)="saveSongEvent.emit()">
-            <mat-icon [svgIcon]="'heroicons_outline:document-arrow-down'"></mat-icon>
+            <mat-icon [svgIcon]="'file-down'"></mat-icon>
         </button>
         <button mat-icon-button [color]="'warn'" [matTooltip]="'Delete'" (click)="removeSongEvent.emit()">
-            <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+            <mat-icon [svgIcon]="'trash-2'"></mat-icon>
         </button>
         @if (mode === 'quick') {
             <button mat-icon-button [matTooltip]="'Open in full editor'" (click)="openFullEditorEvent.emit()">
-                <mat-icon [svgIcon]="'heroicons_outline:arrow-top-right-on-square'"></mat-icon>
+                  <mat-icon [svgIcon]="'external-link'"></mat-icon>
             </button>
         }
         @if (mode === 'full') {
             <button mat-icon-button [matTooltip]="'Help'" (click)="helpEvent.emit()">
-                <mat-icon [svgIcon]="'heroicons_outline:question-mark-circle'"></mat-icon>
+                  <mat-icon [svgIcon]="'circle-question-mark'"></mat-icon>
             </button>
         }
     </div>
     <div class="flex items-center">
         <button mat-icon-button [matTooltip]="'Close'" (click)="closeEvent.emit()">
-            <mat-icon [svgIcon]="'heroicons_outline:x-mark'"></mat-icon>
+            <mat-icon [svgIcon]="'x'"></mat-icon>
         </button>
     </div>
 </div>

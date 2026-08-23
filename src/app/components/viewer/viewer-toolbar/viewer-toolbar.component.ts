@@ -30,7 +30,7 @@ import { ZoomToolComponent } from './tools/zoom.component';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChpViewerToolbarComponent {
-    @Input() deviceType: string = 'phone';
+    @Input() deviceType = 'phone';
     @Input() song: Song;
 
     @Output() editSongEvent = new EventEmitter<void>();

@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
     Auth,
+    confirmPasswordReset,
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     onAuthStateChanged,
@@ -104,6 +105,13 @@ export class AuthService {
         );
     }
 
+    confirmPasswordReset(oobCode: string, password: string): Promise<void> {
+        return confirmPasswordReset(this._auth, oobCode, password).catch((error) => {
+            this.showSnackbar(`Password reset failed: ${error.message}`);
+            throw error;
+        });
+    }
+
     signOut(): Observable<void> {
         return from(
             signOut(this._auth)
@@ -115,7 +123,7 @@ export class AuthService {
         );
     }
 
-    private showSnackbar(message: string, duration: number = 3000): void {
+    private showSnackbar(message: string, duration = 3000): void {
         this._snackBar.open(message, 'Close', {
             duration: duration,
             horizontalPosition: 'center',
