@@ -25,6 +25,12 @@
         "sign_in": "Sign in",
         "sign_up": "Sign up"
     },
+    "library_page": {
+        "title": "Song Library",
+        "no_songs": "No songs",
+        "song": "song",
+        "songs": "songs"
+    },
     "confirmation": {
         "cancel": "Cancel",
         "confirm": "Confirm",

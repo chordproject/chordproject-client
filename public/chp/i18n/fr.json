@@ -25,6 +25,12 @@
         "sign_in": "Se connecter",
         "sign_up": "S'inscrire"
     },
+    "library_page": {
+        "title": "Bibliothèque de chansons",
+        "no_songs": "Aucune chanson",
+        "song": "chanson",
+        "songs": "chansons"
+    },
     "confirmation": {
         "cancel": "Annuler",
         "confirm": "Confirmer",

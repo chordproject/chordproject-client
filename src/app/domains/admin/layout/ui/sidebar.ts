@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Navigation } from '@/app/domains/admin/layout/ui/navigation';
 import { User } from '@/app/domains/admin/layout/ui/user';
 
 @Component({
   selector: 'admin-sidebar',
-  imports: [Navigation, User],
+  imports: [Navigation, RouterLink, User],
   host: {
     class: 'flex w-full flex-auto flex-col',
   },
@@ -12,11 +13,13 @@ import { User } from '@/app/domains/admin/layout/ui/user';
     <!-- Header -->
     <div class="relative flex items-center pt-5 pr-4 pb-0 pl-6">
       <!-- Logo -->
-      <img
-        src="/chp/logo/logo-text-light.svg"
-        class="h-auto w-full"
-        alt="ChordProject"
-      />
+      <a [routerLink]="['/home']" class="block w-full">
+        <img
+          src="/chp/logo/logo-text-light.svg"
+          class="h-auto w-full cursor-pointer"
+          alt="ChordProject"
+        />
+      </a>
     </div>
 
     <!-- Navigation -->    <navigation class="mt-8 mb-4 flex-auto" />

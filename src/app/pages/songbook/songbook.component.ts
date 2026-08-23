@@ -1,6 +1,6 @@
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -19,13 +19,13 @@ import { Songbook } from 'app/models/songbook';
 })
 export class SongbookComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    selectedSong: PartialSong | null = null;
+    selectedSong = signal<PartialSong | null>(null);
 
     @ViewChild(ChpSplitLayoutComponent) splitLayout: ChpSplitLayoutComponent;
 
     songbook$: Observable<Songbook>;
     songs$: Observable<PartialSong[]>;
-    songsList: PartialSong[] = [];
+    songsList = signal<PartialSong[]>([]);
 
     constructor(
         private _route: ActivatedRoute,
@@ -50,13 +50,13 @@ export class SongbookComponent implements OnInit, OnDestroy {
             takeUntil(this._unsubscribeAll),
             switchMap((params) => {
                 // Reset selected song when route changes
-                this.selectedSong = null;
+                this.selectedSong.set(null);
                 return this._songbookService.getContent(params.get('uid'));
             })
         );
 
         this.songs$.pipe(takeUntil(this._unsubscribeAll)).subscribe((songs) => {
-            this.songsList = [...songs];
+            this.songsList.set([...songs]);
         });
     }
 
@@ -70,11 +70,14 @@ export class SongbookComponent implements OnInit, OnDestroy {
             return;
         }
 
+        const updatedSongs = [...this.songsList()];
+
         // Actualizar la UI inmediatamente
-        moveItemInArray(this.songsList, event.previousIndex, event.currentIndex);
+        moveItemInArray(updatedSongs, event.previousIndex, event.currentIndex);
+        this.songsList.set(updatedSongs);
 
         // Preparar datos para BD
-        const songOrders = this.songsList.map((song, index) => ({
+        const songOrders = this.songsList().map((song, index) => ({
             songId: song.uid,
             order: index,
         }));
@@ -85,7 +88,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
     }
 
     selectSong(song: PartialSong): void {
-        this.selectedSong = song;
+        this.selectedSong.set(song);
 
         // If we're in mobile mode, toggle the preview to show the right panel
         if (this.splitLayout?.isMobile) {
