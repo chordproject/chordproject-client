@@ -176,10 +176,6 @@ export class Navigation {
     // Replace the static "Songbooks" entry with the signed-in user's songbooks
     effect(() => {
       const songbooks = this.songbooks();
-      if (!songbooks) {
-        return;
-      }
-
       this.navigation.update((items) => this.withSongbooks(items, songbooks));
     });
 
@@ -208,16 +204,51 @@ export class Navigation {
    */
   private withSongbooks(
     items: NavigationItem[],
-    songbooks: NavigationItem[]
+    songbooks: NavigationItem[] | null
   ): NavigationItem[] {
     return items.map((section) => ({
       ...section,
       children: section.children?.map((item) =>
         item.id === 'general/songbooks'
-          ? { ...item, route: undefined, children: songbooks }
+          ? this.withSongbooksItem(item, songbooks)
           : item
       ),
     }));
+  }
+
+  /**
+   * Keep Songbooks clickable even when dynamic data is unavailable.
+   */
+  private withSongbooksItem(
+    item: NavigationItem,
+    songbooks: NavigationItem[] | null
+  ): NavigationItem {
+    if (!songbooks || songbooks.length === 0) {
+      return { ...item, route: '/songbook', children: undefined };
+    }
+
+    return {
+      ...item,
+      route: this.firstRoute(songbooks) ?? '/songbook',
+      children: songbooks,
+    };
+  }
+
+  private firstRoute(items: NavigationItem[]): string | undefined {
+    for (const item of items) {
+      if (item.route) {
+        return item.route;
+      }
+
+      if (item.children?.length) {
+        const childRoute = this.firstRoute(item.children);
+        if (childRoute) {
+          return childRoute;
+        }
+      }
+    }
+
+    return undefined;
   }
 
   /**

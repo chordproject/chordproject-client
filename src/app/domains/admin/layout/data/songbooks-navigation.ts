@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { SongbookService } from '@/app/core/firebase/api/songbook.service';
 import { UserService } from '@/app/core/user/user.service';
 import { NavigationItem } from '@/app/domains/admin/layout/data/navigation';
@@ -17,7 +17,14 @@ export class AdminSongbooksNavigation {
     .isAuthenticated()
     .pipe(
       switchMap((isAuthenticated) =>
-        isAuthenticated ? this.buildTree() : of(null)
+        isAuthenticated
+          ? this.buildTree().pipe(
+              catchError((error) => {
+                console.error('Failed to load songbooks navigation:', error);
+                return of([]);
+              })
+            )
+          : of(null)
       )
     );
 

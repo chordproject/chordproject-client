@@ -1,6 +1,6 @@
 - No agregar comentarios obvios.
-- Al generar mensajes de commit, limitarse a las funcionalidades que se están implementando; no agregar detalles como "para mejorar funcionalidad" o "para mejorar el rendimiento".
-- Los mensajes de commit para Git deben ser cortos.
+- Al generar mensajes de commit, describir claramente el contenido real que se va a subir, incluyendo las funcionalidades, correcciones o archivos relevantes cuando aporte contexto, pero no mencionar los cambios realizados en este archivo de instrucciones.
+- Evitar frases cliché o genéricas como "para mejorar mantenimiento y lisibilidad", "para mejorar funcionalidad" o "para mejorar el rendimiento"; el mensaje debe explicar qué cambió y ser lo bastante detallado para identificar los cambios posteriormente, sin agregar información que no corresponda al commit.
 - Los nuevos componentes deben tener su template en un archivo propio y siempre usar standalone; no crear módulos ni archivos de estilos.
 - Los componentes deberían seguir patrones del codebase como:
 	- Implementación de `OnDestroy` con su método `ngOnDestroy()`.
