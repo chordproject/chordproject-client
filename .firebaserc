@@ -1,15 +1,21 @@
 {
   "projects": {
-    "default": "chordproject-app"
+    "default": "chordproject-app",
+    "chp": "chordproject-app",
+    "hj": "homenajesus-app"
   },
   "targets": {
     "chordproject-app": {
       "hosting": {
         "chp": [
           "chordproject-app"
-        ],
+        ]
+      }
+    },
+    "homenajesus-app": {
+      "hosting": {
         "hj": [
-          "homenajesus"
+          "homenajesus-app"
         ]
       }
     }

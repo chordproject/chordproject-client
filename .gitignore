@@ -48,7 +48,9 @@ Thumbs.db
 .firebase/
 firebase-debug.log
 serviceAccountKey.json
+serviceAccountKey*.json
 service-account*.json
+/backups/
 
 # Local environment overrides
 src/environments/environment.local.ts

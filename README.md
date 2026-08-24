@@ -38,6 +38,22 @@ npm test
 
 The production build is written to `dist/`.
 
+## Firestore backup
+
+Create a local JSON backup of the HomenaJesus Firestore database with a Firebase service account:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=./serviceAccountKey.homenajesus-app.json npm run backup:hj
+```
+
+This runs a small safety test first, then writes the backup to `backups/firestore-homenajesus-app-latest/`. The directory is replaced only after the new export finishes successfully. It includes a `manifest.json` file and one JSON file per exported Firestore collection. Service account files and generated backups are ignored by git.
+
+To run only the small read-only safety test, use:
+
+```bash
+GOOGLE_APPLICATION_CREDENTIALS=./serviceAccountKey.homenajesus-app.json npm run backup:hj:test
+```
+
 ## Contributing
 
 1. Fork the repository and clone your fork.
