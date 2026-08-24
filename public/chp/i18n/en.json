@@ -4,13 +4,14 @@
         "error_title": "Something went wrong while loading songs",
         "error_subtitle": "Please refresh the page to try again",
         "about_title": "About ChordProject",
-        "about_description": "<strong>ChordProject</strong> is your pocket digital songbook: write, organize, and play your songs with chords in <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format, on any device.",
+        "about_description": "<strong>ChordProject</strong> is your pocket digital <strong>songbook</strong>: write, organize, and play your songs with chords in <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format, on any device.",
         "overview_title": "What can you do?",
         "features": [
             "Chords always perfectly aligned, on any screen or font size.",
             "Live mode, with autoscroll and quick font size adjustment.",
-            "Your songs saved online and synced across all your devices.",
-            "Organize your songs into custom <strong>songbooks</strong>."
+            "Your <strong>repertoire</strong> saved online and synced across all your devices.",
+            "Organize your songs into custom <strong>songbooks</strong>.",
+            "You can transpose songs according to musical rules, not just mathematical shifting."
         ],
         "platform_title": "Looking for Christian music?",
         "platform_description": "Visit our sister site <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
@@ -93,6 +94,7 @@
     },
     "viewer_toolbar": {
         "edit": "Edit",
+        "delete": "Delete song",
         "full_screen": "Full screen",
         "settings": "Settings",
         "transpose_down": "Transpose down",

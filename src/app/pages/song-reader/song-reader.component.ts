@@ -14,6 +14,7 @@ import { catchError, debounceTime, distinctUntilChanged, startWith } from 'rxjs/
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ChpViewerToolbarComponent } from 'app/components/viewer/viewer-toolbar/viewer-toolbar.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
+import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { Song } from 'app/models/song';
@@ -57,6 +58,7 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _songService: SongService,
         private _songbookService: SongbookService,
+        private _editorService: EditorService,
         private route: ActivatedRoute,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -167,6 +169,19 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         if (this.song?.uid) {
             this._router.navigate(['/songs/create', this.song.uid]);
         }
+    }
+
+    deleteSong(): void {
+        if (!this.song?.uid) {
+            return;
+        }
+
+        this._editorService.confirmAndDelete(this.song).subscribe((success) => {
+            if (success) {
+                this._router.navigate(['/library']);
+            }
+            this._changeDetectorRef.markForCheck();
+        });
     }
 
     toggleSettings(): void {}

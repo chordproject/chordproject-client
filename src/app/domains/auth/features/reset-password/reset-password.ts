@@ -16,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from 'app/core/firebase/auth/auth.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'auth-reset-password',
@@ -32,7 +33,9 @@ import { AuthService } from 'app/core/firebase/auth/auth.service';
   ],
 })
 export default class AuthResetPassword {
+  protected readonly brand = environment.brand;
   // Dependencies
+  protected readonly watermarkTiles = Array.from({ length: 120 });
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private authService = inject(AuthService);

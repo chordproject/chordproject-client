@@ -1,21 +1,20 @@
 <div class="flex h-full min-h-0 flex-col overflow-auto bg-neutral-50 p-6 dark:bg-neutral-950 sm:p-8">
     <div class="mx-auto w-full max-w-6xl">
-        <div class="mb-8">
-            <p class="text-sm font-semibold uppercase tracking-wide text-primary-600 dark:text-primary-400">{{ 'repertoire_page.eyebrow' | transloco }}</p>
-            <h1 class="mt-2 text-3xl font-bold text-neutral-900 dark:text-neutral-100">{{ 'repertoire_page.title' | transloco }}</h1>
-            <p class="mt-2 max-w-2xl text-neutral-600 dark:text-neutral-400">
-                {{ 'repertoire_page.description' | transloco }}
-            </p>
-        </div>
-
-        <div class="mb-6 flex justify-end">
-            <button mat-stroked-button type="button" (click)="showSetup = !showSetup">
+        <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-wide text-primary-600 dark:text-primary-400">{{ 'repertoire_page.eyebrow' | transloco }}</p>
+                <h1 class="mt-2 text-3xl font-bold text-neutral-900 dark:text-neutral-100">{{ 'repertoire_page.title' | transloco }}</h1>
+            </div>
+            <button mat-stroked-button class="shrink-0" type="button" (click)="showSetup = !showSetup">
                 <mat-icon [svgIcon]="showSetup ? 'chevron-up' : 'sliders-horizontal'"></mat-icon>
                 {{ (showSetup ? 'repertoire_page.hide_setup' : 'repertoire_page.show_setup') | transloco }}
             </button>
         </div>
 
         @if (showSetup) {
+        <p class="mb-4 max-w-2xl text-neutral-600 dark:text-neutral-400">
+            {{ 'repertoire_page.description' | transloco }}
+        </p>
         <div class="grid gap-6 lg:grid-cols-[minmax(15rem,0.8fr)_minmax(0,1.4fr)]">
             <section class="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
                 <div class="mb-5 flex items-center justify-between gap-4">

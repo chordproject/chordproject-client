@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Navigation } from '@/app/domains/admin/layout/ui/navigation';
 import { User } from '@/app/domains/admin/layout/ui/user';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'admin-sidebar',
@@ -15,9 +16,9 @@ import { User } from '@/app/domains/admin/layout/ui/user';
       <!-- Logo -->
       <a [routerLink]="['/home']" class="block w-full">
         <img
-          src="/chp/logo/logo-text-light.svg"
+          [src]="'/' + brand + '/logo/logo-text-light.svg'"
           class="h-auto w-full cursor-pointer"
-          alt="ChordProject"
+          [alt]="brand === 'hj' ? 'HomenaJesus' : 'ChordProject'"
         />
       </a>
     </div>
@@ -33,4 +34,6 @@ import { User } from '@/app/domains/admin/layout/ui/user';
     </div>
   `,
 })
-export class AdminSidebar {}
+export class AdminSidebar {
+  protected readonly brand = environment.brand;
+}

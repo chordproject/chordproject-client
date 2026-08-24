@@ -12,11 +12,15 @@
   "homepage": "https://chordproject.com",
   "author": "Jaime Mora (jrmora)",
   "scripts": {
-    "build": "ng build",
+    "build": "ng build --configuration=production",
+    "build:prod": "ng build --configuration=production --aot",
+    "build-hj": "ng build --configuration=hj",
     "lint": "ng lint",
     "ng": "ng",
-    "release": "npm run build && firebase deploy",
-    "start": "ng serve --no-hmr --port=3873",
+    "release": "npm run build:prod && npm run build-hj && firebase deploy",
+    "start": "npm run start-chp",
+    "start-chp": "sh -c 'pids=$(lsof -tiTCP:3873 -sTCP:LISTEN 2>/dev/null); if [ -n \"$pids\" ]; then kill $pids 2>/dev/null || true; fi; exec ng serve --no-hmr --configuration=chp --port=3873 \"$@\"' --",
+    "start-hj": "sh -c 'pids=$(lsof -tiTCP:3873 -sTCP:LISTEN 2>/dev/null); if [ -n \"$pids\" ]; then kill $pids 2>/dev/null || true; fi; exec ng serve --no-hmr --configuration=hj --port=3873 \"$@\"' --",
     "test": "ng test",
     "watch": "ng build --watch --configuration development"
   },

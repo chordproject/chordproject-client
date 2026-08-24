@@ -9,6 +9,7 @@ import { ChpSongItemComponent } from 'app/components/song-item/song-item.compone
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SearchComponent } from 'app/layout/common/search/search.component';
 import { PartialSong } from 'app/models/partialsong';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'app-home',
@@ -25,6 +26,9 @@ import { PartialSong } from 'app/models/partialsong';
     ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+    protected readonly brand = environment.brand;
+    protected readonly brandLogoLight = `url('/${environment.brand}/logo/logo-text-light.svg')`;
+    protected readonly brandLogoDark = `url('/${environment.brand}/logo/logo-text-dark.svg')`;
     features: string[] = [];
     latestSongs$: Observable<PartialSong[]>;
     // Fixed-size grid of decorative background logos (size/spacing controlled purely via CSS).

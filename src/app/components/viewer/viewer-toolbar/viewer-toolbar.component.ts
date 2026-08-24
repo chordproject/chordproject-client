@@ -7,6 +7,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Song } from 'app/models/song';
 import { EditToolComponent } from './tools/edit.component';
+import { DeleteToolComponent } from './tools/delete.component';
 import { FullscreenToolComponent } from './tools/fullscreen.component';
 import { SettingsToolComponent } from './tools/settings.component';
 import { TransposeToolComponent } from './tools/transpose.component';
@@ -28,6 +29,7 @@ import { ZoomToolComponent } from './tools/zoom.component';
         ZoomToolComponent,
         FullscreenToolComponent,
         SettingsToolComponent,
+        DeleteToolComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -41,6 +43,7 @@ export class ChpViewerToolbarComponent {
     @Output() zoomEvent = new EventEmitter<number>();
     @Output() fullScreenEvent = new EventEmitter<void>();
     @Output() settingsEvent = new EventEmitter<void>();
+    @Output() deleteSongEvent = new EventEmitter<void>();
 
     onZoomEvent(value: number): void {
         this.zoomEvent.emit(value);

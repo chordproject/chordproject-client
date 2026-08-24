@@ -1,18 +1,17 @@
 {
     "home": {
-        "about_title": "À propos de ce projet",
-        "about_description": "<strong>HomenaJesus.com</strong> est un recueil de chants de musique chrétienne. Créé pour soutenir les ministères de musique dans la préparation de la Sainte Messe et d'autres temps liturgiques. C'est aussi un outil idéal pour animer ces célébrations en direct. Contrairement à un recueil de chants imprimé, cette plateforme est dynamique. Elle s'adapte, évolue, grandit, tout comme la vie elle-même.",
-        "overview_title": "Aperçu",
-        "overview_description": "Cette application est conçue pour gérer des <strong>chansons</strong> (avec <strong>accords</strong>) et des <strong>recueils de chansons</strong>.",
+        "about_title": "À propos de HomenaJesus",
+        "about_description": "<strong>HomenaJesus.com</strong> est un recueil de chants numérique pour les ministères de musique de l'Église. Il aide les responsables à préparer leur répertoire, organiser les chants et être prêts à accompagner la Sainte Messe et les autres célébrations. Le contenu reste disponible en ligne et peut être mis à jour selon les besoins du ministère.",
+        "overview_title": "Pour votre ministère de musique",
+        "overview_description": "Vous pouvez y préparer et gérer des <strong>chants</strong>, des <strong>recueils</strong> et des <strong>répertoires</strong> pour vos célébrations.",
         "features": [
-            "Analyse et formate la musique balisée (paroles et accords) en utilisant la notation <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>.",
-            "Vous permet de lire, éditer ou imprimer des chansons avec des diagrammes d'accords.",
-            "Assure que les accords sont toujours correctement positionnés, quelle que soit la taille de la police ou de l'écran.",
-            "Stocke les chansons en ligne, avec des mises à jour reflétées instantanément sur tous les appareils.",
-            "Comprend un visualiseur avec des outils pour les performances en direct, comme le défilement automatique, l'ajustement de la taille de la police et plus encore.",
-            "La transposition suit des règles musicales, pas seulement des changements mathématiques.",
-            "Permet d'organiser les chansons dans des <strong>recueils</strong> personnalisables."
+            "Des accords toujours parfaitement alignés, sur tout écran ou taille de police.",
+            "Mode live, avec défilement automatique et ajustement rapide de la taille du texte.",
+            "Votre <strong>répertoire</strong> sauvegardé en ligne et accessible à toute votre équipe.",
+            "Vos chants organisés dans des <strong>recueils</strong> personnalisés.",
+            "Vous pouvez transposer vos chants selon des règles musicales, et pas seulement par des changements mathématiques."
         ],
-        "platform_description": "Nous modérons <strong>HomenaJesus</strong> pour qu'il soit une plateforme de musique chrétienne. Si vous souhaitez l'utiliser également pour d'autres genres, nous avons créé pour vous <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>."
+        "platform_title": "Vous jouez aussi d'autres genres musicaux ?",
+        "platform_description": "HomenaJesus se concentre sur la musique chrétienne et les besoins des ministères de l'Église. Pour d'autres genres musicaux, vous pouvez également utiliser <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>."
     }
 }

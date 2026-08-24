@@ -1,0 +1,129 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function owns(data) {
+      return isSignedIn()
+        && data.authorId == request.auth.uid;
+    }
+
+    function keepsAuthorId() {
+      return request.resource.data.authorId == resource.data.authorId;
+    }
+
+    function songbookExists(songbookId) {
+      return exists(/databases/$(database)/documents/songbooks/$(songbookId));
+    }
+
+    function songbookOwner(songbookId) {
+      return isSignedIn()
+        && songbookExists(songbookId)
+        && get(/databases/$(database)/documents/songbooks/$(songbookId)).data.authorId == request.auth.uid;
+    }
+
+    function songExists(songId) {
+      return exists(/databases/$(database)/documents/songs/$(songId));
+    }
+
+    function songOwner(songId) {
+      return isSignedIn()
+        && songExists(songId)
+        && get(/databases/$(database)/documents/songs/$(songId)).data.authorId == request.auth.uid;
+    }
+
+    function relationOwner(data) {
+      return isSignedIn()
+        && (
+          data.author_uid == request.auth.uid
+          || songbookOwner(data.songbookId)
+          || songOwner(data.songId)
+        );
+    }
+
+    match /songs/{songId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if owns(resource.data)
+        && keepsAuthorId();
+      allow delete: if owns(resource.data);
+    }
+
+    match /songbooks/{songbookId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if owns(resource.data)
+        && keepsAuthorId();
+      allow delete: if owns(resource.data);
+    }
+
+    match /songbook_songs/{relationId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.author_uid == request.auth.uid
+        && songbookExists(request.resource.data.songbookId)
+        && songExists(request.resource.data.songId);
+      allow update: if relationOwner(resource.data)
+        && request.resource.data.songbookId == resource.data.songbookId
+        && request.resource.data.songId == resource.data.songId
+        && request.resource.data.author_uid == resource.data.author_uid;
+      allow delete: if relationOwner(resource.data);
+    }
+
+    match /tags/{tagId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if owns(resource.data)
+        && keepsAuthorId();
+      allow delete: if owns(resource.data);
+    }
+
+    match /users/{uid} {
+      allow read, write: if isSignedIn()
+        && request.auth.uid == uid;
+    }
+
+    match /event_types/{eventTypeId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if owns(resource.data)
+        && keepsAuthorId();
+      allow delete: if owns(resource.data);
+    }
+
+    match /event_slots/{slotId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if owns(resource.data)
+        && keepsAuthorId();
+      allow delete: if owns(resource.data);
+    }
+
+    match /repertoires/{repertoireId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if owns(resource.data)
+        && keepsAuthorId();
+      allow delete: if owns(resource.data);
+    }
+
+    match /repertoire_songs/{repertoireSongId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if owns(resource.data)
+        && keepsAuthorId();
+      allow delete: if owns(resource.data);
+    }
+  }
+}

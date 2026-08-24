@@ -21,6 +21,5 @@ export class Song extends BaseDocument {
     title?: string;
     uniqueChords: string[];
     year?: number;
-    liked?: boolean;
     videoId?: string;
 }

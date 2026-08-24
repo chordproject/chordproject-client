@@ -4,13 +4,14 @@
         "error_title": "Ocurrió un error al cargar las canciones",
         "error_subtitle": "Por favor recarga la página para intentarlo de nuevo",
         "about_title": "Acerca de ChordProject",
-        "about_description": "<strong>ChordProject</strong> es tu cancionero digital de bolsillo: escribe, organiza y toca tus canciones con acordes en formato <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>, desde cualquier dispositivo.",
+        "about_description": "<strong>ChordProject</strong> es tu <strong>cancionero</strong> digital de bolsillo: escribe, organiza y toca tus canciones con acordes en formato <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>, desde cualquier dispositivo.",
         "overview_title": "¿Qué puedes hacer?",
         "features": [
             "Acordes siempre bien alineados, en cualquier pantalla o tamaño de letra.",
             "Modo en vivo, con scroll automático y ajuste rápido del tamaño de letra.",
-            "Tu repertorio guardado en línea y sincronizado en todos tus dispositivos.",
-            "Tus canciones organizadas en <strong>cancioneros</strong> personalizados."
+            "Tu <strong>repertorio</strong> guardado en línea y sincronizado en todos tus dispositivos.",
+            "Tus canciones organizadas en <strong>cancioneros</strong> personalizados.",
+            "Puedes transponer tus canciones siguiendo reglas musicales, no solo cambios matemáticos."
         ],
         "platform_title": "¿Buscas música cristiana?",
         "platform_description": "Visita nuestro sitio hermano <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
@@ -93,6 +94,7 @@
     },
     "viewer_toolbar": {
         "edit": "Editar",
+        "delete": "Eliminar canción",
         "full_screen": "Pantalla completa",
         "settings": "Configuración",
         "transpose_down": "Bajar tono",

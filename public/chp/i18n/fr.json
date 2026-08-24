@@ -4,13 +4,14 @@
         "error_title": "Une erreur s'est produite lors du chargement des chansons",
         "error_subtitle": "Veuillez rafraîchir la page pour réessayer",
         "about_title": "À propos de ChordProject",
-        "about_description": "<strong>ChordProject</strong> est votre carnet de chansons numérique de poche : écrivez, organisez et jouez vos chansons avec accords au format <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>, sur n'importe quel appareil.",
+        "about_description": "<strong>ChordProject</strong> est votre <strong>carnet de chansons</strong> numérique de poche : écrivez, organisez et jouez vos chansons avec accords au format <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>, sur n'importe quel appareil.",
         "overview_title": "Que pouvez-vous faire ?",
         "features": [
             "Des accords toujours parfaitement alignés, sur tout écran ou taille de police.",
             "Mode live, avec défilement automatique et ajustement rapide de la taille du texte.",
-            "Vos chansons sauvegardées en ligne et synchronisées sur tous vos appareils.",
-            "Vos chansons organisées dans des <strong>carnets</strong> personnalisés."
+            "Votre <strong>répertoire</strong> sauvegardé en ligne et synchronisé sur tous vos appareils.",
+            "Vos chansons organisées dans des <strong>carnets</strong> personnalisés.",
+            "Vous pouvez transposer vos chansons selon des règles musicales, et pas seulement par des changements mathématiques."
         ],
         "platform_title": "Vous cherchez de la musique chrétienne ?",
         "platform_description": "Visitez notre site frère <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
@@ -93,6 +94,7 @@
     },
     "viewer_toolbar": {
         "edit": "Modifier",
+        "delete": "Supprimer la chanson",
         "full_screen": "Plein écran",
         "settings": "Paramètres",
         "transpose_down": "Baisser le ton",

@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { TranslocoModule } from '@jsverse/transloco';
 import { AuthService } from '@/app/core/firebase/auth/auth.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'auth-forgot-password',
@@ -30,7 +31,9 @@ import { AuthService } from '@/app/core/firebase/auth/auth.service';
   ],
 })
 export default class AuthForgotPassword {
+  protected readonly brand = environment.brand;
   // Dependencies
+  protected readonly watermarkTiles = Array.from({ length: 120 });
   private authService = inject(AuthService);
 
   // State

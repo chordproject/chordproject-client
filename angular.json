@@ -19,6 +19,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/chp",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -35,6 +36,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -51,6 +58,37 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "chp": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.chp.ts"
+                }
+              ],
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "hj": {
+              "outputPath": "dist/hj",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hj.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "3Mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "20kB"
+                }
+              ],
+              "outputHashing": "all"
             }
           },
           "defaultConfiguration": "production"
@@ -63,6 +101,12 @@
             },
             "development": {
               "buildTarget": "fuse:build:development"
+            },
+            "chp": {
+              "buildTarget": "fuse:build:chp"
+            },
+            "hj": {
+              "buildTarget": "fuse:build:hj"
             }
           },
           "defaultConfiguration": "development"

@@ -19,6 +19,8 @@
                 @for (tile of watermarkTiles; track $index) {
                     <div
                         class="h-35 bg-logo-light bg-contain bg-left bg-no-repeat dark:bg-logo-dark"
+                        [style.--background-image-logo-light]="brandLogoLight"
+                        [style.--background-image-logo-dark]="brandLogoDark"
                     ></div>
                 }
             </div>
@@ -106,7 +108,7 @@
                                 <h2 class="flex items-center gap-x-2">
                                     <mat-icon
                                         class="size-5 shrink-0 text-primary-500"
-                                        [svgIcon]="'church'"
+                                        [svgIcon]="brand === 'chp' ? 'church' : 'audio-lines'"
                                     ></mat-icon>
                                     {{ 'home.platform_title' | transloco }}
                                 </h2>

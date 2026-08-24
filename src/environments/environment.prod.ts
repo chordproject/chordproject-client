@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
+    production: true,
     source: 'chp',
     brand: 'chp',
     firebase: {

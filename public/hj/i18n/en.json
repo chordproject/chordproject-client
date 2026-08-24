@@ -1,18 +1,17 @@
 {
     "home": {
-        "about_title": "About this project",
-        "about_description": "<strong>HomenaJesus.com</strong> is a digital songbook of Christian music. Created to support music ministries in the preparation of the Holy Mass and other liturgical times. It is also an ideal tool to animate these celebrations live. Unlike a printed songbook, this platform is dynamic. It adapts, evolves, grows, just like life itself.",
-        "overview_title": "Overview",
-        "overview_description": "This application is designed for managing <strong>songs</strong> (with <strong>chords</strong>) and <strong>songbooks</strong>.",
+        "about_title": "About HomenaJesus",
+        "about_description": "<strong>HomenaJesus.com</strong> is a digital songbook for Church music ministries. It helps ministry directors prepare their repertoire, organize songs, and have everything ready to accompany Holy Mass and other celebrations. Content stays available online and can be updated whenever the ministry needs it.",
+        "overview_title": "For your music ministry",
+        "overview_description": "Use it to prepare and manage <strong>songs</strong>, <strong>songbooks</strong>, and <strong>repertoires</strong> for your celebrations.",
         "features": [
-            "Parses and formats stronged-up music (lyrics and chords) using <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> notation.",
-            "Allows you to read, edit, or print songs with chord diagrams.",
-            "Ensures chords are always correctly positioned, regardless of font or screen size.",
-            "Stores songs online, with updates reflected instantly across all devices.",
-            "Includes a viewer with tools for live performances, such as autoscroll, font size adjustment, and more.",
-            "Transposition follows musical rules, not just mathematical shifting.",
-            "Enables organizing songs into customizable <strong>songbooks</strong>."
+            "Chords are always perfectly aligned, on any screen or font size.",
+            "Live mode, with autoscroll and quick font size adjustment.",
+            "Your <strong>repertoire</strong> saved online and available to your whole team.",
+            "Your songs organized into custom <strong>songbooks</strong>.",
+            "You can transpose songs according to musical rules, not just mathematical shifting."
         ],
-        "platform_description": "We moderate <strong>HomenaJesus</strong> to be a Christian music platform. If you would also like to use it for other genres, we created <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong> for you."
+        "platform_title": "Do you also play other musical genres?",
+        "platform_description": "HomenaJesus focuses on Christian music and the needs of Church ministries. For other musical genres, you can also use <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>."
     }
 }

@@ -1,8 +1,22 @@
 {
+    "firestore": {
+        "rules": "firestore.rules"
+    },
     "hosting": [
         {
-            "target": "angular",
-            "public": "dist",
+            "target": "chp",
+            "public": "dist/chp/browser",
+            "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
+        },
+        {
+            "target": "hj",
+            "public": "dist/hj/browser",
             "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
             "rewrites": [
                 {

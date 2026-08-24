@@ -327,6 +327,7 @@ export class SongService {
                 await setDoc(tagRef, {
                     title: cleanTitle,
                     slug,
+                    authorId: this._auth.currentUser.uid,
                     creationDate: serverTimestamp(),
                     lastUpdateDate: serverTimestamp(),
                 });

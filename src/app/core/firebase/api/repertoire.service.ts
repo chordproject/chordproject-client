@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslocoService } from '@jsverse/transloco';
 import { Auth } from 'firebase/auth';
 import {
     Firestore,
@@ -15,7 +17,7 @@ import {
     writeBatch,
 } from 'firebase/firestore';
 import { Observable, from, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { EventSlot } from 'app/models/event-slot';
 import { EventType } from 'app/models/event-type';
 import { Repertoire } from 'app/models/repertoire';
@@ -29,7 +31,11 @@ export class RepertoireService {
     private readonly firestore: Firestore;
     private readonly auth: Auth;
 
-    constructor(private readonly firebase: FirebaseService) {
+    constructor(
+        private readonly firebase: FirebaseService,
+        private readonly snackBar: MatSnackBar,
+        private readonly translocoService: TranslocoService
+    ) {
         this.firestore = firebase.firestore;
         this.auth = firebase.auth;
     }
@@ -128,7 +134,7 @@ export class RepertoireService {
     }
 
     async deleteRepertoireSong(uid: string): Promise<boolean> {
-        if (!this.auth.currentUser) {
+        if (!this.verifyAuthentication()) {
             return false;
         }
 
@@ -171,7 +177,7 @@ export class RepertoireService {
     }
 
     async updateEventSlotOrder(eventTypeId: string, slotOrders: { uid: string; order: number }[]): Promise<boolean> {
-        if (!this.auth.currentUser) {
+        if (!this.verifyAuthentication()) {
             return false;
         }
 
@@ -205,6 +211,7 @@ export class RepertoireService {
         requiredField?: 'name' | 'title' | 'songId'
     ): Promise<string | null> {
         if (!this.auth.currentUser) {
+            this.showAuthenticationRequired();
             return null;
         }
 
@@ -234,5 +241,35 @@ export class RepertoireService {
     private handleError(error: unknown): Observable<never> {
         console.error('Firebase repertoire service error:', error);
         return throwError(() => error);
+    }
+
+    private verifyAuthentication(): boolean {
+        if (this.auth.currentUser) {
+            return true;
+        }
+
+        this.showAuthenticationRequired();
+        return false;
+    }
+
+    private showAuthenticationRequired(): void {
+        this.translocoService
+            .selectTranslate('song_service.authentication_required')
+            .pipe(
+                switchMap((message) =>
+                    this.translocoService
+                        .selectTranslate('common.close')
+                        .pipe(map((closeLabel) => ({ message, closeLabel })))
+                ),
+                take(1)
+            )
+            .subscribe(({ message, closeLabel }) => {
+                this.snackBar.open(message, closeLabel, {
+                    duration: 3000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    panelClass: ['warning'],
+                });
+            });
     }
 }

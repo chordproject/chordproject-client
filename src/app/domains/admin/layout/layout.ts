@@ -15,6 +15,7 @@ import { LanguageSwitcher } from '@/app/domains/admin/layout/ui/language-switche
 import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
 import { SearchComponent } from 'app/layout/common/search/search.component';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'admin-layout',
@@ -54,11 +55,11 @@ import { SearchComponent } from 'app/layout/common/search/search.component';
             <a
               [routerLink]="['/home']"
               class="mr-3 inline-flex items-center"
-              aria-label="ChordProject"
+              [attr.aria-label]="brand === 'hj' ? 'HomenaJesus' : 'ChordProject'"
             >
               <img
-                src="/chp/logo/logo.svg"
-                alt="ChordProject"
+                [src]="'/' + brand + '/logo/logo.svg'"
+                [alt]="brand === 'hj' ? 'HomenaJesus' : 'ChordProject'"
                 class="size-7"
               />
             </a>
@@ -99,6 +100,7 @@ export class AdminLayout {
   // Dependencies
   private media = inject(Media);
   private router = inject(Router);
+  protected readonly brand = environment.brand;
 
   // State
   protected isMobile = computed(() =>

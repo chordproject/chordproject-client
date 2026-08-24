@@ -86,6 +86,7 @@
                             [deviceType]="deviceType"
                             [isFullScreen]="viewer.isFullScreen"
                             (editSongEvent)="editSong()"
+                            (deleteSongEvent)="deleteSong()"
                             (transposeEvent)="viewer.transpose($event)"
                             (zoomEvent)="viewer.zoom($event)"
                             (fullScreenEvent)="viewer.toggleFullScreen()"
