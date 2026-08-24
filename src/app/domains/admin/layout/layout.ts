@@ -60,7 +60,7 @@ import { environment } from 'environments/environment';
               <img
                 [src]="'/' + brand + '/logo/logo.svg'"
                 [alt]="brand === 'hj' ? 'HomenaJesus' : 'ChordProject'"
-                class="size-7"
+                class="h-8 w-auto dark:brightness-0 dark:invert"
               />
             </a>
           }

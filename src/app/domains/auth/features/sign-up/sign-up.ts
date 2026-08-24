@@ -8,6 +8,7 @@ import {
 } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -28,6 +29,7 @@ import { environment } from 'environments/environment';
     MatIconModule,
     MatCheckboxModule,
     FormField,
+    MatDivider,
     TranslocoModule,
   ],
 })
@@ -64,6 +66,12 @@ export default class AuthSignUp {
       } catch {
         // Error already surfaced to the user via AuthService's snackbar.
       }
+    });
+  }
+
+  signInWithGoogle() {
+    this.authService.signInWithGoogle().subscribe({
+      next: () => this.router.navigateByUrl('/home'),
     });
   }
 }

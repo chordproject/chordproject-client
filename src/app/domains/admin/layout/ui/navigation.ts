@@ -4,7 +4,6 @@ import { NgTemplateOutlet } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   isActive,
   IsActiveMatchOptions,
@@ -13,7 +12,7 @@ import {
   RouterLink,
   RouterLinkActive,
 } from '@angular/router';
-import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { filter, take } from 'rxjs';
 import { UserService } from '@/app/core/user/user.service';
 import {
@@ -157,8 +156,6 @@ export class Navigation {
   private router = inject(Router);
   private songbooksNavigation = inject(AdminSongbooksNavigation);
   private userService = inject(UserService);
-  private snackBar = inject(MatSnackBar);
-  private transloco = inject(TranslocoService);
 
   // State
   protected navigation = signal<NavigationItem[]>(NAVIGATION);
@@ -258,21 +255,6 @@ export class Navigation {
   onNavigationClick(event: MouseEvent, item: NavigationItem): void {
     event.preventDefault();
 
-    if (item.id === 'general/songbooks' && !this.isAuthenticated()) {
-      this.transloco
-        .selectTranslate('song_service.authentication_required')
-        .pipe(take(1))
-        .subscribe((message) => {
-          this.snackBar.open(message, undefined, {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            panelClass: ['warning'],
-          });
-        });
-      return;
-    }
-
     if (item.route) {
       this.router.navigateByUrl(item.route);
     }
@@ -280,23 +262,28 @@ export class Navigation {
 
   /**
    * Hide the Sign in / Sign up entries once a user is signed in.
+   * Re-derives from the immutable NAVIGATION source so entries removed while
+   * signed in can be restored once the user signs out again.
    */
   private withAuthVisibility(
     items: NavigationItem[],
     isAuthenticated: boolean
   ): NavigationItem[] {
-    return items.map((section) =>
-      section.id === 'extras'
-        ? {
-            ...section,
-            children: section.children?.filter(
-              (item) =>
-                !isAuthenticated ||
-                (item.id !== 'extras/sign-in' && item.id !== 'extras/sign-up')
-            ),
-          }
-        : section
-    );
+    return items.map((section) => {
+      if (section.id !== 'extras') {
+        return section;
+      }
+
+      const sourceSection = NAVIGATION.find((s) => s.id === 'extras');
+      return {
+        ...section,
+        children: sourceSection?.children?.filter(
+          (item) =>
+            !isAuthenticated ||
+            (item.id !== 'extras/sign-in' && item.id !== 'extras/sign-up')
+        ),
+      };
+    });
   }
 
   /**

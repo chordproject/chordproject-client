@@ -21,7 +21,7 @@
     <div class="flex w-full max-w-80 flex-col items-center sm:min-w-80">
       <!-- Logo -->
       <img
-        class="w-12"
+        class="h-20 w-auto dark:brightness-0 dark:invert"
         [src]="'/' + brand + '/logo/logo.svg'"
         [alt]="brand === 'hj' ? 'HomenaJesus logo' : 'ChordProject logo'"
       />
@@ -177,6 +177,25 @@
         >
           {{ 'auth.create_account_button' | transloco }}
         </button>
+
+        <!-- Separator -->
+        <div class="mt-8 flex items-center gap-x-4">
+          <mat-divider class="flex-auto" />
+          <div class="text-neutral-500">{{ 'auth.continue_with' | transloco }}</div>
+          <mat-divider class="flex-auto" />
+        </div>
+
+        <!-- Single sign-on buttons -->
+        <div class="mt-8 flex items-center space-x-4">
+          <button
+            type="button"
+            matButton="outlined"
+            class="flex-auto"
+            (click)="signInWithGoogle()"
+          >
+            {{ 'auth.google' | transloco }}
+          </button>
+        </div>
       </form>
     </div>
   </div>
