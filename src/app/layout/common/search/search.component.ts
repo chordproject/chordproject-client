@@ -26,8 +26,8 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Subject, debounceTime, filter, forkJoin, map, takeUntil } from 'rxjs';
 import { TranslocoModule } from '@jsverse/transloco';
+import { Subject, debounceTime, filter, forkJoin, map, of, switchMap, takeUntil } from 'rxjs';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
 import { SearchResultSets } from 'app/models/searchResultSets';
@@ -134,14 +134,17 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
                 // filter out the values that are smaller than minLength
                 filter((value) => value && value.length >= this.minLength)
             )
-            .subscribe((value) => {
-                const searchTerm = value;
-                forkJoin({
+            .pipe(
+                switchMap((searchTerm) =>
+                    forkJoin({
                     songs: this._songService.searchByTitle(searchTerm, 5),
                     songsContent: this._songService.searchByLyrics(searchTerm, 5),
                     songbooks: this._songbookService.searchSongbooks(searchTerm, 3),
-                    songsInSongbooks: this._songbookService.searchSongsInSongbooks(searchTerm, 3, 3),
-                }).subscribe((resultSets) => {
+                    songsInSongbooks: of([]),
+                    })
+                )
+            )
+            .subscribe((resultSets) => {
                     // Filtrar duplicados: quitar de songsContent los que ya están en songs
                     const songUids = new Set(resultSets.songs.map((song) => song.uid));
                     resultSets.songsContent = resultSets.songsContent.filter((song) => !songUids.has(song.uid));
@@ -150,7 +153,6 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
 
                     // Execute the event
                     this.search.next(resultSets);
-                });
             });
     }
 

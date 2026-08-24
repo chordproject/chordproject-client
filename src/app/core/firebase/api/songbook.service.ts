@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { TranslocoService } from '@jsverse/transloco';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslocoService } from '@jsverse/transloco';
 import { Auth } from 'firebase/auth';
 import {
     Firestore,
@@ -15,8 +15,8 @@ import {
     where,
     writeBatch,
 } from 'firebase/firestore';
-import { Observable, combineLatest, from, of, throwError } from 'rxjs';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { Observable, combineLatest, defer, from, of, throwError } from 'rxjs';
+import { catchError, map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { PartialSong } from 'app/models/partialsong';
 import { Relation } from 'app/models/relation';
 import { Songbook } from 'app/models/songbook';
@@ -30,6 +30,7 @@ export class SongbookService {
     private _firestore: Firestore;
     private _auth: Auth;
     private _translocoService: TranslocoService;
+    private _songbooksCache$: Observable<Songbook[]>;
 
     constructor(
         private _firebase: FirebaseService,
@@ -55,23 +56,29 @@ export class SongbookService {
     }
 
     getAll(): Observable<Songbook[]> {
-        const q = query(
-            collection(this._firestore, 'songbooks'),
-            orderBy('name')
-        );
+        if (!this._songbooksCache$) {
+            this._songbooksCache$ = defer(() => {
+                const q = query(
+                    collection(this._firestore, 'songbooks'),
+                    orderBy('name')
+                );
 
-        return from(getDocs(q)).pipe(
-            map((snapshot) =>
-                snapshot.docs.map(
-                    (doc) =>
-                        ({
-                            uid: doc.id,
-                            ...doc.data(),
-                        }) as Songbook
-                )
-            ),
-            catchError((error) => this.handleError(error))
-        );
+                return from(getDocs(q)).pipe(
+                    map((snapshot) =>
+                        snapshot.docs.map(
+                            (doc) =>
+                                ({
+                                    uid: doc.id,
+                                    ...doc.data(),
+                                }) as Songbook
+                        )
+                    ),
+                    catchError((error) => this.handleError(error))
+                );
+            }).pipe(shareReplay({ bufferSize: 1, refCount: false }));
+        }
+
+        return this._songbooksCache$;
     }
 
     getByParent(parent: string): Observable<Songbook[]> {
@@ -180,6 +187,7 @@ export class SongbookService {
             await setDoc(doc(this._firestore, 'songbooks', songbook.uid), {
                 ...songbook,
             });
+            this._songbooksCache$ = null;
             this.showSnackbar('songbook_service.songbook_saved');
             return songbook.uid;
         } catch (error) {
@@ -358,22 +366,17 @@ export class SongbookService {
         searchTerm?: string,
         limitResults = 3
     ): Observable<Songbook[]> {
-        const songbooksRef = collection(this._firebase.firestore, 'songbooks');
-        const q = query(songbooksRef, orderBy('name'));
-        return from(getDocs(q)).pipe(
-            map((snapshot) => {
+        return this.getAll().pipe(
+            map((allSongbooks) => {
                 const normalizar = (str: string) =>
                     (str || '')
                         .toLocaleLowerCase()
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '');
-                let songbooks = snapshot.docs.map((doc) => {
-                    const data = doc.data() || {};
-                    return {
-                        uid: doc.id,
-                        name: data.name,
-                    } as Songbook;
-                });
+                let songbooks = allSongbooks.map((songbook) => ({
+                    uid: songbook.uid,
+                    name: songbook.name,
+                }) as Songbook);
                 if (searchTerm) {
                     const qNorm = normalizar(searchTerm);
                     songbooks = songbooks.filter((sb) =>

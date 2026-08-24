@@ -16,8 +16,8 @@ import {
     setDoc,
     where,
 } from 'firebase/firestore';
-import { BehaviorSubject, Observable, Subject, combineLatest, firstValueFrom, from, of, throwError } from 'rxjs';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, combineLatest, defer, firstValueFrom, from, of, throwError } from 'rxjs';
+import { catchError, map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { UserService } from 'app/core/user/user.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
@@ -34,6 +34,7 @@ export class SongService {
     private _snackBar: MatSnackBar;
     private _translocoService: TranslocoService;
     private _userService: UserService;
+    private _songsCache$: Observable<PartialSong[]>;
     private _song = new BehaviorSubject<Song | null>(null);
     private _songsChanged = new Subject<void>();
 
@@ -92,6 +93,12 @@ export class SongService {
     }
 
     searchByTitle(searchTerm?: string, limitResults?: number): Observable<PartialSong[]> {
+        if (!searchTerm) {
+            return this.getCachedSongs().pipe(
+                map((songs) => this.sortSongs(songs).slice(0, limitResults ?? songs.length))
+            );
+        }
+
         const songsRef = collection(this._firestore, 'songs');
         const q = searchTerm
             ? query(
@@ -109,7 +116,7 @@ export class SongService {
                         .toLocaleLowerCase()
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '');
-                let songs = snapshot.docs.map((doc) => doc.data() as PartialSong);
+                let songs = snapshot.docs.map((doc) => ({ uid: doc.id, ...doc.data() }) as PartialSong);
                 if (searchTerm) {
                     const qNorm = normalizar(searchTerm);
                     songs = songs.filter(
@@ -144,9 +151,8 @@ export class SongService {
     }
 
     searchByTitleContains(searchTerm: string, limitResults = 20): Observable<PartialSong[]> {
-        const songsRef = collection(this._firestore, 'songs');
-        return from(getDocs(query(songsRef, orderBy('title')))).pipe(
-            map((snapshot) => {
+        return this.getCachedSongs().pipe(
+            map((allSongs) => {
                 const normalizedTerm = (searchTerm || '')
                     .toLocaleLowerCase()
                     .normalize('NFD')
@@ -156,8 +162,7 @@ export class SongService {
                     return [];
                 }
 
-                return snapshot.docs
-                    .map((document) => ({ uid: document.id, ...document.data() }) as PartialSong)
+                return allSongs
                     .filter((song) => {
                         const normalizedTitle = (song.title || '')
                             .toLocaleLowerCase()
@@ -177,16 +182,14 @@ export class SongService {
     }
 
     searchByLyrics(searchTerm?: string, limitResults?: number): Observable<PartialSong[]> {
-        const songsRef = collection(this._firestore, 'songs');
-        const q = query(songsRef, orderBy('title'));
-        return from(getDocs(q)).pipe(
-            map((snapshot) => {
+        return this.getCachedSongs().pipe(
+            map((allSongs) => {
                 const normalizar = (str: string) =>
                     (str || '')
                         .toLocaleLowerCase()
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '');
-                let songs = snapshot.docs.map((doc) => doc.data() as PartialSong);
+                let songs = [...allSongs];
                 if (searchTerm) {
                     const qNorm = normalizar(searchTerm);
                     songs = songs.filter((song) => song.lyrics && normalizar(song.lyrics).includes(qNorm));
@@ -242,6 +245,7 @@ export class SongService {
                 Object.entries(song).filter(([, value]) => value !== undefined)
             );
             await setDoc(doc(this._firestore, 'songs', song.uid), songData);
+            this._songsCache$ = null;
             this.showSnackbar('song_service.song_saved');
             return song.uid;
         } catch (error) {
@@ -257,6 +261,7 @@ export class SongService {
 
         try {
             await deleteDoc(doc(this._firestore, 'songs', id));
+            this._songsCache$ = null;
             this.showSnackbar('song_service.song_deleted');
             this._songsChanged.next();
             return true;
@@ -305,6 +310,25 @@ export class SongService {
         return from(getDocs(query(collection(this._firestore, 'tags'), orderBy('title')))).pipe(
             map((snapshot) => snapshot.docs.map((tagDoc) => ({ id: tagDoc.id, ...tagDoc.data() }) as Tag)),
             catchError(() => of([] as Tag[]))
+        );
+    }
+
+    private getCachedSongs(): Observable<PartialSong[]> {
+        if (!this._songsCache$) {
+            this._songsCache$ = defer(() =>
+                from(getDocs(query(collection(this._firestore, 'songs'), orderBy('title')))).pipe(
+                    map((snapshot) => snapshot.docs.map((document) => ({ uid: document.id, ...document.data() }) as PartialSong)),
+                    catchError((error) => this.handleError(error))
+                )
+            ).pipe(shareReplay({ bufferSize: 1, refCount: false }));
+        }
+
+        return this._songsCache$;
+    }
+
+    private sortSongs(songs: PartialSong[]): PartialSong[] {
+        return [...songs].sort((first, second) =>
+            (first.title || '').localeCompare(second.title || '', 'es', { sensitivity: 'base' })
         );
     }
 

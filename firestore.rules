@@ -7,6 +7,11 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function isAdmin() {
+      return isSignedIn()
+        && request.auth.token.admin == true;
+    }
+
     function owns(data) {
       return isSignedIn()
         && data.authorId == request.auth.uid;
@@ -26,6 +31,11 @@ service cloud.firestore {
         && get(/databases/$(database)/documents/songbooks/$(songbookId)).data.authorId == request.auth.uid;
     }
 
+    function songbookIsTemplate(songbookId) {
+      return songbookExists(songbookId)
+        && get(/databases/$(database)/documents/songbooks/$(songbookId)).data.isTemplate == true;
+    }
+
     function songExists(songId) {
       return exists(/databases/$(database)/documents/songs/$(songId));
     }
@@ -38,9 +48,10 @@ service cloud.firestore {
 
     function relationOwner(data) {
       return isSignedIn()
+        && songbookIsTemplate(data.songbookId) == false
         && (
           data.author_uid == request.auth.uid
-          || songbookOwner(data.songbookId)
+          || (songbookOwner(data.songbookId) && songbookIsTemplate(data.songbookId) == false)
           || songOwner(data.songId)
         );
     }
@@ -49,18 +60,23 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
-      allow update: if owns(resource.data)
-        && keepsAuthorId();
-      allow delete: if owns(resource.data);
+      allow update: if isAdmin()
+        || (owns(resource.data)
+        && keepsAuthorId());
+      allow delete: if isAdmin() || owns(resource.data);
     }
 
     match /songbooks/{songbookId} {
       allow read: if true;
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
-      allow update: if owns(resource.data)
-        && keepsAuthorId();
-      allow delete: if owns(resource.data);
+      allow update: if isAdmin()
+        || (owns(resource.data)
+          && resource.data.isTemplate != true
+          && request.resource.data.isTemplate != true
+          && keepsAuthorId());
+      allow delete: if isAdmin()
+        || (owns(resource.data) && resource.data.isTemplate != true);
     }
 
     match /songbook_songs/{relationId} {
@@ -68,21 +84,27 @@ service cloud.firestore {
       allow create: if isSignedIn()
         && request.resource.data.author_uid == request.auth.uid
         && songbookExists(request.resource.data.songbookId)
-        && songExists(request.resource.data.songId);
-      allow update: if relationOwner(resource.data)
+        && songExists(request.resource.data.songId)
+        && (
+          isAdmin()
+          || songbookIsTemplate(request.resource.data.songbookId) == false
+        );
+      allow update: if isAdmin()
+        || (relationOwner(resource.data)
         && request.resource.data.songbookId == resource.data.songbookId
         && request.resource.data.songId == resource.data.songId
-        && request.resource.data.author_uid == resource.data.author_uid;
-      allow delete: if relationOwner(resource.data);
+        && request.resource.data.author_uid == resource.data.author_uid);
+      allow delete: if isAdmin() || relationOwner(resource.data);
     }
 
     match /tags/{tagId} {
       allow read: if true;
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
-      allow update: if owns(resource.data)
-        && keepsAuthorId();
-      allow delete: if owns(resource.data);
+      allow update: if isAdmin()
+        || (owns(resource.data)
+        && keepsAuthorId());
+      allow delete: if isAdmin() || owns(resource.data);
     }
 
     match /users/{uid} {
@@ -94,36 +116,40 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
-      allow update: if owns(resource.data)
-        && keepsAuthorId();
-      allow delete: if owns(resource.data);
+      allow update: if isAdmin()
+        || (owns(resource.data)
+        && keepsAuthorId());
+      allow delete: if isAdmin() || owns(resource.data);
     }
 
     match /event_slots/{slotId} {
       allow read: if true;
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
-      allow update: if owns(resource.data)
-        && keepsAuthorId();
-      allow delete: if owns(resource.data);
+      allow update: if isAdmin()
+        || (owns(resource.data)
+        && keepsAuthorId());
+      allow delete: if isAdmin() || owns(resource.data);
     }
 
     match /repertoires/{repertoireId} {
       allow read: if true;
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
-      allow update: if owns(resource.data)
-        && keepsAuthorId();
-      allow delete: if owns(resource.data);
+      allow update: if isAdmin()
+        || (owns(resource.data)
+        && keepsAuthorId());
+      allow delete: if isAdmin() || owns(resource.data);
     }
 
     match /repertoire_songs/{repertoireSongId} {
       allow read: if true;
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
-      allow update: if owns(resource.data)
-        && keepsAuthorId();
-      allow delete: if owns(resource.data);
+      allow update: if isAdmin()
+        || (owns(resource.data)
+        && keepsAuthorId());
+      allow delete: if isAdmin() || owns(resource.data);
     }
   }
 }

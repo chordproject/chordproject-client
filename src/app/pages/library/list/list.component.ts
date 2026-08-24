@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
-import { merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, merge, Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { PartialSong } from 'app/models/partialsong';
@@ -55,14 +55,20 @@ export class SongsListComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const refreshList$ = merge(
             of(''), // inicial
-            this.searchInputControl.valueChanges,
+            this.searchInputControl.valueChanges.pipe(
+                debounceTime(300),
+                distinctUntilChanged()
+            ),
             this._songService.songsChanged$ // cuando se elimina una canción
         ).pipe(
             switchMap((query: string) => {
                 if (!query) {
                     return this._songService.searchByTitle();
                 } else {
-                    return this._songService.searchByTitle(query);
+                    if (query.trim().length < 2) {
+                        return of([] as PartialSong[]);
+                    }
+                    return this._songService.searchByTitle(query, 50);
                 }
             })
         );

@@ -3,8 +3,8 @@ import { CdkMonitorFocus } from '@angular/cdk/a11y';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIcon } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   isActive,
   IsActiveMatchOptions,
@@ -13,14 +13,14 @@ import {
   RouterLink,
   RouterLinkActive,
 } from '@angular/router';
-import { filter, take } from 'rxjs';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { filter, take } from 'rxjs';
+import { UserService } from '@/app/core/user/user.service';
 import {
   NAVIGATION,
   NavigationItem,
 } from '@/app/domains/admin/layout/data/navigation';
 import { AdminSongbooksNavigation } from '@/app/domains/admin/layout/data/songbooks-navigation';
-import { UserService } from '@/app/core/user/user.service';
 
 @Component({
   selector: 'navigation',
