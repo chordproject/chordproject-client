@@ -196,7 +196,7 @@ La lista infinita es útil para reducir la carga inicial, memoria y tiempo de re
 - Confirmar que transponer repetidamente no degrade la representación.
 - Separar progresivamente lógica musical y presentación del viewer.
 - Revisar persistencia y validación de preferencias tipográficas.
-- Evaluar autoscroll, diagramas de acordes y tuner como funcionalidades independientes, con carga diferida y costos de mantenimiento claros.
+- Evaluar autoscroll y tuner como funcionalidades independientes, con carga diferida y costos de mantenimiento claros.
 - Comparar Ace y CodeMirror antes de migrar `chordproject-editor`.
 - Diseñar la ayuda del editor a partir de las reglas reales de ChordPro.
 
@@ -226,6 +226,7 @@ La lista infinita es útil para reducir la carga inicial, memoria y tiempo de re
 - Tests E2E y cobertura alta antes de cerrar la migración.
 - Migración de editor o parser sin investigación previa.
 - Listeners en tiempo real sin justificación de producto y costo.
+- Colección `diagrams` y diagramas de acordes hasta decidir entre una fuente externa como `chords-db` o una solución propia.
 - Eliminación de datos remotos sin backup y verificación de dependencias.
 
 ## Orden recomendado
