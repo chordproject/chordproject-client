@@ -3,6 +3,7 @@ import { CdkMonitorFocus } from '@angular/cdk/a11y';
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIcon } from '@angular/material/icon';
 import {
   isActive,
@@ -13,7 +14,7 @@ import {
   RouterLinkActive,
 } from '@angular/router';
 import { filter, take } from 'rxjs';
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import {
   NAVIGATION,
   NavigationItem,
@@ -77,7 +78,7 @@ import { UserService } from '@/app/core/user/user.service';
                 [routerLinkActiveOptions]="
                   node.activeOptions ?? { exact: true }
                 "
-                (click)="$event.preventDefault()"
+                (click)="onNavigationClick($event, node)"
                 #rla="routerLinkActive"
                 #treeItem="ngTreeItem"
               >
@@ -156,6 +157,8 @@ export class Navigation {
   private router = inject(Router);
   private songbooksNavigation = inject(AdminSongbooksNavigation);
   private userService = inject(UserService);
+  private snackBar = inject(MatSnackBar);
+  private transloco = inject(TranslocoService);
 
   // State
   protected navigation = signal<NavigationItem[]>(NAVIGATION);
@@ -246,9 +249,33 @@ export class Navigation {
           return childRoute;
         }
       }
+
     }
 
     return undefined;
+  }
+
+  onNavigationClick(event: MouseEvent, item: NavigationItem): void {
+    event.preventDefault();
+
+    if (item.id === 'general/songbooks' && !this.isAuthenticated()) {
+      this.transloco
+        .selectTranslate('song_service.authentication_required')
+        .pipe(take(1))
+        .subscribe((message) => {
+          this.snackBar.open(message, undefined, {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['warning'],
+          });
+        });
+      return;
+    }
+
+    if (item.route) {
+      this.router.navigateByUrl(item.route);
+    }
   }
 
   /**

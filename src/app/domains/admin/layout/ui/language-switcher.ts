@@ -69,6 +69,7 @@ export class LanguageSwitcher {
 
   setActiveLang(lang: string) {
     this.transloco.setActiveLang(lang);
+    localStorage.setItem('language', lang);
   }
 
   getLangFlag(lang: string) {

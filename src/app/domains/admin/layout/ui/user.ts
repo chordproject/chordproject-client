@@ -195,7 +195,7 @@ export class User {
 
   signOut() {
     this.authService.signOut().subscribe(() => {
-      this.router.navigateByUrl('/auth/sign-in');
+      this.router.navigateByUrl('/home');
     });
   }
 

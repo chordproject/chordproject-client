@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslocoService } from '@jsverse/transloco';
+import { Auth } from 'firebase/auth';
 import {
     Firestore,
     collection,
@@ -29,6 +30,7 @@ import { FirebaseService } from '../firebase.service';
 })
 export class SongService {
     private _firestore: Firestore;
+    private _auth: Auth;
     private _snackBar: MatSnackBar;
     private _translocoService: TranslocoService;
     private _userService: UserService;
@@ -46,6 +48,7 @@ export class SongService {
     constructor() {
         const firebase = inject(FirebaseService);
         this._firestore = firebase.firestore;
+        this._auth = firebase.auth;
         this._snackBar = inject(MatSnackBar);
         this._translocoService = inject(TranslocoService);
         this._userService = inject(UserService);

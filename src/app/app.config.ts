@@ -18,6 +18,22 @@ import { TranslocoHttpLoader } from '@/app/core/transloco/transloco-http-loader'
 import { provideFirebase } from 'app/core/firebase/firebase.provider';
 import { routes } from './app.routes';
 
+const supportedLanguages = ['es', 'en', 'fr'];
+
+function getInitialLanguage(): string {
+  try {
+    const storedLanguage = globalThis.localStorage?.getItem('language');
+    if (storedLanguage && supportedLanguages.includes(storedLanguage)) {
+      return storedLanguage;
+    }
+  } catch {
+    // localStorage may be unavailable during server rendering or privacy mode.
+  }
+
+  const browserLanguage = globalThis.navigator?.language?.split('-')[0];
+  return supportedLanguages.includes(browserLanguage) ? browserLanguage : 'en';
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -63,7 +79,7 @@ export const appConfig: ApplicationConfig = {
             label: 'Français',
           },
         ],
-        defaultLang: 'es',
+        defaultLang: getInitialLanguage(),
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
       },
