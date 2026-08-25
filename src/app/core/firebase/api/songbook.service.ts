@@ -336,8 +336,10 @@ export class SongbookService {
                     return of([]);
                 }
 
-                return this.getPersonal().pipe(
-                    map((songbooks) => songbooks.filter((songbook) => songbookIds.includes(songbook.uid)))
+                return this.getAll().pipe(
+                    map((songbooks) => songbooks.filter((songbook) =>
+                        this.isActiveSongbook(songbook) && songbookIds.includes(songbook.uid)
+                    ))
                 );
             }),
             catchError((error) => this.handleError(error))

@@ -7,6 +7,17 @@
             "target": "chp",
             "public": "dist/chp/browser",
             "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+            "headers": [
+                {
+                    "source": "**/i18n/*.json",
+                    "headers": [
+                        {
+                            "key": "Cache-Control",
+                            "value": "no-cache, no-store, must-revalidate"
+                        }
+                    ]
+                }
+            ],
             "rewrites": [
                 {
                     "source": "**",
@@ -18,6 +29,17 @@
             "target": "hj",
             "public": "dist/hj/browser",
             "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+            "headers": [
+                {
+                    "source": "**/i18n/*.json",
+                    "headers": [
+                        {
+                            "key": "Cache-Control",
+                            "value": "no-cache, no-store, must-revalidate"
+                        }
+                    ]
+                }
+            ],
             "rewrites": [
                 {
                     "source": "**",

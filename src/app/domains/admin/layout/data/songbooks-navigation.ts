@@ -45,8 +45,8 @@ export class AdminSongbooksNavigation {
           const availableRecommendedSongbooks = this.filterCopiedRecommendedSongbooks(recommendedSongbooks, copiedSourceIds);
 
           return [
-            ...this.toNavigationSection('songbooks-personal', 'Mis cancioneros', personalSongbooks),
-            ...this.toNavigationSection('songbooks-hj', 'HomenaJesus', availableRecommendedSongbooks),
+            ...this.toNavigationSection('songbooks-personal', 'songbook_page.my_songbooks', personalSongbooks),
+            ...this.toNavigationSection('songbooks-hj', 'songbook_page.hj_songbooks', availableRecommendedSongbooks),
           ];
         })
       );
@@ -67,7 +67,6 @@ export class AdminSongbooksNavigation {
     return [{
       id,
       label,
-      dynamic: true,
       route: children.length ? undefined : '/songbook',
       children: children.length ? children : undefined,
     }];
