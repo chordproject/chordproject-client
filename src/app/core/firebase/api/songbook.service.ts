@@ -237,6 +237,8 @@ export class SongbookService {
             songbook.authorId = user.uid;
             songbook.ownerId = songbook.ownerId || user.uid;
             songbook.scope = songbook.scope || 'personal';
+            songbook.published = songbook.published ?? false;
+            songbook.isTemplate = songbook.isTemplate ?? false;
 
             await setDoc(doc(this._firestore, 'songbooks', songbook.uid), {
                 ...songbook,
@@ -288,6 +290,7 @@ export class SongbookService {
 
             if (this._auth.currentUser) {
                 relation.author_uid = this._auth.currentUser.uid;
+                relation.ownerId = this._auth.currentUser.uid;
             }
 
             await setDoc(
@@ -337,9 +340,18 @@ export class SongbookService {
                 }
 
                 return this.getAll().pipe(
-                    map((songbooks) => songbooks.filter((songbook) =>
-                        this.isActiveSongbook(songbook) && songbookIds.includes(songbook.uid)
-                    ))
+                    map((songbooks) => {
+                        const visibleSongbooks = songbooks.filter((songbook) =>
+                            this.isActiveSongbook(songbook) && songbookIds.includes(songbook.uid) && this.isVisibleToCurrentUser(songbook)
+                        );
+
+                        // Hide a recommended songbook once the current user has their own personal copy of it.
+                        const copiedSourceIds = new Set(
+                            visibleSongbooks.filter((songbook) => this.isOwnedByCurrentUser(songbook)).map((songbook) => songbook.copiedFrom).filter(Boolean)
+                        );
+
+                        return visibleSongbooks.filter((songbook) => !copiedSourceIds.has(songbook.uid));
+                    })
                 );
             }),
             catchError((error) => this.handleError(error))
@@ -470,6 +482,7 @@ export class SongbookService {
                 }
                 return songbooks;
             }),
+            take(1),
             catchError((error) => this.handleError(error))
         );
     }
@@ -531,6 +544,15 @@ export class SongbookService {
 
     private isRecommendedSongbook(songbook: Songbook): boolean {
         return songbook.scope === 'shared' && songbook.published === true;
+    }
+
+    private isOwnedByCurrentUser(songbook: Songbook): boolean {
+        const currentUserId = this._auth.currentUser?.uid;
+        return Boolean(currentUserId) && (songbook.authorId === currentUserId || songbook.ownerId === currentUserId);
+    }
+
+    private isVisibleToCurrentUser(songbook: Songbook): boolean {
+        return this.isRecommendedSongbook(songbook) || this.isOwnedByCurrentUser(songbook);
     }
 
     private clearSongbooksCache(): void {

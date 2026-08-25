@@ -12,6 +12,7 @@ export type NavigationItem = {
   children?: NavigationItem[];
   disabled?: boolean;
   expanded?: boolean;
+  requiresAuth?: boolean;
   activeOptions?: { exact: boolean } | IsActiveMatchOptions;
 };
 
@@ -49,6 +50,13 @@ export const NAVIGATION: NavigationItem[] = [
         label: 'nav.repertoires',
         icon: 'calendar-days',
         route: '/repertoires',
+      },
+      {
+        id: 'general/suggestions',
+        label: 'nav.suggestions',
+        icon: 'inbox',
+        route: '/suggestions',
+        requiresAuth: true,
       },
     ],
   },

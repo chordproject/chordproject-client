@@ -1,0 +1,22 @@
+<div class="flex w-full flex-col sm:min-w-100">
+    <header class="border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
+        <h2 class="text-xl font-semibold">{{ 'song_suggestion.title' | transloco }}</h2>
+        <p class="text-secondary mt-1 text-sm">{{ 'song_suggestion.description' | transloco }}</p>
+    </header>
+
+    <form class="flex flex-col gap-4 p-6" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'song_suggestion.message_label' | transloco }}</mat-label>
+            <textarea matInput formControlName="message" rows="4"></textarea>
+        </mat-form-field>
+
+        <footer class="flex justify-end gap-3 pt-2">
+            <button matButton="outlined" type="button" [matDialogClose]="undefined">
+                {{ 'confirmation.cancel' | transloco }}
+            </button>
+            <button matButton="filled" type="submit">
+                {{ 'song_suggestion.submit' | transloco }}
+            </button>
+        </footer>
+    </form>
+</div>

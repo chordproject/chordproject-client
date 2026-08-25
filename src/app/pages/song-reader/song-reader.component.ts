@@ -7,18 +7,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ChpViewerToolbarComponent } from 'app/components/viewer/viewer-toolbar/viewer-toolbar.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
+import { SongSuggestionService } from 'app/core/firebase/api/song-suggestion.service';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
+import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
+import { SongSuggestion } from 'app/models/song-suggestion';
 import { Songbook } from 'app/models/songbook';
 import { Tag } from 'app/models/tag';
 import { JoinPipe } from 'app/pipes/join.pipe';
@@ -39,6 +43,8 @@ import { JoinPipe } from 'app/pipes/join.pipe';
         MatFormFieldModule,
         MatInputModule,
         MatAutocompleteModule,
+        MatTooltipModule,
+        RouterLink,
         AsyncPipe,
         MatIconModule,
         TranslocoModule,
@@ -48,6 +54,8 @@ export class SongReaderComponent implements OnInit, OnDestroy {
     song: Song = null;
     songLoadError = false;
     associatedSongbooks: Songbook[] = [];
+    pendingSuggestion: SongSuggestion | null = null;
+    versions: PartialSong[] = [];
     associatedTags: Tag[] = [];
     drawerMode: 'side' | 'over';
     deviceType: 'phone' | 'tablet' | 'desktop' = 'desktop';
@@ -58,6 +66,7 @@ export class SongReaderComponent implements OnInit, OnDestroy {
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _songService: SongService,
+        private _songSuggestionService: SongSuggestionService,
         private _songbookService: SongbookService,
         private _editorService: EditorService,
         private route: ActivatedRoute,
@@ -104,12 +113,39 @@ export class SongReaderComponent implements OnInit, OnDestroy {
                 this.songLoadError = !data;
                 this.associatedSongbooks = [];
                 this.associatedTags = [];
+                this.pendingSuggestion = null;
+                this.versions = [];
                 if (data?.uid) {
                     this._songbookService
                         .getSongbooksForSong(data.uid)
                         .pipe(takeUntil(this._unsubscribeAll), catchError(() => of([])))
                         .subscribe((songbooks) => {
                             this.associatedSongbooks = songbooks;
+                            this._changeDetectorRef.markForCheck();
+                        });
+
+                    this._songSuggestionService
+                        .getMineOpenForSong(data.uid)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((suggestion) => {
+                            this.pendingSuggestion = suggestion;
+                            this._changeDetectorRef.markForCheck();
+                        });
+
+                    const canonicalId = data.variantOf || data.uid;
+                    this._songService
+                        .getVariants(canonicalId)
+                        .pipe(
+                            takeUntil(this._unsubscribeAll),
+                            switchMap((variants) =>
+                                data.variantOf
+                                    ? this._songService.getAll([canonicalId]).pipe(map((canonical) => [...canonical, ...variants]))
+                                    : of(variants)
+                            ),
+                            catchError(() => of([]))
+                        )
+                        .subscribe((versions) => {
+                            this.versions = versions.filter((version) => version.uid !== data.uid);
                             this._changeDetectorRef.markForCheck();
                         });
                 }
@@ -128,6 +164,9 @@ export class SongReaderComponent implements OnInit, OnDestroy {
     }
 
     get viewerContent(): string {
+        if (this.pendingSuggestion?.proposedSong?.content) {
+            return this.pendingSuggestion.proposedSong.content;
+        }
         return this.song?.content || this.song?.lyrics || '';
     }
 

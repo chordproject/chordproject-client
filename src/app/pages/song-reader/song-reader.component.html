@@ -20,10 +20,33 @@
                         <div class="flex w-full flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                             <!-- Title -->
                             <div>
-                                <div class="text-4xl font-extrabold leading-none tracking-tight">{{ song.title }}</div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <div class="text-4xl font-extrabold leading-none tracking-tight">{{ song.title }}</div>
+                                    @if (pendingSuggestion) {
+                                        <span
+                                            class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
+                                            [matTooltip]="'reader.pending_suggestion_tooltip' | transloco"
+                                        >
+                                            {{ 'reader.pending_suggestion' | transloco }}
+                                        </span>
+                                    }
+                                </div>
                                 <div class="text-secondary ml-0.5 font-medium">
                                     {{ song.artists | join: ' - ' }}
                                 </div>
+                                @if (versions.length) {
+                                    <div class="mt-2 flex flex-wrap items-center gap-2 text-sm">
+                                        <span class="text-secondary">{{ 'reader.other_versions' | transloco }}</span>
+                                        @for (version of versions; track version.uid) {
+                                            <a
+                                                class="cursor-pointer rounded-full border border-neutral-300 px-3 py-1 text-neutral-700 hover:border-primary-300 hover:text-primary-700 dark:border-neutral-700 dark:text-neutral-200"
+                                                [routerLink]="['/songs/read', version.uid]"
+                                            >
+                                                {{ version.title }}
+                                            </a>
+                                        }
+                                    </div>
+                                }
                                 @if (associatedSongbooks.length) {
                                     <div class="mt-3 flex flex-wrap gap-2">
                                         @for (songbook of associatedSongbooks; track songbook.uid) {

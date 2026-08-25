@@ -121,7 +121,7 @@ service cloud.firestore {
         && request.resource.data.ownerId == request.auth.uid
         && songbookExists(request.resource.data.songbookId)
         && songExists(request.resource.data.songId)
-        && songbookOwner(request.resource.data.songbookId)
+        && (isAdmin() || songbookOwner(request.resource.data.songbookId))
         && (
           isAdmin()
           || songbookIsTemplate(request.resource.data.songbookId) == false
@@ -147,6 +147,17 @@ service cloud.firestore {
         && request.resource.data.ownerId == request.auth.uid
         && request.resource.data.status == 'open';
       allow update, delete: if isAdmin();
+    }
+
+    match /song_suggestions/{suggestionId} {
+      allow read: if isAdmin() || owns(resource.data);
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.status == 'open'
+        && songExists(request.resource.data.targetSongId);
+      allow update: if isAdmin();
+      allow delete: if isAdmin() || (owns(resource.data) && resource.data.status == 'open');
     }
 
     match /tags/{tagId} {

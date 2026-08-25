@@ -1,0 +1,161 @@
+<div class="flex flex-auto flex-col gap-8 px-6 py-4 lg:px-8 lg:py-8">
+    @if (!isAuthenticated()) {
+        <div>
+            <div class="text-xl font-semibold tracking-tighter sm:text-2xl">{{ 'admin_suggestions.my_title' | transloco }}</div>
+            <div class="mt-4 rounded-lg border border-neutral-200 bg-white p-6 text-sm text-neutral-600 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300">
+                {{ 'admin_suggestions.sign_in_required' | transloco }}
+            </div>
+        </div>
+    } @else {
+        @if (!isAdmin() || myRows().length > 0) {
+            <div class="flex flex-col gap-4">
+                <div class="text-xl font-semibold tracking-tighter sm:text-2xl">{{ 'admin_suggestions.my_title' | transloco }}</div>
+
+                @if (myRows().length === 0) {
+                    <div class="rounded-lg border border-dashed border-neutral-300 p-6 text-sm text-secondary dark:border-neutral-700">
+                        {{ 'admin_suggestions.my_empty' | transloco }}
+                    </div>
+                } @else {
+                    <div class="flex flex-col gap-3">
+                    @for (row of myRows(); track trackByFn($index, row)) {
+                        <div class="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+                                    {{ (row.kind === 'song_edit' ? 'admin_suggestions.type_song_edit' : 'admin_suggestions.type_' + row.suggestion.type) | transloco }}
+                                </span>
+                                <h3 class="text-sm font-semibold">
+                                    @if (targetRoute(row); as targetRoute) {
+                                        <a class="cursor-pointer hover:text-primary-700 hover:underline" [routerLink]="targetRoute">
+                                            {{ row.kind === 'song_edit' ? row.songTitle : row.songbookName }}
+                                        </a>
+                                    } @else {
+                                        {{ row.kind === 'song_edit' ? row.songTitle : row.songbookName }}
+                                    }
+                                </h3>
+                                <span
+                                    class="ml-auto rounded-full px-2.5 py-1 text-xs font-medium"
+                                    [class.bg-amber-100]="row.suggestion.status === 'open'"
+                                    [class.text-amber-800]="row.suggestion.status === 'open'"
+                                    [class.bg-green-100]="row.suggestion.status === 'accepted'"
+                                    [class.text-green-800]="row.suggestion.status === 'accepted'"
+                                    [class.bg-red-100]="row.suggestion.status === 'rejected'"
+                                    [class.text-red-800]="row.suggestion.status === 'rejected'"
+                                >
+                                    {{ 'admin_suggestions.status_' + row.suggestion.status | transloco }}
+                                </span>
+                            </div>
+                            @if (row.suggestion.message) {
+                                <p class="text-secondary mt-2 text-sm">{{ row.suggestion.message }}</p>
+                            }
+                            @if (row.suggestion.responseMessage) {
+                                <p class="mt-2 rounded-md bg-neutral-50 p-2 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+                                    {{ 'admin_suggestions.response_from_hj' | transloco }}: {{ row.suggestion.responseMessage }}
+                                </p>
+                            }
+                            <div class="text-secondary mt-2 flex flex-wrap gap-x-4 text-xs">
+                                @if (toDate(row.suggestion.creationDate); as createdAt) {
+                                    <span>{{ 'admin_suggestions.sent_on' | transloco }}: {{ createdAt | date: 'medium' }}</span>
+                                }
+                                @if (row.suggestion.status !== 'open' && toDate(row.suggestion.lastUpdateDate); as resolvedAt) {
+                                    <span>{{ 'admin_suggestions.resolved_on' | transloco }}: {{ resolvedAt | date: 'medium' }}</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            </div>
+        }
+
+        @if (isAdmin()) {
+            <div class="flex flex-col gap-4">
+                <div class="text-xl font-semibold tracking-tighter sm:text-2xl">{{ 'admin_suggestions.title' | transloco }}</div>
+
+                @if (rows().length === 0) {
+                    <div class="rounded-lg border border-dashed border-neutral-300 p-6 text-sm text-secondary dark:border-neutral-700">
+                        {{ 'admin_suggestions.empty' | transloco }}
+                    </div>
+                } @else {
+                    <div class="flex flex-col gap-4">
+                        @for (row of rows(); track trackByFn($index, row)) {
+                            <div class="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+                                @if (row.kind === 'song_edit') {
+                                    <div class="flex flex-col gap-3">
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span class="rounded-full bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700 dark:bg-primary-950 dark:text-primary-300">
+                                                {{ 'admin_suggestions.type_song_edit' | transloco }}
+                                            </span>
+                                            <h3 class="text-base font-semibold">
+                                                <a class="cursor-pointer hover:text-primary-700 hover:underline" [routerLink]="targetRoute(row)">
+                                                    {{ row.songTitle }}
+                                                </a>
+                                            </h3>
+                                            @if (toDate(row.suggestion.creationDate); as createdAt) {
+                                                <span class="text-secondary ml-auto text-xs">{{ createdAt | date: 'medium' }}</span>
+                                            }
+                                        </div>
+                                        @if (row.suggestion.message) {
+                                            <p class="text-secondary text-sm">{{ row.suggestion.message }}</p>
+                                        }
+                                        <textarea
+                                            class="w-full rounded-md border border-neutral-300 p-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
+                                            rows="2"
+                                            [placeholder]="'admin_suggestions.response_placeholder' | transloco"
+                                            [(ngModel)]="row.responseMessage"
+                                        ></textarea>
+                                        <div class="flex flex-wrap gap-2">
+                                            <button matButton="filled" type="button" (click)="approveSongEdit(row)">
+                                                {{ 'admin_suggestions.approve' | transloco }}
+                                            </button>
+                                            <button matButton="outlined" type="button" (click)="createVersion(row)">
+                                                {{ 'admin_suggestions.create_version' | transloco }}
+                                            </button>
+                                            <button matButton="outlined" type="button" (click)="rejectSongEdit(row)">
+                                                {{ 'admin_suggestions.reject' | transloco }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                } @else {
+                                    <div class="flex flex-col gap-3">
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span class="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+                                                {{ 'admin_suggestions.type_' + row.suggestion.type | transloco }}
+                                            </span>
+                                            <h3 class="text-base font-semibold">
+                                                @if (targetRoute(row); as targetRoute) {
+                                                    <a class="cursor-pointer hover:text-primary-700 hover:underline" [routerLink]="targetRoute">
+                                                        {{ row.songbookName }}
+                                                    </a>
+                                                } @else {
+                                                    {{ row.songbookName }}
+                                                }
+                                            </h3>
+                                            @if (toDate(row.suggestion.creationDate); as createdAt) {
+                                                <span class="text-secondary ml-auto text-xs">{{ createdAt | date: 'medium' }}</span>
+                                            }
+                                        </div>
+                                        <p class="text-secondary text-sm">{{ row.suggestion.message }}</p>
+                                        <textarea
+                                            class="w-full rounded-md border border-neutral-300 p-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
+                                            rows="2"
+                                            [placeholder]="'admin_suggestions.response_placeholder' | transloco"
+                                            [(ngModel)]="row.responseMessage"
+                                        ></textarea>
+                                        <div class="flex flex-wrap gap-2">
+                                            <button matButton="filled" type="button" (click)="approveSongbook(row)">
+                                                {{ 'admin_suggestions.approve' | transloco }}
+                                            </button>
+                                            <button matButton="outlined" type="button" (click)="rejectSongbook(row)">
+                                                {{ 'admin_suggestions.reject' | transloco }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

@@ -24,6 +24,7 @@
         "create": "Créer",
         "songbooks": "Carnets",
         "repertoires": "Répertoires",
+        "suggestions": "Suggestions",
         "sign_in": "Se connecter",
         "sign_up": "S'inscrire"
     },
@@ -42,6 +43,8 @@
         "hj_description": "Ces carnets sont toujours disponibles et <strong>tenus à jour</strong> par HomenaJesus. S'il manque quelque chose, vous pouvez <strong>suggérer</strong> des changements pour le carnet public; créez une copie personnelle seulement si votre ministère a vraiment besoin d'adaptations.",
         "empty_personal": "Vous n'avez pas encore de carnets personnels. Lorsque vous voulez adapter un carnet de HomenaJesus, créez une copie pour le personnaliser.",
         "empty_hj": "Aucun carnet publié.",
+        "create_new": "Créer un carnet",
+        "creating": "Création...",
         "view": "Voir",
         "copy_to_customize": "Copier pour personnaliser",
         "sign_in_to_customize": "Se connecter pour personnaliser",
@@ -70,6 +73,13 @@
         "submit": "Envoyer la suggestion",
         "sent": "Suggestion envoyée"
     },
+    "songbook_create": {
+        "title": "Créer un nouveau carnet",
+        "description": "Créez un carnet personnel vide pour organiser vos chansons.",
+        "name_label": "Nom du carnet",
+        "name_error": "Écrivez au moins 2 caractères.",
+        "submit": "Créer le carnet"
+    },
     "songbook_detail": {
         "back_to_songbooks": "Retour aux carnets",
         "public_badge": "Public HomenaJesus",
@@ -79,7 +89,9 @@
         "reload_hint": "Veuillez recharger la page pour réessayer",
         "included_songbooks": "Carnets inclus",
         "included_description": "Sélectionnez une section pour voir ses chansons.",
-        "empty_songbook": "Ce carnet ne contient aucune chanson"
+        "empty_songbook": "Ce carnet ne contient aucune chanson",
+        "add_song_placeholder": "Rechercher une chanson à ajouter...",
+        "no_song_matches": "Aucune chanson trouvée"
     },
     "repertoire_page": {
         "eyebrow": "Planification",
@@ -153,7 +165,10 @@
         "add_to_songbook": "Ajouter au carnet...",
         "song_not_available": "La chanson n'est pas disponible",
         "loading_song": "Chargement de la chanson...",
-        "remove_from_songbook": "Retirer de {{name}}"
+        "remove_from_songbook": "Retirer de {{name}}",
+        "pending_suggestion": "Suggestion en attente",
+        "pending_suggestion_tooltip": "Vous avez envoyé des modifications pour cette chanson; elles s'affichent ici pendant que HomenaJesus les examine.",
+        "other_versions": "Autres versions :"
     },
     "song_service": {
         "title_required": "Le titre est obligatoire",
@@ -183,6 +198,36 @@
         "unsaved_changes_title": "Modifications non enregistrées",
         "unsaved_changes_message": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?",
         "unsaved_changes_discard": "Abandonner les modifications"
+    },
+    "song_suggestion": {
+        "title": "Envoyer comme suggestion",
+        "description": "Vous n'êtes pas l'auteur de cette chanson, vos modifications seront donc envoyées comme suggestion pour examen par HomenaJesus. En attendant, vous verrez votre version proposée marquée comme en attente.",
+        "message_label": "Commentaire (optionnel)",
+        "submit": "Envoyer la suggestion",
+        "sent": "Suggestion envoyée. Elle apparaîtra comme en attente jusqu'à son examen."
+    },
+    "admin_suggestions": {
+        "title": "Suggestions en attente",
+        "not_authorized": "Vous n'avez pas la permission de voir cette section.",
+        "empty": "Il n'y a aucune suggestion en attente.",
+        "my_title": "Mes suggestions",
+        "my_empty": "Vous n'avez encore envoyé aucune suggestion.",
+        "sign_in_required": "Connectez-vous pour voir vos suggestions.",
+        "status_open": "En attente",
+        "status_accepted": "Acceptée",
+        "status_rejected": "Rejetée",
+        "response_from_hj": "Réponse de HomenaJesus",
+        "sent_on": "Envoyée le",
+        "resolved_on": "Résolue le",
+        "type_song_edit": "Modification de chanson",
+        "type_add_song": "Ajouter une chanson",
+        "type_new_child_songbook": "Nouveau sous-carnet",
+        "type_new_songbook": "Nouveau carnet",
+        "type_other": "Autre suggestion",
+        "response_placeholder": "Message de réponse (optionnel)",
+        "approve": "Approuver",
+        "reject": "Rejeter",
+        "create_version": "Créer une nouvelle version"
     },
     "search": {
         "placeholder_bar": "Rechercher par titre, paroles ou carnet...",
@@ -226,7 +271,9 @@
         "forgot_password_link": "Mot de passe oublié ?",
         "sign_in_button": "Se connecter",
         "continue_with": "Ou continuez avec",
+        "continue_with_email": "Ou utilisez l'e-mail",
         "google": "Google",
+        "github": "GitHub",
         "sign_up_title": "Inscription",
         "have_account": "Vous avez déjà un compte ?",
         "sign_in_link": "Connectez-vous",

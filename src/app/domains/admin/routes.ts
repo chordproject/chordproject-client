@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from 'app/core/user/auth.guard';
 import { AdminLayout } from './layout/layout';
 
 const routes: Routes = [
@@ -36,6 +37,11 @@ const routes: Routes = [
       {
         path: 'repertoires',
         loadChildren: () => import('app/pages/repertoire/repertoire.routes'),
+      },
+      {
+        path: 'suggestions',
+        canActivate: [authGuard],
+        loadChildren: () => import('./modules/suggestions/routes'),
       },
 
       // -----------------------------------------------------------------------

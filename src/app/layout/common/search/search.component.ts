@@ -20,6 +20,7 @@ import {
     MAT_AUTOCOMPLETE_SCROLL_STRATEGY,
     MatAutocomplete,
     MatAutocompleteModule,
+    MatAutocompleteTrigger,
 } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
@@ -107,6 +108,8 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         this._matAutocomplete = value || this.searchResults?.matAutocomplete;
     }
 
+    @ViewChild(MatAutocompleteTrigger) private _autocompleteTrigger: MatAutocompleteTrigger;
+
     ngOnChanges(changes: SimpleChanges): void {
         // Appearance
         if ('appearance' in changes) {
@@ -150,6 +153,9 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
                     resultSets.songsContent = resultSets.songsContent.filter((song) => !songUids.has(song.uid));
                     // Store the result sets
                     this.resultSets.set(resultSets);
+
+                    // Reopen the panel after the async options have been rendered.
+                    setTimeout(() => this._autocompleteTrigger?.openPanel());
 
                     // Execute the event
                     this.search.next(resultSets);

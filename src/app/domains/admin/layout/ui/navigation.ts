@@ -1,7 +1,7 @@
 import { Tree, TreeItem, TreeItemGroup } from '@angular/aria/tree';
 import { CdkMonitorFocus } from '@angular/cdk/a11y';
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import {
@@ -14,6 +14,7 @@ import {
 } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { filter, take } from 'rxjs';
+import { UserService } from '@/app/core/user/user.service';
 import {
   NAVIGATION,
   NavigationItem,
@@ -35,7 +36,7 @@ import { AdminSongbooksNavigation } from '@/app/domains/admin/layout/data/songbo
   ],
   template: `
     <div class="flex flex-col gap-y-4">
-      @for (section of navigation(); track section.id) {
+      @for (section of visibleNavigation(); track section.id) {
         @if (section.children && section.children.length > 0) {
           <div class="flex flex-col px-4">
             <!-- Section content -->
@@ -160,9 +161,16 @@ export class Navigation {
   // Dependencies
   private router = inject(Router);
   private songbooksNavigation = inject(AdminSongbooksNavigation);
+  private userService = inject(UserService);
 
   // State
   protected navigation = signal<NavigationItem[]>(NAVIGATION);
+  protected isAuthenticated = toSignal(this.userService.isAuthenticated(), {
+    initialValue: false,
+  });
+  protected visibleNavigation = computed(() =>
+    this.filterByAuth(this.navigation(), this.isAuthenticated())
+  );
   protected navigationEnd = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -225,6 +233,23 @@ export class Navigation {
       route: '/songbook',
       children: songbooks,
     };
+  }
+
+  /**
+   * Hide items (and their children) that require an authenticated user.
+   */
+  private filterByAuth(
+    items: NavigationItem[],
+    isAuthenticated: boolean
+  ): NavigationItem[] {
+    return items
+      .map((item) => ({
+        ...item,
+        children: item.children
+          ? this.filterByAuth(item.children, isAuthenticated)
+          : item.children,
+      }))
+      .filter((item) => !item.requiresAuth || isAuthenticated);
   }
 
   private firstRoute(items: NavigationItem[]): string | undefined {

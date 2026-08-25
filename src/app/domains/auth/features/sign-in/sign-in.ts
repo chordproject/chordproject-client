@@ -71,4 +71,10 @@ export default class AuthSignIn {
       next: () => this.router.navigateByUrl('/home'),
     });
   }
+
+  signInWithGithub() {
+    this.authService.signInWithGithub().subscribe({
+      next: () => this.router.navigateByUrl('/home'),
+    });
+  }
 }

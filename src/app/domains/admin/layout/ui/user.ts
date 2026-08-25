@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatPseudoCheckbox } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
@@ -27,11 +27,13 @@ import { UserService } from '@/app/core/user/user.service';
       class="flex w-full cursor-pointer items-center gap-x-3 rounded-xl p-2 text-left hover:bg-neutral-700/10 dark:hover:bg-neutral-300/10"
       [matMenuTriggerFor]="userMenu"
     >
-      @if (user()?.avatar) {
+      @if (avatarUrl(); as avatarUrl) {
         <img
           class="size-9 rounded-lg object-cover"
-          [src]="user()!.avatar"
+          [src]="avatarUrl"
           alt="User avatar"
+          referrerpolicy="no-referrer"
+          (error)="markAvatarAsFailed(avatarUrl)"
         />
       } @else {
         <div
@@ -68,11 +70,13 @@ import { UserService } from '@/app/core/user/user.service';
         class="py-2 [&>span]:flex [&>span]:items-center"
         mat-menu-item
       >
-        @if (user()?.avatar) {
+        @if (avatarUrl(); as avatarUrl) {
           <img
             class="size-9 rounded-lg object-cover"
-            [src]="user()!.avatar"
+            [src]="avatarUrl"
             alt="User avatar"
+            referrerpolicy="no-referrer"
+            (error)="markAvatarAsFailed(avatarUrl)"
           />
         } @else {
           <div
@@ -161,8 +165,13 @@ export class User {
   private router = inject(Router);
 
   // State
+  private failedAvatarUrl = signal<string | null>(null);
   protected scheme = computed(() => this.theming.scheme());
   protected user = toSignal(this.userService.user$);
+  protected avatarUrl = computed(() => {
+    const avatar = this.user()?.avatar;
+    return avatar && avatar !== this.failedAvatarUrl() ? avatar : '';
+  });
   protected displayNameTranslationKey = computed(() => {
     const user = this.user();
     if (!user) {
@@ -191,6 +200,10 @@ export class User {
 
   updateScheme(scheme: Scheme) {
     this.theming.scheme.set(scheme);
+  }
+
+  markAvatarAsFailed(avatarUrl: string) {
+    this.failedAvatarUrl.set(avatarUrl);
   }
 
   signOut() {

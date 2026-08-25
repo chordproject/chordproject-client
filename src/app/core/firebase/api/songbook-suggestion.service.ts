@@ -4,10 +4,14 @@ import {
     Firestore,
     collection,
     doc,
+    getDocs,
+    query,
     serverTimestamp,
     setDoc,
+    where,
 } from 'firebase/firestore';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from, map, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { SongbookSuggestion, SongbookSuggestionType } from 'app/models/songbook-suggestion';
 import { FirebaseService } from '../firebase.service';
 
@@ -35,6 +39,60 @@ export class SongbookSuggestionService {
         }
 
         return from(this.createSuggestion(value));
+    }
+
+    getAllOpen(): Observable<SongbookSuggestion[]> {
+        const q = query(collection(this.firestore, 'songbook_suggestions'), where('status', '==', 'open'));
+
+        return from(getDocs(q)).pipe(
+            map((snapshot) => this.sortByCreationDateDesc(snapshot.docs.map((suggestionDoc) => ({ ...suggestionDoc.data(), uid: suggestionDoc.id }) as SongbookSuggestion))),
+            catchError(() => of([]))
+        );
+    }
+
+    getMine(): Observable<SongbookSuggestion[]> {
+        const user = this.auth.currentUser;
+        if (!user) {
+            return of([]);
+        }
+
+        const q = query(collection(this.firestore, 'songbook_suggestions'), where('authorId', '==', user.uid));
+
+        return from(getDocs(q)).pipe(
+            map((snapshot) => this.sortByCreationDateDesc(snapshot.docs.map((suggestionDoc) => ({ ...suggestionDoc.data(), uid: suggestionDoc.id }) as SongbookSuggestion))),
+            catchError(() => of([]))
+        );
+    }
+
+    approve(suggestion: SongbookSuggestion, responseMessage?: string): Observable<boolean> {
+        return from(this.updateStatus(suggestion.uid, 'accepted', responseMessage)).pipe(
+            map(() => true),
+            catchError(() => of(false))
+        );
+    }
+
+    reject(suggestion: SongbookSuggestion, responseMessage?: string): Observable<boolean> {
+        return from(this.updateStatus(suggestion.uid, 'rejected', responseMessage)).pipe(
+            map(() => true),
+            catchError(() => of(false))
+        );
+    }
+
+    private async updateStatus(suggestionId: string, status: 'accepted' | 'rejected', responseMessage?: string): Promise<void> {
+        const update: Record<string, unknown> = { status, lastUpdateDate: serverTimestamp() };
+        if (responseMessage) {
+            update.responseMessage = responseMessage.trim();
+        }
+
+        await setDoc(doc(this.firestore, 'songbook_suggestions', suggestionId), update, { merge: true });
+    }
+
+    private sortByCreationDateDesc(suggestions: SongbookSuggestion[]): SongbookSuggestion[] {
+        return [...suggestions].sort((first, second) => this.toMillis(second.creationDate) - this.toMillis(first.creationDate));
+    }
+
+    private toMillis(value: unknown): number {
+        return (value as { toMillis?: () => number })?.toMillis?.() ?? 0;
     }
 
     private async createSuggestion(value: CreateSongbookSuggestionInput): Promise<string> {

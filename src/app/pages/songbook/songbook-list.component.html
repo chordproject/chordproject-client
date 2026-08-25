@@ -9,9 +9,30 @@
 
         @if (personalSongbookGroups$ | async; as personalSongbookGroups) {
             <section class="flex flex-col gap-3">
-                <div class="flex items-center gap-2">
-                    <mat-icon class="text-primary-600 icon-size-5" [svgIcon]="'book-open'"></mat-icon>
-                    <h2 class="text-xl font-semibold">{{ 'songbook_page.my_songbooks' | transloco }}</h2>
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <mat-icon class="text-primary-600 icon-size-5" [svgIcon]="'book-open'"></mat-icon>
+                        <h2 class="text-xl font-semibold">{{ 'songbook_page.my_songbooks' | transloco }}</h2>
+                    </div>
+
+                    @if (isAuthenticated()) {
+                        <button
+                            class="cursor-pointer rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700 disabled:cursor-wait disabled:opacity-70"
+                            type="button"
+                            [disabled]="creatingSongbook()"
+                            (click)="createNewSongbook()"
+                        >
+                            {{ (creatingSongbook() ? 'songbook_page.creating' : 'songbook_page.create_new') | transloco }}
+                        </button>
+                    } @else {
+                        <button
+                            class="cursor-pointer rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                            type="button"
+                            (click)="requireAuthentication()"
+                        >
+                            {{ 'songbook_page.create_new' | transloco }}
+                        </button>
+                    }
                 </div>
 
                 @if (personalSongbookGroups.length) {

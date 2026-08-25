@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, from, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { User } from 'app/core/user/user.types';
 import { AuthService } from '../firebase/auth/auth.service';
 
@@ -10,6 +10,7 @@ export class UserService {
         this._authenticated
     );
     private _authService = inject(AuthService);
+    private _isAdmin$: Observable<boolean>;
 
     constructor() {
         this._authService.user$.subscribe(async (user) => {
@@ -24,6 +25,24 @@ export class UserService {
 
     isAuthenticated(): Observable<boolean> {
         return this._isAuthenticatedSource.asObservable();
+    }
+
+    // Emits once Firebase has resolved the persisted session; use this before gating on isAuthenticated() to avoid a false negative on cold page loads.
+    isAuthReady(): Observable<boolean> {
+        return this._authService.authReady$;
+    }
+
+    isAdmin(): Observable<boolean> {
+        if (!this._isAdmin$) {
+            this._isAdmin$ = this._authService.user$.pipe(
+                switchMap((firebaseUser) =>
+                    firebaseUser ? from(firebaseUser.getIdTokenResult()).pipe(map((token) => token.claims.admin === true)) : of(false)
+                ),
+                shareReplay({ bufferSize: 1, refCount: false })
+            );
+        }
+
+        return this._isAdmin$;
     }
 
     get user$(): Observable<User> {

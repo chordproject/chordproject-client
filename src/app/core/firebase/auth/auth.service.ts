@@ -4,6 +4,7 @@ import {
     Auth,
     confirmPasswordReset,
     createUserWithEmailAndPassword,
+    GithubAuthProvider,
     GoogleAuthProvider,
     onAuthStateChanged,
     sendPasswordResetEmail,
@@ -23,6 +24,7 @@ export class AuthService {
     private _snackBar: MatSnackBar;
     private _user = new BehaviorSubject<User>(null);
     private _authenticated = new BehaviorSubject<boolean>(false);
+    private _authReady = new BehaviorSubject<boolean>(false);
 
     constructor() {
         const firebase = inject(FirebaseService);
@@ -37,7 +39,13 @@ export class AuthService {
                 this._user.next(null);
                 this._authenticated.next(false);
             }
+            this._authReady.next(true);
         });
+    }
+
+    // Emits true once Firebase has resolved the persisted session (or confirmed there isn't one).
+    get authReady$(): Observable<boolean> {
+        return this._authReady.asObservable();
     }
 
     get user$(): Observable<User> {
@@ -71,6 +79,22 @@ export class AuthService {
                 .catch((error) => {
                     this.showSnackbar(
                         `Google sign in failed: ${error.message}`
+                    );
+                    throw error;
+                })
+        );
+    }
+
+    signInWithGithub(): Observable<User> {
+        const provider = new GithubAuthProvider();
+        return from(
+            signInWithPopup(this._auth, provider)
+                .then((result) => {
+                    return result.user;
+                })
+                .catch((error) => {
+                    this.showSnackbar(
+                        `GitHub sign in failed: ${error.message}`
                     );
                     throw error;
                 })

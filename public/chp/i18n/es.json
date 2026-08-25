@@ -24,6 +24,7 @@
         "create": "Crear",
         "songbooks": "Cancioneros",
         "repertoires": "Repertorios",
+        "suggestions": "Sugerencias",
         "sign_in": "Iniciar sesión",
         "sign_up": "Registrarse"
     },
@@ -42,6 +43,8 @@
         "hj_description": "Estos cancioneros siempre están disponibles y se <strong>mantienen actualizados</strong> por HomenaJesus. Si crees que falta algo, puedes <strong>sugerir</strong> cambios para el cancionero público; crea una copia personal solo si tu ministerio realmente necesita adaptarlos.",
         "empty_personal": "Aún no tienes cancioneros personales. Cuando quieras adaptar uno de HomenaJesus, crea una copia para personalizarla.",
         "empty_hj": "No hay cancioneros publicados.",
+        "create_new": "Crear cancionero",
+        "creating": "Creando...",
         "view": "Ver",
         "copy_to_customize": "Copiar para personalizar",
         "sign_in_to_customize": "Iniciar sesión para personalizar",
@@ -70,6 +73,13 @@
         "submit": "Enviar sugerencia",
         "sent": "Sugerencia enviada"
     },
+    "songbook_create": {
+        "title": "Crear nuevo cancionero",
+        "description": "Crea un cancionero personal vacío para organizar tus canciones.",
+        "name_label": "Nombre del cancionero",
+        "name_error": "Escribe al menos 2 caracteres.",
+        "submit": "Crear cancionero"
+    },
     "songbook_detail": {
         "back_to_songbooks": "Volver a cancioneros",
         "public_badge": "Público HomenaJesus",
@@ -79,7 +89,9 @@
         "reload_hint": "Por favor recarga la página para intentarlo de nuevo",
         "included_songbooks": "Cancioneros incluidos",
         "included_description": "Selecciona una sección para ver sus canciones.",
-        "empty_songbook": "Este cancionero no tiene canciones"
+        "empty_songbook": "Este cancionero no tiene canciones",
+        "add_song_placeholder": "Buscar canción para agregar...",
+        "no_song_matches": "No se encontraron canciones"
     },
     "repertoire_page": {
         "eyebrow": "Planificación",
@@ -153,7 +165,10 @@
         "add_to_songbook": "Agregar al cancionero...",
         "song_not_available": "La canción no está disponible",
         "loading_song": "Cargando canción...",
-        "remove_from_songbook": "Quitar de {{name}}"
+        "remove_from_songbook": "Quitar de {{name}}",
+        "pending_suggestion": "Sugerencia pendiente",
+        "pending_suggestion_tooltip": "Enviaste cambios para esta canción; se ven aquí mientras HomenaJesus los revisa.",
+        "other_versions": "Otras versiones:"
     },
     "song_service": {
         "title_required": "El título es obligatorio",
@@ -183,6 +198,36 @@
         "unsaved_changes_title": "Cambios sin guardar",
         "unsaved_changes_message": "Tienes cambios sin guardar. ¿Estás seguro de que quieres salir de esta página?",
         "unsaved_changes_discard": "Descartar cambios"
+    },
+    "song_suggestion": {
+        "title": "Enviar como sugerencia",
+        "description": "No eres el autor de esta canción, por lo que tus cambios se enviarán como una sugerencia que HomenaJesus revisará. Mientras tanto, verás tu versión propuesta marcada como pendiente.",
+        "message_label": "Comentario (opcional)",
+        "submit": "Enviar sugerencia",
+        "sent": "Sugerencia enviada. Se verá marcada como pendiente hasta que sea revisada."
+    },
+    "admin_suggestions": {
+        "title": "Sugerencias pendientes",
+        "not_authorized": "No tienes permisos para ver esta sección.",
+        "empty": "No hay sugerencias pendientes.",
+        "my_title": "Mis sugerencias",
+        "my_empty": "Aún no has enviado ninguna sugerencia.",
+        "sign_in_required": "Inicia sesión para ver tus sugerencias.",
+        "status_open": "Pendiente",
+        "status_accepted": "Aprobada",
+        "status_rejected": "Rechazada",
+        "response_from_hj": "Respuesta de HomenaJesus",
+        "sent_on": "Enviada el",
+        "resolved_on": "Resuelta el",
+        "type_song_edit": "Modificación de canción",
+        "type_add_song": "Agregar canción",
+        "type_new_child_songbook": "Nuevo subcancionero",
+        "type_new_songbook": "Nuevo cancionero",
+        "type_other": "Otra sugerencia",
+        "response_placeholder": "Mensaje de respuesta (opcional)",
+        "approve": "Aprobar",
+        "reject": "Rechazar",
+        "create_version": "Crear nueva versión"
     },
     "search": {
         "placeholder_bar": "Busca por título, letra o cancionero...",
@@ -226,7 +271,9 @@
         "forgot_password_link": "¿Olvidaste tu contraseña?",
         "sign_in_button": "Iniciar sesión",
         "continue_with": "O continúa con",
+        "continue_with_email": "O usa correo electrónico",
         "google": "Google",
+        "github": "GitHub",
         "sign_up_title": "Crear cuenta",
         "have_account": "¿Ya tienes una cuenta?",
         "sign_in_link": "Inicia sesión",

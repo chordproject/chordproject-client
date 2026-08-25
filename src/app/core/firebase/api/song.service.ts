@@ -180,7 +180,16 @@ export class SongService {
         const q = query(collection(this._firestore, 'songs'), orderBy('creationDate', 'desc'), limit(pageSize));
 
         return from(getDocs(q)).pipe(
-            map((snapshot) => snapshot.docs.map((doc) => doc.data() as PartialSong)),
+            map((snapshot) => snapshot.docs.map((doc) => doc.data() as PartialSong).filter((song) => !song.variantOf)),
+            catchError((error) => this.handleError(error))
+        );
+    }
+
+    getVariants(originalSongId: string): Observable<PartialSong[]> {
+        const q = query(collection(this._firestore, 'songs'), where('variantOf', '==', originalSongId));
+
+        return from(getDocs(q)).pipe(
+            map((snapshot) => snapshot.docs.map((document) => ({ uid: document.id, ...document.data() }) as PartialSong)),
             catchError((error) => this.handleError(error))
         );
     }
@@ -204,9 +213,8 @@ export class SongService {
                 song.creationDate = serverTimestamp();
                 song.source = environment.source;
                 song.videoId = '';
+                song.authorId = userUid;
             }
-
-            song.authorId = userUid;
 
             const songData = Object.fromEntries(
                 Object.entries(song).filter(([, value]) => value !== undefined)
@@ -284,7 +292,11 @@ export class SongService {
         if (!this._songsCache$) {
             this._songsCache$ = defer(() =>
                 from(getDocs(query(collection(this._firestore, 'songs'), orderBy('title')))).pipe(
-                    map((snapshot) => snapshot.docs.map((document) => ({ uid: document.id, ...document.data() }) as PartialSong)),
+                    map((snapshot) =>
+                        snapshot.docs
+                            .map((document) => ({ uid: document.id, ...document.data() }) as PartialSong)
+                            .filter((song) => !song.variantOf)
+                    ),
                     catchError((error) => this.handleError(error))
                 )
             ).pipe(shareReplay({ bufferSize: 1, refCount: false }));

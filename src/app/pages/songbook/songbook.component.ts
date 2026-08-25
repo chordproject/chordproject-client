@@ -2,13 +2,17 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { Observable, Subject, of, takeUntil } from 'rxjs';
-import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
@@ -29,7 +33,21 @@ import { SongbookSuggestionDialogComponent } from './songbook-suggestion-dialog.
     selector: 'chp-songbook',
     standalone: true,
     templateUrl: './songbook.component.html',
-    imports: [CommonModule, DragDropModule, MatIconModule, RouterLink, TranslocoModule, ChpEditorComponent, ChpSongPreviewComponent, ChpSongItemComponent, ChpSplitLayoutComponent],
+    imports: [
+        CommonModule,
+        DragDropModule,
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        RouterLink,
+        TranslocoModule,
+        ChpEditorComponent,
+        ChpSongPreviewComponent,
+        ChpSongItemComponent,
+        ChpSplitLayoutComponent,
+    ],
 })
 export class SongbookComponent implements OnInit, OnDestroy {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -48,6 +66,9 @@ export class SongbookComponent implements OnInit, OnDestroy {
     editingPreview = signal(false);
     isAuthenticated;
     previewContent = '';
+    songSearchControl = new UntypedFormControl('');
+    filteredSongs$: Observable<PartialSong[]>;
+    addingSongId = signal<string | null>(null);
 
     constructor(
         private _route: ActivatedRoute,
@@ -69,6 +90,50 @@ export class SongbookComponent implements OnInit, OnDestroy {
         this.loadSongbook();
         this.loadSongs();
         this.loadChildSongbooks();
+        this.setupSongSearch();
+    }
+
+    private setupSongSearch(): void {
+        this.filteredSongs$ = this.songSearchControl.valueChanges.pipe(
+            startWith(''),
+            debounceTime(250),
+            distinctUntilChanged(),
+            switchMap((value: string | PartialSong) => {
+                const term = typeof value === 'string' ? value.trim() : '';
+                return term.length >= 2 ? this._songService.searchByTitleContains(term, 15) : of([]);
+            }),
+            map((songs) => {
+                const existingIds = new Set(this.songsList().map((song) => song.uid));
+                return songs.filter((song) => !existingIds.has(song.uid));
+            }),
+            catchError(() => of([])),
+            takeUntil(this._unsubscribeAll)
+        );
+    }
+
+    displaySong(): string {
+        // Always show the typed search term, never the selected song's title.
+        return '';
+    }
+
+    addSongToSongbook(song: PartialSong): void {
+        const currentSongbook = this.currentSongbook();
+        if (!song?.uid || !currentSongbook?.uid || this.addingSongId()) {
+            return;
+        }
+
+        this.confirmCustomizationIfNeeded(currentSongbook, async () => {
+            this.addingSongId.set(song.uid);
+            const relationId = await this._songbookService.addSong(currentSongbook.uid, song.uid, this.songsList().length);
+            this.addingSongId.set(null);
+            if (relationId) {
+                this.songsList.set([...this.songsList(), song]);
+                if (this.requiresCustomizationConfirmation(currentSongbook)) {
+                    this.currentSongbook.set({ ...currentSongbook, syncStatus: 'customized' });
+                }
+            }
+        });
+        this.songSearchControl.setValue('');
     }
 
     private loadSongbook(): void {
@@ -139,35 +204,39 @@ export class SongbookComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (this.requiresCustomizationConfirmation(currentSongbook)) {
-            this._confirmationService.open({
-                title: 'Personalizar copia',
-                message: 'Al modificar esta copia dejara de estar sincronizada con el cancionero recomendado original.',
-                icon: {
-                    name: 'triangle-alert',
-                    color: 'primary',
-                },
-                actions: {
-                    confirm: {
-                        label: 'Personalizar',
-                        color: 'primary',
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                    },
-                },
-            })
-                .afterClosed()
-                .pipe(takeUntil(this._unsubscribeAll))
-                .subscribe((result) => {
-                    if (result === 'confirmed') {
-                        this.applyDrop(event, currentSongbook);
-                    }
-                });
+        this.confirmCustomizationIfNeeded(currentSongbook, () => this.applyDrop(event, currentSongbook));
+    }
+
+    private confirmCustomizationIfNeeded(songbook: Songbook, action: () => void): void {
+        if (!this.requiresCustomizationConfirmation(songbook)) {
+            action();
             return;
         }
 
-        this.applyDrop(event, currentSongbook);
+        this._confirmationService.open({
+            title: 'Personalizar copia',
+            message: 'Al modificar esta copia dejara de estar sincronizada con el cancionero recomendado original.',
+            icon: {
+                name: 'triangle-alert',
+                color: 'primary',
+            },
+            actions: {
+                confirm: {
+                    label: 'Personalizar',
+                    color: 'primary',
+                },
+                cancel: {
+                    label: 'Cancelar',
+                },
+            },
+        })
+            .afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result === 'confirmed') {
+                    action();
+                }
+            });
     }
 
     private applyDrop(event: CdkDragDrop<PartialSong[]>, currentSongbook: Songbook): void {

@@ -24,6 +24,7 @@
         "create": "Create",
         "songbooks": "Songbooks",
         "repertoires": "Repertoires",
+        "suggestions": "Suggestions",
         "sign_in": "Sign in",
         "sign_up": "Sign up"
     },
@@ -42,6 +43,8 @@
         "hj_description": "These songbooks are always available and <strong>kept in sync</strong> by HomenaJesus. If something is missing, you can <strong>suggest</strong> changes for the public songbook; create a personal copy only if your ministry truly needs adaptations.",
         "empty_personal": "You do not have personal songbooks yet. When you want to adapt one from HomenaJesus, create a copy to customize it.",
         "empty_hj": "No songbooks are published.",
+        "create_new": "Create songbook",
+        "creating": "Creating...",
         "view": "View",
         "copy_to_customize": "Copy to customize",
         "sign_in_to_customize": "Sign in to customize",
@@ -70,6 +73,13 @@
         "submit": "Send suggestion",
         "sent": "Suggestion sent"
     },
+    "songbook_create": {
+        "title": "Create new songbook",
+        "description": "Create an empty personal songbook to organize your songs.",
+        "name_label": "Songbook name",
+        "name_error": "Write at least 2 characters.",
+        "submit": "Create songbook"
+    },
     "songbook_detail": {
         "back_to_songbooks": "Back to songbooks",
         "public_badge": "Public HomenaJesus",
@@ -79,7 +89,9 @@
         "reload_hint": "Please refresh the page to try again",
         "included_songbooks": "Included songbooks",
         "included_description": "Select a section to view its songs.",
-        "empty_songbook": "This songbook has no songs"
+        "empty_songbook": "This songbook has no songs",
+        "add_song_placeholder": "Search for a song to add...",
+        "no_song_matches": "No songs found"
     },
     "repertoire_page": {
         "eyebrow": "Planning",
@@ -153,7 +165,10 @@
         "add_to_songbook": "Add to songbook...",
         "song_not_available": "Song is not available",
         "loading_song": "Loading song...",
-        "remove_from_songbook": "Remove from {{name}}"
+        "remove_from_songbook": "Remove from {{name}}",
+        "pending_suggestion": "Pending suggestion",
+        "pending_suggestion_tooltip": "You submitted changes for this song; they show here while HomenaJesus reviews them.",
+        "other_versions": "Other versions:"
     },
     "song_service": {
         "title_required": "Title is required",
@@ -183,6 +198,36 @@
         "unsaved_changes_title": "Unsaved changes",
         "unsaved_changes_message": "You have unsaved changes. Are you sure you want to leave this page?",
         "unsaved_changes_discard": "Discard changes"
+    },
+    "song_suggestion": {
+        "title": "Submit as suggestion",
+        "description": "You are not the author of this song, so your changes will be submitted as a suggestion for HomenaJesus to review. Meanwhile, you'll see your proposed version marked as pending.",
+        "message_label": "Comment (optional)",
+        "submit": "Send suggestion",
+        "sent": "Suggestion sent. It will show as pending until it's reviewed."
+    },
+    "admin_suggestions": {
+        "title": "Pending suggestions",
+        "not_authorized": "You do not have permission to view this section.",
+        "empty": "There are no pending suggestions.",
+        "my_title": "My suggestions",
+        "my_empty": "You haven't sent any suggestions yet.",
+        "sign_in_required": "Sign in to see your suggestions.",
+        "status_open": "Pending",
+        "status_accepted": "Accepted",
+        "status_rejected": "Rejected",
+        "response_from_hj": "Response from HomenaJesus",
+        "sent_on": "Sent on",
+        "resolved_on": "Resolved on",
+        "type_song_edit": "Song edit",
+        "type_add_song": "Add song",
+        "type_new_child_songbook": "New child songbook",
+        "type_new_songbook": "New songbook",
+        "type_other": "Other suggestion",
+        "response_placeholder": "Response message (optional)",
+        "approve": "Approve",
+        "reject": "Reject",
+        "create_version": "Create new version"
     },
     "search": {
         "placeholder_bar": "Search by title, lyrics or songbook...",
@@ -226,7 +271,9 @@
         "forgot_password_link": "Forgot password?",
         "sign_in_button": "Sign in",
         "continue_with": "Or continue with",
+        "continue_with_email": "Or use email",
         "google": "Google",
+        "github": "GitHub",
         "sign_up_title": "Sign up",
         "have_account": "Already have an account?",
         "sign_in_link": "Sign in",

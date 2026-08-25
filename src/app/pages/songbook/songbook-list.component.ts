@@ -1,17 +1,19 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { Observable, Subject, combineLatest, finalize, map, of, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatest, finalize, from, map, of, switchMap, take, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
 import { UserService } from 'app/core/user/user.service';
 import { Songbook } from 'app/models/songbook';
 import { environment } from 'environments/environment';
+import { SongbookCreateDialogComponent } from './songbook-create-dialog.component';
 
 type SongbookGroup = {
     root: Songbook;
@@ -31,6 +33,7 @@ export class SongbookListComponent implements OnDestroy {
     recommendedSongbookGroups$: Observable<SongbookGroup[]>;
     copyingGroupIds = signal<Set<string>>(new Set());
     deletingGroupIds = signal<Set<string>>(new Set());
+    creatingSongbook = signal(false);
     isAuthenticated;
     isHomenaJesus = environment.brand === 'hj';
 
@@ -40,7 +43,8 @@ export class SongbookListComponent implements OnDestroy {
         private _snackBar: MatSnackBar,
         private _userService: UserService,
         private _translocoService: TranslocoService,
-        private _router: Router
+        private _router: Router,
+        private _matDialog: MatDialog
     ) {
         this.isAuthenticated = toSignal(this._userService.isAuthenticated(), { initialValue: false });
         const personalSongbooks$ = this._userService.isAuthenticated().pipe(
@@ -63,6 +67,34 @@ export class SongbookListComponent implements OnDestroy {
     ngOnDestroy(): void {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    createNewSongbook(): void {
+        if (this.creatingSongbook()) {
+            return;
+        }
+
+        this._matDialog
+            .open(SongbookCreateDialogComponent)
+            .afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (!result) {
+                    return;
+                }
+
+                this.creatingSongbook.set(true);
+                from(this._songbookService.save({ name: result.name, scope: 'personal' } as Songbook))
+                    .pipe(
+                        finalize(() => this.creatingSongbook.set(false)),
+                        takeUntil(this._unsubscribeAll)
+                    )
+                    .subscribe((uid) => {
+                        if (uid) {
+                            this._router.navigate(['/songbook', uid]);
+                        }
+                    });
+            });
     }
 
     createGroupCopy(group: SongbookGroup): void {

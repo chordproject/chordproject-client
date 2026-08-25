@@ -8,15 +8,21 @@ import {
     ViewContainerRef,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, map, switchMap, takeUntil } from 'rxjs';
+import { TranslocoService } from '@jsverse/transloco';
+import { Observable, Subject, firstValueFrom, map, switchMap, take, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
+import { SongSuggestionService } from 'app/core/firebase/api/song-suggestion.service';
+import { UserService } from 'app/core/user/user.service';
 import { Song } from 'app/models/song';
+import { SongSuggestionDialogComponent } from './song-suggestion-dialog.component';
 
 @Component({
     selector: 'song-editor',
@@ -35,8 +41,13 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _viewContainerRef: ViewContainerRef,
         private _songService: SongService,
+        private _songSuggestionService: SongSuggestionService,
+        private _userService: UserService,
         private _editorService: EditorService,
         private _confirmationService: FuseConfirmationService,
+        private _matDialog: MatDialog,
+        private _snackBar: MatSnackBar,
+        private _translocoService: TranslocoService,
         private _route: ActivatedRoute,
         private _router: Router
     ) {}
@@ -103,10 +114,83 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             ...this.song,
             ...Object.fromEntries(Object.entries(updatedSong).filter(([, value]) => value !== undefined)),
         };
+
+        this.saveOrSuggest();
+    }
+
+    private async saveOrSuggest(): Promise<void> {
+        if (await this.requiresSuggestion()) {
+            this.openSuggestionDialog();
+            return;
+        }
+
         this._songService.save(this.song).then((res) => {
             this.song.uid = res;
             this._savedContent = this.song.content ?? '';
         });
+    }
+
+    private async requiresSuggestion(): Promise<boolean> {
+        if (!this.song.uid || !this.song.authorId) {
+            return false;
+        }
+
+        const [user, isAdmin] = await Promise.all([
+            firstValueFrom(this._userService.user$),
+            firstValueFrom(this._userService.isAdmin()),
+        ]);
+
+        return !isAdmin && this.song.authorId !== user?.uid;
+    }
+
+    private openSuggestionDialog(): void {
+        this._matDialog
+            .open(SongSuggestionDialogComponent)
+            .afterClosed()
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                switchMap((result) => {
+                    if (!result) {
+                        return [null];
+                    }
+
+                    return this._songSuggestionService.create({
+                        targetSongId: this.song.uid,
+                        message: result.message,
+                        proposedSong: {
+                            title: this.song.title,
+                            subtitle: this.song.subtitle,
+                            content: this.song.content,
+                            lyrics: this.song.lyrics,
+                            albums: this.song.albums,
+                            arrangers: this.song.arrangers,
+                            artists: this.song.artists,
+                            composers: this.song.composers,
+                            lyricists: this.song.lyricists,
+                            copyright: this.song.copyright,
+                            songKey: this.song.songKey,
+                            uniqueChords: this.song.uniqueChords,
+                            defaultKeyUniqueChords: this.song.defaultKeyUniqueChords,
+                            capo: this.song.capo,
+                            tempo: this.song.tempo,
+                            time: this.song.time,
+                            duration: this.song.duration,
+                            year: this.song.year,
+                        },
+                    });
+                })
+            )
+            .subscribe((suggestionId) => {
+                if (suggestionId) {
+                    this._savedContent = this.song.content ?? '';
+                    this._translocoService
+                        .selectTranslate('song_suggestion.sent')
+                        .pipe(take(1))
+                        .subscribe((message) => {
+                            this._snackBar.open(message, undefined, { duration: 4000 });
+                        });
+                }
+            });
     }
 
     canDeactivate(): boolean | Observable<boolean> {
