@@ -32,7 +32,15 @@
         "title": "Song Library",
         "no_songs": "No songs",
         "song": "song",
-        "songs": "songs"
+        "songs": "songs",
+        "load_more": "Load more",
+        "sort": {
+            "title": "Title",
+            "artists": "Artist",
+            "creationDate": "Date added",
+            "asc": "Ascending order",
+            "desc": "Descending order"
+        }
     },
     "songbook_page": {
         "title": "Songbooks",

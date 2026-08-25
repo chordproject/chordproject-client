@@ -19,7 +19,7 @@ import {
 import { BehaviorSubject, Observable, Subject, combineLatest, defer, firstValueFrom, from, of, throwError } from 'rxjs';
 import { catchError, map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { UserService } from 'app/core/user/user.service';
-import { PartialSong } from 'app/models/partialsong';
+import { DEFAULT_SONG_SORT, PartialSong, SongSort, SongSortField } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
 import { Tag } from 'app/models/tag';
 import { environment } from 'environments/environment';
@@ -92,27 +92,15 @@ export class SongService {
         );
     }
 
-    searchByTitle(searchTerm?: string, limitResults?: number): Observable<PartialSong[]> {
+    searchByTitle(searchTerm?: string, limitResults?: number, sort?: SongSort): Observable<PartialSong[]> {
         return this.getCachedSongs().pipe(
             map((allSongs) => {
-                const normalizedTerm = (searchTerm || '')
-                    .toLocaleLowerCase()
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                    .trim();
+                const normalizedTerm = this.normalize(searchTerm).trim();
                 const songs = allSongs.filter((song) =>
-                    normalizedTerm
-                        ? (song.title || '')
-                              .toLocaleLowerCase()
-                              .normalize('NFD')
-                              .replace(/[\u0300-\u036f]/g, '')
-                              .includes(normalizedTerm)
-                        : true
+                    normalizedTerm ? this.normalize(song.title).includes(normalizedTerm) : true
                 );
 
-                return this.addNormalizedInitial(
-                    this.sortSongs(songs).slice(0, limitResults ?? songs.length)
-                );
+                return this.sortSongs(songs, sort).slice(0, limitResults ?? songs.length);
             })
         );
     }
@@ -120,29 +108,14 @@ export class SongService {
     searchByTitleContains(searchTerm: string, limitResults = 20): Observable<PartialSong[]> {
         return this.getCachedSongs().pipe(
             map((allSongs) => {
-                const normalizedTerm = (searchTerm || '')
-                    .toLocaleLowerCase()
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                    .trim();
+                const normalizedTerm = this.normalize(searchTerm).trim();
                 if (!normalizedTerm) {
                     return [];
                 }
 
-                return allSongs
-                    .filter((song) => {
-                        const normalizedTitle = (song.title || '')
-                            .toLocaleLowerCase()
-                            .normalize('NFD')
-                            .replace(/[\u0300-\u036f]/g, '');
-                        return normalizedTitle.includes(normalizedTerm);
-                    })
-                    .sort((first, second) =>
-                        (first.title || '').localeCompare(second.title || '', 'es', {
-                            sensitivity: 'base',
-                        })
-                    )
-                    .slice(0, limitResults);
+                const songs = allSongs.filter((song) => this.normalize(song.title).includes(normalizedTerm));
+
+                return this.sortSongs(songs).slice(0, limitResults);
             }),
             catchError((error) => this.handleError(error))
         );
@@ -151,26 +124,12 @@ export class SongService {
     searchByLyrics(searchTerm?: string, limitResults?: number): Observable<PartialSong[]> {
         return this.getCachedSongs().pipe(
             map((allSongs) => {
-                const normalizar = (str: string) =>
-                    (str || '')
-                        .toLocaleLowerCase()
-                        .normalize('NFD')
-                        .replace(/[\u0300-\u036f]/g, '');
-                let songs = [...allSongs];
-                if (searchTerm) {
-                    const qNorm = normalizar(searchTerm);
-                    songs = songs.filter((song) => song.lyrics && normalizar(song.lyrics).includes(qNorm));
-                }
-                // Ordenar ignorando acentos
-                songs = songs.sort((a, b) =>
-                    (a.title || '').localeCompare(b.title || '', 'es', {
-                        sensitivity: 'base',
-                    })
-                );
-                if (limitResults) {
-                    songs = songs.slice(0, limitResults);
-                }
-                return songs;
+                const normalizedTerm = this.normalize(searchTerm);
+                const songs = normalizedTerm
+                    ? allSongs.filter((song) => this.normalize(song.lyrics).includes(normalizedTerm))
+                    : allSongs;
+
+                return this.sortSongs(songs).slice(0, limitResults ?? songs.length);
             }),
             catchError((error) => this.handleError(error))
         );
@@ -305,24 +264,48 @@ export class SongService {
         return this._songsCache$;
     }
 
-    private sortSongs(songs: PartialSong[]): PartialSong[] {
-        return [...songs].sort((first, second) =>
-            (first.title || '').localeCompare(second.title || '', 'es', { sensitivity: 'base' })
-        );
+    private normalize(value: string): string {
+        return (value || '')
+            .toLocaleLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
     }
 
-    private addNormalizedInitial(songs: PartialSong[]): PartialSong[] {
-        return songs.map((song) => ({
-            ...song,
-            normalizedInitial: song.title
-                ? song.title
-                      .trim()
-                      .charAt(0)
-                      .normalize('NFD')
-                      .replace(/[\u0300-\u036f]/g, '')
-                      .toUpperCase()
-                : '',
-        }));
+    private compareByTitle(first: PartialSong, second: PartialSong): number {
+        return (first.title || '').localeCompare(second.title || '', 'es', { sensitivity: 'base' });
+    }
+
+    /** Firestore Timestamp, Date o el objeto plano `{ seconds }` que llega desde el backup/SSR. */
+    private toMillis(value: unknown): number {
+        if (value instanceof Date) {
+            return value.getTime();
+        }
+        if (value && typeof value === 'object' && typeof (value as { seconds?: unknown }).seconds === 'number') {
+            return (value as { seconds: number }).seconds * 1000;
+        }
+        return 0;
+    }
+
+    private compareByField(first: PartialSong, second: PartialSong, field: SongSortField): number {
+        if (field === 'creationDate') {
+            return this.toMillis(first.creationDate) - this.toMillis(second.creationDate);
+        }
+        if (field === 'artists') {
+            return (first.artists?.[0] || '').localeCompare(second.artists?.[0] || '', 'es', {
+                sensitivity: 'base',
+            });
+        }
+        return this.compareByTitle(first, second);
+    }
+
+    private sortSongs(songs: PartialSong[], sort: SongSort = DEFAULT_SONG_SORT): PartialSong[] {
+        const factor = sort.direction === 'desc' ? -1 : 1;
+
+        return [...songs].sort((first, second) => {
+            const result = this.compareByField(first, second, sort.field);
+
+            return result !== 0 ? factor * result : this.compareByTitle(first, second);
+        });
     }
 
     createTag(title: string): Observable<Tag> {

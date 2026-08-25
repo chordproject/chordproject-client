@@ -32,7 +32,15 @@
         "title": "Biblioteca de canciones",
         "no_songs": "No hay canciones",
         "song": "canción",
-        "songs": "canciones"
+        "songs": "canciones",
+        "load_more": "Cargar más",
+        "sort": {
+            "title": "Título",
+            "artists": "Artista",
+            "creationDate": "Fecha de adición",
+            "asc": "Orden ascendente",
+            "desc": "Orden descendente"
+        }
     },
     "songbook_page": {
         "title": "Cancioneros",

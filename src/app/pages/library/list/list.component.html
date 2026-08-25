@@ -1,16 +1,16 @@
-<div class="flex-auto overflow-auto">
+<div class="flex-auto overflow-auto" #scrollRoot>
     <!-- Header -->
     <div class="flex flex-auto flex-col justify-between border-b px-6 py-8 sm:flex-row md:flex-col md:px-8">
         <!-- Title -->
         <div>
             <div class="text-4xl font-extrabold leading-none tracking-tight">{{ 'library_page.title' | transloco }}</div>
             <div class="text-secondary ml-0.5 font-medium">
-                @if (songsCount > 0) {
-                    {{ songsCount }}
+                @if (songs().length > 0) {
+                    {{ songs().length }}
                 }
-                @if (songsCount === 0) {
+                @if (songs().length === 0) {
                     {{ 'library_page.no_songs' | transloco }}
-                } @else if (songsCount === 1) {
+                } @else if (songs().length === 1) {
                     {{ 'library_page.song' | transloco }}
                 } @else {
                     {{ 'library_page.songs' | transloco }}
@@ -31,6 +31,28 @@
                     />
                 </mat-form-field>
             </div>
+            <!-- Sort field -->
+            <button class="ml-4" mat-stroked-button [matMenuTriggerFor]="sortMenu">
+                <mat-icon [svgIcon]="'arrow-up-down'"></mat-icon>
+                <span class="ml-2 mr-1">{{ 'library_page.sort.' + sort().field | transloco }}</span>
+            </button>
+            <mat-menu #sortMenu="matMenu">
+                @for (field of sortFields; track field) {
+                    <button mat-menu-item (click)="setSortField(field)">
+                        <span>{{ 'library_page.sort.' + field | transloco }}</span>
+                    </button>
+                }
+            </mat-menu>
+            <!-- Sort direction -->
+            <button
+                mat-icon-button
+                (click)="toggleSortDirection()"
+                [matTooltip]="'library_page.sort.' + sort().direction | transloco"
+            >
+                <mat-icon
+                    [svgIcon]="sort().direction === 'asc' ? 'arrow-up-narrow-wide' : 'arrow-down-wide-narrow'"
+                ></mat-icon>
+            </button>
             <!-- Add song button -->
             <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['/songs/create']">
                 <mat-icon [svgIcon]="'plus'"></mat-icon>
@@ -41,35 +63,28 @@
 
     <!-- Songs list -->
     <div class="bg-card relative border-b">
-        @if (songs$ | async; as songs) {
-            @if (songs.length) {
-                @for (song of songs; track trackByFn(i, song); let i = $index) {
-                    <!-- Group -->
-                    @if (i === 0 || song.normalizedInitial !== songs[i - 1].normalizedInitial) {
-                        <div
-                            class="text-secondary sticky top-0 z-10 -mt-px border-b border-t bg-neutral-50 px-6 py-1 font-medium uppercase md:px-8 dark:bg-neutral-800"
-                        >
-                            {{ song.normalizedInitial }}
-                        </div>
-                    }
-                    <!-- Song -->
-                    <chp-song-item
-                        [song]="song"
-                        (click)="onSongClick(song)"
-                        (dblclick)="onDblClick(song)"
-                        [selected]="selectedSong && selectedSong.uid === song.uid"
-                    ></chp-song-item>
-                }
-            } @else {
-                <div class="flex flex-col items-center justify-center p-8 sm:p-16">
-                    <mat-icon
-                        class="mb-4 size-12 text-error-500"
-                        [svgIcon]="'circle-alert'"
-                    ></mat-icon>
-                    <p class="text-lg font-medium">{{ 'home.error_title' | transloco }}</p>
-                    <p class="text-secondary mt-2">{{ 'home.error_subtitle' | transloco }}</p>
+        @if (visibleSongs().length) {
+            @for (song of visibleSongs(); track trackByFn($index, song)) {
+                <chp-song-item
+                    [song]="song"
+                    (click)="onSongClick(song)"
+                    (dblclick)="onDblClick(song)"
+                    [selected]="selectedSong && selectedSong.uid === song.uid"
+                ></chp-song-item>
+            }
+            @if (hasMore()) {
+                <div class="flex justify-center p-4" #loadMoreSentinel>
+                    <button mat-stroked-button (click)="showMore()">
+                        {{ 'library_page.load_more' | transloco }}
+                    </button>
                 </div>
             }
+        } @else if (loaded()) {
+            <div class="flex flex-col items-center justify-center p-8 sm:p-16">
+                <mat-icon class="mb-4 size-12 text-error-500" [svgIcon]="'circle-alert'"></mat-icon>
+                <p class="text-lg font-medium">{{ 'home.error_title' | transloco }}</p>
+                <p class="text-secondary mt-2">{{ 'home.error_subtitle' | transloco }}</p>
+            </div>
         }
     </div>
 </div>

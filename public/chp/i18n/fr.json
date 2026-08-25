@@ -32,7 +32,15 @@
         "title": "Bibliothèque de chansons",
         "no_songs": "Aucune chanson",
         "song": "chanson",
-        "songs": "chansons"
+        "songs": "chansons",
+        "load_more": "Charger plus",
+        "sort": {
+            "title": "Titre",
+            "artists": "Artiste",
+            "creationDate": "Date d'ajout",
+            "asc": "Ordre croissant",
+            "desc": "Ordre décroissant"
+        }
     },
     "songbook_page": {
         "title": "Carnets",

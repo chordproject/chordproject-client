@@ -171,6 +171,47 @@ Se observó un consumo diario aproximado de 57K lecturas, 92 escrituras y 2 elim
 
 La lista infinita es útil para reducir la carga inicial, memoria y tiempo de respuesta cuando existan cientos o miles de canciones. No reduce necesariamente las lecturas totales si el usuario recorre toda la biblioteca. Se implementará solo cuando el volumen o las métricas lo justifiquen.
 
+En la biblioteca ya existe carga progresiva de renderizado: se pintan 60 canciones y se añaden más al acercarse al final. No reduce lecturas porque el conjunto completo ya está en memoria; solo reduce nodos del DOM. La ordenación y la búsqueda siguen operando sobre el conjunto completo.
+
+### Índice de canciones para reducir lecturas
+
+Problema medido sobre los 242 documentos actuales: Firestore factura por documento devuelto, no por bytes. Cada lista de canciones cuesta tantas lecturas como canciones muestre.
+
+- Biblioteca: 242 lecturas por sesión, repetidas en cada recarga.
+- Home, recientemente agregadas: 10 lecturas.
+- Abrir un cancionero de N canciones: N lecturas de `songbook_songs` más N lecturas de `songs`.
+
+Propuesta: colección `song_index` con documentos que agrupan entradas ligeras de canción, leída de una vez y resuelta en memoria para todas las listas. El detalle completo con `content` se sigue pidiendo solo al abrir lector o editor.
+
+Medición real por canción, extraída del backup:
+
+- Entrada ligera, con `uid`, `title`, `subtitle`, `artists`, `songKey`, `uniqueChords` y `creationDate`: unos 169 bytes.
+- Entrada de búsqueda, con `uid` más texto normalizado de título, artistas y letra: unos 487 bytes.
+
+Proyección frente al límite de 1 MB por documento de Firestore:
+
+| Canciones | Índice ligero | Índice de búsqueda |
+| --- | --- | --- |
+| 242 | 40 KB | 115 KB |
+| 1000 | 165 KB | 476 KB |
+| 5000 | 825 KB, sin margen seguro | 2,4 MB, excede el límite |
+
+Conclusión: un documento único no es viable en el objetivo de 5000 canciones. El índice debe nacer fragmentado.
+
+- Fragmentar en documentos de 500 entradas como máximo. Con 5000 canciones son 10 fragmentos, es decir 10 lecturas en lugar de 5000.
+- Leer los fragmentos con una consulta a la colección completa, sin documento manifiesto, para no añadir una lectura extra.
+- Mantener el índice de búsqueda en fragmentos aparte y cargarlo de forma perezosa solo al primer uso del buscador, para no penalizar cada arranque.
+- Incluir `count` y `updatedAt` en cada fragmento para detectar desincronización.
+- Regenerar desde el cliente en la misma escritura por lotes que guarda la canción, ya que no hay plan Blaze para Cloud Functions.
+- Reconstrucción manual completa desde el endpoint de Vercel con Admin SDK, como reparación ante desincronización.
+- Restringir la escritura del índice a administradores en `firestore.rules`.
+
+Revisar cuando se superen las 2000 canciones:
+
+- El índice ligero pasaría de 330 KB por carga, lo que empieza a pesar en móvil aunque cueste pocas lecturas.
+- A partir de ahí conviene caché persistente con verificación de versión, o paginación por cursor real con búsqueda delegada a un motor externo.
+- El índice de búsqueda por letra deja de ser razonable como descarga completa; evaluar servicio de búsqueda dedicado.
+
 ### Índices Firestore
 
 - Mantener el índice compuesto existente de `songbooks` para `parent`, `order` y `name`.

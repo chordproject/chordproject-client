@@ -5,6 +5,7 @@ export class PartialSong {
     capo?: number;
     composers?: string[];
     content?: string;
+    creationDate?: unknown;
     lyrics?: string;
     lyricists?: string[];
     songKey?: string;
@@ -16,3 +17,17 @@ export class PartialSong {
     year?: number;
     variantOf?: string;
 }
+
+export type SongSortField = 'title' | 'artists' | 'creationDate';
+
+export type SongSortDirection = 'asc' | 'desc';
+
+export interface SongSort {
+    field: SongSortField;
+    direction: SongSortDirection;
+}
+
+export const SONG_SORT_FIELDS: SongSortField[] = ['title', 'artists', 'creationDate'];
+
+export const DEFAULT_SONG_SORT: SongSort = { field: 'title', direction: 'asc' };
+
