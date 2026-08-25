@@ -14,7 +14,6 @@ import {
 } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { filter, take } from 'rxjs';
-import { UserService } from '@/app/core/user/user.service';
 import {
   NAVIGATION,
   NavigationItem,
@@ -90,7 +89,13 @@ import { AdminSongbooksNavigation } from '@/app/domains/admin/layout/data/songbo
                 }
 
                 <!-- Label -->
-                <div class="flex flex-auto flex-col font-medium">
+                <div
+                  class="flex flex-auto flex-col"
+                  [class.font-semibold]="node.children && node.children.length > 0"
+                  [class.font-medium]="!node.children || node.children.length === 0"
+                  [class.text-primary-600]="node.category"
+                  [class.dark:text-primary-400]="node.category"
+                >
                   {{ node.dynamic ? node.label : (node.label | transloco) }}
 
                   <!-- Description -->
@@ -104,7 +109,7 @@ import { AdminSongbooksNavigation } from '@/app/domains/admin/layout/data/songbo
                 <!-- Badge -->
                 @if (node.badge) {
                   <div
-                    class="rounded bg-pink-400 px-1.5 py-0.5 text-xs font-semibold dark:bg-pink-700"
+                    class="rounded border border-neutral-300 px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-none text-neutral-500 dark:border-neutral-700 dark:text-neutral-400"
                   >
                     {{ node.badge }}
                   </div>
@@ -123,9 +128,9 @@ import { AdminSongbooksNavigation } from '@/app/domains/admin/layout/data/songbo
               <!-- Children -->
               @if (node.children && node.children.length > 0) {
                 <ul
-                  class="flex flex-col gap-y-1 [&_ul>.navigation-item]:pl-14.5 [&>.navigation-item]:pl-8.5"
+                  class="flex flex-col gap-y-1 [&_ul>.navigation-item]:pl-14.5 [&>.navigation-item]:pl-10"
                   [class.hidden]="!node.expanded"
-                  [class.mt-1]="node.expanded"
+                  [class.mt-1.5]="node.expanded"
                   role="group"
                 >
                   <ng-template
@@ -155,7 +160,6 @@ export class Navigation {
   // Dependencies
   private router = inject(Router);
   private songbooksNavigation = inject(AdminSongbooksNavigation);
-  private userService = inject(UserService);
 
   // State
   protected navigation = signal<NavigationItem[]>(NAVIGATION);
@@ -168,23 +172,12 @@ export class Navigation {
   protected songbooks = toSignal(this.songbooksNavigation.items$, {
     initialValue: null,
   });
-  protected isAuthenticated = toSignal(this.userService.isAuthenticated(), {
-    initialValue: false,
-  });
 
   constructor() {
     // Replace the static "Songbooks" entry with the signed-in user's songbooks
     effect(() => {
       const songbooks = this.songbooks();
       this.navigation.update((items) => this.withSongbooks(items, songbooks));
-    });
-
-    // Hide the Sign in / Sign up links once the user is authenticated
-    effect(() => {
-      const isAuthenticated = this.isAuthenticated();
-      this.navigation.update((items) =>
-        this.withAuthVisibility(items, isAuthenticated)
-      );
     });
 
     // Expand active route on initial load
@@ -229,7 +222,7 @@ export class Navigation {
 
     return {
       ...item,
-      route: this.firstRoute(songbooks) ?? '/songbook',
+      route: '/songbook',
       children: songbooks,
     };
   }
@@ -258,32 +251,6 @@ export class Navigation {
     if (item.route) {
       this.router.navigateByUrl(item.route);
     }
-  }
-
-  /**
-   * Hide the Sign in / Sign up entries once a user is signed in.
-   * Re-derives from the immutable NAVIGATION source so entries removed while
-   * signed in can be restored once the user signs out again.
-   */
-  private withAuthVisibility(
-    items: NavigationItem[],
-    isAuthenticated: boolean
-  ): NavigationItem[] {
-    return items.map((section) => {
-      if (section.id !== 'extras') {
-        return section;
-      }
-
-      const sourceSection = NAVIGATION.find((s) => s.id === 'extras');
-      return {
-        ...section,
-        children: sourceSection?.children?.filter(
-          (item) =>
-            !isAuthenticated ||
-            (item.id !== 'extras/sign-in' && item.id !== 'extras/sign-up')
-        ),
-      };
-    });
   }
 
   /**

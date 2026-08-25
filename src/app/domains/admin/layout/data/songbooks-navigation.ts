@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, combineLatest, map, Observable, of, switchMap } from 'rxjs';
 import { SongbookService } from '@/app/core/firebase/api/songbook.service';
 import { UserService } from '@/app/core/user/user.service';
 import { NavigationItem } from '@/app/domains/admin/layout/data/navigation';
+import { environment } from 'environments/environment';
 
 /**
  * Builds the "Songbooks" navigation branch from Firestore data.
@@ -17,8 +18,8 @@ export class AdminSongbooksNavigation {
     .isAuthenticated()
     .pipe(
       switchMap((isAuthenticated) =>
-        isAuthenticated
-          ? this.buildTree().pipe(
+        isAuthenticated || environment.brand === 'hj'
+          ? this.buildTree(isAuthenticated).pipe(
               catchError((error) => {
                 console.error('Failed to load songbooks navigation:', error);
                 return of([]);
@@ -28,39 +29,90 @@ export class AdminSongbooksNavigation {
       )
     );
 
-  private buildTree(): Observable<NavigationItem[]> {
-    return this.songbookService.getByParent('').pipe(
-      switchMap((roots) => {
-        if (roots.length === 0) {
-          return of([]);
-        }
+  private buildTree(isAuthenticated: boolean): Observable<NavigationItem[]> {
+    if (environment.brand === 'hj') {
+      return combineLatest([
+        isAuthenticated ? this.songbookService.getPersonal() : of([]),
+        this.songbookService.getRecommended(),
+      ]).pipe(
+        map(([personalSongbooks, recommendedSongbooks]) => {
+          const copiedSourceIds = new Set(
+            personalSongbooks
+              .filter((songbook) => songbook.deleted !== true)
+              .map((songbook) => songbook.copiedFrom)
+              .filter(Boolean)
+          );
+          const availableRecommendedSongbooks = this.filterCopiedRecommendedSongbooks(recommendedSongbooks, copiedSourceIds);
 
-        const branches = roots.map((root) =>
-          this.songbookService.getByParent(root.uid).pipe(
-            map((children): NavigationItem => {
-              const childItems: NavigationItem[] | undefined =
-                children.length > 0
-                  ? children.map((child) => ({
-                      id: `songbook-${child.uid}`,
-                      label: child.name,
-                      dynamic: true,
-                      route: `/songbook/${child.uid}`,
-                    }))
-                  : undefined;
+          return [
+            ...this.toNavigationSection('songbooks-personal', 'Mis cancioneros', personalSongbooks),
+            ...this.toNavigationSection('songbooks-hj', 'HomenaJesus', availableRecommendedSongbooks),
+          ];
+        })
+      );
+    }
 
-              return {
-                id: `songbook-${root.uid}`,
-                label: root.name,
-                dynamic: true,
-                route: childItems ? undefined : `/songbook/${root.uid}`,
-                children: childItems,
-              };
-            })
-          )
-        );
-
-        return forkJoin(branches);
-      })
+    return this.songbookService.getPersonal().pipe(
+      map((songbooks) => this.toNavigationItems(songbooks))
     );
+  }
+
+  private toNavigationSection(
+    id: string,
+    label: string,
+    songbooks: { uid: string; name: string; parent?: string; order?: string }[]
+  ): NavigationItem[] {
+    const children = this.toNavigationItems(songbooks);
+
+    return [{
+      id,
+      label,
+      dynamic: true,
+      route: children.length ? undefined : '/songbook',
+      children: children.length ? children : undefined,
+    }];
+  }
+
+  private toNavigationItems(songbooks: { uid: string; name: string; parent?: string; order?: string }[]): NavigationItem[] {
+    const roots = this.sortSongbooks(songbooks.filter((songbook) => !songbook.parent));
+
+    return roots.map((root): NavigationItem => {
+      const children = this.sortSongbooks(songbooks.filter((songbook) => songbook.parent === root.uid))
+        .map((child): NavigationItem => ({
+          id: `songbook-${child.uid}`,
+          label: child.name,
+          dynamic: true,
+          route: `/songbook/${child.uid}`,
+        }));
+
+      return {
+        id: `songbook-${root.uid}`,
+        label: root.name,
+        dynamic: true,
+        category: children.length > 0,
+        route: children.length ? undefined : `/songbook/${root.uid}`,
+        children: children.length ? children : undefined,
+      };
+    });
+  }
+
+  private sortSongbooks<T extends { name: string; order?: string }>(songbooks: T[]): T[] {
+    return [...songbooks].sort((first, second) => {
+      const firstOrder = Number(first.order ?? 0);
+      const secondOrder = Number(second.order ?? 0);
+
+      return firstOrder - secondOrder || first.name.localeCompare(second.name, 'es', { sensitivity: 'base' });
+    });
+  }
+
+  private filterCopiedRecommendedSongbooks<T extends { uid: string; parent?: string }>(songbooks: T[], copiedSourceIds: Set<string>): T[] {
+    return songbooks
+      .map((songbook) => ({
+        songbook,
+        children: songbooks.filter((child) => child.parent === songbook.uid),
+      }))
+      .filter(({ songbook, children }) => !copiedSourceIds.has(songbook.uid) || children.some((child) => !copiedSourceIds.has(child.uid)))
+      .map(({ songbook }) => songbook)
+      .filter((songbook) => !songbook.parent || !copiedSourceIds.has(songbook.uid));
   }
 }

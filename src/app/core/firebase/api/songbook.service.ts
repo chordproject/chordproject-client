@@ -5,6 +5,7 @@ import { Auth } from 'firebase/auth';
 import {
     Firestore,
     collection,
+    documentId,
     doc,
     getDoc,
     getDocs,
@@ -15,8 +16,8 @@ import {
     where,
     writeBatch,
 } from 'firebase/firestore';
-import { Observable, combineLatest, defer, from, of, throwError } from 'rxjs';
-import { catchError, map, shareReplay, switchMap, take } from 'rxjs/operators';
+import { Observable, Subject, combineLatest, defer, from, of, throwError } from 'rxjs';
+import { catchError, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 import { PartialSong } from 'app/models/partialsong';
 import { Relation } from 'app/models/relation';
 import { Songbook } from 'app/models/songbook';
@@ -31,6 +32,9 @@ export class SongbookService {
     private _auth: Auth;
     private _translocoService: TranslocoService;
     private _songbooksCache$: Observable<Songbook[]>;
+    private _personalSongbooksCache$: Observable<Songbook[]>;
+    private _recommendedSongbooksCache$: Observable<Songbook[]>;
+    private _songbooksChanged = new Subject<void>();
 
     constructor(
         private _firebase: FirebaseService,
@@ -46,7 +50,7 @@ export class SongbookService {
         return from(getDoc(doc(this._firestore, 'songbooks', id))).pipe(
             map((docSnap) => {
                 if (docSnap.exists()) {
-                    return { uid: docSnap.id, ...docSnap.data() } as Songbook;
+                    return { ...docSnap.data(), uid: docSnap.id } as Songbook;
                 } else {
                     throw new Error(`Songbook with ID ${id} not found`);
                 }
@@ -57,31 +61,79 @@ export class SongbookService {
 
     getAll(): Observable<Songbook[]> {
         if (!this._songbooksCache$) {
-            this._songbooksCache$ = defer(() => {
-                const q = query(
-                    collection(this._firestore, 'songbooks'),
-                    orderBy('name')
-                );
+            this._songbooksCache$ = this._songbooksChanged.pipe(
+                startWith(undefined),
+                switchMap(() => {
+                    const q = query(
+                        collection(this._firestore, 'songbooks'),
+                        orderBy('name')
+                    );
 
-                return from(getDocs(q)).pipe(
-                    map((snapshot) =>
-                        snapshot.docs.map(
-                            (doc) =>
-                                ({
-                                    uid: doc.id,
-                                    ...doc.data(),
-                                }) as Songbook
-                        )
-                    ),
-                    catchError((error) => this.handleError(error))
-                );
-            }).pipe(shareReplay({ bufferSize: 1, refCount: false }));
+                    return from(getDocs(q)).pipe(
+                        map((snapshot) =>
+                            snapshot.docs.map(
+                                (doc) =>
+                                    ({
+                                        ...doc.data(),
+                                        uid: doc.id,
+                                    }) as Songbook
+                            )
+                        ),
+                        catchError((error) => this.handleError(error))
+                    );
+                }),
+                shareReplay({ bufferSize: 1, refCount: false })
+            );
         }
 
         return this._songbooksCache$;
     }
 
+    getPersonal(): Observable<Songbook[]> {
+        if (!this._personalSongbooksCache$) {
+            this._personalSongbooksCache$ = this.getAll().pipe(
+                map((songbooks) => songbooks.filter((songbook) => this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook))),
+                shareReplay({ bufferSize: 1, refCount: false })
+            );
+        }
+
+        return this._personalSongbooksCache$;
+    }
+
+    getRecommended(): Observable<Songbook[]> {
+        if (!this._recommendedSongbooksCache$) {
+            this._recommendedSongbooksCache$ = this.getAll().pipe(
+                map((songbooks) => songbooks.filter((songbook) => this.isActiveSongbook(songbook) && this.isRecommendedSongbook(songbook))),
+                shareReplay({ bufferSize: 1, refCount: false })
+            );
+        }
+
+        return this._recommendedSongbooksCache$;
+    }
+
     getByParent(parent: string): Observable<Songbook[]> {
+        return this.getPersonalByParent(parent);
+    }
+
+    getChildren(parent: string): Observable<Songbook[]> {
+        return this._songbooksChanged.pipe(
+            startWith(undefined),
+            switchMap(() => this.getByParentQuery(parent)),
+            map((songbooks) => songbooks.filter((songbook) => this.isActiveSongbook(songbook))),
+            catchError((error) => this.handleError(error))
+        );
+    }
+
+    getPersonalByParent(parent: string): Observable<Songbook[]> {
+        return this._songbooksChanged.pipe(
+            startWith(undefined),
+            switchMap(() => this.getByParentQuery(parent)),
+            map((songbooks) => songbooks.filter((songbook) => this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook))),
+            catchError((error) => this.handleError(error))
+        );
+    }
+
+    private getByParentQuery(parent: string): Observable<Songbook[]> {
         const q = query(
             collection(this._firestore, 'songbooks'),
             where('parent', '==', parent),
@@ -94,8 +146,8 @@ export class SongbookService {
                 snapshot.docs.map(
                     (doc) =>
                         ({
-                            uid: doc.id,
                             ...doc.data(),
+                            uid: doc.id,
                         }) as Songbook
                 )
             ),
@@ -183,11 +235,13 @@ export class SongbookService {
             }
 
             songbook.authorId = user.uid;
+            songbook.ownerId = songbook.ownerId || user.uid;
+            songbook.scope = songbook.scope || 'personal';
 
             await setDoc(doc(this._firestore, 'songbooks', songbook.uid), {
                 ...songbook,
             });
-            this._songbooksCache$ = null;
+            this.clearSongbooksCache();
             this.showSnackbar('songbook_service.songbook_saved');
             return songbook.uid;
         } catch (error) {
@@ -240,12 +294,29 @@ export class SongbookService {
                 doc(this._firestore, 'songbook_songs', relationId),
                 relation
             );
+            await this.markSongbookCustomized(songbookId);
             this.showSnackbar('songbook_service.song_added');
             return relationId;
         } catch (error) {
             this.handleError(error);
             return null;
         }
+    }
+
+    forkMany(songbookIds: string[]): Observable<string[]> {
+        if (!this.verifyAuthentication()) {
+            return of([]);
+        }
+
+        return from(this.forkSongbooks(songbookIds));
+    }
+
+    deleteCopies(songbookIds: string[]): Observable<boolean> {
+        if (!this.verifyAuthentication()) {
+            return of(false);
+        }
+
+        return from(this.deleteCopiedSongbooks(songbookIds));
     }
 
     getSongbooksForSong(songId: string): Observable<Songbook[]> {
@@ -265,7 +336,7 @@ export class SongbookService {
                     return of([]);
                 }
 
-                return this.getAll().pipe(
+                return this.getPersonal().pipe(
                     map((songbooks) => songbooks.filter((songbook) => songbookIds.includes(songbook.uid)))
                 );
             }),
@@ -296,11 +367,14 @@ export class SongbookService {
             await setDoc(
                 doc(this._firestore, 'songbook_songs', relationDoc.id),
                 {
+                    ...relationDoc.data(),
                     deleted: true,
                     deletedAt: serverTimestamp(),
                 },
                 { merge: true }
             );
+
+            await this.markSongbookCustomized(songbookId);
 
             this.showSnackbar('songbook_service.song_removed');
             return true;
@@ -353,6 +427,7 @@ export class SongbookService {
                     }
 
                     await batch.commit();
+                    await this.markSongbookCustomized(songbookId);
                     return true;
                 } catch (error) {
                     this.handleError(error);
@@ -366,7 +441,7 @@ export class SongbookService {
         searchTerm?: string,
         limitResults = 3
     ): Observable<Songbook[]> {
-        return this.getAll().pipe(
+        return this.getPersonal().pipe(
             map((allSongbooks) => {
                 const normalizar = (str: string) =>
                     (str || '')
@@ -402,7 +477,7 @@ export class SongbookService {
         limitSongbooks = 3,
         limitSongsPerSongbook = 3
     ): Observable<{ songbook: Songbook; songs: PartialSong[] }[]> {
-        return this.getAll().pipe(
+        return this.getPersonal().pipe(
             switchMap((songbooks) => {
                 if (!songbooks.length) return of([]);
                 const normalizar = (str: string) =>
@@ -412,7 +487,6 @@ export class SongbookService {
                         .replace(/[\u0300-\u036f]/g, '');
                 const qNorm = normalizar(searchTerm);
 
-                // Para cada cancionero, obtener sus canciones y filtrar por el término
                 return combineLatest(
                     songbooks.map((songbook) =>
                         this.getContent(songbook.uid).pipe(
@@ -445,6 +519,281 @@ export class SongbookService {
         );
     }
 
+    private isPersonalSongbook(songbook: Songbook): boolean {
+        return !this.isRecommendedSongbook(songbook);
+    }
+
+    private isActiveSongbook(songbook: Songbook): boolean {
+        return songbook.deleted !== true;
+    }
+
+    private isRecommendedSongbook(songbook: Songbook): boolean {
+        return songbook.scope === 'shared' && songbook.published === true;
+    }
+
+    private clearSongbooksCache(): void {
+        this._songbooksChanged.next();
+    }
+
+    private async forkSongbooks(songbookIds: string[]): Promise<string[]> {
+        try {
+            const user = this._auth.currentUser;
+            const uniqueSongbookIds = [...new Set(songbookIds.filter(Boolean))];
+            const sourceSnapshots = await Promise.all(
+                uniqueSongbookIds.map((songbookId) => getDoc(doc(this._firestore, 'songbooks', songbookId)))
+            );
+            const existingCopyDocs = await this.getCurrentUserSongbooks();
+            const copyIdsBySourceId = new Map(
+                existingCopyDocs
+                    .filter((documentSnapshot) => documentSnapshot.data().deleted !== true)
+                    .map((documentSnapshot) => [documentSnapshot.data().copiedFrom, documentSnapshot.id] as [string, string])
+                    .filter(([copiedFrom]) => Boolean(copiedFrom))
+            );
+            const sourceSongbooks = sourceSnapshots
+                .filter((sourceSnapshot) => sourceSnapshot.exists())
+                .map((sourceSnapshot) => ({ ...sourceSnapshot.data(), uid: sourceSnapshot.id }) as Songbook);
+
+            if (sourceSongbooks.length === 0) {
+                return [];
+            }
+
+            const songbookIdMap = new Map<string, string>();
+            const songbooksBatch = writeBatch(this._firestore);
+            let songbooksToCreate = 0;
+
+            sourceSongbooks.forEach((sourceSongbook) => {
+                songbookIdMap.set(
+                    sourceSongbook.uid,
+                    copyIdsBySourceId.get(sourceSongbook.uid) || doc(collection(this._firestore, 'songbooks')).id
+                );
+            });
+
+            for (const sourceSongbook of sourceSongbooks) {
+                if (copyIdsBySourceId.has(sourceSongbook.uid)) {
+                    continue;
+                }
+
+                const newSongbookId = songbookIdMap.get(sourceSongbook.uid);
+                const { uid, ...sourceSongbookData } = sourceSongbook;
+                songbooksToCreate += 1;
+
+                songbooksBatch.set(doc(this._firestore, 'songbooks', newSongbookId), this.withoutUndefined({
+                    ...sourceSongbookData,
+                    name: sourceSongbook.name,
+                    parent: sourceSongbook.parent ? songbookIdMap.get(sourceSongbook.parent) || '' : '',
+                    authorId: user.uid,
+                    ownerId: user.uid,
+                    scope: 'personal',
+                    source: 'fork',
+                    copiedFrom: sourceSongbook.uid,
+                    syncStatus: 'customized',
+                    customizedAt: serverTimestamp(),
+                    published: false,
+                    isTemplate: false,
+                    creationDate: serverTimestamp(),
+                    lastUpdateDate: serverTimestamp(),
+                }));
+            }
+
+            if (songbooksToCreate > 0) {
+                await songbooksBatch.commit();
+            }
+
+            let relationsBatch = writeBatch(this._firestore);
+            let relationWrites = 0;
+
+            for (const sourceSongbook of sourceSongbooks) {
+                const newSongbookId = songbookIdMap.get(sourceSongbook.uid);
+                const relationsSnapshot = await getDocs(
+                    query(collection(this._firestore, 'songbook_songs'), where('songbookId', '==', sourceSongbook.uid))
+                );
+                const activeSourceRelations = relationsSnapshot.docs.filter((relationDoc) => relationDoc.data().deleted !== true);
+                const existingTargetRelationsSnapshot = await getDocs(
+                    query(collection(this._firestore, 'songbook_songs'), where('songbookId', '==', newSongbookId))
+                );
+                const copiedRelationIds = new Set(
+                    existingTargetRelationsSnapshot.docs
+                        .map((relationDoc) => relationDoc.data().copiedFrom)
+                        .filter(Boolean)
+                );
+                const targetSongIds = new Set(
+                    existingTargetRelationsSnapshot.docs
+                        .map((relationDoc) => relationDoc.data().songId)
+                        .filter(Boolean)
+                );
+                const existingSongIds = await this.getExistingSongIds(
+                    activeSourceRelations.map((relationDoc) => relationDoc.data().songId).filter(Boolean)
+                );
+
+                const relationsToCopy = activeSourceRelations
+                    .filter((relationDoc) => !copiedRelationIds.has(relationDoc.id))
+                    .filter((relationDoc) => !targetSongIds.has(relationDoc.data().songId))
+                    .filter((relationDoc) => existingSongIds.has(relationDoc.data().songId));
+
+                for (const relationDoc of relationsToCopy) {
+                    const relationId = doc(collection(this._firestore, 'songbook_songs')).id;
+                    relationWrites += 1;
+                    relationsBatch.set(doc(this._firestore, 'songbook_songs', relationId), this.withoutUndefined({
+                        ...relationDoc.data(),
+                        songbookId: newSongbookId,
+                        author_uid: user.uid,
+                        ownerId: user.uid,
+                        copiedFrom: relationDoc.id,
+                    }));
+
+                    if (relationWrites === 3) {
+                        await relationsBatch.commit();
+                        relationsBatch = writeBatch(this._firestore);
+                        relationWrites = 0;
+                    }
+                }
+            }
+
+            if (relationWrites > 0) {
+                await relationsBatch.commit();
+            }
+            this.clearSongbooksCache();
+            this.showSnackbar('songbook_service.songbook_saved');
+            return sourceSongbooks.map((sourceSongbook) => songbookIdMap.get(sourceSongbook.uid));
+        } catch (error) {
+            this.handleError(error);
+            return [];
+        }
+    }
+
+    private async deleteCopiedSongbooks(songbookIds: string[]): Promise<boolean> {
+        try {
+            const user = this._auth.currentUser;
+            const targetIds = new Set(songbookIds.filter(Boolean));
+            const existingCopyDocs = await this.getCurrentUserSongbooks();
+            const directTargetDocs = await this.getSongbooksByIds([...targetIds]);
+            const candidateDocs = this.uniqueDocuments([...existingCopyDocs, ...directTargetDocs]);
+
+            const targetCopiedSourceIds = candidateDocs
+                .filter((documentSnapshot) => targetIds.has(documentSnapshot.id))
+                .map((documentSnapshot) => documentSnapshot.data().copiedFrom)
+                .filter(Boolean);
+
+            candidateDocs
+                .filter((documentSnapshot) => targetIds.has(documentSnapshot.data().parent))
+                .forEach((documentSnapshot) => targetIds.add(documentSnapshot.id));
+
+            candidateDocs
+                .filter((documentSnapshot) => targetCopiedSourceIds.includes(documentSnapshot.data().copiedFrom))
+                .forEach((documentSnapshot) => targetIds.add(documentSnapshot.id));
+
+            if (targetIds.size === 0) {
+                return false;
+            }
+
+            const songbooksBatch = writeBatch(this._firestore);
+            let songbookWrites = 0;
+
+            candidateDocs
+                .filter((documentSnapshot) => targetIds.has(documentSnapshot.id))
+                .filter((documentSnapshot) => documentSnapshot.data().ownerId === user.uid || documentSnapshot.data().authorId === user.uid)
+                .filter((documentSnapshot) => documentSnapshot.data().copiedFrom)
+                .forEach((documentSnapshot) => {
+                    songbooksBatch.update(documentSnapshot.ref, {
+                        deleted: true,
+                        deletedAt: serverTimestamp(),
+                        lastUpdateDate: serverTimestamp(),
+                    });
+                    songbookWrites += 1;
+                });
+
+            if (songbookWrites === 0) {
+                return false;
+            }
+
+            await songbooksBatch.commit();
+
+            const relationsBatch = writeBatch(this._firestore);
+            let relationWrites = 0;
+
+            for (const songbookId of targetIds) {
+                const relationsSnapshot = await getDocs(
+                    query(collection(this._firestore, 'songbook_songs'), where('songbookId', '==', songbookId))
+                );
+
+                relationsSnapshot.docs
+                    .filter((relationDoc) => relationDoc.data().ownerId === user.uid)
+                    .forEach((relationDoc) => {
+                        relationsBatch.update(relationDoc.ref, {
+                            deleted: true,
+                            deletedAt: serverTimestamp(),
+                        });
+                        relationWrites += 1;
+                    });
+            }
+
+            if (relationWrites > 0) {
+                await relationsBatch.commit();
+            }
+
+            this.clearSongbooksCache();
+            this.showSnackbar('songbook_service.copy_removed');
+            return true;
+        } catch (error) {
+            this.handleError(error);
+            return false;
+        }
+    }
+
+    private async getCurrentUserSongbooks() {
+        const user = this._auth.currentUser;
+        const [ownerSnapshot, authorSnapshot] = await Promise.all([
+            getDocs(query(collection(this._firestore, 'songbooks'), where('ownerId', '==', user.uid))),
+            getDocs(query(collection(this._firestore, 'songbooks'), where('authorId', '==', user.uid))),
+        ]);
+        const documentsById = new Map(ownerSnapshot.docs.map((documentSnapshot) => [documentSnapshot.id, documentSnapshot]));
+
+        authorSnapshot.docs.forEach((documentSnapshot) => {
+            documentsById.set(documentSnapshot.id, documentSnapshot);
+        });
+
+        return [...documentsById.values()];
+    }
+
+    private async getSongbooksByIds(songbookIds: string[]) {
+        const snapshots = await Promise.all(
+            songbookIds.map((songbookId) => getDoc(doc(this._firestore, 'songbooks', songbookId)))
+        );
+
+        return snapshots.filter((snapshot) => snapshot.exists());
+    }
+
+    private uniqueDocuments(documents: any[]) {
+        return [...new Map(documents.map((documentSnapshot) => [documentSnapshot.id, documentSnapshot])).values()];
+    }
+
+    private async markSongbookCustomized(songbookId: string): Promise<boolean> {
+        try {
+            const snapshot = await getDoc(doc(this._firestore, 'songbooks', songbookId));
+
+            if (!snapshot.exists()) {
+                return false;
+            }
+
+            const data = snapshot.data();
+            if (data.ownerId !== this._auth.currentUser.uid || data.syncStatus === 'customized') {
+                return false;
+            }
+
+            await setDoc(snapshot.ref, {
+                ...data,
+                syncStatus: 'customized',
+                customizedAt: serverTimestamp(),
+                lastUpdateDate: serverTimestamp(),
+            }, { merge: true });
+            this.clearSongbooksCache();
+            return true;
+        } catch (error) {
+            this.handleError(error);
+            return false;
+        }
+    }
+
     private verifyAuthentication(): boolean {
         const user = this._auth.currentUser;
         if (!user) {
@@ -452,6 +801,26 @@ export class SongbookService {
             return false;
         }
         return true;
+    }
+
+    private withoutUndefined(value: Record<string, unknown>): Record<string, unknown> {
+        return Object.fromEntries(
+            Object.entries(value).filter(([, fieldValue]) => fieldValue !== undefined)
+        );
+    }
+
+    private async getExistingSongIds(songIds: string[]): Promise<Set<string>> {
+        const uniqueSongIds = [...new Set(songIds)];
+        const chunks = Array.from({ length: Math.ceil(uniqueSongIds.length / 30) }, (_, index) =>
+            uniqueSongIds.slice(index * 30, (index + 1) * 30)
+        );
+        const snapshots = await Promise.all(
+            chunks
+                .filter((chunk) => chunk.length > 0)
+                .map((chunk) => getDocs(query(collection(this._firestore, 'songs'), where(documentId(), 'in', chunk))))
+        );
+
+        return new Set(snapshots.flatMap((snapshot) => snapshot.docs.map((documentSnapshot) => documentSnapshot.id)));
     }
 
     private showSnackbar(messageKey: string, duration = 3000): void {

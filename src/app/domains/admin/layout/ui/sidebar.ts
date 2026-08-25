@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { TranslocoModule } from '@jsverse/transloco';
+import { UserService } from '@/app/core/user/user.service';
 import { Navigation } from '@/app/domains/admin/layout/ui/navigation';
 import { User } from '@/app/domains/admin/layout/ui/user';
 import { environment } from 'environments/environment';
 
 @Component({
   selector: 'admin-sidebar',
-  imports: [Navigation, RouterLink, User],
+  imports: [MatIcon, Navigation, RouterLink, TranslocoModule, User],
   host: {
     class: 'flex w-full flex-auto flex-col',
   },
@@ -28,6 +32,26 @@ import { environment } from 'environments/environment';
     <!-- Spacer -->
     <div class="flex-auto"></div>
 
+    <!-- Sign in / Sign up -->
+    @if (!isAuthenticated()) {
+      <div class="flex flex-col gap-y-1 px-4 pb-2">
+        <a
+          routerLink="/auth/sign-in"
+          class="flex cursor-pointer items-center gap-x-2 rounded-lg px-2.5 py-2 font-medium select-none hover:bg-neutral-700/10 dark:hover:bg-neutral-300/10"
+        >
+          <mat-icon class="size-4" svgIcon="log-in" />
+          {{ 'nav.sign_in' | transloco }}
+        </a>
+        <a
+          routerLink="/auth/sign-up"
+          class="flex cursor-pointer items-center gap-x-2 rounded-lg px-2.5 py-2 font-medium select-none hover:bg-neutral-700/10 dark:hover:bg-neutral-300/10"
+        >
+          <mat-icon class="size-4" svgIcon="log-out" />
+          {{ 'nav.sign_up' | transloco }}
+        </a>
+      </div>
+    }
+
     <!-- Footer -->
     <div class="p-2">
       <user />
@@ -36,4 +60,9 @@ import { environment } from 'environments/environment';
 })
 export class AdminSidebar {
   protected readonly brand = environment.brand;
+
+  private userService = inject(UserService);
+  protected isAuthenticated = toSignal(this.userService.isAuthenticated(), {
+    initialValue: false,
+  });
 }

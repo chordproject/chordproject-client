@@ -13,22 +13,74 @@
                 class="mb-4 size-12 text-error-500"
                 [svgIcon]="'circle-alert'"
             ></mat-icon>
-            <p class="text-lg font-medium">No se pudo cargar este cancionero</p>
-            <p class="text-secondary mt-2">Por favor recarga la pagina para intentarlo de nuevo</p>
+            <p class="text-lg font-medium">{{ 'songbook_detail.load_error' | transloco }}</p>
+            <p class="text-secondary mt-2">{{ 'songbook_detail.reload_hint' | transloco }}</p>
         </div>
     } @else if (songbook$ | async; as songbook) {
-        <div class="flex h-full flex-col dark:border-[#334155]">
-            <!-- Sección superior -->
-            <div
-                class="relative w-full border-b border-neutral-200 bg-neutral-100 px-8 pr-4 sm:pl-12 dark:border-neutral-700 dark:bg-neutral-800"
-            >
-                <div class="mx-auto flex w-full max-w-3xl items-center justify-center pb-3 pt-3">
-                    <h1 class="min-w-0 truncate text-center text-4xl font-bold">
-                        {{ songbook.name }}
-                    </h1>
-                </div>
+        <div class="flex h-full flex-col bg-neutral-50 dark:border-[#334155] dark:bg-neutral-950">
+            <div class="px-6 pt-6 sm:px-8">
+                <a
+                    routerLink="/songbook"
+                    class="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-700 hover:text-primary-900 dark:text-primary-300 dark:hover:text-primary-100"
+                >
+                    <mat-icon class="size-4" [svgIcon]="'arrow-left'"></mat-icon>
+                    {{ 'songbook_detail.back_to_songbooks' | transloco }}
+                </a>
             </div>
-            <!-- Sección inferior -->
+            <div class="px-6 pb-5 pt-4 sm:px-8">
+                <header class="mx-auto flex w-full max-w-5xl flex-col gap-4 rounded-lg border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:flex-row sm:items-start sm:justify-between">
+                    <div class="min-w-0">
+                        <div class="mb-2 flex flex-wrap items-center gap-2">
+                            @if (isRecommended(songbook)) {
+                                <span class="rounded-full bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700 dark:bg-primary-950 dark:text-primary-300">
+                                    {{ 'songbook_detail.public_badge' | transloco }}
+                                </span>
+                            } @else if (songbook.copiedFrom) {
+                                <span class="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">
+                                    {{ 'songbook_detail.personal_badge' | transloco }}
+                                </span>
+                            }
+                        </div>
+                        <h1 class="min-w-0 text-3xl font-bold text-neutral-950 dark:text-neutral-50 sm:text-4xl">
+                            {{ songbook.name }}
+                        </h1>
+                    </div>
+
+                    @if (isRecommended(songbook)) {
+                        <div class="flex shrink-0 flex-wrap items-center gap-2">
+                            @if (isAuthenticated()) {
+                                <button
+                                    class="cursor-pointer rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-900 hover:border-primary-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-primary-700"
+                                    type="button"
+                                    (click)="suggestChange(songbook)"
+                                >
+                                    {{ 'songbook_suggestion.action' | transloco }}
+                                </button>
+                                <button
+                                    class="cursor-pointer rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                                    type="button"
+                                    (click)="createCopy(songbook)"
+                                >
+                                    {{ 'songbook_page.copy_to_customize' | transloco }}
+                                </button>
+                            } @else {
+                                <a
+                                    class="cursor-pointer rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-900 hover:border-primary-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-primary-700"
+                                    [routerLink]="['/auth/sign-in']"
+                                >
+                                    {{ 'songbook_suggestion.sign_in_action' | transloco }}
+                                </a>
+                                <a
+                                    class="cursor-pointer rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                                    [routerLink]="['/auth/sign-in']"
+                                >
+                                    {{ 'songbook_page.sign_in_to_customize' | transloco }}
+                                </a>
+                            }
+                        </div>
+                    }
+                </header>
+            </div>
             <div class="bg-card flex-1">
                 @if (songsLoadError()) {
                     <div class="flex h-full flex-col items-center justify-center p-8 text-center">
@@ -36,20 +88,40 @@
                             class="mb-4 size-12 text-error-500"
                             [svgIcon]="'circle-alert'"
                         ></mat-icon>
-                        <p class="text-lg font-medium">No se pudieron cargar las canciones</p>
-                        <p class="text-secondary mt-2">Por favor recarga la pagina para intentarlo de nuevo</p>
+                        <p class="text-lg font-medium">{{ 'songbook_detail.songs_load_error' | transloco }}</p>
+                        <p class="text-secondary mt-2">{{ 'songbook_detail.reload_hint' | transloco }}</p>
                     </div>
                 } @else if (songsList().length === 0) {
-                    <div class="flex h-full flex-col items-center justify-center p-8 text-center">
-                        <mat-icon
-                            class="mb-4 size-12 text-neutral-400"
-                            [svgIcon]="'book-open'"
-                        ></mat-icon>
-                        <p class="text-lg font-medium">Este cancionero no tiene canciones</p>
-                    </div>
+                    @if (childSongbooks().length) {
+                        <div class="mx-auto flex w-full max-w-5xl flex-col gap-4 p-6 sm:p-8">
+                            <div>
+                                <h2 class="text-xl font-semibold">{{ 'songbook_detail.included_songbooks' | transloco }}</h2>
+                                <p class="text-secondary mt-1 text-sm">{{ 'songbook_detail.included_description' | transloco }}</p>
+                            </div>
+
+                            <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                                @for (childSongbook of childSongbooks(); track trackByFn($index, childSongbook)) {
+                                    <a
+                                        class="cursor-pointer rounded-lg border border-neutral-200 bg-white p-4 text-sm font-semibold text-neutral-900 shadow-sm hover:border-primary-300 hover:bg-primary-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:border-primary-700 dark:hover:bg-neutral-800"
+                                        [routerLink]="['/songbook', childSongbook.uid]"
+                                    >
+                                        {{ childSongbook.name }}
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    } @else {
+                        <div class="flex h-full flex-col items-center justify-center p-8 text-center">
+                            <mat-icon
+                                class="mb-4 size-12 text-neutral-400"
+                                [svgIcon]="'book-open'"
+                            ></mat-icon>
+                            <p class="text-lg font-medium">{{ 'songbook_detail.empty_songbook' | transloco }}</p>
+                        </div>
+                    }
                 } @else if (songsList(); as songs) {
                     <div
-                        [cdkDropListDisabled]="!songbook.isReorderable"
+                        [cdkDropListDisabled]="!songbook.isReorderable || !isEditable(songbook)"
                         cdkDropList
                         [cdkDropListData]="songs"
                         (cdkDropListDropped)="onDrop($event)"
@@ -63,7 +135,7 @@
                                     (dblclick)="onDblClick(song)"
                                     class="w-full min-w-0 flex-1"
                                     [selected]="selectedSong()?.uid === song.uid"
-                                    [showDragHandle]="songbook.isReorderable"
+                                    [showDragHandle]="songbook.isReorderable && isEditable(songbook)"
                                 >
                                 </chp-song-item>
                             </div>
@@ -88,8 +160,8 @@
         } @else {
             <chp-song-preview
                 [song]="song"
-                [showQuickEdit]="true"
-                [showFullEditor]="true"
+                [showQuickEdit]="currentSongbook() ? isEditable(currentSongbook()) : false"
+                [showFullEditor]="currentSongbook() ? isEditable(currentSongbook()) : false"
                 [showClose]="true"
                 (quickEdit)="startQuickEdit()"
                 (openFullEditor)="onDblClick(song)"

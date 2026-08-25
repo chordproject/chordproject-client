@@ -1,0 +1,46 @@
+<div class="flex w-full flex-col sm:min-w-120">
+    <header class="border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
+        <h2 class="text-xl font-semibold">{{ 'songbook_suggestion.title' | transloco }}</h2>
+        <p class="text-secondary mt-1 text-sm">
+            {{ 'songbook_suggestion.description' | transloco: { name: data.songbook.name } }}
+        </p>
+    </header>
+
+    <form class="flex flex-col gap-4 p-6" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'songbook_suggestion.type_label' | transloco }}</mat-label>
+            <mat-select formControlName="type">
+                <mat-option value="add_song">{{ 'songbook_suggestion.type_add_song' | transloco }}</mat-option>
+                @if (data.hasChildren) {
+                    <mat-option value="new_child_songbook">{{ 'songbook_suggestion.type_new_child_songbook' | transloco }}</mat-option>
+                }
+                <mat-option value="new_songbook">{{ 'songbook_suggestion.type_new_songbook' | transloco }}</mat-option>
+                <mat-option value="other">{{ 'songbook_suggestion.type_other' | transloco }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        @if (selectedType === 'new_songbook' || selectedType === 'new_child_songbook') {
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label>{{ 'songbook_suggestion.name_label' | transloco }}</mat-label>
+                <input matInput formControlName="suggestedName" />
+            </mat-form-field>
+        }
+
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'songbook_suggestion.message_label' | transloco }}</mat-label>
+            <textarea matInput formControlName="message" rows="5"></textarea>
+            @if (form.controls.message.hasError('required') || form.controls.message.hasError('minlength')) {
+                <mat-error>{{ 'songbook_suggestion.message_error' | transloco }}</mat-error>
+            }
+        </mat-form-field>
+
+        <footer class="flex justify-end gap-3 pt-2">
+            <button matButton="outlined" type="button" [matDialogClose]="undefined">
+                {{ 'confirmation.cancel' | transloco }}
+            </button>
+            <button matButton="filled" type="submit">
+                {{ 'songbook_suggestion.submit' | transloco }}
+            </button>
+        </footer>
+    </form>
+</div>

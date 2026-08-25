@@ -11,6 +11,7 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ChpViewerToolbarComponent } from 'app/components/viewer/viewer-toolbar/viewer-toolbar.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
@@ -61,7 +62,8 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         private _editorService: EditorService,
         private route: ActivatedRoute,
         private _router: Router,
-        private _fuseMediaWatcherService: FuseMediaWatcherService
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
+        private _confirmationService: FuseConfirmationService
     ) {}
 
     ngOnInit(): void {
@@ -155,13 +157,15 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         return typeof value === 'string' ? value : value.name || '';
     }
 
-    async addCurrentSongToSongbook(songbook: Songbook): Promise<void> {
+    addCurrentSongToSongbook(songbook: Songbook): void {
         if (!this.song?.uid || !songbook?.uid) {
             return;
         }
 
-        await this._songbookService.addSong(songbook.uid, this.song.uid);
-        this.loadAssociatedSongbooks();
+        this.confirmCustomizationIfNeeded(songbook, async () => {
+            await this._songbookService.addSong(songbook.uid, this.song.uid);
+            this.loadAssociatedSongbooks();
+        });
         this.songbookSearchControl.setValue('');
     }
 
@@ -191,11 +195,49 @@ export class SongReaderComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._songbookService.removeSong(songbook.uid, this.song.uid).then((removed) => {
+        this.confirmCustomizationIfNeeded(songbook, async () => {
+            const removed = await this._songbookService.removeSong(songbook.uid, this.song.uid);
             if (removed) {
                 this.loadAssociatedSongbooks();
             }
         });
+    }
+
+    private requiresCustomizationConfirmation(songbook: Songbook): boolean {
+        return Boolean(songbook.copiedFrom) && songbook.syncStatus !== 'customized';
+    }
+
+    private confirmCustomizationIfNeeded(songbook: Songbook, action: () => void): void {
+        if (!this.requiresCustomizationConfirmation(songbook)) {
+            action();
+            return;
+        }
+
+        this._confirmationService
+            .open({
+                title: 'Personalizar copia',
+                message: 'Al modificar esta copia dejara de estar sincronizada con el cancionero recomendado original.',
+                icon: {
+                    name: 'triangle-alert',
+                    color: 'primary',
+                },
+                actions: {
+                    confirm: {
+                        label: 'Personalizar',
+                        color: 'primary',
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                    },
+                },
+            })
+            .afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result === 'confirmed') {
+                    action();
+                }
+            });
     }
 
     private loadAssociatedSongbooks(): void {

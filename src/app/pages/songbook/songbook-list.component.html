@@ -1,0 +1,161 @@
+<div class="bg-card flex h-full min-h-0 flex-col overflow-auto p-6 sm:p-8">
+    <div class="mx-auto flex w-full max-w-5xl flex-col gap-8">
+        <header class="flex flex-col gap-2">
+            <h1 class="text-3xl font-bold tracking-tight">{{ 'songbook_page.title' | transloco }}</h1>
+            <p class="text-secondary max-w-2xl text-sm">
+                {{ 'songbook_page.description' | transloco }}
+            </p>
+        </header>
+
+        @if (personalSongbookGroups$ | async; as personalSongbookGroups) {
+            <section class="flex flex-col gap-3">
+                <div class="flex items-center gap-2">
+                    <mat-icon class="text-primary-600 icon-size-5" [svgIcon]="'book-open'"></mat-icon>
+                    <h2 class="text-xl font-semibold">{{ 'songbook_page.my_songbooks' | transloco }}</h2>
+                </div>
+
+                @if (personalSongbookGroups.length) {
+                    <div class="grid gap-4 lg:grid-cols-2">
+                        @for (group of personalSongbookGroups; track trackGroupByFn($index, group)) {
+                            <div class="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-900">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                                        @if (group.children.length) {
+                                            <h3 class="min-w-0 truncate text-base font-semibold">{{ group.root.name }}</h3>
+                                        } @else {
+                                            <a class="min-w-0 cursor-pointer truncate text-base font-semibold hover:text-primary-600" [routerLink]="['/songbook', group.root.uid]">
+                                                {{ group.root.name }}
+                                            </a>
+                                        }
+
+                                        @if (group.root.copiedFrom) {
+                                            <span
+                                                class="shrink-0 rounded-full border border-primary-200 px-2 py-0.5 text-xs font-medium leading-none text-primary-700 dark:border-primary-800 dark:text-primary-300"
+                                                [matTooltip]="'songbook_page.custom_copy_tooltip' | transloco"
+                                            >
+                                                {{ 'songbook_page.customized' | transloco }}
+                                            </span>
+                                        }
+                                    </div>
+
+                                    @if (group.root.copiedFrom) {
+                                        <button
+                                            class="shrink-0 cursor-pointer text-sm font-medium text-error-600 hover:text-error-700 disabled:cursor-wait disabled:opacity-60"
+                                            type="button"
+                                            [disabled]="deletingGroupIds().has(group.root.uid)"
+                                            (click)="deleteCopy(group)"
+                                        >
+                                            {{ (deletingGroupIds().has(group.root.uid) ? 'songbook_page.deleting' : 'songbook_page.delete_copy') | transloco }}
+                                        </button>
+                                    }
+                                </div>
+
+                                @if (group.children.length) {
+                                    <div class="mt-3 grid gap-2 sm:grid-cols-2">
+                                        @for (songbook of group.children; track trackByFn($index, songbook)) {
+                                            <a class="cursor-pointer rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm font-medium text-neutral-900 hover:border-primary-300 hover:bg-primary-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-primary-700 dark:hover:bg-neutral-700" [routerLink]="['/songbook', songbook.uid]">
+                                                {{ songbook.name }}
+                                            </a>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                } @else {
+                    <div class="flex flex-col gap-4 rounded-lg border border-dashed border-neutral-300 p-6 text-sm text-secondary dark:border-neutral-700 sm:flex-row sm:items-center sm:justify-between">
+                        <span>{{ 'songbook_page.empty_personal' | transloco }}</span>
+                        @if (!isAuthenticated()) {
+                            <a
+                                class="inline-flex w-fit cursor-pointer items-center rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                                [routerLink]="['/auth/sign-in']"
+                            >
+                                {{ 'songbook_page.sign_in_to_customize' | transloco }}
+                            </a>
+                        }
+                    </div>
+                }
+            </section>
+        }
+
+        @if (isHomenaJesus) {
+            @if (recommendedSongbookGroups$ | async; as recommendedSongbookGroups) {
+                <section class="flex flex-col gap-3">
+                    <div class="flex flex-col gap-3">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <mat-icon class="text-primary-600 icon-size-5" [svgIcon]="'sparkles'"></mat-icon>
+                                    <h2 class="text-xl font-semibold">{{ 'songbook_page.hj_songbooks' | transloco }}</h2>
+                                </div>
+                                <p
+                                    class="text-secondary mt-2 max-w-3xl text-sm [&_strong]:font-semibold [&_strong]:text-neutral-900 dark:[&_strong]:text-neutral-100"
+                                    [innerHTML]="'songbook_page.hj_description' | transloco"
+                                ></p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    @if (recommendedSongbookGroups.length) {
+                        <div class="grid gap-4 xl:grid-cols-2">
+                            @for (group of recommendedSongbookGroups; track trackGroupByFn($index, group)) {
+                                <article class="rounded-lg border border-primary-200 bg-primary-50/70 p-4 shadow-sm dark:border-primary-800 dark:bg-neutral-900">
+                                    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                        <div class="min-w-0">
+                                            <h3 class="truncate text-base font-semibold text-neutral-950 dark:text-neutral-50">{{ group.root.name }}</h3>
+                                            <p class="text-secondary mt-1 text-sm">Publicado por HomenaJesus</p>
+                                        </div>
+
+                                        <div class="flex shrink-0 items-center gap-2">
+                                            @if (!group.children.length) {
+                                                <a
+                                                    class="cursor-pointer rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-900 hover:border-primary-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-primary-700"
+                                                    [routerLink]="['/songbook', group.root.uid]"
+                                                >
+                                                    {{ 'songbook_page.view' | transloco }}
+                                                </a>
+                                            }
+                                            @if (isAuthenticated()) {
+                                                <button
+                                                    class="cursor-pointer rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700 disabled:cursor-wait disabled:opacity-70"
+                                                    type="button"
+                                                    [disabled]="copyingGroupIds().has(group.root.uid)"
+                                                    (click)="createGroupCopy(group)"
+                                                >
+                                                    {{ (copyingGroupIds().has(group.root.uid) ? 'songbook_page.copying' : 'songbook_page.copy_to_customize') | transloco }}
+                                                </button>
+                                            } @else {
+                                                <button
+                                                    class="cursor-pointer rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                                                    type="button"
+                                                    (click)="requireAuthentication()"
+                                                >
+                                                    {{ 'songbook_page.copy_to_customize' | transloco }}
+                                                </button>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    @if (group.children.length) {
+                                        <div class="mt-4 grid gap-2 sm:grid-cols-2">
+                                            @for (songbook of group.children; track trackByFn($index, songbook)) {
+                                                <a class="min-w-0 cursor-pointer truncate rounded-md border border-primary-100 bg-white/80 px-3 py-2 text-sm font-medium text-neutral-900 hover:border-primary-300 hover:bg-white dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-primary-700 dark:hover:bg-neutral-700" [routerLink]="['/songbook', songbook.uid]">
+                                                        {{ songbook.name }}
+                                                </a>
+                                            }
+                                        </div>
+                                    }
+                                </article>
+                            }
+                        </div>
+                    } @else {
+                        <div class="rounded-lg border border-dashed border-neutral-300 p-6 text-sm text-secondary dark:border-neutral-700">
+                            {{ 'songbook_page.empty_hj' | transloco }}
+                        </div>
+                    }
+                </section>
+            }
+        }
+    </div>
+</div>

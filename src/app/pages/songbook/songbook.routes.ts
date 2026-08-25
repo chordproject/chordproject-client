@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
+import { SongbookListComponent } from './songbook-list.component';
 import { SongbookComponent } from './songbook.component';
 
 export default [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/library',
+        component: SongbookListComponent,
     },
     {
         path: ':uid',
