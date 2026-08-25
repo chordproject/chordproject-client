@@ -4,8 +4,12 @@ export const SONG_INDEX_COLLECTION = 'song_index';
 
 export const SONG_SEARCH_INDEX_COLLECTION = 'song_search_index';
 
-/** Con ~310 bytes por entrada, 500 deja cada fragmento muy por debajo del limite de 1 MB por documento. */
-export const SONG_INDEX_SHARD_SIZE = 500;
+/**
+ * Debe coincidir con SHARD_SIZE en scripts/rebuild-song-index.mjs.
+ * 300 mantiene un fragmento lleno bajo 800 KB incluso si todas sus canciones fueran las mas
+ * largas medidas (2,5 KB en el indice de busqueda), lejos del limite de 1 MB por documento.
+ */
+export const SONG_INDEX_SHARD_SIZE = 300;
 
 export const LYRICS_PREVIEW_LENGTH = 140;
 

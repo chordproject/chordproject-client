@@ -192,32 +192,38 @@ Pendiente de este bloque:
 - Las reglas permiten escribir los índices a cualquier usuario autenticado, porque cualquiera que pueda crear una canción debe poder mantener el fragmento en la misma escritura por lotes. La reparación ante un cliente que los corrompa es el script de reindexado.
 - Valorar `onSnapshot` sobre `song_index` para recibir altas ajenas sin recargar. Con pocos documentos el coste es una lectura inicial más una por cambio real.
 
-Medición real por canción, extraída del backup:
+Medición real, obtenida con el reindexado sobre las dos bases de producción:
 
-- Entrada ligera, con `uid`, `title`, `subtitle`, `artists`, `songKey`, `uniqueChords` y `creationDate`: unos 169 bytes.
-- Entrada de búsqueda, con `uid` más texto normalizado de título, artistas y letra: unos 487 bytes.
+| Proyecto | Canciones | Índice ligero | Índice de búsqueda | Bytes por canción en búsqueda |
+| --- | --- | --- | --- | --- |
+| `homenajesus-app` | 242 | 85 KB | 113 KB | media 476, p95 928, máx 2336 |
+| `chordproject-app` | 156 | 56 KB | 199 KB | media 1306, p95 2097, máx 2539 |
 
-Proyección frente al límite de 1 MB por documento de Firestore:
+Las canciones de ChordProject son casi tres veces más largas que las de HomenaJesus, así que el dimensionamiento debe hacerse con el peor caso, no con la media. Por eso el fragmento es de 300 entradas y no de 500: con 500 canciones del percentil 95 un fragmento de búsqueda alcanzaría 1,05 MB y superaría el límite de Firestore. Con 300, incluso un fragmento formado íntegramente por las canciones más largas medidas se queda en unos 760 KB.
+
+El extracto de letra de 140 caracteres en la entrada ligera es necesario porque la lista de la biblioteca muestra un fragmento bajo cada título. Sin él la entrada ligera bajaría de unos 351 a unos 169 bytes.
+
+Proyección de un documento único, que es lo que se descartó:
 
 | Canciones | Índice ligero | Índice de búsqueda |
 | --- | --- | --- |
-| 242 | 40 KB | 115 KB |
-| 1000 | 165 KB | 476 KB |
-| 5000 | 825 KB, sin margen seguro | 2,4 MB, excede el límite |
+| 242 | 85 KB | 113 KB |
+| 1000 | 343 KB | 455 KB a 1,3 MB según la marca |
+| 5000 | 1,7 MB, excede el límite | 2,3 MB a 6,5 MB, excede el límite |
 
-Conclusión: un documento único no es viable en el objetivo de 5000 canciones. El índice debe nacer fragmentado.
+Conclusión: un documento único no es viable en el objetivo de 5000 canciones, ni siquiera para el índice ligero. El índice debe nacer fragmentado.
 
-- Fragmentar en documentos de 500 entradas como máximo. Con 5000 canciones son 10 fragmentos, es decir 10 lecturas en lugar de 5000.
-- Leer los fragmentos con una consulta a la colección completa, sin documento manifiesto, para no añadir una lectura extra. Ese camino de lectura es idéntico con un fragmento que con diez, así que la fragmentación no obliga a migrar cuando la biblioteca crece.
+- Fragmentar en documentos de 300 entradas como máximo. Con 5000 canciones son 17 fragmentos, es decir 17 lecturas en lugar de 5000.
+- El tamaño de fragmento está duplicado en `SONG_INDEX_SHARD_SIZE` y en el script de reindexado. Si se cambia uno hay que cambiar el otro, o el cliente y el script discreparán al decidir cuándo crear un fragmento nuevo.
+- Leer los fragmentos con una consulta a la colección completa, sin documento manifiesto, para no añadir una lectura extra. Ese camino de lectura es idéntico con un fragmento que con diecisiete, así que la fragmentación no obliga a migrar cuando la biblioteca crece.
 - Mantener el índice de búsqueda en fragmentos aparte y cargarlo de forma perezosa solo al primer uso del buscador, para no penalizar cada arranque.
 - Incluir `count` y `updatedAt` en cada fragmento para detectar desincronización.
 - Regenerar desde el cliente en la misma escritura por lotes que guarda la canción, ya que no hay plan Blaze para Cloud Functions.
-- Reconstrucción manual completa desde el endpoint de Vercel con Admin SDK, como reparación ante desincronización.
-- Restringir la escritura del índice a administradores en `firestore.rules`.
+- Reconstrucción manual completa desde el script de reindexado, como reparación ante desincronización.
 
 Revisar cuando se superen las 2000 canciones:
 
-- El índice ligero pasaría de 330 KB por carga, lo que empieza a pesar en móvil aunque cueste pocas lecturas.
+- El índice ligero pasaría de 690 KB por carga, lo que empieza a pesar en móvil aunque cueste pocas lecturas.
 - A partir de ahí conviene caché persistente con verificación de versión, o paginación por cursor real con búsqueda delegada a un motor externo.
 - El índice de búsqueda por letra deja de ser razonable como descarga completa; evaluar servicio de búsqueda dedicado.
 

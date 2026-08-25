@@ -2,14 +2,15 @@
 
 import { applicationDefault, cert, initializeApp } from 'firebase-admin/app';
 import { FieldValue, getFirestore } from 'firebase-admin/firestore';
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
 const DEFAULT_PROJECT_ID = 'homenajesus-app';
 const SONG_INDEX_COLLECTION = 'song_index';
 const SONG_SEARCH_INDEX_COLLECTION = 'song_search_index';
-const SHARD_SIZE = 500;
+// Debe coincidir con SONG_INDEX_SHARD_SIZE en src/app/models/song-index.ts.
+const SHARD_SIZE = 300;
 const LYRICS_PREVIEW_LENGTH = 140;
 
 const args = parseArgs(process.argv.slice(2));
@@ -22,7 +23,7 @@ if (args.help) {
 const projectId = args.project || process.env.FIREBASE_PROJECT_ID || DEFAULT_PROJECT_ID;
 
 try {
-    initializeApp({ credential: await getCredential(args.credentials), projectId });
+    initializeApp({ credential: await getCredential(args.credentials, projectId), projectId });
 
     const firestore = getFirestore();
     const songs = await readSongs(firestore);
@@ -151,8 +152,9 @@ async function clearCollection(firestore, collectionId) {
     await batch.commit();
 }
 
-async function getCredential(credentialsPath) {
-    const serviceAccountPath = credentialsPath || process.env.GOOGLE_APPLICATION_CREDENTIALS;
+async function getCredential(credentialsPath, project) {
+    const serviceAccountPath =
+        credentialsPath || process.env.GOOGLE_APPLICATION_CREDENTIALS || (await findServiceAccount(project));
 
     if (!serviceAccountPath) {
         return applicationDefault();
@@ -160,6 +162,18 @@ async function getCredential(credentialsPath) {
 
     const rawServiceAccount = await readFile(path.resolve(serviceAccountPath), 'utf8');
     return cert(JSON.parse(rawServiceAccount));
+}
+
+/** Clave del proyecto en la raiz del repo, siguiendo el nombre que ya usa el backup. */
+async function findServiceAccount(project) {
+    const candidate = path.resolve(process.cwd(), `serviceAccountKey.${project}.json`);
+
+    try {
+        await access(candidate);
+        return candidate;
+    } catch {
+        return null;
+    }
 }
 
 function parseArgs(argv) {
@@ -194,7 +208,8 @@ Uso:
 
 Opciones:
   --project      Proyecto de Firebase. Por defecto ${DEFAULT_PROJECT_ID}.
-  --credentials  Ruta al service account. Por defecto GOOGLE_APPLICATION_CREDENTIALS.
+  --credentials  Ruta al service account. Por defecto GOOGLE_APPLICATION_CREDENTIALS
+                 o serviceAccountKey.<proyecto>.json en la raiz del repositorio.
   --dry-run      Calcula fragmentos y tamanos sin escribir nada.
 `);
 }
