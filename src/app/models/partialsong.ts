@@ -22,7 +22,7 @@ export type SongSortField = 'title' | 'artists' | 'creationDate';
 
 export type SongSortDirection = 'asc' | 'desc';
 
-export interface SongSort {
+export type SongSort = {
     field: SongSortField;
     direction: SongSortDirection;
 }

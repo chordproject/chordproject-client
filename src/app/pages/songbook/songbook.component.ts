@@ -270,6 +270,16 @@ export class SongbookComponent implements OnInit, OnDestroy {
     selectSong(song: PartialSong): void {
         this.selectedSong.set(song);
 
+        // La lista viene del indice y no trae `content`; el detalle completo se pide al abrir.
+        this._songService
+            .get(song.uid)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((fullSong) => {
+                if (this.selectedSong()?.uid === song.uid) {
+                    this.selectedSong.set(fullSong);
+                }
+            });
+
         // If we're in mobile mode, toggle the preview to show the right panel
         if (this.splitLayout?.isMobile) {
             this.splitLayout.togglePreview();

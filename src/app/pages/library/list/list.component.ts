@@ -85,7 +85,7 @@ export class SongsListComponent implements OnInit, OnDestroy {
         private _libraryComponent: LibraryComponent 
     ) {}
 
-    /** El centinela vive dentro de un @if, por eso se observa desde el setter. */
+    // El centinela vive dentro de un bloque condicional, por eso se observa desde el setter.
     @ViewChild('loadMoreSentinel')
     set loadMoreSentinel(sentinel: ElementRef<HTMLElement> | undefined) {
         this._loadMoreObserver?.disconnect();

@@ -183,6 +183,15 @@ Problema medido sobre los 242 documentos actuales: Firestore factura por documen
 
 Propuesta: colección `song_index` con documentos que agrupan entradas ligeras de canción, leída de una vez y resuelta en memoria para todas las listas. El detalle completo con `content` se sigue pidiendo solo al abrir lector o editor.
 
+Estado: implementado. `song_index` guarda la entrada ligera y `song_search_index` el texto normalizado para buscar en letras, ambos fragmentados en documentos de 500 entradas. El cliente cae a leer la colección `songs` completa mientras los índices no existan, así que la aplicación funciona igual antes del primer reindexado. La reconstrucción se lanza con `npm run reindex:hj`, y `npm run reindex:hj:dry` calcula fragmentos y tamaños sin escribir.
+
+Pendiente de este bloque:
+
+- Ejecutar el reindexado inicial contra producción y comprobar el consumo real después.
+- Abrir un cancionero sigue costando N lecturas de `songbook_songs`. Para bajarlo a 1 habría que guardar los `songId` ordenados dentro del documento del cancionero y retirar la colección de relaciones, lo que implica migración de datos y cambio de reglas.
+- Las reglas permiten escribir los índices a cualquier usuario autenticado, porque cualquiera que pueda crear una canción debe poder mantener el fragmento en la misma escritura por lotes. La reparación ante un cliente que los corrompa es el script de reindexado.
+- Valorar `onSnapshot` sobre `song_index` para recibir altas ajenas sin recargar. Con pocos documentos el coste es una lectura inicial más una por cambio real.
+
 Medición real por canción, extraída del backup:
 
 - Entrada ligera, con `uid`, `title`, `subtitle`, `artists`, `songKey`, `uniqueChords` y `creationDate`: unos 169 bytes.
@@ -199,7 +208,7 @@ Proyección frente al límite de 1 MB por documento de Firestore:
 Conclusión: un documento único no es viable en el objetivo de 5000 canciones. El índice debe nacer fragmentado.
 
 - Fragmentar en documentos de 500 entradas como máximo. Con 5000 canciones son 10 fragmentos, es decir 10 lecturas en lugar de 5000.
-- Leer los fragmentos con una consulta a la colección completa, sin documento manifiesto, para no añadir una lectura extra.
+- Leer los fragmentos con una consulta a la colección completa, sin documento manifiesto, para no añadir una lectura extra. Ese camino de lectura es idéntico con un fragmento que con diez, así que la fragmentación no obliga a migrar cuando la biblioteca crece.
 - Mantener el índice de búsqueda en fragmentos aparte y cargarlo de forma perezosa solo al primer uso del buscador, para no penalizar cada arranque.
 - Incluir `count` y `updatedAt` en cada fragmento para detectar desincronización.
 - Regenerar desde el cliente en la misma escritura por lotes que guarda la canción, ya que no hay plan Blaze para Cloud Functions.

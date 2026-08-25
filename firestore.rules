@@ -93,6 +93,23 @@ service cloud.firestore {
       allow delete: if isAdmin() || owns(resource.data);
     }
 
+    // Fragmentos derivados de `songs`. Cualquiera que pueda crear una cancion debe poder
+    // mantenerlos en la misma escritura por lotes; el contenido se reconstruye con el script
+    // de reindexado si un cliente los deja inconsistentes.
+    match /song_index/{shardId} {
+      allow read: if true;
+      allow write: if isSignedIn()
+        && request.resource.data.keys().hasAll(['shard', 'count', 'songs', 'updatedAt'])
+        && request.resource.data.songs is list;
+    }
+
+    match /song_search_index/{shardId} {
+      allow read: if true;
+      allow write: if isSignedIn()
+        && request.resource.data.keys().hasAll(['shard', 'count', 'entries', 'updatedAt'])
+        && request.resource.data.entries is list;
+    }
+
     match /songbooks/{songbookId} {
       allow read: if true;
       allow create: if isSignedIn()
