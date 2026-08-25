@@ -9,7 +9,7 @@ import {
     getDocs,
     serverTimestamp,
 } from 'firebase/firestore';
-import { Observable, defer, from, map, shareReplay } from 'rxjs';
+import { Observable, catchError, defer, from, map, of, shareReplay } from 'rxjs';
 import { Song } from 'app/models/song';
 import {
     LYRICS_PREVIEW_LENGTH,
@@ -65,6 +65,11 @@ export class SongIndexService {
 
                     return text;
                 }),
+                catchError((error) => {
+                    this.warnUnavailable(SONG_SEARCH_INDEX_COLLECTION, error);
+
+                    return of(new Map<string, string>());
+                }),
                 shareReplay({ bufferSize: 1, refCount: false })
             );
         }
@@ -85,9 +90,12 @@ export class SongIndexService {
             shards.find((shard) => shard.songs.length < SONG_INDEX_SHARD_SIZE) ??
             this.appendShard(shards);
         const songs = [...target.songs.filter((indexed) => indexed.uid !== entry.uid), entry];
+        // Se lee antes de tocar el lote para no dejarlo a medias si falla.
+        const searchEntries = await this.readSearchEntries(target.shard, entry.uid);
 
+        searchEntries.push({ uid: entry.uid, text: buildSearchText(song) });
         this.stageShard(batch, target.shard, songs);
-        await this.stageSearchShard(batch, target.shard, entry.uid, buildSearchText(song));
+        this.stageSearchShard(batch, target.shard, searchEntries);
     }
 
     async stageRemove(batch: WriteBatch, uid: string): Promise<void> {
@@ -98,22 +106,34 @@ export class SongIndexService {
             return;
         }
 
+        const searchEntries = await this.readSearchEntries(target.shard, uid);
+
         this.stageShard(
             batch,
             target.shard,
             target.songs.filter((indexed) => indexed.uid !== uid)
         );
-        await this.stageSearchShard(batch, target.shard, uid, null);
+        this.stageSearchShard(batch, target.shard, searchEntries);
     }
 
     private getShards(): Observable<SongIndexShard[]> {
         if (!this._shards$) {
             this._shards$ = defer(() => from(this.readShards())).pipe(
+                catchError((error) => {
+                    this.warnUnavailable(SONG_INDEX_COLLECTION, error);
+
+                    return of([] as SongIndexShard[]);
+                }),
                 shareReplay({ bufferSize: 1, refCount: false })
             );
         }
 
         return this._shards$;
+    }
+
+    /** El indice es un derivado: si falta o no se puede leer, quien consuma vuelve a `songs`. */
+    private warnUnavailable(collectionId: string, error: unknown): void {
+        console.warn(`Indice ${collectionId} no disponible, se usara la coleccion songs.`, error);
     }
 
     private async readShards(): Promise<SongIndexShard[]> {
@@ -144,23 +164,23 @@ export class SongIndexService {
         });
     }
 
-    /** `text` a `null` elimina la entrada. Lee el fragmento porque el indice de busqueda no suele estar cargado. */
-    private async stageSearchShard(
-        batch: WriteBatch,
-        shard: number,
-        uid: string,
-        text: string | null
-    ): Promise<void> {
-        const reference = doc(this._firestore, SONG_SEARCH_INDEX_COLLECTION, songIndexShardId(shard));
-        const snapshot = await getDoc(reference);
+    /** Entradas del fragmento de busqueda sin la cancion indicada, lista para reescribirse. */
+    private async readSearchEntries(shard: number, excludedUid: string): Promise<SongSearchIndexEntry[]> {
+        const snapshot = await getDoc(
+            doc(this._firestore, SONG_SEARCH_INDEX_COLLECTION, songIndexShardId(shard))
+        );
         const current = snapshot.exists() ? ((snapshot.data() as SongSearchIndexShard).entries ?? []) : [];
-        const entries: SongSearchIndexEntry[] = current.filter((entry) => entry.uid !== uid);
 
-        if (text !== null) {
-            entries.push({ uid, text });
-        }
+        return current.filter((entry) => entry.uid !== excludedUid);
+    }
 
-        batch.set(reference, { shard, count: entries.length, entries, updatedAt: serverTimestamp() });
+    private stageSearchShard(batch: WriteBatch, shard: number, entries: SongSearchIndexEntry[]): void {
+        batch.set(doc(this._firestore, SONG_SEARCH_INDEX_COLLECTION, songIndexShardId(shard)), {
+            shard,
+            count: entries.length,
+            entries,
+            updatedAt: serverTimestamp(),
+        });
     }
 
     private buildEntry(song: Song): SongIndexEntry {

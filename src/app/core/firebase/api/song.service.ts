@@ -230,7 +230,7 @@ export class SongService {
             );
             const batch = writeBatch(this._firestore);
             batch.set(doc(this._firestore, 'songs', song.uid), songData);
-            await this._songIndex.stageUpsert(batch, song);
+            await this.stageIndex(() => this._songIndex.stageUpsert(batch, song));
             await batch.commit();
             this.invalidateCaches();
             this.showSnackbar('song_service.song_saved');
@@ -249,7 +249,7 @@ export class SongService {
         try {
             const batch = writeBatch(this._firestore);
             batch.delete(doc(this._firestore, 'songs', id));
-            await this._songIndex.stageRemove(batch, id);
+            await this.stageIndex(() => this._songIndex.stageRemove(batch, id));
             await batch.commit();
             this.invalidateCaches();
             this.showSnackbar('song_service.song_deleted');
@@ -339,6 +339,15 @@ export class SongService {
         this._songsCache$ = null;
         this._fullSongsCache$ = null;
         this._songIndex.invalidate();
+    }
+
+    /** El indice es derivado: si no se puede preparar, la cancion se guarda igual y se repara reindexando. */
+    private async stageIndex(stage: () => Promise<void>): Promise<void> {
+        try {
+            await stage();
+        } catch (error) {
+            console.warn('No se pudo actualizar el indice de canciones, ejecutar el reindexado.', error);
+        }
     }
 
     private compareByTitle(first: PartialSong, second: PartialSong): number {
