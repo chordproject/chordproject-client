@@ -6,29 +6,34 @@ import {
     doc,
     getDoc,
     getDocs,
+    onSnapshot,
     query,
     serverTimestamp,
     setDoc,
     where,
 } from 'firebase/firestore';
-import { Observable, from, map, of, switchMap } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, Subject, from, map, of, switchMap } from 'rxjs';
+import { catchError, startWith } from 'rxjs/operators';
 import { Song } from 'app/models/song';
-import { SongSuggestion, SongSuggestionProposedFields } from 'app/models/song-suggestion';
+import { SongSuggestion, SongSuggestionOutcome, SongSuggestionProposedFields } from 'app/models/song-suggestion';
 import { FirebaseService } from '../firebase.service';
 import { SongService } from './song.service';
 
 export type CreateSongSuggestionInput = {
     targetSongId: string;
     proposedSong: SongSuggestionProposedFields;
+    proposedOutcome?: SongSuggestionOutcome;
     message?: string;
 };
+
+export const MAX_ALTERNATE_VERSIONS = 5;
 
 @Injectable({ providedIn: 'root' })
 export class SongSuggestionService {
     private _firestore: Firestore;
     private _auth: Auth;
     private _songService = inject(SongService);
+    private _changed = new Subject<void>();
 
     constructor() {
         const firebase = inject(FirebaseService);
@@ -41,7 +46,13 @@ export class SongSuggestionService {
             return of(null);
         }
 
-        return from(this.createSuggestion(input));
+        return this.getMineOpenForSong(input.targetSongId).pipe(
+            switchMap((existing) => from(this.createOrUpdateSuggestion(input, existing?.uid))),
+            catchError((error) => {
+                console.error('Failed to create/update song suggestion:', error);
+                return of(null);
+            })
+        );
     }
 
     getMineOpenForSong(songId: string): Observable<SongSuggestion | null> {
@@ -78,11 +89,38 @@ export class SongSuggestionService {
     }
 
     getAllOpen(): Observable<SongSuggestion[]> {
-        const q = query(collection(this._firestore, 'song_suggestions'), where('status', '==', 'open'));
+        return new Observable<SongSuggestion[]>((subscriber) => {
+            const q = query(collection(this._firestore, 'song_suggestions'), where('status', '==', 'open'));
+            return onSnapshot(q,
+                (snapshot) => {
+                    const suggestions = this.sortByCreationDateDesc(snapshot.docs.map((suggestionDoc) => ({ ...suggestionDoc.data(), uid: suggestionDoc.id } as SongSuggestion)));
+                    subscriber.next(suggestions);
+                },
+                (error) => {
+                    subscriber.error(error);
+                }
+            );
+        }).pipe(catchError(() => of([])));
+    }
 
-        return from(getDocs(q)).pipe(
-            map((snapshot) => this.sortByCreationDateDesc(snapshot.docs.map((suggestionDoc) => ({ ...suggestionDoc.data(), uid: suggestionDoc.id }) as SongSuggestion))),
-            catchError(() => of([]))
+    getHistory(): Observable<SongSuggestion[]> {
+        return this._changed.pipe(
+            startWith(undefined),
+            switchMap(() => {
+                const acceptedQuery = query(collection(this._firestore, 'song_suggestions'), where('status', '==', 'accepted'));
+                const rejectedQuery = query(collection(this._firestore, 'song_suggestions'), where('status', '==', 'rejected'));
+
+                return from(Promise.all([getDocs(acceptedQuery), getDocs(rejectedQuery)])).pipe(
+                    map(([acceptedSnapshot, rejectedSnapshot]) =>
+                        this.sortByCreationDateDesc(
+                            [...acceptedSnapshot.docs, ...rejectedSnapshot.docs].map(
+                                (suggestionDoc) => ({ ...suggestionDoc.data(), uid: suggestionDoc.id }) as SongSuggestion
+                            )
+                        )
+                    ),
+                    catchError(() => of([]))
+                );
+            })
         );
     }
 
@@ -116,7 +154,14 @@ export class SongSuggestionService {
     }
 
     createVersion(suggestion: SongSuggestion, responseMessage?: string): Observable<string | null> {
-        return from(this.getTargetSong(suggestion.targetSongId)).pipe(
+        return from(this.getVariantCount(suggestion.targetSongId)).pipe(
+            switchMap((variantCount) => {
+                if (variantCount >= MAX_ALTERNATE_VERSIONS) {
+                    return of(null);
+                }
+
+                return from(this.getTargetSong(suggestion.targetSongId));
+            }),
             switchMap((targetSong) => {
                 if (!targetSong) {
                     return of(null);
@@ -141,28 +186,48 @@ export class SongSuggestionService {
         );
     }
 
-    private async createSuggestion(input: CreateSongSuggestionInput): Promise<string> {
+    private async getVariantCount(originalSongId: string): Promise<number> {
+        const snapshot = await getDocs(
+            query(collection(this._firestore, 'songs'), where('variantOf', '==', originalSongId))
+        );
+        return snapshot.size;
+    }
+
+    private async createOrUpdateSuggestion(input: CreateSongSuggestionInput, existingId?: string): Promise<string> {
         const user = this._auth.currentUser;
-        const suggestionId = doc(collection(this._firestore, 'song_suggestions')).id;
-        const suggestion: Omit<SongSuggestion, 'uid'> = {
-            authorId: user.uid,
-            ownerId: user.uid,
-            creationDate: serverTimestamp(),
-            lastUpdateDate: serverTimestamp() as never,
-            source: 'user',
-            targetSongId: input.targetSongId,
-            proposedSong: Object.fromEntries(
-                Object.entries(input.proposedSong).filter(([, value]) => value !== undefined)
-            ) as SongSuggestionProposedFields,
-            status: 'open',
-            message: input.message?.trim() || undefined,
-        };
+        const suggestionId = existingId || doc(collection(this._firestore, 'song_suggestions')).id;
+        const proposedSong = Object.fromEntries(
+            Object.entries(input.proposedSong).filter(([, value]) => value !== undefined)
+        ) as SongSuggestionProposedFields;
+
+        const suggestion: Partial<Omit<SongSuggestion, 'uid'>> = existingId
+            ? {
+                  proposedSong,
+                  message: input.message?.trim() || undefined,
+                  status: 'open',
+                  lastUpdateDate: serverTimestamp() as never,
+              }
+            : {
+                  authorId: user.uid,
+                  ownerId: user.uid,
+                  authorName: user.displayName || user.email || user.uid,
+                  creationDate: serverTimestamp(),
+                  lastUpdateDate: serverTimestamp() as never,
+                  source: 'user',
+                  targetSongId: input.targetSongId,
+                proposedOutcome: input.proposedOutcome || 'official',
+                  proposedSong,
+                  status: 'open',
+                  message: input.message?.trim() || undefined,
+              };
 
         await setDoc(
             doc(this._firestore, 'song_suggestions', suggestionId),
-            Object.fromEntries(Object.entries(suggestion).filter(([, value]) => value !== undefined))
+            Object.fromEntries(Object.entries(suggestion).filter(([, value]) => value !== undefined)),
+            { merge: true }
         );
 
+        this._changed.next();
         return suggestionId;
     }
 
@@ -194,5 +259,6 @@ export class SongSuggestionService {
         }
 
         await setDoc(doc(this._firestore, 'song_suggestions', suggestionId), update, { merge: true });
+        this._changed.next();
     }
 }

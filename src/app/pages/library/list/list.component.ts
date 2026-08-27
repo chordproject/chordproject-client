@@ -36,6 +36,7 @@ import { SongService } from 'app/core/firebase/api/song.service';
 import {
     DEFAULT_SONG_SORT,
     PartialSong,
+    SONG_SORT_DEFAULT_DIRECTION,
     SONG_SORT_FIELDS,
     SongSort,
     SongSortField,
@@ -132,6 +133,11 @@ export class SongsListComponent implements OnInit, OnDestroy {
                 this.loaded.set(true);
             });
 
+        // Sin debounce: clearSelection ya solo actúa cuando queda algo que deseleccionar.
+        this.searchInputControl.valueChanges
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(() => this.clearSelection());
+
         // Get the song
         this._songService.song$.pipe(takeUntil(this._unsubscribeAll)).subscribe((song: PartialSong) => {
             // Update the selected song
@@ -162,11 +168,18 @@ export class SongsListComponent implements OnInit, OnDestroy {
     }
 
     setSortField(field: SongSortField): void {
-        this.updateSort({ ...this.sort(), field });
+        this.updateSort({ field, direction: SONG_SORT_DEFAULT_DIRECTION[field] });
     }
 
     toggleSortDirection(): void {
         this.updateSort({ ...this.sort(), direction: this.sort().direction === 'asc' ? 'desc' : 'asc' });
+    }
+
+    // "Ascendente" no dice nada sobre fechas, asi que la etiqueta depende del tipo de dato.
+    directionLabel(): string {
+        const { field, direction } = this.sort();
+
+        return `library_page.sort.${field === 'creationDate' ? 'date' : 'text'}_${direction}`;
     }
 
     showMore(): void {
@@ -177,6 +190,15 @@ export class SongsListComponent implements OnInit, OnDestroy {
         this.sort.set(sort);
         this._sort$.next(sort);
         this._scrollRoot?.nativeElement.scrollTo({ top: 0 });
+        this.clearSelection();
+    }
+
+    /** Reordenar o buscar cambia lo que se ve en la lista, así que la canción abierta deja de tener contexto. */
+    private clearSelection(): void {
+        if (this.selectedSong) {
+            // Volver a /library cierra el outlet `drawer`, y al cerrarse se limpia selectedSong.
+            this._router.navigateByUrl('/library');
+        }
     }
 
     onSongClick(song: PartialSong): void {

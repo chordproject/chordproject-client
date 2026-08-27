@@ -1,0 +1,52 @@
+<div class="flex h-full w-full flex-col bg-white dark:bg-neutral-900">
+    <header class="flex items-start justify-between gap-4 border-b border-neutral-200 px-6 py-5 dark:border-neutral-800">
+        <div>
+            <h2 class="text-xl font-semibold">{{ 'feedback.title' | transloco }}</h2>
+            <p class="text-secondary mt-1 text-sm">{{ 'feedback.description' | transloco }}</p>
+        </div>
+        <button
+            matIconButton
+            type="button"
+            [attr.aria-label]="'feedback.close' | transloco"
+            [matTooltip]="'feedback.close' | transloco"
+            (click)="cancelled.emit()"
+        >
+            <mat-icon svgIcon="x"></mat-icon>
+        </button>
+    </header>
+
+    <form class="flex flex-1 flex-col gap-5 overflow-auto p-6" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="flex flex-col gap-2">
+            <span class="text-sm font-semibold">{{ 'feedback.type_label' | transloco }}</span>
+            <mat-radio-group class="flex flex-col gap-2 sm:flex-row sm:gap-3" formControlName="type">
+                <mat-radio-button value="bug">{{ 'feedback.bug' | transloco }}</mat-radio-button>
+                <mat-radio-button value="idea">{{ 'feedback.idea' | transloco }}</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'feedback.title_label' | transloco }}</mat-label>
+            <input matInput formControlName="title" />
+            @if (form.controls.title.hasError('required')) {
+                <mat-error>{{ 'feedback.title_required' | transloco }}</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'feedback.message_label' | transloco }}</mat-label>
+            <textarea matInput formControlName="message" rows="6"></textarea>
+            @if (form.controls.message.hasError('required') || form.controls.message.hasError('minlength')) {
+                <mat-error>{{ 'feedback.message_error' | transloco }}</mat-error>
+            }
+        </mat-form-field>
+
+        <footer class="flex justify-end gap-3 pt-2">
+            <button matButton="outlined" type="button" (click)="cancelled.emit()">
+                {{ 'confirmation.cancel' | transloco }}
+            </button>
+            <button matButton="filled" type="submit">
+                {{ 'feedback.submit' | transloco }}
+            </button>
+        </footer>
+    </form>
+</div>

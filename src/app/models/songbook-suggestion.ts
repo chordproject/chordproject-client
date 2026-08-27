@@ -6,7 +6,9 @@ export type SongbookSuggestionStatus = 'open' | 'accepted' | 'rejected' | 'needs
 export class SongbookSuggestion extends BaseDocument {
     type: SongbookSuggestionType;
     status: SongbookSuggestionStatus;
+    authorName?: string;
     targetSongbookId?: string;
+    targetSongId?: string;
     targetParentId?: string;
     suggestedName?: string;
     message: string;

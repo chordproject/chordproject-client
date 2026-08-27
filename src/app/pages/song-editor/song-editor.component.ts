@@ -2,17 +2,17 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    HostListener,
     OnDestroy,
     OnInit,
     ViewContainerRef,
+    signal,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
-import { Observable, Subject, firstValueFrom, map, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, firstValueFrom, forkJoin, from, map, switchMap, take, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
@@ -21,8 +21,13 @@ import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SongSuggestionService } from 'app/core/firebase/api/song-suggestion.service';
 import { UserService } from 'app/core/user/user.service';
+import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
-import { SongSuggestionDialogComponent } from './song-suggestion-dialog.component';
+import {
+    SongSuggestionDialogComponent,
+    SongSuggestionDialogResult,
+    SongSuggestionMode,
+} from './song-suggestion-dialog.component';
 
 @Component({
     selector: 'song-editor',
@@ -33,6 +38,8 @@ import { SongSuggestionDialogComponent } from './song-suggestion-dialog.componen
 })
 export class SongEditorComponent implements OnInit, OnDestroy {
     song: Song = new Song();
+    hasPendingSuggestion = signal(false);
+    alternateVersions = signal<PartialSong[]>([]);
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     private _savedContent = '';
     private _allowDeactivate = false;
@@ -50,10 +57,11 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         private _translocoService: TranslocoService,
         private _route: ActivatedRoute,
         private _router: Router
-    ) {}
+    ) {
+        this._handleKeyboardEvent = this._handleKeyboardEvent.bind(this);
+    }
 
-    @HostListener('document:keydown', ['$event'])
-    handleKeyboardEvent(event: KeyboardEvent): void {
+    private _handleKeyboardEvent(event: KeyboardEvent): void {
         if (event.key.toLowerCase() !== 's' || (!event.ctrlKey && !event.metaKey)) {
             return;
         }
@@ -67,6 +75,9 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         // Siempre limpiar las referencias
         this.cleanupTemplateRefs();
         this.loadSong();
+        // Capture phase: the third-party chordpro editor stops propagation of its own
+        // keydown handling, so a bubbling document listener never sees Cmd/Ctrl+S.
+        document.addEventListener('keydown', this._handleKeyboardEvent, true);
     }
 
     private loadSong(): void {
@@ -85,6 +96,38 @@ export class SongEditorComponent implements OnInit, OnDestroy {
                 if (data) {
                     this.song = data;
                     this._savedContent = this.song.content ?? '';
+                    this.hasPendingSuggestion.set(false);
+                    this.alternateVersions.set([]);
+                    if (data.uid) {
+                        const canonicalId = data.variantOf || data.uid;
+                        forkJoin({
+                            canonical: this._songService.get(canonicalId),
+                            variants: this._songService.getVariants(canonicalId),
+                        })
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe(({ canonical, variants }) => {
+                                this.alternateVersions.set(
+                                    [canonical, ...variants].sort((first, second) => {
+                                        const firstIsCanonical = first.uid === canonicalId;
+                                        const secondIsCanonical = second.uid === canonicalId;
+                                        return Number(secondIsCanonical) - Number(firstIsCanonical);
+                                    })
+                                );
+                                this._changeDetectorRef.markForCheck();
+                            });
+                        this._songSuggestionService
+                            .getMineOpenForSong(data.uid)
+                            .pipe(takeUntil(this._unsubscribeAll))
+                            .subscribe((suggestion) => {
+                                this.hasPendingSuggestion.set(!!suggestion);
+                                if (suggestion) {
+                                    // Resume editing from your own pending proposal instead of the still-unapproved official content.
+                                    this.song = { ...this.song, ...suggestion.proposedSong };
+                                    this._savedContent = this.song.content ?? '';
+                                }
+                                this._changeDetectorRef.markForCheck();
+                            });
+                    }
                     this._changeDetectorRef.markForCheck();
                 }
             });
@@ -120,7 +163,12 @@ export class SongEditorComponent implements OnInit, OnDestroy {
 
     private async saveOrSuggest(): Promise<void> {
         if (await this.requiresSuggestion()) {
-            this.openSuggestionDialog();
+            // Already have a pending suggestion for this song: update it silently instead of asking again.
+            if (this.hasPendingSuggestion()) {
+                this.submitSuggestion(undefined, 'song_suggestion.updated');
+            } else {
+                this.openSuggestionDialog();
+            }
             return;
         }
 
@@ -149,47 +197,78 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             .afterClosed()
             .pipe(
                 takeUntil(this._unsubscribeAll),
-                switchMap((result) => {
+                switchMap((result: SongSuggestionDialogResult | undefined) => {
                     if (!result) {
-                        return [null];
+                        return from([{ id: null, messageKey: 'song_suggestion.sent', pending: true }]);
                     }
 
-                    return this._songSuggestionService.create({
-                        targetSongId: this.song.uid,
-                        message: result.message,
-                        proposedSong: {
-                            title: this.song.title,
-                            subtitle: this.song.subtitle,
-                            content: this.song.content,
-                            lyrics: this.song.lyrics,
-                            albums: this.song.albums,
-                            arrangers: this.song.arrangers,
-                            artists: this.song.artists,
-                            composers: this.song.composers,
-                            lyricists: this.song.lyricists,
-                            copyright: this.song.copyright,
-                            songKey: this.song.songKey,
-                            uniqueChords: this.song.uniqueChords,
-                            defaultKeyUniqueChords: this.song.defaultKeyUniqueChords,
-                            capo: this.song.capo,
-                            tempo: this.song.tempo,
-                            time: this.song.time,
-                            duration: this.song.duration,
-                            year: this.song.year,
-                        },
-                    });
+                    return this.createSuggestion(result.message, result.mode).pipe(
+                        map((id) => ({ id, messageKey: 'song_suggestion.sent', pending: true }))
+                    );
                 })
             )
-            .subscribe((suggestionId) => {
-                if (suggestionId) {
-                    this._savedContent = this.song.content ?? '';
-                    this._translocoService
-                        .selectTranslate('song_suggestion.sent')
-                        .pipe(take(1))
-                        .subscribe((message) => {
-                            this._snackBar.open(message, undefined, { duration: 4000 });
-                        });
+            .subscribe(({ id, messageKey, pending }) => {
+                if (id && !pending) {
+                    this.song.uid = id;
+                    this.hasPendingSuggestion.set(false);
                 }
+                this.onSuggestionSaved(id, messageKey, pending);
+            });
+    }
+
+    private submitSuggestion(message: string | undefined, sentMessageKey: string): void {
+        this.createSuggestion(message)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((suggestionId) => this.onSuggestionSaved(suggestionId, sentMessageKey));
+    }
+
+    private createSuggestion(message?: string, mode: SongSuggestionMode = 'suggestion') {
+        return this._songSuggestionService.create({
+            targetSongId: this.song.uid,
+            proposedOutcome: mode === 'version' ? 'version' : 'official',
+            message,
+            proposedSong: {
+                title: this.song.title,
+                subtitle: this.song.subtitle,
+                content: this.song.content,
+                lyrics: this.song.lyrics,
+                albums: this.song.albums,
+                arrangers: this.song.arrangers,
+                artists: this.song.artists,
+                composers: this.song.composers,
+                lyricists: this.song.lyricists,
+                copyright: this.song.copyright,
+                songKey: this.song.songKey,
+                uniqueChords: this.song.uniqueChords,
+                defaultKeyUniqueChords: this.song.defaultKeyUniqueChords,
+                capo: this.song.capo,
+                tempo: this.song.tempo,
+                time: this.song.time,
+                duration: this.song.duration,
+                year: this.song.year,
+            },
+        });
+    }
+
+    private onSuggestionSaved(suggestionId: string | null, sentMessageKey: string, pending = true): void {
+        if (!suggestionId) {
+            this._translocoService
+                .selectTranslate('song_suggestion.save_failed')
+                .pipe(take(1))
+                .subscribe((message) => {
+                    this._snackBar.open(message, undefined, { duration: 5000, panelClass: ['warning'] });
+                });
+            return;
+        }
+
+        this._savedContent = this.song.content ?? '';
+        this.hasPendingSuggestion.set(pending);
+        this._changeDetectorRef.markForCheck();
+        this._translocoService
+            .selectTranslate(sentMessageKey)
+            .pipe(take(1))
+            .subscribe((message) => {
+                this._snackBar.open(message, undefined, { duration: 4000 });
             });
     }
 
@@ -233,6 +312,7 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        document.removeEventListener('keydown', this._handleKeyboardEvent, true);
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
     }

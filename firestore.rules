@@ -163,7 +163,12 @@ service cloud.firestore {
         && request.resource.data.authorId == request.auth.uid
         && request.resource.data.ownerId == request.auth.uid
         && request.resource.data.status == 'open';
-      allow update, delete: if isAdmin();
+      allow update: if isAdmin()
+        || (owns(resource.data)
+          && resource.data.status == 'open'
+          && request.resource.data.status == 'rejected'
+          && request.resource.data.authorId == resource.data.authorId);
+      allow delete: if isAdmin();
     }
 
     match /song_suggestions/{suggestionId} {
@@ -173,8 +178,28 @@ service cloud.firestore {
         && request.resource.data.ownerId == request.auth.uid
         && request.resource.data.status == 'open'
         && songExists(request.resource.data.targetSongId);
-      allow update: if isAdmin();
+      allow update: if isAdmin()
+        || (owns(resource.data)
+          && resource.data.status == 'open'
+          && request.resource.data.status == 'open'
+          && request.resource.data.authorId == resource.data.authorId
+          && request.resource.data.targetSongId == resource.data.targetSongId);
       allow delete: if isAdmin() || (owns(resource.data) && resource.data.status == 'open');
+    }
+
+    match /feedback/{feedbackId} {
+      allow read: if isAdmin();
+      allow create: if request.resource.data.keys().hasAll(['type', 'status', 'title', 'message', 'creationDate'])
+        && request.resource.data.type in ['bug', 'idea']
+        && request.resource.data.status == 'open'
+        && (!('authorId' in request.resource.data) || request.resource.data.authorId == null || (isSignedIn() && request.resource.data.authorId == request.auth.uid))
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 120
+        && request.resource.data.message is string
+        && request.resource.data.message.size() >= 10;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
     }
 
     match /tags/{tagId} {

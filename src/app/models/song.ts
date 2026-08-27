@@ -24,4 +24,5 @@ export class Song extends BaseDocument {
     videoId?: string;
     // Points to the canonical song this one was derived from (created from an accepted suggestion).
     variantOf?: string;
+    variantCount?: number;
 }

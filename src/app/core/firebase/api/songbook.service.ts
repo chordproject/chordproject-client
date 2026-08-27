@@ -90,14 +90,11 @@ export class SongbookService {
     }
 
     getPersonal(): Observable<Songbook[]> {
-        if (!this._personalSongbooksCache$) {
-            this._personalSongbooksCache$ = this.getAll().pipe(
-                map((songbooks) => songbooks.filter((songbook) => this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook))),
-                shareReplay({ bufferSize: 1, refCount: false })
-            );
-        }
-
-        return this._personalSongbooksCache$;
+        return this.getAll().pipe(
+            map((songbooks) => songbooks.filter((songbook) =>
+                this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook) && this.isOwnedByCurrentUser(songbook)
+            ))
+        );
     }
 
     getRecommended(): Observable<Songbook[]> {
@@ -128,7 +125,9 @@ export class SongbookService {
         return this._songbooksChanged.pipe(
             startWith(undefined),
             switchMap(() => this.getByParentQuery(parent)),
-            map((songbooks) => songbooks.filter((songbook) => this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook))),
+            map((songbooks) => songbooks.filter((songbook) =>
+                this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook) && this.isOwnedByCurrentUser(songbook)
+            )),
             catchError((error) => this.handleError(error))
         );
     }
@@ -262,6 +261,7 @@ export class SongbookService {
         }
 
         try {
+            songId = await this.getCanonicalSongId(songId);
             const existingRelations = await getDocs(
                 query(
                     collection(this._firestore, 'songbook_songs'),
@@ -306,6 +306,36 @@ export class SongbookService {
         }
     }
 
+    async copySongRelations(sourceSongId: string, targetSongId: string): Promise<boolean> {
+        if (!(await this.verifyAuthentication())) {
+            return false;
+        }
+
+        try {
+            const relationsSnapshot = await getDocs(
+                query(
+                    collection(this._firestore, 'songbook_songs'),
+                    where('songId', '==', sourceSongId)
+                )
+            );
+            const activeRelations = relationsSnapshot.docs.filter((relationDoc) => relationDoc.data().deleted !== true);
+
+            const batch = writeBatch(this._firestore);
+            activeRelations.forEach((relationDoc) => {
+                const data = relationDoc.data();
+                batch.set(doc(collection(this._firestore, 'songbook_songs')), {
+                    ...data,
+                    songId: targetSongId,
+                });
+            });
+            await batch.commit();
+            return true;
+        } catch (error) {
+            this.handleError(error);
+            return false;
+        }
+    }
+
     forkMany(songbookIds: string[]): Observable<string[]> {
         if (!this.verifyAuthentication()) {
             return of([]);
@@ -323,12 +353,15 @@ export class SongbookService {
     }
 
     getSongbooksForSong(songId: string): Observable<Songbook[]> {
-        const relationsQuery = query(
-            collection(this._firestore, 'songbook_songs'),
-            where('songId', '==', songId)
-        );
+        return from(this.getCanonicalSongId(songId)).pipe(
+            switchMap((canonicalSongId) => {
+                const relationsQuery = query(
+                    collection(this._firestore, 'songbook_songs'),
+                    where('songId', '==', canonicalSongId)
+                );
 
-        return from(getDocs(relationsQuery)).pipe(
+                return from(getDocs(relationsQuery));
+            }),
             switchMap((relationsSnapshot) => {
                 const songbookIds = relationsSnapshot.docs
                     .filter((relationDoc) => relationDoc.data().deleted !== true)
@@ -339,10 +372,17 @@ export class SongbookService {
                     return of([]);
                 }
 
-                return this.getAll().pipe(
+                return from(Promise.all(
+                    [...new Set(songbookIds)].map(async (songbookId) => {
+                        const songbookSnapshot = await getDoc(doc(this._firestore, 'songbooks', songbookId));
+                        return songbookSnapshot.exists()
+                            ? ({ ...songbookSnapshot.data(), uid: songbookSnapshot.id } as Songbook)
+                            : null;
+                    })
+                )).pipe(
                     map((songbooks) => {
-                        const visibleSongbooks = songbooks.filter((songbook) =>
-                            this.isActiveSongbook(songbook) && songbookIds.includes(songbook.uid) && this.isVisibleToCurrentUser(songbook)
+                        const visibleSongbooks = songbooks.filter((songbook): songbook is Songbook =>
+                            Boolean(songbook) && this.isActiveSongbook(songbook) && this.isVisibleToCurrentUser(songbook)
                         );
 
                         // Hide a recommended songbook once the current user has their own personal copy of it.
@@ -356,6 +396,11 @@ export class SongbookService {
             }),
             catchError((error) => this.handleError(error))
         );
+    }
+
+    private async getCanonicalSongId(songId: string): Promise<string> {
+        const songSnapshot = await getDoc(doc(this._firestore, 'songs', songId));
+        return songSnapshot.exists() ? songSnapshot.data().variantOf || songId : songId;
     }
 
     async removeSong(songbookId: string, songId: string): Promise<boolean> {
@@ -455,17 +500,17 @@ export class SongbookService {
         searchTerm?: string,
         limitResults = 3
     ): Observable<Songbook[]> {
-        return this.getPersonal().pipe(
-            map((allSongbooks) => {
+        return combineLatest([this.getPersonal(), this.getRecommended()]).pipe(
+            map(([personalSongbooks, recommendedSongbooks]) => {
+                const allSongbooks = [...personalSongbooks, ...recommendedSongbooks];
                 const normalizar = (str: string) =>
                     (str || '')
                         .toLocaleLowerCase()
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '');
-                let songbooks = allSongbooks.map((songbook) => ({
-                    uid: songbook.uid,
-                    name: songbook.name,
-                }) as Songbook);
+                let songbooks = allSongbooks
+                    .filter((songbook, index, values) => values.findIndex((value) => value.uid === songbook.uid) === index)
+                    .map((songbook) => ({ ...songbook }));
                 if (searchTerm) {
                     const qNorm = normalizar(searchTerm);
                     songbooks = songbooks.filter((sb) =>

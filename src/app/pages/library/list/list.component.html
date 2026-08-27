@@ -44,11 +44,7 @@
                 }
             </mat-menu>
             <!-- Sort direction -->
-            <button
-                mat-icon-button
-                (click)="toggleSortDirection()"
-                [matTooltip]="'library_page.sort.' + sort().direction | transloco"
-            >
+            <button mat-icon-button (click)="toggleSortDirection()" [matTooltip]="directionLabel() | transloco">
                 <mat-icon
                     [svgIcon]="sort().direction === 'asc' ? 'arrow-up-narrow-wide' : 'arrow-down-wide-narrow'"
                 ></mat-icon>

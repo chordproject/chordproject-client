@@ -1,20 +1,26 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
+  MatDrawer,
   MatSidenav,
   MatSidenavContainer,
   MatSidenavContent,
 } from '@angular/material/sidenav';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { filter, map, take } from 'rxjs';
 import { Media } from '@/app/core/media';
 import { GithubLink } from '@/app/domains/admin/layout/ui/github-link';
 import { LanguageSwitcher } from '@/app/domains/admin/layout/ui/language-switcher';
 import { SchemeSwitcher } from '@/app/domains/admin/layout/ui/scheme-switcher';
 import { AdminSidebar } from '@/app/domains/admin/layout/ui/sidebar';
 import { SearchComponent } from 'app/layout/common/search/search.component';
+import { FeedbackService } from 'app/core/firebase/api/feedback.service';
+import { FeedbackDialog, FeedbackDialogResult } from './ui/feedback-dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { environment } from 'environments/environment';
 
 @Component({
@@ -22,9 +28,12 @@ import { environment } from 'environments/environment';
   imports: [
     MatIconModule,
     MatButtonModule,
+    MatTooltipModule,
     RouterOutlet,
     MatSidenavContainer,
+    MatDrawer,
     MatSidenav,
+    FeedbackDialog,
     MatSidenavContent,
     RouterLink,
     AdminSidebar,
@@ -32,9 +41,23 @@ import { environment } from 'environments/environment';
     LanguageSwitcher,
     GithubLink,
     SearchComponent,
+    TranslocoModule,
   ],
   template: `
     <mat-sidenav-container>
+      <mat-drawer
+        class="w-full sm:w-[28rem]"
+        position="end"
+        mode="over"
+        [opened]="feedbackOpen()"
+        (closed)="feedbackOpen.set(false)"
+      >
+        <admin-feedback-dialog
+          (submitted)="submitFeedback($event)"
+          (cancelled)="closeFeedback()"
+        />
+      </mat-drawer>
+
       <mat-sidenav
         class="w-64 border-r border-neutral-200 scheme-dark dark:border-neutral-800 dark:bg-neutral-900 print:hidden"
         [mode]="isMobile() ? 'over' : 'side'"
@@ -83,6 +106,15 @@ import { environment } from 'environments/environment';
             <language-switcher />
             <scheme-switcher />
             <github-link />
+            <button
+              matIconButton
+              type="button"
+              [attr.aria-label]="'feedback.open' | transloco"
+              [matTooltip]="'feedback.open' | transloco"
+              (click)="openFeedback()"
+            >
+              <mat-icon svgIcon="message-circle" />
+            </button>
           </div>
         </div>
 
@@ -100,6 +132,9 @@ export class AdminLayout {
   // Dependencies
   private media = inject(Media);
   private router = inject(Router);
+  private feedbackService = inject(FeedbackService);
+  private snackBar = inject(MatSnackBar);
+  private transloco = inject(TranslocoService);
   protected readonly brand = environment.brand;
 
   // State
@@ -113,4 +148,27 @@ export class AdminLayout {
     ),
     { initialValue: this.router.url.startsWith('/home') }
   );
+
+  protected feedbackOpen = signal(false);
+
+  protected openFeedback(): void {
+    this.feedbackOpen.set(true);
+  }
+
+  protected closeFeedback(): void {
+    this.feedbackOpen.set(false);
+  }
+
+  protected submitFeedback(result: FeedbackDialogResult): void {
+    this.feedbackService.create({ ...result, pageUrl: window.location.href }).subscribe((feedbackId) => {
+      if (!feedbackId) {
+        return;
+      }
+
+      this.closeFeedback();
+      this.transloco.selectTranslate('feedback.sent').pipe(take(1)).subscribe((message) => {
+        this.snackBar.open(message, undefined, { duration: 4000 });
+      });
+    });
+  }
 }

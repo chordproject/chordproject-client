@@ -1,6 +1,7 @@
 import { BaseDocument } from './base-document';
 
 export type SongSuggestionStatus = 'open' | 'accepted' | 'rejected';
+export type SongSuggestionOutcome = 'official' | 'version';
 
 // Editable song fields a suggestion can propose changes for.
 export type SongSuggestionProposedFields = {
@@ -27,6 +28,8 @@ export type SongSuggestionProposedFields = {
 export class SongSuggestion extends BaseDocument {
     targetSongId: string;
     proposedSong: SongSuggestionProposedFields;
+    proposedOutcome: SongSuggestionOutcome;
+    authorName?: string;
     message?: string;
     status: SongSuggestionStatus;
     responseMessage?: string;

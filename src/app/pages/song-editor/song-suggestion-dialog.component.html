@@ -5,17 +5,39 @@
     </header>
 
     <form class="flex flex-col gap-4 p-6" [formGroup]="form" (ngSubmit)="submit()">
-        <mat-form-field class="w-full" subscriptSizing="dynamic">
-            <mat-label>{{ 'song_suggestion.message_label' | transloco }}</mat-label>
-            <textarea matInput formControlName="message" rows="4"></textarea>
-        </mat-form-field>
+        <div class="flex flex-col gap-3">
+            <div class="text-sm font-semibold">{{ 'song_suggestion.decision_label' | transloco }}</div>
+            <mat-radio-group class="flex flex-col gap-3" formControlName="mode">
+                <label class="flex cursor-pointer flex-col rounded-md border border-neutral-200 p-3 dark:border-neutral-700">
+                    <span class="flex items-center gap-2">
+                        <mat-radio-button value="suggestion"></mat-radio-button>
+                        <span class="text-sm font-medium">{{ 'song_suggestion.suggestion_option' | transloco }}</span>
+                    </span>
+                    <span class="text-secondary ml-8 text-xs">{{ 'song_suggestion.suggestion_option_description' | transloco }}</span>
+                </label>
+                <label class="flex cursor-pointer flex-col rounded-md border border-primary-200 bg-primary-50/50 p-3 dark:border-primary-800 dark:bg-primary-950/30">
+                    <span class="flex items-center gap-2">
+                        <mat-radio-button value="version"></mat-radio-button>
+                        <span class="text-sm font-medium">{{ 'song_suggestion.version_option' | transloco }}</span>
+                    </span>
+                    <span class="text-secondary ml-8 text-xs">{{ 'song_suggestion.version_option_description' | transloco }}</span>
+                </label>
+            </mat-radio-group>
+        </div>
+
+        @if (form.controls.mode.value === 'suggestion') {
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label>{{ 'song_suggestion.message_label' | transloco }}</mat-label>
+                <textarea matInput formControlName="message" rows="4"></textarea>
+            </mat-form-field>
+        }
 
         <footer class="flex justify-end gap-3 pt-2">
             <button matButton="outlined" type="button" [matDialogClose]="undefined">
                 {{ 'confirmation.cancel' | transloco }}
             </button>
             <button matButton="filled" type="submit">
-                {{ 'song_suggestion.submit' | transloco }}
+                {{ (form.controls.mode.value === 'version' ? 'song_suggestion.submit_version' : 'song_suggestion.submit') | transloco }}
             </button>
         </footer>
     </form>

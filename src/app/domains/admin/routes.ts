@@ -43,6 +43,11 @@ const routes: Routes = [
         canActivate: [authGuard],
         loadChildren: () => import('./modules/suggestions/routes'),
       },
+      {
+        path: 'feedback',
+        canActivate: [authGuard],
+        loadChildren: () => import('./modules/feedback/routes'),
+      },
 
       // -----------------------------------------------------------------------
       // Extras

@@ -6,11 +6,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
-import { Observable, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { Observable, firstValueFrom, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
@@ -20,10 +21,12 @@ import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SongSuggestionService } from 'app/core/firebase/api/song-suggestion.service';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
+import { SongbookSuggestionService } from 'app/core/firebase/api/songbook-suggestion.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
 import { SongSuggestion } from 'app/models/song-suggestion';
 import { Songbook } from 'app/models/songbook';
+import { SongbookSuggestion } from 'app/models/songbook-suggestion';
 import { Tag } from 'app/models/tag';
 import { JoinPipe } from 'app/pipes/join.pipe';
 
@@ -42,6 +45,7 @@ import { JoinPipe } from 'app/pipes/join.pipe';
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
+        MatMenuModule,
         MatAutocompleteModule,
         MatTooltipModule,
         RouterLink,
@@ -62,11 +66,31 @@ export class SongReaderComponent implements OnInit, OnDestroy {
     songbookSearchControl: UntypedFormControl = new UntypedFormControl('');
     filteredSongbooks$: Observable<Songbook[]>;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    private _songbookIdsBeingAdded = new Set<string>();
+    private _songbookSuggestionIds = new Map<string, string>();
+    private _pendingSongbooks: Songbook[] = [];
+
+    get allVisibleSongbooks(): Songbook[] {
+        return [...this.associatedSongbooks, ...this._pendingSongbooks];
+    }
+
+    get primarySongbooks(): Songbook[] {
+        return this.allVisibleSongbooks.slice(0, 3);
+    }
+
+    get additionalSongbooks(): Songbook[] {
+        return this.allVisibleSongbooks.slice(3);
+    }
+
+    isPendingSongbook(songbook: Songbook): boolean {
+        return this._pendingSongbooks.some((pending) => pending.uid === songbook.uid);
+    }
 
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _songService: SongService,
         private _songSuggestionService: SongSuggestionService,
+        private _songbookSuggestionService: SongbookSuggestionService,
         private _songbookService: SongbookService,
         private _editorService: EditorService,
         private route: ActivatedRoute,
@@ -115,6 +139,8 @@ export class SongReaderComponent implements OnInit, OnDestroy {
                 this.associatedTags = [];
                 this.pendingSuggestion = null;
                 this.versions = [];
+                this._pendingSongbooks = [];
+                this._songbookSuggestionIds.clear();
                 if (data?.uid) {
                     this._songbookService
                         .getSongbooksForSong(data.uid)
@@ -132,6 +158,27 @@ export class SongReaderComponent implements OnInit, OnDestroy {
                             this._changeDetectorRef.markForCheck();
                         });
 
+                    this._songbookSuggestionService
+                        .getMineOpenSongbookAssignments(data.uid)
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((suggestions) => {
+                            const songbookIds = suggestions
+                                .map((suggestion) => ({ id: suggestion.targetSongbookId, suggestionId: suggestion.uid }))
+                                .filter((item) => Boolean(item.id));
+                            Promise.all(songbookIds.map(async ({ id, suggestionId }) => {
+                                const songbook = await firstValueFrom(this._songbookService.get(id));
+                                return songbook ? { songbook, suggestionId } : null;
+                            })).then((items) => {
+                                items.filter(Boolean).forEach(({ songbook, suggestionId }) => {
+                                    this._songbookSuggestionIds.set(songbook.uid, suggestionId);
+                                    if (!this._pendingSongbooks.some((pending) => pending.uid === songbook.uid)) {
+                                        this._pendingSongbooks = [...this._pendingSongbooks, songbook];
+                                    }
+                                });
+                                this._changeDetectorRef.markForCheck();
+                            });
+                        });
+
                     const canonicalId = data.variantOf || data.uid;
                     this._songService
                         .getVariants(canonicalId)
@@ -145,7 +192,14 @@ export class SongReaderComponent implements OnInit, OnDestroy {
                             catchError(() => of([]))
                         )
                         .subscribe((versions) => {
-                            this.versions = versions.filter((version) => version.uid !== data.uid);
+                            this.versions = [
+                                data,
+                                ...versions.filter((version) => version.uid !== data.uid),
+                            ].sort((first, second) => {
+                                const firstIsCanonical = first.uid === canonicalId;
+                                const secondIsCanonical = second.uid === canonicalId;
+                                return Number(secondIsCanonical) - Number(firstIsCanonical);
+                            });
                             this._changeDetectorRef.markForCheck();
                         });
                 }
@@ -170,6 +224,10 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         return this.song?.content || this.song?.lyrics || '';
     }
 
+    versionLabel(version: PartialSong, index: number): string {
+        return `Versión ${index + 1}`;
+    }
+
     private setupSongbookSearch(): void {
         this.filteredSongbooks$ = this.songbookSearchControl.valueChanges.pipe(
             startWith(''),
@@ -183,6 +241,13 @@ export class SongReaderComponent implements OnInit, OnDestroy {
 
                 return this._songbookService
                     .searchSongbooks(searchTerm.trim(), 8)
+                    .pipe(
+                        map((songbooks) => songbooks.filter((songbook) =>
+                                !this.associatedSongbooks.some((associated) => associated.uid === songbook.uid)
+                                && !this._songbookIdsBeingAdded.has(songbook.uid)
+                                && !this._songbookSuggestionIds.has(songbook.uid)
+                            ))
+                    )
                     .pipe(catchError(() => of([])));
             })
         );
@@ -201,17 +266,81 @@ export class SongReaderComponent implements OnInit, OnDestroy {
             return;
         }
 
+        this._songbookIdsBeingAdded.add(songbook.uid);
+        this.songbookSearchControl.setValue('', { emitEvent: false });
+        this._changeDetectorRef.markForCheck();
+
+        if (songbook.scope !== 'personal') {
+            this._songbookSuggestionService
+                .getMineOpenForSongbookSong(songbook.uid, this.song.uid)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe((existing) => {
+                    if (existing) {
+                        this._songbookSuggestionIds.set(songbook.uid, existing.uid);
+                        this._pendingSongbooks = [...this._pendingSongbooks, songbook];
+                        this._songbookIdsBeingAdded.delete(songbook.uid);
+                        this._changeDetectorRef.markForCheck();
+                        return;
+                    }
+
+                    this._songbookSuggestionService.create({
+                        type: 'add_song',
+                        targetSongbookId: songbook.uid,
+                        targetSongId: this.song.uid,
+                        message: 'Solicitud para incluir esta canción en el cancionero.',
+                    })
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe((suggestionId) => {
+                            if (suggestionId) {
+                                this._songbookSuggestionIds.set(songbook.uid, suggestionId);
+                                this._pendingSongbooks = [...this._pendingSongbooks, songbook];
+                            }
+                            this._songbookIdsBeingAdded.delete(songbook.uid);
+                            this._changeDetectorRef.markForCheck();
+                        });
+                });
+            return;
+        }
+
         this.confirmCustomizationIfNeeded(songbook, async () => {
-            await this._songbookService.addSong(songbook.uid, this.song.uid);
-            this.loadAssociatedSongbooks();
+            const relationId = await this._songbookService.addSong(songbook.uid, this.song.uid);
+            if (relationId) {
+                this.associatedSongbooks = this.associatedSongbooks.some((item) => item.uid === songbook.uid)
+                    ? this.associatedSongbooks
+                    : [...this.associatedSongbooks, songbook];
+                this._changeDetectorRef.markForCheck();
+                this.loadAssociatedSongbooks();
+            }
+            this._songbookIdsBeingAdded.delete(songbook.uid);
+        }, () => {
+            this._songbookIdsBeingAdded.delete(songbook.uid);
+            this._changeDetectorRef.markForCheck();
         });
-        this.songbookSearchControl.setValue('');
     }
 
     editSong(): void {
         if (this.song?.uid) {
             this._router.navigate(['/songs/create', this.song.uid]);
         }
+    }
+
+    removeSongbookAssociation(songbook: Songbook): void {
+        const suggestionId = this._songbookSuggestionIds.get(songbook.uid);
+        if (!suggestionId) {
+            this.removeSongFromSongbook(songbook);
+            return;
+        }
+
+        this._songbookSuggestionService
+            .cancel({ uid: suggestionId } as SongbookSuggestion)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((cancelled) => {
+                if (cancelled) {
+                    this._songbookSuggestionIds.delete(songbook.uid);
+                    this._pendingSongbooks = this._pendingSongbooks.filter((pending) => pending.uid !== songbook.uid);
+                    this._changeDetectorRef.markForCheck();
+                }
+            });
     }
 
     deleteSong(): void {
@@ -246,7 +375,7 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         return Boolean(songbook.copiedFrom) && songbook.syncStatus !== 'customized';
     }
 
-    private confirmCustomizationIfNeeded(songbook: Songbook, action: () => void): void {
+    private confirmCustomizationIfNeeded(songbook: Songbook, action: () => void, onCancel?: () => void): void {
         if (!this.requiresCustomizationConfirmation(songbook)) {
             action();
             return;
@@ -275,6 +404,8 @@ export class SongReaderComponent implements OnInit, OnDestroy {
             .subscribe((result) => {
                 if (result === 'confirmed') {
                     action();
+                } else {
+                    onCancel?.();
                 }
             });
     }
@@ -290,6 +421,9 @@ export class SongReaderComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll), catchError(() => of([])))
             .subscribe((songbooks) => {
                 this.associatedSongbooks = songbooks;
+                this._pendingSongbooks = this._pendingSongbooks.filter((pending) =>
+                    !songbooks.some((associated) => associated.uid === pending.uid)
+                );
                 this._changeDetectorRef.markForCheck();
             });
     }

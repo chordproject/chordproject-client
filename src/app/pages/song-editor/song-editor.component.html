@@ -14,5 +14,10 @@
 </ng-template>
 
 <ng-template #viewer>
-    <chp-song-preview [song]="song"></chp-song-preview>
+    <chp-song-preview
+        [song]="song"
+        [pendingSuggestion]="hasPendingSuggestion()"
+        [alternateVersions]="alternateVersions()"
+        [alternateVersionRoute]="'editor'"
+    ></chp-song-preview>
 </ng-template>

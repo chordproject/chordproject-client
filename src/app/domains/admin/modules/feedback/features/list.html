@@ -1,0 +1,55 @@
+<div class="flex flex-auto flex-col gap-6 px-6 py-4 lg:px-8 lg:py-8">
+    @if (isAdmin()) {
+        <header class="flex flex-wrap items-end justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-semibold tracking-tight">{{ 'feedback_admin.page_title' | transloco }}</h1>
+                <p class="text-secondary mt-1 text-sm">{{ 'feedback_admin.description' | transloco }}</p>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+                <span class="rounded-full bg-error-100 px-2.5 py-1 font-medium text-error-700">{{ 'feedback.bug' | transloco }}: {{ countByType('bug') }}</span>
+                <span class="rounded-full bg-primary-100 px-2.5 py-1 font-medium text-primary-700">{{ 'feedback.idea' | transloco }}: {{ countByType('idea') }}</span>
+            </div>
+        </header>
+
+        <nav class="flex gap-1 border-b border-neutral-200 dark:border-neutral-800">
+            <button class="cursor-pointer border-b-2 px-3 py-2 text-sm font-medium" [class.border-primary-600]="selectedType() === 'all'" [class.text-primary-700]="selectedType() === 'all'" type="button" (click)="setType('all')">{{ 'feedback_admin.all' | transloco }}</button>
+            <button class="cursor-pointer border-b-2 px-3 py-2 text-sm font-medium" [class.border-primary-600]="selectedType() === 'bug'" [class.text-primary-700]="selectedType() === 'bug'" type="button" (click)="setType('bug')">{{ 'feedback.bug' | transloco }}</button>
+            <button class="cursor-pointer border-b-2 px-3 py-2 text-sm font-medium" [class.border-primary-600]="selectedType() === 'idea'" [class.text-primary-700]="selectedType() === 'idea'" type="button" (click)="setType('idea')">{{ 'feedback.idea' | transloco }}</button>
+        </nav>
+
+        @if (filteredFeedback().length) {
+            <div class="overflow-x-auto rounded-lg border border-neutral-200 dark:border-neutral-800">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-neutral-50 text-xs uppercase text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400">
+                        <tr>
+                            <th class="px-3 py-2 font-semibold">{{ 'feedback_admin.type' | transloco }}</th>
+                            <th class="px-3 py-2 font-semibold">{{ 'feedback_admin.title' | transloco }}</th>
+                            <th class="px-3 py-2 font-semibold">{{ 'feedback_admin.author' | transloco }}</th>
+                            <th class="px-3 py-2 font-semibold">{{ 'feedback_admin.message' | transloco }}</th>
+                            <th class="px-3 py-2 font-semibold">{{ 'feedback_admin.date' | transloco }}</th>
+                            <th class="px-3 py-2 font-semibold">{{ 'feedback_admin.page' | transloco }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of filteredFeedback(); track trackByFn($index, item)) {
+                            <tr class="border-t border-neutral-200 align-top dark:border-neutral-800">
+                                <td class="whitespace-nowrap px-3 py-3">
+                                    <span class="rounded-full px-2 py-0.5 text-xs font-medium" [class.bg-error-100]="item.type === 'bug'" [class.text-error-700]="item.type === 'bug'" [class.bg-primary-100]="item.type === 'idea'" [class.text-primary-700]="item.type === 'idea'">{{ item.type === 'bug' ? ('feedback.bug' | transloco) : ('feedback.idea' | transloco) }}</span>
+                                </td>
+                                <td class="px-3 py-3 font-medium">{{ item.title }}</td>
+                                <td class="whitespace-nowrap px-3 py-3">{{ item.authorName || ('feedback_admin.anonymous' | transloco) }}</td>
+                                <td class="max-w-xl whitespace-pre-wrap px-3 py-3 text-neutral-700 dark:text-neutral-200">{{ item.message }}</td>
+                                <td class="text-secondary whitespace-nowrap px-3 py-3">{{ toDate(item.creationDate) | date: 'medium' }}</td>
+                                <td class="max-w-xs truncate px-3 py-3"><a class="text-primary-700 hover:underline" [href]="item.pageUrl" target="_blank" rel="noopener">{{ item.pageUrl || '-' }}</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        } @else {
+            <div class="rounded-lg border border-dashed border-neutral-300 p-6 text-sm text-secondary dark:border-neutral-700">{{ 'feedback_admin.empty' | transloco }}</div>
+        }
+    } @else {
+        <div class="rounded-lg border border-neutral-200 p-6 text-sm text-secondary dark:border-neutral-800">{{ 'feedback_admin.not_authorized' | transloco }}</div>
+    }
+</div>

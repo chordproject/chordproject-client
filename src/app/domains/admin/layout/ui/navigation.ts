@@ -13,7 +13,9 @@ import {
   RouterLinkActive,
 } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
-import { filter, take } from 'rxjs';
+import { combineLatest, filter, map, of, switchMap, take } from 'rxjs';
+import { SongSuggestionService } from '@/app/core/firebase/api/song-suggestion.service';
+import { SongbookSuggestionService } from '@/app/core/firebase/api/songbook-suggestion.service';
 import { UserService } from '@/app/core/user/user.service';
 import {
   NAVIGATION,
@@ -110,7 +112,7 @@ import { AdminSongbooksNavigation } from '@/app/domains/admin/layout/data/songbo
                 <!-- Badge -->
                 @if (node.badge) {
                   <div
-                    class="rounded border border-neutral-300 px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-none text-neutral-500 dark:border-neutral-700 dark:text-neutral-400"
+                    class="flex min-w-5 items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white"
                   >
                     {{ node.badge }}
                   </div>
@@ -162,14 +164,21 @@ export class Navigation {
   private router = inject(Router);
   private songbooksNavigation = inject(AdminSongbooksNavigation);
   private userService = inject(UserService);
+  private songSuggestionService = inject(SongSuggestionService);
+  private songbookSuggestionService = inject(SongbookSuggestionService);
 
   // State
   protected navigation = signal<NavigationItem[]>(NAVIGATION);
   protected isAuthenticated = toSignal(this.userService.isAuthenticated(), {
     initialValue: false,
   });
+  protected isAdmin = toSignal(this.userService.isAdmin(), { initialValue: false });
   protected visibleNavigation = computed(() =>
-    this.filterByAuth(this.navigation(), this.isAuthenticated())
+    this.filterByAuth(
+      this.withSuggestionsBadge(this.navigation(), this.pendingSuggestionsCount()),
+      this.isAuthenticated(),
+      this.isAdmin()
+    )
   );
   protected navigationEnd = toSignal(
     this.router.events.pipe(
@@ -180,6 +189,18 @@ export class Navigation {
   protected songbooks = toSignal(this.songbooksNavigation.items$, {
     initialValue: null,
   });
+  protected pendingSuggestionsCount = toSignal(
+    this.userService.isAdmin().pipe(
+      switchMap((isAdmin) =>
+        isAdmin
+          ? combineLatest([this.songSuggestionService.getAllOpen(), this.songbookSuggestionService.getAllOpen()]).pipe(
+              map(([songSuggestions, songbookSuggestions]) => songSuggestions.length + songbookSuggestions.length)
+            )
+          : of(0)
+      )
+    ),
+    { initialValue: 0 }
+  );
 
   constructor() {
     // Replace the static "Songbooks" entry with the signed-in user's songbooks
@@ -240,16 +261,31 @@ export class Navigation {
    */
   private filterByAuth(
     items: NavigationItem[],
-    isAuthenticated: boolean
+    isAuthenticated: boolean,
+    isAdmin: boolean
   ): NavigationItem[] {
     return items
       .map((item) => ({
         ...item,
         children: item.children
-          ? this.filterByAuth(item.children, isAuthenticated)
+          ? this.filterByAuth(item.children, isAuthenticated, isAdmin)
           : item.children,
       }))
-      .filter((item) => !item.requiresAuth || isAuthenticated);
+      .filter((item) => (!item.requiresAuth || isAuthenticated) && (!item.requiresAdmin || isAdmin));
+  }
+
+  /**
+   * Show the count of pending suggestions (admins only) as a badge on the Sugerencias item.
+   */
+  private withSuggestionsBadge(items: NavigationItem[], count: number): NavigationItem[] {
+    return items.map((section) => ({
+      ...section,
+      children: section.children?.map((item) =>
+        item.id === 'general/suggestions'
+          ? { ...item, badge: count > 0 ? count.toString() : undefined }
+          : item
+      ),
+    }));
   }
 
   private firstRoute(items: NavigationItem[]): string | undefined {

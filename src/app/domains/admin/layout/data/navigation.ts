@@ -13,6 +13,7 @@ export type NavigationItem = {
   disabled?: boolean;
   expanded?: boolean;
   requiresAuth?: boolean;
+  requiresAdmin?: boolean;
   activeOptions?: { exact: boolean } | IsActiveMatchOptions;
 };
 
@@ -57,6 +58,13 @@ export const NAVIGATION: NavigationItem[] = [
         icon: 'inbox',
         route: '/suggestions',
         requiresAuth: true,
+      },
+      {
+        id: 'general/feedback',
+        label: 'nav.feedback',
+        icon: 'message-circle',
+        route: '/feedback',
+        requiresAdmin: true,
       },
     ],
   },
