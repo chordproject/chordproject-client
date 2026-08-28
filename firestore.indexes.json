@@ -1,6 +1,14 @@
 {
   "indexes": [
     {
+      "collectionGroup": "songbook_songs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "songbookId", "order": "ASCENDING" },
+        { "fieldPath": "songbookPublic", "order": "ASCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "songbook_group_members",
       "queryScope": "COLLECTION",
       "fields": [

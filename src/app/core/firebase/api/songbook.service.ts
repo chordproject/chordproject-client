@@ -125,9 +125,15 @@ export class SongbookService {
 
     getContent(songbookId: string): Observable<PartialSong[]> {
         const relationsRef = collection(this._firestore, 'songbook_songs');
-        const q = query(relationsRef, where('songbookId', '==', songbookId));
 
-        return from(getDocs(q)).pipe(
+        return from(getDoc(doc(this._firestore, 'songbooks', songbookId))).pipe(
+            switchMap((songbookSnapshot) => {
+                const songbook = songbookSnapshot.exists() ? songbookSnapshot.data() as Songbook : null;
+                const q = this.isRecommendedSongbook(songbook)
+                    ? query(relationsRef, where('songbookId', '==', songbookId), where('songbookPublic', '==', true))
+                    : query(relationsRef, where('songbookId', '==', songbookId));
+                return from(getDocs(q));
+            }),
             switchMap((relationsSnapshot) => {
                 if (relationsSnapshot.empty) {
                     return of([]);

@@ -135,7 +135,10 @@
         "save_space": "Guardar espacio",
         "cancel_edit": "Cancelar edición",
         "new_repertoire": "Nuevo repertorio",
-        "new_repertoire_description": "Crea un repertorio con fecha a partir de este tipo de evento.",
+        "new_repertoire_description": "Crea un repertorio con fecha a partir de un tipo de evento.",
+        "event_type_label": "Tipo de evento",
+        "no_event_types_hint": "Primero crea un tipo de evento para poder generar repertorios.",
+        "go_to_setup": "Configurar tipos de evento",
         "title_label": "Título",
         "description_label": "Descripción o referencia",
         "date_label": "Fecha",
@@ -161,6 +164,11 @@
         ,"use_space": "Volver a utilizar este espacio"
         ,"not_found": "No se encontró este repertorio."
         ,"load_error": "No se pudo cargar este repertorio."
+        ,"manage": "Administrar"
+        ,"open_live": "Abrir en vivo"
+        ,"previous": "Anterior"
+        ,"next": "Siguiente"
+        ,"live_empty": "Este repertorio no tiene canciones asignadas."
     },
     "confirmation": {
         "cancel": "Cancelar",

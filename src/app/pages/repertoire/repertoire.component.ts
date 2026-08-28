@@ -8,6 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, takeUntil } from 'rxjs';
@@ -31,6 +32,7 @@ import { Repertoire } from 'app/models/repertoire';
         MatIconModule,
         MatInputModule,
         MatNativeDateModule,
+        MatSelectModule,
         RouterLink,
         TranslocoModule,
     ],
@@ -44,6 +46,7 @@ export class RepertoireComponent implements OnInit, OnDestroy {
     newSlotName = '';
     editingSlotId: string | null = null;
     editingSlotName = '';
+    newRepertoireEventTypeId: string | null = null;
     newRepertoireTitle = '';
     newRepertoireDescription = '';
     newRepertoireDate = new Date();
@@ -75,6 +78,10 @@ export class RepertoireComponent implements OnInit, OnDestroy {
                 if (!this.selectedEventType && eventTypes.length) {
                     this.selectEventType(eventTypes[0]);
                 }
+                if (!this.newRepertoireEventTypeId && eventTypes.length) {
+                    this.newRepertoireEventTypeId = eventTypes[0].uid;
+                }
+                this.showSetup = eventTypes.length === 0;
                 this.changeDetectorRef.markForCheck();
             });
     }
@@ -85,7 +92,6 @@ export class RepertoireComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribeAll))
             .subscribe((repertoires) => {
                 this.repertoires = repertoires;
-                this.showSetup = repertoires.length === 0;
                 this.changeDetectorRef.markForCheck();
             });
     }
@@ -111,6 +117,7 @@ export class RepertoireComponent implements OnInit, OnDestroy {
         const uid = await this.repertoireService.saveEventType({ name } as EventType);
         if (uid) {
             this.newEventTypeName = '';
+            this.newRepertoireEventTypeId = uid;
             this.loadEventTypes();
         }
     }
@@ -190,12 +197,12 @@ export class RepertoireComponent implements OnInit, OnDestroy {
     async createRepertoire(): Promise<void> {
         const title = this.newRepertoireTitle.trim();
         const description = this.newRepertoireDescription.trim();
-        if (!title || !this.selectedEventType?.uid || !this.newRepertoireDate) {
+        if (!title || !this.newRepertoireEventTypeId || !this.newRepertoireDate) {
             return;
         }
 
         const uid = await this.repertoireService.saveRepertoire({
-            eventTypeId: this.selectedEventType.uid,
+            eventTypeId: this.newRepertoireEventTypeId,
             title,
             description: description || undefined,
             date: this.newRepertoireDate,

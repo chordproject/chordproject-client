@@ -11,6 +11,55 @@
             </button>
         </div>
 
+        <section class="mb-6 rounded-lg border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+            <div class="mb-5 flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{{ 'repertoire_page.new_repertoire' | transloco }}</h2>
+                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{{ 'repertoire_page.new_repertoire_description' | transloco }}</p>
+                </div>
+                <mat-icon class="text-neutral-400" [svgIcon]="'calendar-plus'"></mat-icon>
+            </div>
+
+            @if (eventTypes.length) {
+                <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+                    <mat-form-field class="w-full sm:w-56" subscriptSizing="dynamic">
+                        <mat-label>{{ 'repertoire_page.event_type_label' | transloco }}</mat-label>
+                        <mat-select [(ngModel)]="newRepertoireEventTypeId">
+                            @for (eventType of eventTypes; track trackByUid($index, eventType)) {
+                                <mat-option [value]="eventType.uid">{{ eventType.name }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="flex-1" subscriptSizing="dynamic">
+                        <mat-label>{{ 'repertoire_page.title_label' | transloco }}</mat-label>
+                        <input matInput [(ngModel)]="newRepertoireTitle" (keyup.enter)="createRepertoire()" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-1" subscriptSizing="dynamic">
+                        <mat-label>{{ 'repertoire_page.description_label' | transloco }}</mat-label>
+                        <input matInput [(ngModel)]="newRepertoireDescription" />
+                    </mat-form-field>
+                    <mat-form-field class="flex-1" subscriptSizing="dynamic">
+                        <mat-label>{{ 'repertoire_page.date_label' | transloco }}</mat-label>
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="newRepertoireDate" />
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <button mat-flat-button type="button" (click)="createRepertoire()">
+                        <mat-icon [svgIcon]="'calendar-plus'"></mat-icon>
+                        {{ 'repertoire_page.create' | transloco }}
+                    </button>
+                </div>
+            } @else {
+                <div class="flex flex-col items-start gap-3 rounded-md border border-dashed border-neutral-300 p-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400 sm:flex-row sm:items-center sm:justify-between">
+                    <p>{{ 'repertoire_page.no_event_types_hint' | transloco }}</p>
+                    <button mat-stroked-button type="button" (click)="showSetup = true">
+                        <mat-icon [svgIcon]="'sliders-horizontal'"></mat-icon>
+                        {{ 'repertoire_page.go_to_setup' | transloco }}
+                    </button>
+                </div>
+            }
+        </section>
+
         @if (showSetup) {
         <p class="mb-4 max-w-2xl text-neutral-600 dark:text-neutral-400">
             {{ 'repertoire_page.description' | transloco }}
@@ -142,33 +191,6 @@
                             </button>
                         </div>
                     </div>
-
-                    <div class="rounded-lg border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-                        <div class="mb-5">
-                            <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{{ 'repertoire_page.new_repertoire' | transloco }}</h2>
-                            <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{{ 'repertoire_page.new_repertoire_description' | transloco }}</p>
-                        </div>
-                        <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
-                            <mat-form-field class="flex-1" subscriptSizing="dynamic">
-                                <mat-label>{{ 'repertoire_page.title_label' | transloco }}</mat-label>
-                                <input matInput [(ngModel)]="newRepertoireTitle" (keyup.enter)="createRepertoire()" />
-                            </mat-form-field>
-                            <mat-form-field class="flex-1" subscriptSizing="dynamic">
-                                <mat-label>{{ 'repertoire_page.description_label' | transloco }}</mat-label>
-                                <input matInput [(ngModel)]="newRepertoireDescription" />
-                            </mat-form-field>
-                            <mat-form-field class="flex-1" subscriptSizing="dynamic">
-                                <mat-label>{{ 'repertoire_page.date_label' | transloco }}</mat-label>
-                                <input matInput [matDatepicker]="picker" [(ngModel)]="newRepertoireDate" />
-                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                            <button mat-flat-button type="button" (click)="createRepertoire()">
-                                <mat-icon [svgIcon]="'calendar-plus'"></mat-icon>
-                                {{ 'repertoire_page.create' | transloco }}
-                            </button>
-                        </div>
-                    </div>
                 } @else {
                     <div class="flex min-h-80 items-center justify-center rounded-lg border border-dashed border-neutral-300 bg-white p-8 text-center dark:border-neutral-700 dark:bg-neutral-900">
                         <div>
@@ -189,16 +211,25 @@
             </div>
             <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                 @for (repertoire of repertoires; track trackByUid($index, repertoire)) {
-                    <a
-                        [routerLink]="['/repertoires', repertoire.uid]"
-                        class="block rounded-md border border-neutral-200 p-4 transition-colors hover:border-primary-300 hover:bg-primary-50 dark:border-neutral-800 dark:hover:border-primary-700 dark:hover:bg-primary-950"
-                    >
-                        <p class="font-medium text-neutral-900 dark:text-neutral-100">{{ repertoire.title }}</p>
-                        @if (repertoire.description) {
-                            <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-300">{{ repertoire.description }}</p>
-                        }
-                        <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{{ repertoire.date | date: 'mediumDate' }}</p>
-                    </a>
+                    <div class="rounded-md border border-neutral-200 p-4 dark:border-neutral-800">
+                        <a [routerLink]="['/repertoires', repertoire.uid]" class="block hover:text-primary-700 dark:hover:text-primary-300">
+                            <p class="font-medium text-neutral-900 dark:text-neutral-100">{{ repertoire.title }}</p>
+                            @if (repertoire.description) {
+                                <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-300">{{ repertoire.description }}</p>
+                            }
+                            <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{{ repertoire.date | date: 'mediumDate' }}</p>
+                        </a>
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <a matButton="outlined" [routerLink]="['/repertoires', repertoire.uid]">
+                                <mat-icon [svgIcon]="'square-pen'"></mat-icon>
+                                {{ 'repertoire_page.manage' | transloco }}
+                            </a>
+                            <a matButton="filled" [routerLink]="['/repertoires', repertoire.uid, 'live']">
+                                <mat-icon [svgIcon]="'play'"></mat-icon>
+                                {{ 'repertoire_page.open_live' | transloco }}
+                            </a>
+                        </div>
+                    </div>
                 } @empty {
                     <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ 'repertoire_page.no_repertoires' | transloco }}</p>
                 }

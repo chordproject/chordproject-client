@@ -135,7 +135,10 @@
         "save_space": "Enregistrer l'espace",
         "cancel_edit": "Annuler la modification",
         "new_repertoire": "Nouveau répertoire",
-        "new_repertoire_description": "Créez un répertoire daté à partir de ce type d'événement.",
+        "new_repertoire_description": "Créez un répertoire daté à partir d'un type d'événement.",
+        "event_type_label": "Type d'événement",
+        "no_event_types_hint": "Créez d'abord un type d'événement pour pouvoir générer des répertoires.",
+        "go_to_setup": "Configurer les types d'événement",
         "title_label": "Titre",
         "description_label": "Description ou référence",
         "date_label": "Date",
@@ -161,6 +164,11 @@
         ,"use_space": "Réutiliser cet espace"
         ,"not_found": "Ce répertoire est introuvable."
         ,"load_error": "Ce répertoire n'a pas pu être chargé."
+        ,"manage": "Gérer"
+        ,"open_live": "Ouvrir en direct"
+        ,"previous": "Précédent"
+        ,"next": "Suivant"
+        ,"live_empty": "Ce répertoire ne contient aucune chanson assignée."
     },
     "confirmation": {
         "cancel": "Annuler",

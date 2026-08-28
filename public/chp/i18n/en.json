@@ -135,7 +135,10 @@
         "save_space": "Save space",
         "cancel_edit": "Cancel editing",
         "new_repertoire": "New repertoire",
-        "new_repertoire_description": "Create a dated repertoire from this event type.",
+        "new_repertoire_description": "Create a dated repertoire from an event type.",
+        "event_type_label": "Event type",
+        "no_event_types_hint": "Create an event type first to start generating repertoires.",
+        "go_to_setup": "Configure event types",
         "title_label": "Title",
         "description_label": "Description or reference",
         "date_label": "Date",
@@ -161,6 +164,11 @@
         ,"use_space": "Use this space again"
         ,"not_found": "This repertoire could not be found."
         ,"load_error": "This repertoire could not be loaded."
+        ,"manage": "Manage"
+        ,"open_live": "Open live"
+        ,"previous": "Previous"
+        ,"next": "Next"
+        ,"live_empty": "This repertoire has no assigned songs."
     },
     "confirmation": {
         "cancel": "Cancel",
