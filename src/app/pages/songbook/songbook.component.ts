@@ -1,4 +1,3 @@
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -35,7 +34,6 @@ import { SongbookSuggestionDialogComponent } from './songbook-suggestion-dialog.
     templateUrl: './songbook.component.html',
     imports: [
         CommonModule,
-        DragDropModule,
         MatAutocompleteModule,
         MatFormFieldModule,
         MatIconModule,
@@ -124,7 +122,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
 
         this.confirmCustomizationIfNeeded(currentSongbook, async () => {
             this.addingSongId.set(song.uid);
-            const relationId = await this._songbookService.addSong(currentSongbook.uid, song.uid, this.songsList().length);
+            const relationId = await this._songbookService.addSong(currentSongbook.uid, song.uid);
             this.addingSongId.set(null);
             if (relationId) {
                 this.songsList.set([...this.songsList(), song]);
@@ -178,7 +176,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
         this.childSongbooks$ = this._route.paramMap.pipe(
             takeUntil(this._unsubscribeAll),
             switchMap((params) =>
-                this._songbookService.getChildren(params.get('uid')).pipe(
+                this._songbookService.getGroupSongbooks(params.get('uid')).pipe(
                     catchError(() => of([]))
                 )
             )
@@ -192,19 +190,6 @@ export class SongbookComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
-    }
-
-    onDrop(event: CdkDragDrop<PartialSong[]>) {
-        if (event.previousIndex === event.currentIndex) {
-            return;
-        }
-
-        const currentSongbook = this.currentSongbook();
-        if (!currentSongbook || !this.isEditable(currentSongbook)) {
-            return;
-        }
-
-        this.confirmCustomizationIfNeeded(currentSongbook, () => this.applyDrop(event, currentSongbook));
     }
 
     private confirmCustomizationIfNeeded(songbook: Songbook, action: () => void): void {
@@ -237,34 +222,6 @@ export class SongbookComponent implements OnInit, OnDestroy {
                     action();
                 }
             });
-    }
-
-    private applyDrop(event: CdkDragDrop<PartialSong[]>, currentSongbook: Songbook): void {
-        if (!currentSongbook.uid) {
-            return;
-        }
-
-        const updatedSongs = [...this.songsList()];
-
-        // Actualizar la UI inmediatamente
-        moveItemInArray(updatedSongs, event.previousIndex, event.currentIndex);
-        this.songsList.set(updatedSongs);
-
-        // Preparar datos para BD
-        const songOrders = this.songsList().map((song, index) => ({
-            songId: song.uid,
-            order: index,
-        }));
-
-        // Actualizar en Firebase sin recargar después
-        this._songbookService.updateSongOrder(currentSongbook.uid, songOrders).pipe(takeUntil(this._unsubscribeAll)).subscribe((updated) => {
-            if (updated && this.requiresCustomizationConfirmation(currentSongbook)) {
-                this.currentSongbook.set({
-                    ...currentSongbook,
-                    syncStatus: 'customized',
-                });
-            }
-        });
     }
 
     selectSong(song: PartialSong): void {
@@ -301,22 +258,6 @@ export class SongbookComponent implements OnInit, OnDestroy {
 
     requiresCustomizationConfirmation(songbook: Songbook): boolean {
         return Boolean(songbook.copiedFrom) && songbook.syncStatus !== 'customized';
-    }
-
-    createCopy(songbook: Songbook): void {
-        if (!songbook.uid) {
-            return;
-        }
-
-        const songbookIds = [songbook.uid, ...this.childSongbooks().map((child) => child.uid)].filter(Boolean);
-        this._songbookService
-            .forkMany(songbookIds)
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((songbookIds) => {
-                if (songbookIds.length > 0) {
-                    this._router.navigate(['/songbook', songbookIds[0]]);
-                }
-            });
     }
 
     suggestChange(songbook: Songbook): void {

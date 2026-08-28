@@ -10,7 +10,6 @@
         <mat-form-field class="w-full" subscriptSizing="dynamic">
             <mat-label>{{ 'songbook_suggestion.type_label' | transloco }}</mat-label>
             <mat-select formControlName="type">
-                <mat-option value="add_song">{{ 'songbook_suggestion.type_add_song' | transloco }}</mat-option>
                 @if (data.hasChildren) {
                     <mat-option value="new_child_songbook">{{ 'songbook_suggestion.type_new_child_songbook' | transloco }}</mat-option>
                 }

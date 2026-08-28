@@ -4,5 +4,4 @@ export class Relation {
         public songId: string
     ) {}
     author_uid: string;
-    order?: number;
 }

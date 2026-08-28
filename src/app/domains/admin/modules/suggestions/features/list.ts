@@ -5,8 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
-import { TranslocoModule } from '@jsverse/transloco';
+import { Router, RouterLink } from '@angular/router';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { Subject, combineLatest, forkJoin, of, takeUntil } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { SongSuggestionService } from 'app/core/firebase/api/song-suggestion.service';
@@ -28,14 +28,14 @@ type SongEditRow = {
     diffRows: DiffRow[];
     authorName: string;
 };
-type SongbookRow = { kind: 'songbook'; suggestion: SongbookSuggestion; songbookName: string; responseMessage: string; authorName: string };
+type SongbookRow = { kind: 'songbook'; suggestion: SongbookSuggestion; songbookName: string; songTitle: string; responseMessage: string; authorName: string };
 type SuggestionRow = SongEditRow | SongbookRow;
 type MySongEditRow = { kind: 'song_edit'; suggestion: SongSuggestion; songTitle: string; diffRows: DiffRow[]; authorName: string };
-type MySongbookRow = { kind: 'songbook'; suggestion: SongbookSuggestion; songbookName: string; authorName: string };
+type MySongbookRow = { kind: 'songbook'; suggestion: SongbookSuggestion; songbookName: string; songTitle: string; authorName: string };
 type MyRow = MySongEditRow | MySongbookRow;
 type HistoryRow =
     | { kind: 'song_edit'; suggestion: SongSuggestion; songTitle: string; authorName: string }
-    | { kind: 'songbook'; suggestion: SongbookSuggestion; songbookName: string; authorName: string };
+    | { kind: 'songbook'; suggestion: SongbookSuggestion; songbookName: string; songTitle: string; authorName: string };
 
 @Component({
     selector: 'admin-suggestions-list',
@@ -64,7 +64,9 @@ export default class SuggestionsList implements OnInit, OnDestroy {
         private _songbookSuggestionService: SongbookSuggestionService,
         private _songService: SongService,
         private _songbookService: SongbookService,
-        private _snackBar: MatSnackBar
+        private _snackBar: MatSnackBar,
+        private _router: Router,
+        private _translocoService: TranslocoService
     ) {}
 
     ngOnInit(): void {
@@ -101,6 +103,10 @@ export default class SuggestionsList implements OnInit, OnDestroy {
     // Firestore Timestamps expose toDate(); fall back to null for pending serverTimestamp() writes.
     toDate(value: unknown): Date | null {
         return (value as { toDate?: () => Date })?.toDate?.() ?? null;
+    }
+
+    isAutomaticMessage(message: string | undefined): boolean {
+        return message === 'Solicitud para incluir esta canción en el cancionero.';
     }
 
     toggleDiff(id: string): void {
@@ -163,6 +169,25 @@ export default class SuggestionsList implements OnInit, OnDestroy {
         );
     }
 
+    createCopyAndAddSong(row: MySongbookRow): void {
+        this.withBusy(row.suggestion.uid, () =>
+            this._songbookSuggestionService.forkAndAddSuggestedSong(row.suggestion).subscribe((songbookId) => {
+                if (songbookId) {
+                    this._router.navigate(['/songbook', songbookId]);
+                } else {
+                    this._translocoService.selectTranslate('admin_suggestions.copy_creation_failed').pipe(takeUntil(this._unsubscribeAll)).subscribe((message) => {
+                        this._snackBar.open(message, undefined, { duration: 5000 });
+                    });
+                }
+                this.busyIds.update((ids) => {
+                    const next = new Set(ids);
+                    next.delete(row.suggestion.uid);
+                    return next;
+                });
+            })
+        );
+    }
+
     private loadSuggestions(): void {
         combineLatest([this._songSuggestionService.getAllOpen(), this._songbookSuggestionService.getAllOpen()])
             .pipe(
@@ -190,6 +215,10 @@ export default class SuggestionsList implements OnInit, OnDestroy {
                                     songbooks.find((songbook) => songbook.uid === suggestion.targetSongbookId)?.name ||
                                     suggestion.suggestedName ||
                                     suggestion.targetSongbookId ||
+                                    '-',
+                                songTitle:
+                                    songs.find((song) => song.uid === suggestion.targetSongId)?.title ||
+                                    suggestion.targetSongId ||
                                     '-',
                                 responseMessage: '',
                                 authorName: suggestion.authorName || suggestion.authorId,
@@ -233,6 +262,10 @@ export default class SuggestionsList implements OnInit, OnDestroy {
                                         songbookName:
                                             songbooks.find((songbook) => songbook.uid === suggestion.targetSongbookId)?.name ||
                                             suggestion.suggestedName ||
+                                            '-',
+                                        songTitle:
+                                            songs.find((song) => song.uid === suggestion.targetSongId)?.title ||
+                                            suggestion.targetSongId ||
                                             '-',
                                             authorName: suggestion.authorName || suggestion.authorId,
                                     })
@@ -280,6 +313,10 @@ export default class SuggestionsList implements OnInit, OnDestroy {
                                         songbooks.find((songbook) => songbook.uid === suggestion.targetSongbookId)?.name ||
                                         suggestion.suggestedName ||
                                         '-',
+                                    songTitle:
+                                        songs.find((song) => song.uid === suggestion.targetSongId)?.title ||
+                                        suggestion.targetSongId ||
+                                        '-',
                                         authorName: suggestion.authorName || suggestion.authorId,
                                 })
                             ),
@@ -291,7 +328,12 @@ export default class SuggestionsList implements OnInit, OnDestroy {
     }
 
     private resolveNames(songSuggestions: SongSuggestion[], songbookSuggestions: SongbookSuggestion[]) {
-        const songIds = [...new Set(songSuggestions.map((suggestion) => suggestion.targetSongId).filter(Boolean))];
+        const songIds = [
+            ...new Set([
+                ...songSuggestions.map((suggestion) => suggestion.targetSongId),
+                ...songbookSuggestions.map((suggestion) => suggestion.targetSongId),
+            ].filter(Boolean)),
+        ];
         const songbookIds = songbookSuggestions.map((suggestion) => suggestion.targetSongbookId).filter(Boolean);
 
         return forkJoin({

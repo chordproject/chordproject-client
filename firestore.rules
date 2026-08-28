@@ -66,20 +66,13 @@ service cloud.firestore {
       return exists(/databases/$(database)/documents/songs/$(songId));
     }
 
-    function songOwner(songId) {
-      return isSignedIn()
-        && songExists(songId)
-        && get(/databases/$(database)/documents/songs/$(songId)).data.authorId == request.auth.uid;
-    }
-
     function relationOwner(data) {
       return isSignedIn()
         && songbookIsTemplate(data.songbookId) == false
         && (
           data.author_uid == request.auth.uid
           || data.ownerId == request.auth.uid
-          || (songbookOwner(data.songbookId) && songbookIsTemplate(data.songbookId) == false)
-          || songOwner(data.songId)
+          || songbookOwner(data.songbookId)
         );
     }
 
@@ -89,7 +82,8 @@ service cloud.firestore {
         && request.resource.data.authorId == request.auth.uid;
       allow update: if isAdmin()
         || (owns(resource.data)
-        && keepsAuthorId());
+        && keepsAuthorId()
+        && keepsOwnerId());
       allow delete: if isAdmin() || owns(resource.data);
     }
 
@@ -98,20 +92,22 @@ service cloud.firestore {
     // de reindexado si un cliente los deja inconsistentes.
     match /song_index/{shardId} {
       allow read: if true;
-      allow write: if isSignedIn()
+      allow write: if isAdmin()
         && request.resource.data.keys().hasAll(['shard', 'count', 'songs', 'updatedAt'])
         && request.resource.data.songs is list;
     }
 
     match /song_search_index/{shardId} {
       allow read: if true;
-      allow write: if isSignedIn()
+      allow write: if isAdmin()
         && request.resource.data.keys().hasAll(['shard', 'count', 'entries', 'updatedAt'])
         && request.resource.data.entries is list;
     }
 
     match /songbooks/{songbookId} {
-      allow read: if true;
+      allow read: if isAdmin()
+        || owns(resource.data)
+        || (resource.data.scope == 'shared' && resource.data.published == true);
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid
         && request.resource.data.ownerId == request.auth.uid
@@ -131,8 +127,27 @@ service cloud.firestore {
         || (owns(resource.data) && resource.data.isTemplate != true);
     }
 
+    match /songbook_groups/{groupId} {
+      allow read: if resource.data.published == true
+        || isAdmin()
+        || owns(resource.data);
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /songbook_group_members/{memberId} {
+      allow read: if isAdmin()
+        || get(/databases/$(database)/documents/songbook_groups/$(resource.data.groupId)).data.published == true
+        || owns(get(/databases/$(database)/documents/songbook_groups/$(resource.data.groupId)).data);
+      allow create, update, delete: if isAdmin();
+    }
+
     match /songbook_songs/{relationId} {
-      allow read: if true;
+      allow read: if isAdmin()
+        || songbookOwner(resource.data.songbookId)
+        || (
+          get(/databases/$(database)/documents/songbooks/$(resource.data.songbookId)).data.scope == 'shared'
+          && get(/databases/$(database)/documents/songbooks/$(resource.data.songbookId)).data.published == true
+        );
       allow create: if isSignedIn()
         && request.resource.data.author_uid == request.auth.uid
         && request.resource.data.ownerId == request.auth.uid
@@ -197,7 +212,8 @@ service cloud.firestore {
         && request.resource.data.title.size() > 0
         && request.resource.data.title.size() <= 120
         && request.resource.data.message is string
-        && request.resource.data.message.size() >= 10;
+        && request.resource.data.message.size() >= 10
+        && request.resource.data.message.size() <= 10000;
       allow update: if isAdmin();
       allow delete: if isAdmin();
     }
@@ -208,7 +224,8 @@ service cloud.firestore {
         && request.resource.data.authorId == request.auth.uid;
       allow update: if isAdmin()
         || (owns(resource.data)
-        && keepsAuthorId());
+        && keepsAuthorId()
+        && keepsOwnerId());
       allow delete: if isAdmin() || owns(resource.data);
     }
 
@@ -223,7 +240,8 @@ service cloud.firestore {
         && request.resource.data.authorId == request.auth.uid;
       allow update: if isAdmin()
         || (owns(resource.data)
-        && keepsAuthorId());
+        && keepsAuthorId()
+        && keepsOwnerId());
       allow delete: if isAdmin() || owns(resource.data);
     }
 
@@ -233,7 +251,8 @@ service cloud.firestore {
         && request.resource.data.authorId == request.auth.uid;
       allow update: if isAdmin()
         || (owns(resource.data)
-        && keepsAuthorId());
+        && keepsAuthorId()
+        && keepsOwnerId());
       allow delete: if isAdmin() || owns(resource.data);
     }
 
@@ -243,7 +262,8 @@ service cloud.firestore {
         && request.resource.data.authorId == request.auth.uid;
       allow update: if isAdmin()
         || (owns(resource.data)
-        && keepsAuthorId());
+        && keepsAuthorId()
+        && keepsOwnerId());
       allow delete: if isAdmin() || owns(resource.data);
     }
 
@@ -253,7 +273,8 @@ service cloud.firestore {
         && request.resource.data.authorId == request.auth.uid;
       allow update: if isAdmin()
         || (owns(resource.data)
-        && keepsAuthorId());
+        && keepsAuthorId()
+        && keepsOwnerId());
       allow delete: if isAdmin() || owns(resource.data);
     }
   }

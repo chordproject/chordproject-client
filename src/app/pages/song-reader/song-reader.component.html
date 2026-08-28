@@ -132,7 +132,7 @@
                                     @if (filteredSongbooks$ | async; as songbooks) {
                                         @for (songbook of songbooks; track songbook.uid) {
                                             <mat-option [value]="songbook">
-                                                {{ songbook.name }}
+                                                {{ songbook.name }} ({{ songbookTypeLabel(songbook) | transloco }})
                                             </mat-option>
                                         } @empty {
                                             @if (songbookSearchControl.value) {

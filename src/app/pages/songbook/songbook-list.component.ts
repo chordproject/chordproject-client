@@ -31,7 +31,6 @@ export class SongbookListComponent implements OnDestroy {
 
     personalSongbookGroups$: Observable<SongbookGroup[]>;
     recommendedSongbookGroups$: Observable<SongbookGroup[]>;
-    copyingGroupIds = signal<Set<string>>(new Set());
     deletingGroupIds = signal<Set<string>>(new Set());
     creatingSongbook = signal(false);
     isAuthenticated;
@@ -51,16 +50,32 @@ export class SongbookListComponent implements OnDestroy {
             switchMap((isAuthenticated) => isAuthenticated ? this._songbookService.getPersonal() : of([]))
         );
 
-        this.personalSongbookGroups$ = personalSongbooks$.pipe(
-            map((songbooks) => this.toGroups(songbooks))
+        this.personalSongbookGroups$ = combineLatest([
+            personalSongbooks$,
+            this.isAuthenticated() ? this._songbookService.getPersonalGroups() : of([]),
+        ]).pipe(
+            map(([songbooks, groups]) => {
+                const groupedSongbookIds = new Set(groups.flatMap(({ group, songbooks: members }) => [group.uid, ...members.map((songbook) => songbook.uid)]));
+                const standaloneGroups = this.toGroups(songbooks.filter((songbook) => !groupedSongbookIds.has(songbook.uid)));
+                const migratedGroups = groups.map(({ group, songbooks: members }) => ({ root: { ...group, badgeText: '' } as unknown as Songbook, children: members }));
+                return [...migratedGroups, ...standaloneGroups];
+            })
         );
         this.recommendedSongbookGroups$ = combineLatest([
-            this._songbookService.getRecommended(),
+            this._songbookService.getRecommendedGroups(),
             personalSongbooks$,
         ]).pipe(
-            map(([recommendedSongbooks, personalSongbooks]) =>
-                this.toRecommendedGroups(recommendedSongbooks, personalSongbooks)
-            )
+            map(([groups, personalSongbooks]) => {
+                const copiedSourceIds = new Set(
+                    personalSongbooks.filter((songbook) => songbook.deleted !== true).map((songbook) => songbook.copiedFrom).filter(Boolean)
+                );
+                return groups
+                    .map(({ group, songbooks }) => ({
+                        root: { ...group, badgeText: '' } as unknown as Songbook,
+                        children: songbooks,
+                    }))
+                    .filter(({ root, children }) => !copiedSourceIds.has(root.uid) || children.some((child) => !copiedSourceIds.has(child.uid)));
+            })
         );
     }
 
@@ -94,42 +109,6 @@ export class SongbookListComponent implements OnDestroy {
                             this._router.navigate(['/songbook', uid]);
                         }
                     });
-            });
-    }
-
-    createGroupCopy(group: SongbookGroup): void {
-        const groupId = group.root.uid;
-        if (!groupId || this.copyingGroupIds().has(groupId)) {
-            return;
-        }
-
-        this._confirmationService.open({
-            title: 'songbook_page.copy_confirm_title',
-            message: 'songbook_page.copy_confirm_message',
-            icon: {
-                name: 'triangle-alert',
-                color: 'primary',
-            },
-            actions: {
-                confirm: {
-                    label: 'songbook_page.copy_confirm_action',
-                    color: 'primary',
-                },
-                cancel: {
-                    label: 'confirmation.cancel',
-                },
-            },
-        })
-            .afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
-                if (result === 'confirmed') {
-                    this.setBusy(this.copyingGroupIds, groupId, true);
-                    this.createCopies(
-                        [group.root, ...group.children],
-                        () => this.setBusy(this.copyingGroupIds, groupId, false)
-                    );
-                }
             });
     }
 
@@ -201,69 +180,14 @@ export class SongbookListComponent implements OnDestroy {
     }
 
     private toGroups(songbooks: Songbook[]): SongbookGroup[] {
-        const visibleSongbooks = songbooks.filter((songbook) => songbook['deleted'] !== true);
-        const byParent = new Map<string, Songbook[]>();
-
-        visibleSongbooks.forEach((songbook) => {
-            const parent = songbook.parent || '';
-            const siblings = byParent.get(parent) || [];
-            siblings.push(songbook);
-            byParent.set(parent, siblings);
-        });
-
-        return this.sortSongbooks(byParent.get('') || []).map((root) => ({
-            root,
-            children: this.sortSongbooks(byParent.get(root.uid) || []),
-        }));
-    }
-
-    private toRecommendedGroups(recommendedSongbooks: Songbook[], personalSongbooks: Songbook[]): SongbookGroup[] {
-        const copiedSourceIds = new Set(
-            personalSongbooks
-                .filter((songbook) => songbook.deleted !== true)
-                .map((songbook) => songbook.copiedFrom)
-                .filter(Boolean)
-        );
-
-        return this.toGroups(recommendedSongbooks)
-            .map((group) => ({
-                root: group.root,
-                children: group.children.filter((songbook) => !copiedSourceIds.has(songbook.uid)),
-            }))
-            .filter((group) => !copiedSourceIds.has(group.root.uid) || group.children.length > 0);
+        return this.sortSongbooks(songbooks).map((songbook) => ({ root: songbook, children: [] }));
     }
 
     private sortSongbooks(songbooks: Songbook[]): Songbook[] {
-        return [...songbooks].sort((first, second) => {
-            const firstOrder = Number(first.order ?? 0);
-            const secondOrder = Number(second.order ?? 0);
-
-            return firstOrder - secondOrder || first.name.localeCompare(second.name, 'es', { sensitivity: 'base' });
-        });
+        return [...songbooks].sort((first, second) => first.name.localeCompare(second.name, 'es', { sensitivity: 'base' }));
     }
 
-    private createCopies(songbooks: Songbook[], onDone?: () => void): void {
-        const songbookIds = songbooks.map((songbook) => songbook.uid).filter(Boolean);
-
-        if (songbookIds.length === 0) {
-            onDone?.();
-            return;
-        }
-
-        this._songbookService
-            .forkMany(songbookIds)
-            .pipe(
-                finalize(() => onDone?.()),
-                takeUntil(this._unsubscribeAll)
-            )
-            .subscribe((newSongbookIds) => {
-                if (newSongbookIds.length > 0) {
-                    this._router.navigate(['/songbook']);
-                }
-            });
-    }
-
-    private setBusy(target: typeof this.copyingGroupIds, id: string, busy: boolean): void {
+    private setBusy(target: typeof this.deletingGroupIds, id: string, busy: boolean): void {
         const values = new Set(target());
 
         if (busy) {

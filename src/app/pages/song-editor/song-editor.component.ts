@@ -11,7 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslocoService } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { Observable, Subject, firstValueFrom, forkJoin, from, map, switchMap, take, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
@@ -34,11 +34,12 @@ import {
     standalone: true,
     templateUrl: './song-editor.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatCardModule, ChpSplitLayoutComponent, ChpSongPreviewComponent, ChpEditorComponent],
+    imports: [MatCardModule, ChpSplitLayoutComponent, ChpSongPreviewComponent, ChpEditorComponent, TranslocoModule],
 })
 export class SongEditorComponent implements OnInit, OnDestroy {
     song: Song = new Song();
     hasPendingSuggestion = signal(false);
+    isAuthenticated = signal(false);
     alternateVersions = signal<PartialSong[]>([]);
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     private _savedContent = '';
@@ -75,6 +76,13 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         // Siempre limpiar las referencias
         this.cleanupTemplateRefs();
         this.loadSong();
+        this._userService
+            .isAuthenticated()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((isAuthenticated) => {
+                this.isAuthenticated.set(isAuthenticated);
+                this._changeDetectorRef.markForCheck();
+            });
         // Capture phase: the third-party chordpro editor stops propagation of its own
         // keydown handling, so a bubbling document listener never sees Cmd/Ctrl+S.
         document.addEventListener('keydown', this._handleKeyboardEvent, true);
@@ -152,6 +160,14 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     saveSong(): void {
+        if (!this.isAuthenticated()) {
+            this._translocoService
+                .selectTranslate('editor.login_to_save')
+                .pipe(take(1))
+                .subscribe((message) => this._snackBar.open(message, undefined, { duration: 5000, panelClass: ['warning'] }));
+            return;
+        }
+
         const updatedSong = this._editorService.prepareSongFromContent(this.song.content);
         this.song = {
             ...this.song,

@@ -47,12 +47,17 @@
     },
     "songbook_page": {
         "title": "Cancioneros",
-        "description": "Consulta libremente los cancioneros recomendados. Si necesitas personalizarlos o crear cancioneros que no ves aquí, puedes hacerlo con una cuenta.",
+        "description": "Tienes estas cuatro formas de trabajar con tus cancioneros:",
+        "option_create": "Crear un cancionero nuevo que solo te pertenece a ti.",
+        "option_use_official": "Usar un cancionero oficial tal y como está; no necesitas hacer nada más.",
+        "option_suggest": "Sugerir un cambio en un cancionero oficial. El equipo hará una pequeña validación antes de aplicarlo.",
+        "option_copy": "Como última opción, crear una copia del oficial. Podrás adaptarla a tu manera, pero dejará de recibir la evolución y sincronización del original.",
         "my_songbooks": "Mis cancioneros",
-        "hj_songbooks": "Cancioneros recomendados",
-        "published_by": "Cancionero recomendado",
-        "hj_description": "Estos cancioneros siempre están disponibles y se <strong>mantienen actualizados</strong>. Si crees que falta algo, puedes <strong>sugerir</strong> cambios para el cancionero público; crea una copia personal solo si tu ministerio realmente necesita adaptarlos.",
-        "empty_personal": "Aún no tienes cancioneros personales. Cuando quieras adaptar un cancionero recomendado, crea una copia para personalizarla.",
+        "hj_songbooks": "Cancioneros oficiales",
+        "official_songbooks": "Cancioneros oficiales",
+        "published_by": "Cancionero oficial",
+        "hj_description": "Estos cancioneros se mantienen actualizados. Si necesitas agregar o quitar canciones, crea un cancionero personal; si falta una canción para todos, puedes sugerir agregarla al oficial.",
+        "empty_personal": "Aún no tienes cancioneros personales. Crea uno nuevo si necesitas una selección propia; para los oficiales, usa el original o sugiere cambios.",
         "empty_hj": "No hay cancioneros publicados.",
         "create_new": "Crear cancionero",
         "creating": "Creando...",
@@ -61,11 +66,13 @@
         "sign_in_to_customize": "Iniciar sesión para personalizar",
         "copying": "Copiando...",
         "copy_confirm_title": "Crear copia personal",
-        "copy_confirm_message": "Esta copia será independiente del cancionero recomendado y no recibirá cambios automáticos del original.",
+        "copy_confirm_message": "Se creará una copia inicialmente idéntica. Hazlo solo si necesitas agregar, quitar o reordenar canciones sin cambiar el cancionero oficial.",
         "copy_confirm_action": "Crear copia",
         "delete_copy": "Eliminar copia",
         "deleting": "Eliminando...",
         "customized": "Personalizado",
+        "synced_copy": "Copia sin cambios",
+        "personal": "Personal",
         "custom_copy_tooltip": "Esta es tu copia personal; puedes modificarla sin cambiar el cancionero recomendado."
     },
     "songbook_suggestion": {
@@ -206,6 +213,8 @@
         "loading_song": "Cargando canción...",
         "remove_from_songbook": "Quitar de {{name}}",
         "no_songbooks_available": "No hay cancioneros personales disponibles",
+        "official_songbook": "Oficial",
+        "customized_songbook": "Personalizado",
         "pending_assignment": "pendiente",
         "public_songbook": "público",
         "pending_suggestion": "Pendiente de aprobación",
@@ -240,7 +249,9 @@
         "delete_song_confirm": "Eliminar",
         "unsaved_changes_title": "Cambios sin guardar",
         "unsaved_changes_message": "Tienes cambios sin guardar. ¿Estás seguro de que quieres salir de esta página?",
-        "unsaved_changes_discard": "Descartar cambios"
+        "unsaved_changes_discard": "Descartar cambios",
+        "guest_editing_notice": "Estás editando como invitado. Inicia sesión para guardar tus cambios.",
+        "login_to_save": "Inicia sesión para guardar tus cambios."
     },
     "song_suggestion": {
         "title": "Enviar como sugerencia",
@@ -297,7 +308,9 @@
         "response_placeholder": "Mensaje de respuesta (opcional)",
         "approve": "Aprobar",
         "reject": "Rechazar",
-        "create_version": "Crear nueva versión"
+        "create_version": "Crear nueva versión",
+        "create_copy_and_add_song": "Crear copia y agregar canción",
+        "copy_creation_failed": "No se pudo crear la copia personal."
     },
     "search": {
         "placeholder_bar": "Busca por título, letra o cancionero...",

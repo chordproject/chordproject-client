@@ -33,20 +33,26 @@ export class AdminSongbooksNavigation {
     if (environment.brand === 'hj') {
       return combineLatest([
         isAuthenticated ? this.songbookService.getPersonal() : of([]),
-        this.songbookService.getRecommended(),
+        isAuthenticated ? this.songbookService.getPersonalGroups() : of([]),
+        this.songbookService.getRecommendedGroups(),
       ]).pipe(
-        map(([personalSongbooks, recommendedSongbooks]) => {
+        map(([personalSongbooks, personalGroups, recommendedGroups]) => {
+          const groupedPersonalIds = new Set(personalGroups.flatMap(({ group, songbooks }) => [group.uid, ...songbooks.map((songbook) => songbook.uid)]));
+          const standalonePersonalSongbooks = personalSongbooks.filter((songbook) => !groupedPersonalIds.has(songbook.uid));
           const copiedSourceIds = new Set(
             personalSongbooks
               .filter((songbook) => songbook.deleted !== true)
               .map((songbook) => songbook.copiedFrom)
               .filter(Boolean)
           );
-          const availableRecommendedSongbooks = this.filterCopiedRecommendedSongbooks(recommendedSongbooks, copiedSourceIds);
-
           return [
-            ...this.toNavigationSection('songbooks-personal', 'songbook_page.my_songbooks', personalSongbooks),
-            ...this.toNavigationSection('songbooks-hj', 'songbook_page.hj_songbooks', availableRecommendedSongbooks),
+            ...this.toNavigationSection('songbooks-personal', 'songbook_page.my_songbooks', [
+              ...this.toGroupNavigationItems(personalGroups),
+              ...this.toNavigationItems(standalonePersonalSongbooks),
+            ]),
+            ...this.toNavigationSection('songbooks-hj', 'songbook_page.hj_songbooks', this.toGroupNavigationItems(
+              recommendedGroups.filter(({ group, songbooks }) => !copiedSourceIds.has(group.uid) || songbooks.some((songbook) => !copiedSourceIds.has(songbook.uid)))
+            )),
           ];
         })
       );
@@ -60,10 +66,8 @@ export class AdminSongbooksNavigation {
   private toNavigationSection(
     id: string,
     label: string,
-    songbooks: { uid: string; name: string; parent?: string; order?: string }[]
+    children: NavigationItem[]
   ): NavigationItem[] {
-    const children = this.toNavigationItems(songbooks);
-
     return [{
       id,
       label,
@@ -72,46 +76,30 @@ export class AdminSongbooksNavigation {
     }];
   }
 
-  private toNavigationItems(songbooks: { uid: string; name: string; parent?: string; order?: string }[]): NavigationItem[] {
-    const roots = this.sortSongbooks(songbooks.filter((songbook) => !songbook.parent));
+  private toNavigationItems(songbooks: { uid: string; name: string }[]): NavigationItem[] {
+    return this.sortSongbooks(songbooks).map((songbook): NavigationItem => ({
+      id: `songbook-${songbook.uid}`,
+      label: songbook.name,
+      dynamic: true,
+      route: `/songbook/${songbook.uid}`,
+    }));
+  }
 
-    return roots.map((root): NavigationItem => {
-      const children = this.sortSongbooks(songbooks.filter((songbook) => songbook.parent === root.uid))
-        .map((child): NavigationItem => ({
-          id: `songbook-${child.uid}`,
-          label: child.name,
-          dynamic: true,
-          route: `/songbook/${child.uid}`,
-        }));
-
-      return {
-        id: `songbook-${root.uid}`,
-        label: root.name,
+  private toGroupNavigationItems(groups: { group: { uid: string; name: string; order?: number }; songbooks: { uid: string; name: string }[] }[]): NavigationItem[] {
+    return [...groups]
+      .sort((first, second) => Number(first.group.order ?? 0) - Number(second.group.order ?? 0))
+      .map(({ group, songbooks }) => ({
+        id: `songbook-group-${group.uid}`,
+        label: group.name,
         dynamic: true,
-        category: children.length > 0,
-        route: children.length ? undefined : `/songbook/${root.uid}`,
-        children: children.length ? children : undefined,
-      };
-    });
+        category: true,
+        children: this.toNavigationItems(songbooks),
+      }));
   }
 
-  private sortSongbooks<T extends { name: string; order?: string }>(songbooks: T[]): T[] {
+  private sortSongbooks<T extends { name: string }>(songbooks: T[]): T[] {
     return [...songbooks].sort((first, second) => {
-      const firstOrder = Number(first.order ?? 0);
-      const secondOrder = Number(second.order ?? 0);
-
-      return firstOrder - secondOrder || first.name.localeCompare(second.name, 'es', { sensitivity: 'base' });
+      return first.name.localeCompare(second.name, 'es', { sensitivity: 'base' });
     });
-  }
-
-  private filterCopiedRecommendedSongbooks<T extends { uid: string; parent?: string }>(songbooks: T[], copiedSourceIds: Set<string>): T[] {
-    return songbooks
-      .map((songbook) => ({
-        songbook,
-        children: songbooks.filter((child) => child.parent === songbook.uid),
-      }))
-      .filter(({ songbook, children }) => !copiedSourceIds.has(songbook.uid) || children.some((child) => !copiedSourceIds.has(child.uid)))
-      .map(({ songbook }) => songbook)
-      .filter((songbook) => !songbook.parent || !copiedSourceIds.has(songbook.uid));
   }
 }

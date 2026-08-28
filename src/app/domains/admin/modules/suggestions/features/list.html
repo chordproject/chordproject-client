@@ -32,14 +32,22 @@
                                     <h3 class="text-sm font-semibold">
                                         @if (targetRoute(row); as targetRoute) {
                                             <a class="cursor-pointer hover:text-primary-700 hover:underline" [routerLink]="targetRoute">
-                                                {{ row.kind === 'song_edit' ? row.songTitle : row.songbookName }}
+                                                @if (row.kind === 'song_edit') {
+                                                    {{ row.songTitle }}
+                                                } @else {
+                                                    {{ row.songTitle }} → {{ row.songbookName }}
+                                                }
                                             </a>
                                         } @else {
-                                            {{ row.kind === 'song_edit' ? row.songTitle : row.songbookName }}
+                                            @if (row.kind === 'song_edit') {
+                                                {{ row.songTitle }}
+                                            } @else {
+                                                {{ row.songTitle }} → {{ row.songbookName }}
+                                            }
                                         }
                                     </h3>
                                 </div>
-                                @if (row.suggestion.message) {
+                                @if (row.suggestion.message && !isAutomaticMessage(row.suggestion.message)) {
                                     <p class="text-secondary mt-2 text-sm">
                                         <span class="font-medium text-neutral-500 dark:text-neutral-400">{{ 'admin_suggestions.your_message' | transloco }}:</span>
                                         {{ row.suggestion.message }}
@@ -137,6 +145,17 @@
                                 } @else if (toDate(row.suggestion.lastUpdateDate); as resolvedAt) {
                                     <p class="text-secondary text-xs">{{ 'admin_suggestions.resolved_on' | transloco }}: {{ resolvedAt | date: 'medium' }}</p>
                                 }
+                                @if (row.kind === 'songbook' && row.suggestion.type === 'add_song' && row.suggestion.status === 'rejected') {
+                                    <button
+                                        matButton="outlined"
+                                        class="mt-3 w-fit"
+                                        type="button"
+                                        [disabled]="busyIds().has(row.suggestion.uid)"
+                                        (click)="createCopyAndAddSong(row)"
+                                    >
+                                        {{ 'admin_suggestions.create_copy_and_add_song' | transloco }}
+                                    </button>
+                                }
                             </div>
                         </div>
                     }
@@ -172,7 +191,7 @@
                                                 <span class="text-secondary ml-auto text-xs">{{ createdAt | date: 'medium' }}</span>
                                             }
                                         </div>
-                                        @if (row.suggestion.message) {
+                                        @if (row.suggestion.message && !isAutomaticMessage(row.suggestion.message)) {
                                             <p class="text-secondary text-sm">{{ row.suggestion.message }}</p>
                                         }
                                         @if (row.suggestion.proposedOutcome === 'version') {
@@ -258,10 +277,10 @@
                                             <h3 class="text-base font-semibold">
                                                 @if (targetRoute(row); as targetRoute) {
                                                     <a class="cursor-pointer hover:text-primary-700 hover:underline" [routerLink]="targetRoute">
-                                                        {{ row.songbookName }}
+                                                        {{ row.songTitle }} → {{ row.songbookName }}
                                                     </a>
                                                 } @else {
-                                                    {{ row.songbookName }}
+                                                    {{ row.songTitle }} → {{ row.songbookName }}
                                                 }
                                             </h3>
                                             @if (toDate(row.suggestion.creationDate); as createdAt) {
@@ -333,10 +352,18 @@
                                             <td class="px-3 py-2">
                                                 @if (targetRoute(row); as targetRoute) {
                                                     <a class="cursor-pointer hover:text-primary-700 hover:underline" [routerLink]="targetRoute">
-                                                        {{ row.kind === 'song_edit' ? row.songTitle : row.songbookName }}
+                                                        @if (row.kind === 'song_edit') {
+                                                            {{ row.songTitle }}
+                                                        } @else {
+                                                            {{ row.songTitle }} → {{ row.songbookName }}
+                                                        }
                                                     </a>
                                                 } @else {
-                                                    {{ row.kind === 'song_edit' ? row.songTitle : row.songbookName }}
+                                                    @if (row.kind === 'song_edit') {
+                                                        {{ row.songTitle }}
+                                                    } @else {
+                                                        {{ row.songTitle }} → {{ row.songbookName }}
+                                                    }
                                                 }
                                             </td>
                                             <td class="px-3 py-2 whitespace-nowrap">{{ row.authorName }}</td>

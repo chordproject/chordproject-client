@@ -32,7 +32,7 @@ export class SongbookSuggestionDialogComponent {
 
     data: SongbookSuggestionDialogData = inject(MAT_DIALOG_DATA);
     form = this.formBuilder.group({
-        type: this.formBuilder.control<SongbookSuggestionType>('add_song', { nonNullable: true, validators: [Validators.required] }),
+        type: this.formBuilder.control<SongbookSuggestionType>('other', { nonNullable: true, validators: [Validators.required] }),
         suggestedName: [''],
         message: ['', [Validators.required, Validators.minLength(10)]],
     });

@@ -56,13 +56,6 @@
                                 >
                                     {{ 'songbook_suggestion.action' | transloco }}
                                 </button>
-                                <button
-                                    class="cursor-pointer rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700"
-                                    type="button"
-                                    (click)="createCopy(songbook)"
-                                >
-                                    {{ 'songbook_page.copy_to_customize' | transloco }}
-                                </button>
                             } @else {
                                 <a
                                     class="cursor-pointer rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-900 hover:border-primary-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-primary-700"
@@ -150,13 +143,7 @@
                 } @else if (songsList(); as songs) {
                     <div class="px-6 pb-6 sm:px-8 sm:pb-8">
                         <div class="mx-auto w-full max-w-5xl overflow-hidden rounded-2xl border border-neutral-200 bg-card shadow-sm dark:border-neutral-800">
-                            <div
-                                [cdkDropListDisabled]="!songbook.isReorderable || !isEditable(songbook)"
-                                cdkDropList
-                                [cdkDropListData]="songs"
-                                (cdkDropListDropped)="onDrop($event)"
-                                class="w-full space-y-0"
-                            >
+                            <div class="w-full space-y-0">
                                 @for (song of songs; track trackByFn($index, song)) {
                                     <div class="w-full">
                                         <chp-song-item
@@ -165,7 +152,6 @@
                                             (dblclick)="onDblClick(song)"
                                             class="w-full min-w-0 flex-1"
                                             [selected]="selectedSong()?.uid === song.uid"
-                                            [showDragHandle]="songbook.isReorderable && isEditable(songbook)"
                                         >
                                         </chp-song-item>
                                     </div>
