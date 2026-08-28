@@ -93,6 +93,7 @@ async function writeGroups(firestore, groups) {
                 songbookId: child.uid,
                 order: Number(child.order ?? index),
                 sourceSongbookId: group.uid,
+                groupPublic: group.published === true,
             }, { merge: true });
             writes += 1;
 

@@ -90,28 +90,30 @@ export class SongbookService {
     }
 
     getPersonal(): Observable<Songbook[]> {
-        return this.getAll().pipe(
-            map((songbooks) => songbooks.filter((songbook) =>
-                this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook) && this.isOwnedByCurrentUser(songbook)
-            ))
+        const userId = this._auth.currentUser?.uid;
+        if (!userId) {
+            return of([]);
+        }
+
+        return from(getDocs(query(collection(this._firestore, 'songbooks'), where('ownerId', '==', userId)))).pipe(
+            map((snapshot) => snapshot.docs
+                .map((songbookDoc) => ({ ...songbookDoc.data(), uid: songbookDoc.id }) as Songbook)
+                .filter((songbook) => this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook))),
+            catchError((error) => this.handleError(error))
         );
     }
 
     getRecommended(): Observable<Songbook[]> {
         if (!this._recommendedSongbooksCache$) {
-            this._recommendedSongbooksCache$ = this.getAll().pipe(
-                switchMap((songbooks) =>
-                    from(getDocs(collection(this._firestore, 'songbook_groups'))).pipe(
-                        map((groupsSnapshot) => {
-                            const groupIds = new Set(groupsSnapshot.docs.map((groupDocument) => groupDocument.id));
-                            return songbooks.filter((songbook) =>
-                                this.isActiveSongbook(songbook) &&
-                                this.isRecommendedSongbook(songbook) &&
-                                !groupIds.has(songbook.uid)
-                            );
-                        })
-                    )
-                ),
+            this._recommendedSongbooksCache$ = from(getDocs(query(
+                collection(this._firestore, 'songbooks'),
+                where('scope', '==', 'shared'),
+                where('published', '==', true)
+            ))).pipe(
+                map((snapshot) => snapshot.docs
+                    .map((songbookDoc) => ({ ...songbookDoc.data(), uid: songbookDoc.id }) as Songbook)
+                    .filter((songbook) => this.isActiveSongbook(songbook))
+                    .sort((first, second) => first.name.localeCompare(second.name, 'es', { sensitivity: 'base' }))),
                 shareReplay({ bufferSize: 1, refCount: false })
             );
         }
@@ -211,7 +213,8 @@ export class SongbookService {
                     const group = { ...groupDocument.data(), uid: groupDocument.id } as import('app/models/songbook-group').SongbookGroup;
                     const memberSnapshot = await getDocs(query(
                         collection(this._firestore, 'songbook_group_members'),
-                        where('groupId', '==', group.uid)
+                        where('groupId', '==', group.uid),
+                        where('groupPublic', '==', true)
                     ));
                     const songbooks = await Promise.all(memberSnapshot.docs
                         .sort((first, second) => Number(first.data().order ?? 0) - Number(second.data().order ?? 0))
@@ -238,7 +241,11 @@ export class SongbookService {
             return of([]);
         }
 
-        return from(getDocs(query(collection(this._firestore, 'songbook_groups'), where('scope', '==', 'personal')))).pipe(
+        return from(getDocs(query(
+            collection(this._firestore, 'songbook_groups'),
+            where('scope', '==', 'personal'),
+            where('ownerId', '==', userId)
+        ))).pipe(
             switchMap((groupSnapshot) => from(Promise.all(groupSnapshot.docs.map(async (groupDocument) => {
                     const group = { ...groupDocument.data(), uid: groupDocument.id } as import('app/models/songbook-group').SongbookGroup;
                     if (!this.isOwnedByCurrentUser(group as unknown as Songbook)) {
@@ -253,18 +260,6 @@ export class SongbookService {
                         }));
                     return { group, songbooks: songbooks.filter((songbook): songbook is Songbook => songbook !== null) };
                 })).then((groups) => groups.filter((group) => group !== null)))),
-            catchError((error) => this.handleError(error))
-        );
-    }
-
-    getGroupSongbooks(groupId: string): Observable<Songbook[]> {
-        return from(getDocs(query(collection(this._firestore, 'songbook_group_members'), where('groupId', '==', groupId)))).pipe(
-            switchMap((memberSnapshot) => from(Promise.all(memberSnapshot.docs
-                .sort((first, second) => Number(first.data().order ?? 0) - Number(second.data().order ?? 0))
-                .map(async (memberDocument) => {
-                    const songbookSnapshot = await getDoc(doc(this._firestore, 'songbooks', memberDocument.data().songbookId));
-                    return songbookSnapshot.exists() ? ({ ...songbookSnapshot.data(), uid: songbookSnapshot.id } as Songbook) : null;
-                })).then((songbooks) => songbooks.filter((songbook): songbook is Songbook => songbook !== null && songbook.deleted !== true)))),
             catchError((error) => this.handleError(error))
         );
     }
@@ -294,9 +289,12 @@ export class SongbookService {
                 collection(this._firestore, 'songbook_songs')
             ).id;
 
-            const relation: Record<string, string> = {
+            const songbookSnapshot = await getDoc(doc(this._firestore, 'songbooks', songbookId));
+            const songbookData = songbookSnapshot.exists() ? songbookSnapshot.data() : null;
+            const relation: Record<string, string | boolean> = {
                 songbookId,
                 songId,
+                songbookPublic: songbookData?.scope === 'shared' && songbookData?.published === true,
             };
 
             if (this._auth.currentUser) {
@@ -365,47 +363,31 @@ export class SongbookService {
 
     getSongbooksForSong(songId: string): Observable<Songbook[]> {
         return from(this.getCanonicalSongId(songId)).pipe(
-            switchMap((canonicalSongId) => {
-                const relationsQuery = query(
-                    collection(this._firestore, 'songbook_songs'),
-                    where('songId', '==', canonicalSongId)
-                );
-
-                return from(getDocs(relationsQuery));
-            }),
-            switchMap((relationsSnapshot) => {
-                const songbookIds = relationsSnapshot.docs
-                    .filter((relationDoc) => relationDoc.data().deleted !== true)
-                    .map((relationDoc) => relationDoc.data().songbookId)
-                    .filter(Boolean);
-
-                if (songbookIds.length === 0) {
-                    return of([]);
-                }
-
-                return from(Promise.all(
-                    [...new Set(songbookIds)].map(async (songbookId) => {
-                        const songbookSnapshot = await getDoc(doc(this._firestore, 'songbooks', songbookId));
-                        return songbookSnapshot.exists()
-                            ? ({ ...songbookSnapshot.data(), uid: songbookSnapshot.id } as Songbook)
-                            : null;
-                    })
-                )).pipe(
-                    map((songbooks) => {
-                        const visibleSongbooks = songbooks.filter((songbook): songbook is Songbook =>
-                            Boolean(songbook) && this.isActiveSongbook(songbook) && this.isVisibleToCurrentUser(songbook)
-                        );
-
-                        // Hide a recommended songbook once the current user has their own personal copy of it.
-                        const copiedSourceIds = new Set(
-                            visibleSongbooks.filter((songbook) => this.isOwnedByCurrentUser(songbook)).map((songbook) => songbook.copiedFrom).filter(Boolean)
-                        );
-
-                        return visibleSongbooks.filter((songbook) => !copiedSourceIds.has(songbook.uid));
-                    })
-                );
-            }),
+            switchMap((canonicalSongId) => this.getVisibleSongbooksForSong(canonicalSongId)),
             catchError((error) => this.handleError(error))
+        );
+    }
+
+    private getVisibleSongbooksForSong(songId: string): Observable<Songbook[]> {
+        return combineLatest([this.getPersonal(), this.getRecommended()]).pipe(
+            switchMap(([personalSongbooks, recommendedSongbooks]) => from(Promise.all(
+                [...personalSongbooks, ...recommendedSongbooks].map(async (songbook) => {
+                    const relationSnapshot = await getDocs(query(
+                        collection(this._firestore, 'songbook_songs'),
+                        where('songbookId', '==', songbook.uid),
+                        where('songId', '==', songId),
+                        where('songbookPublic', '==', true)
+                    ));
+                    return relationSnapshot.docs.some((relationDoc) => relationDoc.data().deleted !== true) ? songbook : null;
+                })
+            ))),
+            map((songbooks) => {
+                const visibleSongbooks = songbooks.filter((songbook): songbook is Songbook => songbook !== null);
+                const copiedSourceIds = new Set(
+                    visibleSongbooks.filter((songbook) => this.isOwnedByCurrentUser(songbook)).map((songbook) => songbook.copiedFrom).filter(Boolean)
+                );
+                return visibleSongbooks.filter((songbook) => !copiedSourceIds.has(songbook.uid));
+            })
         );
     }
 
@@ -661,6 +643,7 @@ export class SongbookService {
                     relationsBatch.set(doc(this._firestore, 'songbook_songs', relationId), this.withoutUndefined({
                         ...relationDoc.data(),
                         songbookId: newSongbookId,
+                        songbookPublic: false,
                         author_uid: user.uid,
                         ownerId: user.uid,
                         copiedFrom: relationDoc.id,

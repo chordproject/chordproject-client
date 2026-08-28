@@ -135,19 +135,14 @@ service cloud.firestore {
     }
 
     match /songbook_group_members/{memberId} {
-      allow read: if isAdmin()
-        || get(/databases/$(database)/documents/songbook_groups/$(resource.data.groupId)).data.published == true
-        || owns(get(/databases/$(database)/documents/songbook_groups/$(resource.data.groupId)).data);
+      allow read: if isAdmin() || resource.data.groupPublic == true;
       allow create, update, delete: if isAdmin();
     }
 
     match /songbook_songs/{relationId} {
       allow read: if isAdmin()
         || songbookOwner(resource.data.songbookId)
-        || (
-          get(/databases/$(database)/documents/songbooks/$(resource.data.songbookId)).data.scope == 'shared'
-          && get(/databases/$(database)/documents/songbooks/$(resource.data.songbookId)).data.published == true
-        );
+        || resource.data.songbookPublic == true;
       allow create: if isSignedIn()
         && request.resource.data.author_uid == request.auth.uid
         && request.resource.data.ownerId == request.auth.uid

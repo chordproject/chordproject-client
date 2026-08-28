@@ -3,13 +3,11 @@ import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { TranslocoModule } from '@jsverse/transloco';
 import { Observable, Subject, of, takeUntil } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
@@ -19,14 +17,12 @@ import { ChpEditorComponent } from 'app/components/editor/editor/editor.componen
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
-import { SongbookSuggestionService } from 'app/core/firebase/api/songbook-suggestion.service';
 import { UserService } from 'app/core/user/user.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Song } from 'app/models/song';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Songbook } from 'app/models/songbook';
-import { SongbookSuggestionDialogComponent } from './songbook-suggestion-dialog.component';
 
 @Component({
     selector: 'chp-songbook',
@@ -58,9 +54,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
 
     songbook$: Observable<Songbook>;
     songs$: Observable<PartialSong[]>;
-    childSongbooks$: Observable<Songbook[]>;
     songsList = signal<PartialSong[]>([]);
-    childSongbooks = signal<Songbook[]>([]);
     editingPreview = signal(false);
     isAuthenticated;
     previewContent = '';
@@ -72,13 +66,9 @@ export class SongbookComponent implements OnInit, OnDestroy {
         private _route: ActivatedRoute,
         private _router: Router,
         private _songbookService: SongbookService,
-        private _songbookSuggestionService: SongbookSuggestionService,
         private _songService: SongService,
         private _userService: UserService,
-        private _translocoService: TranslocoService,
         private _confirmationService: FuseConfirmationService,
-        private _matDialog: MatDialog,
-        private _snackBar: MatSnackBar,
         private _editorService: EditorService
     ) {
         this.isAuthenticated = toSignal(this._userService.isAuthenticated(), { initialValue: false });
@@ -87,7 +77,6 @@ export class SongbookComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.loadSongbook();
         this.loadSongs();
-        this.loadChildSongbooks();
         this.setupSongSearch();
     }
 
@@ -172,21 +161,6 @@ export class SongbookComponent implements OnInit, OnDestroy {
         });
     }
 
-    private loadChildSongbooks(): void {
-        this.childSongbooks$ = this._route.paramMap.pipe(
-            takeUntil(this._unsubscribeAll),
-            switchMap((params) =>
-                this._songbookService.getGroupSongbooks(params.get('uid')).pipe(
-                    catchError(() => of([]))
-                )
-            )
-        );
-
-        this.childSongbooks$.pipe(takeUntil(this._unsubscribeAll)).subscribe((songbooks) => {
-            this.childSongbooks.set([...songbooks]);
-        });
-    }
-
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
@@ -258,52 +232,6 @@ export class SongbookComponent implements OnInit, OnDestroy {
 
     requiresCustomizationConfirmation(songbook: Songbook): boolean {
         return Boolean(songbook.copiedFrom) && songbook.syncStatus !== 'customized';
-    }
-
-    suggestChange(songbook: Songbook): void {
-        this._matDialog.open(SongbookSuggestionDialogComponent, {
-            autoFocus: false,
-            data: {
-                songbook,
-                hasChildren: this.childSongbooks().length > 0,
-            },
-        })
-            .afterClosed()
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                switchMap((result) => {
-                    if (!result) {
-                        return of(null);
-                    }
-
-                    return this._songbookSuggestionService.create({
-                        ...result,
-                        targetSongbookId: songbook.uid,
-                        targetParentId: result.type === 'new_child_songbook' ? songbook.uid : undefined,
-                    });
-                })
-            )
-            .subscribe((suggestionId) => {
-                if (suggestionId) {
-                    this._translocoService
-                        .selectTranslate('songbook_suggestion.sent')
-                        .pipe(
-                            switchMap((message) =>
-                                this._translocoService
-                                    .selectTranslate('common.close')
-                                    .pipe(map((closeLabel) => ({ message, closeLabel })))
-                            ),
-                            take(1)
-                        )
-                        .subscribe(({ message, closeLabel }) => {
-                            this._snackBar.open(message, closeLabel, {
-                                duration: 3000,
-                                horizontalPosition: 'center',
-                                verticalPosition: 'bottom',
-                            });
-                        });
-                }
-            });
     }
 
     startQuickEdit(): void {

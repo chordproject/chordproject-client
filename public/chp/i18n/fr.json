@@ -300,7 +300,7 @@
         "reject": "Rejeter",
         "create_version": "Créer une nouvelle version",
         "create_copy_and_add_song": "Créer une copie et ajouter la chanson",
-        "copy_creation_failed": "La copie personnelle n'a pas pu être créée."
+        "copy_creation_failed": "La copie personnelle n'a pas pu être créée.",
         "create_version_hint": "Crée une chanson indépendante avec ces changements, sans modifier l'originale.",
         "view_history": "Voir l'historique",
         "hide_history": "Masquer l'historique",

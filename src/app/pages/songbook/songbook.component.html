@@ -46,32 +46,6 @@
                         </h1>
                     </div>
 
-                    @if (isRecommended(songbook)) {
-                        <div class="flex shrink-0 flex-wrap items-center gap-2">
-                            @if (isAuthenticated()) {
-                                <button
-                                    class="cursor-pointer rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-900 hover:border-primary-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-primary-700"
-                                    type="button"
-                                    (click)="suggestChange(songbook)"
-                                >
-                                    {{ 'songbook_suggestion.action' | transloco }}
-                                </button>
-                            } @else {
-                                <a
-                                    class="cursor-pointer rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-medium text-neutral-900 hover:border-primary-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:border-primary-700"
-                                    [routerLink]="['/auth/sign-in']"
-                                >
-                                    {{ 'songbook_suggestion.sign_in_action' | transloco }}
-                                </a>
-                                <a
-                                    class="cursor-pointer rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700"
-                                    [routerLink]="['/auth/sign-in']"
-                                >
-                                    {{ 'songbook_page.sign_in_to_customize' | transloco }}
-                                </a>
-                            }
-                        </div>
-                    }
                 </header>
             </div>
             @if (isEditable(songbook)) {
@@ -111,35 +85,13 @@
                         <p class="text-secondary mt-2">{{ 'songbook_detail.reload_hint' | transloco }}</p>
                     </div>
                 } @else if (songsList().length === 0) {
-                    @if (childSongbooks().length) {
-                        <div class="px-6 py-6 sm:px-8 sm:py-8">
-                            <div class="mx-auto flex w-full max-w-5xl flex-col gap-4">
-                                <div>
-                                    <h2 class="text-xl font-semibold">{{ 'songbook_detail.included_songbooks' | transloco }}</h2>
-                                    <p class="text-secondary mt-1 text-sm">{{ 'songbook_detail.included_description' | transloco }}</p>
-                                </div>
-
-                                <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                                    @for (childSongbook of childSongbooks(); track trackByFn($index, childSongbook)) {
-                                        <a
-                                            class="cursor-pointer rounded-lg border border-neutral-200 bg-white p-4 text-sm font-semibold text-neutral-900 shadow-sm hover:border-primary-300 hover:bg-primary-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:border-primary-700 dark:hover:bg-neutral-800"
-                                            [routerLink]="['/songbook', childSongbook.uid]"
-                                        >
-                                            {{ childSongbook.name }}
-                                        </a>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    } @else {
-                        <div class="flex h-full flex-col items-center justify-center p-8 text-center">
-                            <mat-icon
-                                class="mb-4 size-12 text-neutral-400"
-                                [svgIcon]="'book-open'"
-                            ></mat-icon>
-                            <p class="text-lg font-medium">{{ 'songbook_detail.empty_songbook' | transloco }}</p>
-                        </div>
-                    }
+                    <div class="flex h-full flex-col items-center justify-center p-8 text-center">
+                        <mat-icon
+                            class="mb-4 size-12 text-neutral-400"
+                            [svgIcon]="'book-open'"
+                        ></mat-icon>
+                        <p class="text-lg font-medium">{{ 'songbook_detail.empty_songbook' | transloco }}</p>
+                    </div>
                 } @else if (songsList(); as songs) {
                     <div class="px-6 pb-6 sm:px-8 sm:pb-8">
                         <div class="mx-auto w-full max-w-5xl overflow-hidden rounded-2xl border border-neutral-200 bg-card shadow-sm dark:border-neutral-800">
