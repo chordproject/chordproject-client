@@ -49,10 +49,13 @@ export class SongbookListComponent implements OnDestroy {
         const personalSongbooks$ = this._userService.isAuthenticated().pipe(
             switchMap((isAuthenticated) => isAuthenticated ? this._songbookService.getPersonal() : of([]))
         );
+        const personalGroups$ = this._userService.isAuthenticated().pipe(
+            switchMap((isAuthenticated) => isAuthenticated ? this._songbookService.getPersonalGroups() : of([]))
+        );
 
         this.personalSongbookGroups$ = combineLatest([
             personalSongbooks$,
-            this.isAuthenticated() ? this._songbookService.getPersonalGroups() : of([]),
+            personalGroups$,
         ]).pipe(
             map(([songbooks, groups]) => {
                 const groupedSongbookIds = new Set(groups.flatMap(({ group, songbooks: members }) => [group.uid, ...members.map((songbook) => songbook.uid)]));
@@ -118,16 +121,17 @@ export class SongbookListComponent implements OnDestroy {
             return;
         }
 
+        const isCopy = Boolean(group.root.copiedFrom);
         this._confirmationService.open({
-            title: 'Eliminar copia',
-            message: `Se eliminara tu copia de "${group.root.name}" y sus cancioneros relacionados.`,
+            title: isCopy ? 'songbook_page.delete_copy_title' : 'songbook_page.delete_songbook_title',
+            message: isCopy ? 'songbook_page.delete_copy_message' : 'songbook_page.delete_songbook_message',
             actions: {
                 confirm: {
-                    label: 'Eliminar',
+                    label: 'songbook_page.delete_confirm',
                     color: 'error',
                 },
                 cancel: {
-                    label: 'Cancelar',
+                    label: 'confirmation.cancel',
                 },
             },
         })
@@ -136,8 +140,7 @@ export class SongbookListComponent implements OnDestroy {
             .subscribe((result) => {
                 if (result === 'confirmed') {
                     this.setBusy(this.deletingGroupIds, groupId, true);
-                    this._songbookService
-                        .deleteCopies([group.root.uid])
+                    (group.children.length ? this._songbookService.deletePersonalGroup(group.root.uid) : this._songbookService.deleteCopies([group.root.uid]))
                         .pipe(
                             finalize(() => this.setBusy(this.deletingGroupIds, groupId, false)),
                             takeUntil(this._unsubscribeAll)

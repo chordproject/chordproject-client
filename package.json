@@ -26,7 +26,6 @@
     "reindex:chp:dry": "node scripts/rebuild-song-index.mjs --project chordproject-app --dry-run",
     "reindex:hj": "node scripts/rebuild-song-index.mjs --project homenajesus-app",
     "reindex:hj:dry": "node scripts/rebuild-song-index.mjs --project homenajesus-app --dry-run",
-    "migrate:songbook-groups": "node scripts/migrate-songbook-groups.mjs --project homenajesus-app",
     "rules:chp": "npm_config_cache=${TMPDIR:-/tmp}/npm-cache npx firebase-tools deploy --project chp --only firestore:rules",
     "rules:hj": "npm_config_cache=${TMPDIR:-/tmp}/npm-cache npx firebase-tools deploy --project hj --only firestore:rules",
     "release": "npm run deploy:chp && npm run deploy:hj",

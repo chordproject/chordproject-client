@@ -16,7 +16,7 @@ import {
     where,
     writeBatch,
 } from 'firebase/firestore';
-import { Observable, Subject, combineLatest, defer, from, of, throwError } from 'rxjs';
+import { Observable, Subject, combineLatest, from, of, throwError } from 'rxjs';
 import { catchError, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 import { PartialSong } from 'app/models/partialsong';
 import { Relation } from 'app/models/relation';
@@ -95,10 +95,12 @@ export class SongbookService {
             return of([]);
         }
 
-        return from(getDocs(query(collection(this._firestore, 'songbooks'), where('ownerId', '==', userId)))).pipe(
+        return this._songbooksChanged.pipe(
+            startWith(undefined),
+            switchMap(() => from(getDocs(query(collection(this._firestore, 'songbooks'), where('ownerId', '==', userId))))),
             map((snapshot) => snapshot.docs
-                .map((songbookDoc) => ({ ...songbookDoc.data(), uid: songbookDoc.id }) as Songbook)
-                .filter((songbook) => this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook))),
+                    .map((songbookDoc) => ({ ...songbookDoc.data(), uid: songbookDoc.id }) as Songbook)
+                    .filter((songbook) => this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook))),
             catchError((error) => this.handleError(error))
         );
     }
@@ -241,17 +243,23 @@ export class SongbookService {
             return of([]);
         }
 
-        return from(getDocs(query(
-            collection(this._firestore, 'songbook_groups'),
-            where('scope', '==', 'personal'),
-            where('ownerId', '==', userId)
-        ))).pipe(
+        return this._songbooksChanged.pipe(
+            startWith(undefined),
+            switchMap(() => from(getDocs(query(
+                collection(this._firestore, 'songbook_groups'),
+                where('scope', '==', 'personal'),
+                where('ownerId', '==', userId)
+            )))),
             switchMap((groupSnapshot) => from(Promise.all(groupSnapshot.docs.map(async (groupDocument) => {
                     const group = { ...groupDocument.data(), uid: groupDocument.id } as import('app/models/songbook-group').SongbookGroup;
                     if (!this.isOwnedByCurrentUser(group as unknown as Songbook)) {
                         return null;
                     }
-                    const memberSnapshot = await getDocs(query(collection(this._firestore, 'songbook_group_members'), where('groupId', '==', group.uid)));
+                    const memberSnapshot = await getDocs(query(
+                        collection(this._firestore, 'songbook_group_members'),
+                        where('groupId', '==', group.uid),
+                        where('groupOwnerId', '==', userId)
+                    ));
                     const songbooks = await Promise.all(memberSnapshot.docs
                         .sort((first, second) => Number(first.data().order ?? 0) - Number(second.data().order ?? 0))
                         .map(async (memberDocument) => {
@@ -359,6 +367,39 @@ export class SongbookService {
         }
 
         return from(this.deleteCopiedSongbooks(songbookIds));
+    }
+
+    deletePersonalGroup(groupId: string): Observable<boolean> {
+        if (!this.verifyAuthentication()) {
+            return of(false);
+        }
+
+        return from((async () => {
+            const userId = this._auth.currentUser.uid;
+            const groupSnapshot = await getDoc(doc(this._firestore, 'songbook_groups', groupId));
+            if (!groupSnapshot.exists() || groupSnapshot.data().ownerId !== userId || groupSnapshot.data().scope !== 'personal') {
+                return false;
+            }
+
+            const memberSnapshot = await getDocs(query(
+                collection(this._firestore, 'songbook_group_members'),
+                where('groupId', '==', groupId),
+                where('groupOwnerId', '==', userId)
+            ));
+            const songbookIds = memberSnapshot.docs.map((member) => member.data().songbookId).filter(Boolean);
+            const relationSnapshot = songbookIds.length
+                ? await getDocs(query(collection(this._firestore, 'songbook_songs'), where('songbookId', 'in', songbookIds.slice(0, 30))))
+                : { docs: [] } as never;
+            const batch = writeBatch(this._firestore);
+            relationSnapshot.docs.forEach((relation) => batch.update(relation.ref, { deleted: true, deletedAt: serverTimestamp() }));
+            memberSnapshot.docs.forEach((member) => batch.delete(member.ref));
+            songbookIds.forEach((songbookId) => batch.update(doc(this._firestore, 'songbooks', songbookId), { deleted: true, deletedAt: serverTimestamp(), lastUpdateDate: serverTimestamp() }));
+            batch.delete(groupSnapshot.ref);
+            await batch.commit();
+            this.clearSongbooksCache();
+            this.showSnackbar('songbook_service.songbook_removed');
+            return true;
+        })());
     }
 
     getSongbooksForSong(songId: string): Observable<Songbook[]> {
@@ -583,7 +624,7 @@ export class SongbookService {
                 }
 
                 const newSongbookId = songbookIdMap.get(sourceSongbook.uid);
-                const { uid, ...sourceSongbookData } = sourceSongbook;
+                const { uid: _uid, ...sourceSongbookData } = sourceSongbook;
                 songbooksToCreate += 1;
 
                 songbooksBatch.set(doc(this._firestore, 'songbooks', newSongbookId), this.withoutUndefined({
@@ -696,7 +737,6 @@ export class SongbookService {
             candidateDocs
                 .filter((documentSnapshot) => targetIds.has(documentSnapshot.id))
                 .filter((documentSnapshot) => documentSnapshot.data().ownerId === user.uid || documentSnapshot.data().authorId === user.uid)
-                .filter((documentSnapshot) => documentSnapshot.data().copiedFrom)
                 .forEach((documentSnapshot) => {
                     songbooksBatch.update(documentSnapshot.ref, {
                         deleted: true,
@@ -736,7 +776,7 @@ export class SongbookService {
             }
 
             this.clearSongbooksCache();
-            this.showSnackbar('songbook_service.copy_removed');
+            this.showSnackbar('songbook_service.songbook_removed');
             return true;
         } catch (error) {
             this.handleError(error);

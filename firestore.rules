@@ -131,12 +131,16 @@ service cloud.firestore {
       allow read: if resource.data.published == true
         || isAdmin()
         || owns(resource.data);
-      allow create, update, delete: if isAdmin();
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin() || (owns(resource.data) && resource.data.scope == 'personal');
     }
 
     match /songbook_group_members/{memberId} {
-      allow read: if isAdmin() || resource.data.groupPublic == true;
-      allow create, update, delete: if isAdmin();
+      allow read: if isAdmin()
+        || resource.data.groupPublic == true
+        || (isSignedIn() && resource.data.groupOwnerId == request.auth.uid);
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin() || (isSignedIn() && resource.data.groupOwnerId == request.auth.uid);
     }
 
     match /songbook_songs/{relationId} {

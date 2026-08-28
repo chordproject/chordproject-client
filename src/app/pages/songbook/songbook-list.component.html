@@ -61,14 +61,14 @@
                                         }
                                     </div>
 
-                                    @if (group.root.copiedFrom) {
+                                    @if (group.root.copiedFrom || !group.children.length) {
                                         <button
                                             class="shrink-0 cursor-pointer text-sm font-medium text-error-600 hover:text-error-700 disabled:cursor-wait disabled:opacity-60"
                                             type="button"
                                             [disabled]="deletingGroupIds().has(group.root.uid)"
                                             (click)="deleteCopy(group)"
                                         >
-                                            {{ (deletingGroupIds().has(group.root.uid) ? 'songbook_page.deleting' : 'songbook_page.delete_copy') | transloco }}
+                                            {{ (deletingGroupIds().has(group.root.uid) ? 'songbook_page.deleting' : (group.root.copiedFrom ? 'songbook_page.delete_copy' : 'songbook_page.delete_songbook')) | transloco }}
                                         </button>
                                     }
                                 </div>
