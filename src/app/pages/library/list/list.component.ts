@@ -68,12 +68,22 @@ const SONGS_PAGE_SIZE = 60;
 })
 export class SongsListComponent implements OnInit, OnDestroy {
     readonly sortFields = SONG_SORT_FIELDS;
+    readonly alphabet = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
     readonly songs = signal<PartialSong[]>([]);
     readonly loaded = signal(false);
     readonly sort = signal<SongSort>(DEFAULT_SONG_SORT);
     readonly visibleCount = signal(SONGS_PAGE_SIZE);
     readonly visibleSongs = computed(() => this.songs().slice(0, this.visibleCount()));
     readonly hasMore = computed(() => this.visibleCount() < this.songs().length);
+
+    readonly existingLetters = computed(() => {
+        const set = new Set<string>();
+        for (const song of this.songs()) {
+            set.add(this.getInitialLetter(song.title));
+        }
+        return set;
+    });
+
     searchInputControl: UntypedFormControl = new UntypedFormControl();
     @Input() selectedSong: PartialSong | null = null;
     @Output() songSelect = new EventEmitter<PartialSong>();
@@ -167,6 +177,63 @@ export class SongsListComponent implements OnInit, OnDestroy {
 
     showMore(): void {
         this.visibleCount.update((count) => Math.min(count + SONGS_PAGE_SIZE, this.songs().length));
+    }
+
+    getInitialLetter(title: string | undefined): string {
+        if (!title) {
+            return '#';
+        }
+        const normalized = title
+            .trim()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toUpperCase();
+        const match = normalized.match(/[A-Z]/);
+        return match ? match[0] : '#';
+    }
+
+    showLetterHeader(index: number): boolean {
+        if (this.sort().field !== 'title') {
+            return false;
+        }
+        const songs = this.visibleSongs();
+        if (index === 0) {
+            return true;
+        }
+        return this.getInitialLetter(songs[index - 1]?.title) !== this.getInitialLetter(songs[index]?.title);
+    }
+
+    jumpToLetter(letter: string): void {
+        if (this.sort().field !== 'title') {
+            return;
+        }
+
+        const targetIndex = this.songs().findIndex(
+            (song) => this.getInitialLetter(song.title) === letter
+        );
+
+        if (targetIndex === -1) {
+            return;
+        }
+
+        if (targetIndex >= this.visibleCount()) {
+            this.visibleCount.set(
+                Math.max(targetIndex + SONGS_PAGE_SIZE, SONGS_PAGE_SIZE)
+            );
+        }
+
+        this._changeDetectorRef.detectChanges();
+
+        setTimeout(() => {
+            const targetSong = this.songs()[targetIndex];
+            const element =
+                document.getElementById(`letter-header-${letter}`) ||
+                (targetSong ? document.getElementById(`song-item-${targetSong.uid}`) : null);
+
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 50);
     }
 
     private updateSort(sort: SongSort): void {

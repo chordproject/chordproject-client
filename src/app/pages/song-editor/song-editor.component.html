@@ -8,7 +8,8 @@
             </div>
         }
         <chp-editor
-            [(content)]="song.content"
+            [content]="song().content"
+            (contentChange)="onContentChange($event)"
             tabindex="0"
             (close)="onEditorClose()"
             (save)="saveSong()"
@@ -20,7 +21,7 @@
 
 <ng-template #viewer>
     <chp-song-preview
-        [song]="song"
+        [song]="song()"
         [pendingSuggestion]="hasPendingSuggestion()"
         [alternateVersions]="alternateVersions()"
         [alternateVersionRoute]="'editor'"

@@ -16,55 +16,55 @@ export class EditorService {
         private songService: SongService
     ) {}
 
-    prepareSongFromContent(content: string): Song {
+    prepareSongFromContent(content: string): Partial<Song> {
         const parsedSong = this.parserService.parseSong(content);
-        const song = new Song();
-
-        song.title = parsedSong.title;
-        song.subtitle = parsedSong.subtitle;
-        song.lyricists = parsedSong.lyricists;
-        song.albums = parsedSong.albums;
-        song.arrangers = parsedSong.arrangers;
-        song.artists = parsedSong.artists;
-        song.composers = parsedSong.composers;
-        song.copyright = parsedSong.copyright;
-        song.capo = parsedSong.capo;
-        song.duration = parsedSong.duration;
-        song.tempo = parsedSong.tempo;
-        song.time = parsedSong.time ? parsedSong.time.toString() : null;
-        song.year = parsedSong.year;
-        song.lyrics = parsedSong.getLyrics().join('\n');
-        song.lastUpdateDate = new Date();
-        song.content = parsedSong.rawContent;
-        song.uniqueChords = parsedSong
-            .getUniqueChords()
-            .map((c) => c.toString());
+        const songData: Partial<Song> = {
+            title: parsedSong.title,
+            subtitle: parsedSong.subtitle,
+            lyricists: parsedSong.lyricists,
+            albums: parsedSong.albums,
+            arrangers: parsedSong.arrangers,
+            artists: parsedSong.artists,
+            composers: parsedSong.composers,
+            copyright: parsedSong.copyright,
+            capo: parsedSong.capo,
+            duration: parsedSong.duration,
+            tempo: parsedSong.tempo,
+            time: parsedSong.time ? parsedSong.time.toString() : undefined,
+            year: parsedSong.year,
+            lyrics: parsedSong.getLyrics().join('\n'),
+            lastUpdateDate: new Date(),
+            content: parsedSong.rawContent,
+            uniqueChords: parsedSong
+                .getUniqueChords()
+                .map((c) => c.toString()),
+        };
 
         if (parsedSong.key) {
-            song.songKey = parsedSong.key.toString();
-            song.hasInferredKey = false;
+            songData.songKey = parsedSong.key.toString();
+            songData.hasInferredKey = false;
         } else {
             const possibleKey = parsedSong.getPossibleKey();
             if (possibleKey) {
-                song.songKey = possibleKey.toString();
+                songData.songKey = possibleKey.toString();
             }
-            song.hasInferredKey = true;
+            songData.hasInferredKey = true;
         }
 
-        song.songKey = song.songKey || null;
-
-        if (song.songKey) {
-            const letter = song.songKey.includes('m') ? 'A' : 'C';
+        if (songData.songKey) {
+            const letter = songData.songKey.includes('m') ? 'A' : 'C';
             const defaultKeySong = this.parserService.transposeSongToKey(
                 parsedSong,
                 letter
             );
-            song.defaultKeyUniqueChords = defaultKeySong
+            songData.defaultKeyUniqueChords = defaultKeySong
                 .getUniqueChords()
                 .map((c) => c.toString());
         }
 
-        return song;
+        return Object.fromEntries(
+            Object.entries(songData).filter(([, value]) => value !== undefined)
+        );
     }
 
     confirmAndDelete(song: Song): Observable<boolean> {

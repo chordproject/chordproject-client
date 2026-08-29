@@ -38,7 +38,7 @@ export class FeedbackDialog {
         type: this.formBuilder.control<FeedbackType>('bug', { nonNullable: true, validators: [Validators.required] }),
         title: this.formBuilder.control('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(120)] }),
         message: this.formBuilder.control('', { nonNullable: true, validators: [Validators.required, Validators.minLength(10)] }),
-        allowContact: this.formBuilder.control<'yes' | 'no'>('no', { nonNullable: true }),
+        allowContact: this.formBuilder.control<'yes' | 'no' | null>(null, { validators: [Validators.required] }),
         email: this.formBuilder.control('', { nonNullable: true }),
     });
 

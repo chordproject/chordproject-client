@@ -37,7 +37,7 @@ import {
     imports: [MatCardModule, ChpSplitLayoutComponent, ChpSongPreviewComponent, ChpEditorComponent, TranslocoModule],
 })
 export class SongEditorComponent implements OnInit, OnDestroy {
-    song: Song = new Song();
+    song = signal<Song>(new Song());
     hasPendingSuggestion = signal(false);
     isAuthenticated = signal(false);
     alternateVersions = signal<PartialSong[]>([]);
@@ -102,8 +102,10 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             )
             .subscribe((data) => {
                 if (data) {
-                    this.song = data;
-                    this._savedContent = this.song.content ?? '';
+                    const loadedSong = new Song();
+                    Object.assign(loadedSong, data);
+                    this.song.set(loadedSong);
+                    this._savedContent = loadedSong.content ?? '';
                     this.hasPendingSuggestion.set(false);
                     this.alternateVersions.set([]);
                     if (data.uid) {
@@ -121,7 +123,6 @@ export class SongEditorComponent implements OnInit, OnDestroy {
                                         return Number(secondIsCanonical) - Number(firstIsCanonical);
                                     })
                                 );
-                                this._changeDetectorRef.markForCheck();
                             });
                         this._songSuggestionService
                             .getMineOpenForSong(data.uid)
@@ -130,13 +131,13 @@ export class SongEditorComponent implements OnInit, OnDestroy {
                                 this.hasPendingSuggestion.set(!!suggestion);
                                 if (suggestion) {
                                     // Resume editing from your own pending proposal instead of the still-unapproved official content.
-                                    this.song = { ...this.song, ...suggestion.proposedSong };
-                                    this._savedContent = this.song.content ?? '';
+                                    const merged = new Song();
+                                    Object.assign(merged, this.song(), suggestion.proposedSong);
+                                    this.song.set(merged);
+                                    this._savedContent = merged.content ?? '';
                                 }
-                                this._changeDetectorRef.markForCheck();
                             });
                     }
-                    this._changeDetectorRef.markForCheck();
                 }
             });
     }
@@ -159,6 +160,18 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         }
     }
 
+    onContentChange(content: string): void {
+        const current = this.song();
+        if (current.content === content) {
+            return;
+        }
+
+        const updatedFields = this._editorService.prepareSongFromContent(content);
+        const updatedSong = new Song();
+        Object.assign(updatedSong, current, updatedFields, { content });
+        this.song.set(updatedSong);
+    }
+
     saveSong(): void {
         if (!this.isAuthenticated()) {
             this._translocoService
@@ -168,11 +181,11 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const updatedSong = this._editorService.prepareSongFromContent(this.song.content);
-        this.song = {
-            ...this.song,
-            ...Object.fromEntries(Object.entries(updatedSong).filter(([, value]) => value !== undefined)),
-        };
+        const current = this.song();
+        const updatedFields = this._editorService.prepareSongFromContent(current.content);
+        const updatedSong = new Song();
+        Object.assign(updatedSong, current, updatedFields);
+        this.song.set(updatedSong);
 
         this.saveOrSuggest();
     }
@@ -188,14 +201,23 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._songService.save(this.song).then((res) => {
-            this.song.uid = res;
-            this._savedContent = this.song.content ?? '';
-        });
+        const res = await this._songService.save(this.song());
+        if (res) {
+            const current = this.song();
+            const updated = new Song();
+            Object.assign(updated, current, { uid: res });
+            this.song.set(updated);
+            this._savedContent = updated.content ?? '';
+
+            if (!this._route.snapshot.paramMap.get('uid')) {
+                this._router.navigate(['/songs/create', res], { replaceUrl: true });
+            }
+        }
     }
 
     private async requiresSuggestion(): Promise<boolean> {
-        if (!this.song.uid || !this.song.authorId) {
+        const current = this.song();
+        if (!current.uid || !current.authorId) {
             return false;
         }
 
@@ -204,7 +226,7 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             firstValueFrom(this._userService.isAdmin()),
         ]);
 
-        return !isAdmin && this.song.authorId !== user?.uid;
+        return !isAdmin && current.authorId !== user?.uid;
     }
 
     private openSuggestionDialog(): void {
@@ -225,7 +247,10 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             )
             .subscribe(({ id, messageKey, pending }) => {
                 if (id && !pending) {
-                    this.song.uid = id;
+                    const current = this.song();
+                    const updated = new Song();
+                    Object.assign(updated, current, { uid: id });
+                    this.song.set(updated);
                     this.hasPendingSuggestion.set(false);
                 }
                 this.onSuggestionSaved(id, messageKey, pending);
@@ -239,29 +264,30 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     private createSuggestion(message?: string, mode: SongSuggestionMode = 'suggestion') {
+        const current = this.song();
         return this._songSuggestionService.create({
-            targetSongId: this.song.uid,
+            targetSongId: current.uid,
             proposedOutcome: mode === 'version' ? 'version' : 'official',
             message,
             proposedSong: {
-                title: this.song.title,
-                subtitle: this.song.subtitle,
-                content: this.song.content,
-                lyrics: this.song.lyrics,
-                albums: this.song.albums,
-                arrangers: this.song.arrangers,
-                artists: this.song.artists,
-                composers: this.song.composers,
-                lyricists: this.song.lyricists,
-                copyright: this.song.copyright,
-                songKey: this.song.songKey,
-                uniqueChords: this.song.uniqueChords,
-                defaultKeyUniqueChords: this.song.defaultKeyUniqueChords,
-                capo: this.song.capo,
-                tempo: this.song.tempo,
-                time: this.song.time,
-                duration: this.song.duration,
-                year: this.song.year,
+                title: current.title,
+                subtitle: current.subtitle,
+                content: current.content,
+                lyrics: current.lyrics,
+                albums: current.albums,
+                arrangers: current.arrangers,
+                artists: current.artists,
+                composers: current.composers,
+                lyricists: current.lyricists,
+                copyright: current.copyright,
+                songKey: current.songKey,
+                uniqueChords: current.uniqueChords,
+                defaultKeyUniqueChords: current.defaultKeyUniqueChords,
+                capo: current.capo,
+                tempo: current.tempo,
+                time: current.time,
+                duration: current.duration,
+                year: current.year,
             },
         });
     }
@@ -277,9 +303,8 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._savedContent = this.song.content ?? '';
+        this._savedContent = this.song().content ?? '';
         this.hasPendingSuggestion.set(pending);
-        this._changeDetectorRef.markForCheck();
         this._translocoService
             .selectTranslate(sentMessageKey)
             .pipe(take(1))
@@ -289,7 +314,7 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     canDeactivate(): boolean | Observable<boolean> {
-        if (this._allowDeactivate || (this.song.content ?? '') === this._savedContent) {
+        if (this._allowDeactivate || (this.song().content ?? '') === this._savedContent) {
             return true;
         }
 
@@ -308,12 +333,11 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     removeSong(): void {
-        this._editorService.confirmAndDelete(this.song).subscribe((success) => {
+        this._editorService.confirmAndDelete(this.song()).subscribe((success) => {
             if (success) {
                 this._allowDeactivate = true;
                 this._router.navigate(['/library']);
             }
-            this._changeDetectorRef.markForCheck();
         });
     }
 
@@ -322,8 +346,9 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     onEditorClose() {
-        if (this.song?.uid) {
-            this._router.navigate(['/songs/read', this.song.uid]);
+        const current = this.song();
+        if (current?.uid) {
+            this._router.navigate(['/songs/read', current.uid]);
         }
     }
 

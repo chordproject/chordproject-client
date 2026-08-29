@@ -57,11 +57,47 @@
         </div>
     </div>
 
+    <!-- Alphabet Jumper Bar (shown when sorted by title) -->
+    @if (sort().field === 'title' && songs().length > 0) {
+        <div class="sticky top-0 z-20 flex flex-wrap items-center gap-1 border-b bg-neutral-50/95 px-4 py-2.5 backdrop-blur dark:bg-neutral-900/95 sm:px-6 md:px-8">
+            <span class="mr-1 text-xs font-bold tracking-wider text-neutral-400 uppercase">A-Z:</span>
+            <div class="flex flex-wrap items-center gap-0.5 sm:gap-1">
+                @for (letter of alphabet; track letter) {
+                    <button
+                        type="button"
+                        class="flex size-6 sm:size-7 items-center justify-center rounded text-xs font-semibold transition-colors"
+                        [class.text-primary-700]="existingLetters().has(letter)"
+                        [class.hover:bg-primary-100]="existingLetters().has(letter)"
+                        [class.dark:text-primary-300]="existingLetters().has(letter)"
+                        [class.dark:hover:bg-primary-900/60]="existingLetters().has(letter)"
+                        [class.text-neutral-300]="!existingLetters().has(letter)"
+                        [class.dark:text-neutral-700]="!existingLetters().has(letter)"
+                        [class.cursor-not-allowed]="!existingLetters().has(letter)"
+                        [disabled]="!existingLetters().has(letter)"
+                        (click)="jumpToLetter(letter)"
+                    >
+                        {{ letter }}
+                    </button>
+                }
+            </div>
+        </div>
+    }
+
     <!-- Songs list -->
     <div class="bg-card relative border-b">
         @if (visibleSongs().length) {
             @for (song of visibleSongs(); track trackByFn($index, song)) {
+                @if (showLetterHeader($index)) {
+                    <div
+                        [id]="'letter-header-' + getInitialLetter(song.title)"
+                        class="scroll-mt-14 border-b border-t border-neutral-200/80 bg-neutral-100/90 px-6 py-1 text-xs font-bold text-neutral-600 backdrop-blur dark:border-neutral-800/80 dark:bg-neutral-800/90 dark:text-neutral-300 sm:px-8"
+                    >
+                        {{ getInitialLetter(song.title) }}
+                    </div>
+                }
                 <chp-song-item
+                    [id]="'song-item-' + song.uid"
+                    class="scroll-mt-14 block"
                     [song]="song"
                     (click)="onSongClick(song)"
                     (dblclick)="onDblClick(song)"

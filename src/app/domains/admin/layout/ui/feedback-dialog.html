@@ -7,8 +7,8 @@
         <button
             matIconButton
             type="button"
-            [attr.aria-label]="'feedback.close' | transloco"
-            [matTooltip]="'feedback.close' | transloco"
+            [attr.aria-label]="'common.close' | transloco"
+            [matTooltip]="'common.close' | transloco"
             (click)="cancelled.emit()"
         >
             <mat-icon svgIcon="x"></mat-icon>
@@ -40,12 +40,15 @@
             }
         </mat-form-field>
 
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-1.5">
             <span class="text-sm font-semibold">{{ 'feedback.contact_label' | transloco }}</span>
-            <mat-radio-group class="flex flex-col gap-2" formControlName="allowContact">
+            <mat-radio-group class="flex flex-col gap-0.5" formControlName="allowContact">
                 <mat-radio-button value="yes">{{ 'feedback.contact_yes' | transloco }}</mat-radio-button>
                 <mat-radio-button value="no">{{ 'feedback.contact_no' | transloco }}</mat-radio-button>
             </mat-radio-group>
+            @if (form.controls.allowContact.hasError('required') && (form.controls.allowContact.touched || form.controls.allowContact.dirty)) {
+                <p class="text-xs font-medium text-red-600 dark:text-red-400">{{ 'feedback.contact_required' | transloco }}</p>
+            }
         </div>
 
         @if (form.controls.allowContact.value === 'yes' && !isAuthenticated()) {

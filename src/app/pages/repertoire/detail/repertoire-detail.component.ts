@@ -50,6 +50,9 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
     assignmentIds: Record<string, Record<string, string>> = {};
     skippedSlotIds = new Set<string>();
     songSearchControls: Record<string, UntypedFormControl> = {};
+    editingHeader = false;
+    editingTitle = '';
+    editingDescription = '';
     loading = true;
     loadError = false;
     private readonly unsubscribeAll = new Subject<void>();
@@ -245,6 +248,45 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
             control.disable({ emitEvent: false });
         }
         this.changeDetectorRef.markForCheck();
+    }
+
+    startEditingHeader(): void {
+        if (!this.repertoire) {
+            return;
+        }
+
+        this.editingTitle = this.repertoire.title || '';
+        this.editingDescription = this.repertoire.description || '';
+        this.editingHeader = true;
+    }
+
+    cancelEditingHeader(): void {
+        this.editingHeader = false;
+    }
+
+    async saveHeader(): Promise<void> {
+        if (!this.repertoire?.uid) {
+            return;
+        }
+
+        const title = this.editingTitle.trim();
+        if (!title) {
+            return;
+        }
+
+        const description = this.editingDescription.trim();
+        const updatedRepertoire: Repertoire = {
+            ...this.repertoire,
+            title,
+            description: description || undefined,
+        };
+
+        const uid = await this.repertoireService.saveRepertoire(updatedRepertoire);
+        if (uid) {
+            this.repertoire = updatedRepertoire;
+            this.editingHeader = false;
+            this.changeDetectorRef.markForCheck();
+        }
     }
 
     deleteRepertoire(): void {
