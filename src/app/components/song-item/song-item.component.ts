@@ -15,6 +15,7 @@ export class ChpSongItemComponent implements OnDestroy {
     @Input() ngClass: any;
     @Input() selected: boolean;
     @Input() showDragHandle = false;
+    @Input() prefixLabel?: string;
 
     ngOnDestroy() {
         // Cleanup logic if needed

@@ -141,13 +141,15 @@
         "go_to_setup": "Configurar tipos de evento",
         "title_label": "Título",
         "description_label": "Descripción o referencia",
+        "description_hint": "Sirve para buscar este repertorio de forma más inteligente más adelante.",
         "date_label": "Fecha",
         "create": "Crear",
         "select_event_type": "Selecciona o crea un tipo de evento",
         "select_event_type_description": "Aquí aparecerán sus espacios configurables.",
         "repertoires": "Repertorios",
-        "repertoires_description": "Colecciones programadas creadas hasta ahora.",
         "no_repertoires": "Aún no hay repertorios creados."
+        ,"no_search_matches": "Ningún repertorio coincide con la búsqueda."
+        ,"search_placeholder": "Busca por título, cita bíblica o tema..."
         ,"show_setup": "Configurar repertorios"
         ,"hide_setup": "Ocultar configuración"
         ,"back_to_repertoires": "Volver a repertorios"

@@ -32,6 +32,15 @@ Mantener una base de código compartida con builds, branding, traducciones y con
 - Eliminación directa de canciones desde el lector con confirmación.
 - Avisos de autenticación en operaciones de escritura y navegación protegida.
 - Layout de repertorios con tipos de evento, espacios, orden y repertorios fechados.
+- Creación rápida de un repertorio para un tipo de evento existente, separada de la configuración de tipos de evento y espacios (uso poco frecuente).
+- Vista "Abrir en vivo" de un repertorio con lista de canciones asignadas y previsualización de acordes, con el mismo patrón lista + vista previa que cancioneros.
+- Repertorios navegables desde el menú lateral, agrupados por tipo de evento, igual que los cancioneros.
+- Componente compartido de lista de canciones con vista previa (`ChpSongListPanelComponent`), reutilizado por cancioneros y por la vista en vivo de repertorios.
+- Orden de cancioneros dentro de un grupo: se respeta el orden manual cuando existe: si todos los miembros del grupo comparten el mismo valor de orden se ordenan alfabéticamente en su lugar.
+- El contenido de un cancionero recomendado solo expone al usuario anónimo las relaciones `songbook_songs` marcadas como `songbookPublic`.
+- Cancioneros personales y recomendados separados visualmente en "Mis cancioneros" y "Cancioneros recomendados", con el origen (`copiedFrom`) y el estado de sincronización visibles en la copia.
+- Fork de cancioneros y sus relaciones (`forkSongbooks`/`forkMany`), usado hoy desde el flujo de sugerencias para crear la copia personal antes de aplicar un cambio.
+- Un cancionero base (`isTemplate: true`, `scope: shared`, `published: true`) no puede editarse desde una copia: bloqueado por reglas de Firestore y por `isEditable()` en el cliente.
 - Logos, favicons, títulos, metadata, marcas de agua y traducciones adaptados a cada marca.
 - Idioma inicial basado en preferencia guardada o idioma del navegador, con inglés como fallback.
 - Preferencia de idioma persistida en `localStorage`.
@@ -105,15 +114,10 @@ isTemplate: true
 
 ### Pendiente
 
-- Separar visualmente "Mis cancioneros" y "Cancioneros recomendados".
 - Crear cancioneros recomendados de HomenaJesus sin imponerlos al usuario.
-- Añadir acciones "Ver" y "Crear mi copia".
-- Implementar el fork completo del cancionero y sus relaciones.
-- Conservar `copiedFrom` y mostrar el origen de una copia.
+- Añadir acciones "Ver" y "Crear mi copia" como acción directa y visible, no solo disparada indirectamente al aplicar una sugerencia.
 - Permitir que cada ministerio renombre, ordene, agregue y quite canciones de su copia.
-- Impedir que una copia modifique el cancionero base.
 - Ocultar cancioneros personales al usuario anónimo.
-- Mostrar al usuario anónimo únicamente asociaciones de cancioneros compartidos publicados.
 - Decidir si una copia puede recibir actualizaciones manuales del original en el futuro.
 - Usar un nombre de propietario coherente en nuevas relaciones; evaluar migración de `author_uid` a `ownerId` sin romper datos existentes.
 
@@ -138,6 +142,7 @@ isTemplate: true
 - Añadir duplicación de repertorios para nuevas fechas.
 - Validar índices, reglas y eliminación de repertorios con datos reales.
 - Definir sugerencias de repertorios previos por fecha o tiempo litúrgico sin crear lecturas excesivas.
+- Buscador inteligente de repertorios a partir de la cita bíblica o el tema central (campo `description`): encontrar repertorios anteriores del mismo evangelio aunque cambie el ciclo litúrgico A/B/C, el mismo pasaje narrado por otro evangelista (p. ej. la multiplicación de los panes en Mateo 14, Marcos 6, Lucas 9 o Juan 6) o repertorios con el mismo tema central aunque el pasaje sea distinto (p. ej. la misericordia de Dios hacia el pecador en el hijo pródigo, la mujer adúltera o Zaqueo). Evaluar si conviene resolverlo con búsqueda de texto simple o con IA; solo tiene sentido cuando exista suficiente volumen de repertorios (al menos uno por semana). El campo de descripción ya se documenta en la UI como preparación para esta funcionalidad futura.
 
 ### Terminada cuando
 

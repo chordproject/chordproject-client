@@ -10,6 +10,7 @@
                 @for (song of songs; track trackByFn($index, song)) {
                     <chp-song-item
                         [song]="song"
+                        [prefixLabel]="labelFor(song)"
                         (click)="songSelect.emit(song)"
                         (dblclick)="songDblClick.emit(song)"
                         class="w-full min-w-0 flex-1"

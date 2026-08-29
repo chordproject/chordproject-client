@@ -15,6 +15,8 @@ export class ChpSongListPanelComponent {
     @Input() selectedSongId: string | null = null;
     @Input() emptyIcon = 'book-open';
     @Input() emptyMessage = '';
+    /** Optional per-row badge (e.g. the repertoire slot a song belongs to). */
+    @Input() labelFor: (song: PartialSong) => string | undefined = () => undefined;
 
     @Output() songSelect = new EventEmitter<PartialSong>();
     @Output() songDblClick = new EventEmitter<PartialSong>();

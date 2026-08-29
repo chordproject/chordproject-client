@@ -51,6 +51,7 @@
                 [songs]="songItems"
                 [selectedSongId]="selectedSong?.uid ?? null"
                 [emptyMessage]="'repertoire_page.live_empty' | transloco"
+                [labelFor]="getSlotLabel"
                 (songSelect)="selectSong($event)"
             ></chp-song-list-panel>
         </div>

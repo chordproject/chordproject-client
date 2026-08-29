@@ -141,13 +141,15 @@
         "go_to_setup": "Configurer les types d'événement",
         "title_label": "Titre",
         "description_label": "Description ou référence",
+        "description_hint": "Sert à rechercher ce répertoire de façon plus intelligente plus tard.",
         "date_label": "Date",
         "create": "Créer",
         "select_event_type": "Sélectionnez ou créez un type d'événement",
         "select_event_type_description": "Ses espaces configurables apparaîtront ici.",
         "repertoires": "Répertoires",
-        "repertoires_description": "Collections programmées créées jusqu'à présent.",
         "no_repertoires": "Aucun répertoire créé pour le moment."
+        ,"no_search_matches": "Aucun répertoire ne correspond à la recherche."
+        ,"search_placeholder": "Rechercher par titre, citation biblique ou thème..."
         ,"show_setup": "Configurer les répertoires"
         ,"hide_setup": "Masquer la configuration"
         ,"back_to_repertoires": "Retour aux répertoires"

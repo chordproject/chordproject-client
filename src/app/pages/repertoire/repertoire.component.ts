@@ -1,4 +1,3 @@
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -9,11 +8,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, takeUntil } from 'rxjs';
 import { RepertoireService } from 'app/core/firebase/api/repertoire.service';
-import { EventSlot } from 'app/models/event-slot';
 import { EventType } from 'app/models/event-type';
 import { Repertoire } from 'app/models/repertoire';
 
@@ -24,7 +23,6 @@ import { Repertoire } from 'app/models/repertoire';
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CommonModule,
-        DragDropModule,
         FormsModule,
         MatButtonModule,
         MatDatepickerModule,
@@ -33,24 +31,19 @@ import { Repertoire } from 'app/models/repertoire';
         MatInputModule,
         MatNativeDateModule,
         MatSelectModule,
+        MatTooltipModule,
         RouterLink,
         TranslocoModule,
     ],
 })
 export class RepertoireComponent implements OnInit, OnDestroy {
     eventTypes: EventType[] = [];
-    selectedEventType: EventType | null = null;
-    eventSlots: EventSlot[] = [];
     repertoires: Repertoire[] = [];
-    newEventTypeName = '';
-    newSlotName = '';
-    editingSlotId: string | null = null;
-    editingSlotName = '';
+    repertoireSearchTerm = '';
     newRepertoireEventTypeId: string | null = null;
     newRepertoireTitle = '';
     newRepertoireDescription = '';
     newRepertoireDate = new Date();
-    showSetup = false;
     loading = false;
     private readonly unsubscribeAll = new Subject<void>();
 
@@ -75,13 +68,9 @@ export class RepertoireComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribeAll))
             .subscribe((eventTypes) => {
                 this.eventTypes = eventTypes;
-                if (!this.selectedEventType && eventTypes.length) {
-                    this.selectEventType(eventTypes[0]);
-                }
                 if (!this.newRepertoireEventTypeId && eventTypes.length) {
                     this.newRepertoireEventTypeId = eventTypes[0].uid;
                 }
-                this.showSetup = eventTypes.length === 0;
                 this.changeDetectorRef.markForCheck();
             });
     }
@@ -94,104 +83,6 @@ export class RepertoireComponent implements OnInit, OnDestroy {
                 this.repertoires = repertoires;
                 this.changeDetectorRef.markForCheck();
             });
-    }
-
-    selectEventType(eventType: EventType): void {
-        this.selectedEventType = eventType;
-        this.eventSlots = [];
-        this.repertoireService
-            .getEventSlots(eventType.uid)
-            .pipe(takeUntil(this.unsubscribeAll))
-            .subscribe((eventSlots) => {
-                this.eventSlots = eventSlots;
-                this.changeDetectorRef.markForCheck();
-            });
-    }
-
-    async createEventType(): Promise<void> {
-        const name = this.newEventTypeName.trim();
-        if (!name) {
-            return;
-        }
-
-        const uid = await this.repertoireService.saveEventType({ name } as EventType);
-        if (uid) {
-            this.newEventTypeName = '';
-            this.newRepertoireEventTypeId = uid;
-            this.loadEventTypes();
-        }
-    }
-
-    async createEventSlot(): Promise<void> {
-        const name = this.newSlotName.trim();
-        if (!name || !this.selectedEventType?.uid) {
-            return;
-        }
-
-        const uid = await this.repertoireService.saveEventSlot({
-            eventTypeId: this.selectedEventType.uid,
-            name,
-            order: this.eventSlots.length,
-            required: false,
-        } as EventSlot);
-        if (uid) {
-            this.newSlotName = '';
-            this.eventSlots = [
-                ...this.eventSlots,
-                {
-                    uid,
-                    eventTypeId: this.selectedEventType.uid,
-                    name,
-                    order: this.eventSlots.length,
-                    required: false,
-                } as EventSlot,
-            ];
-            this.changeDetectorRef.markForCheck();
-        }
-    }
-
-    startEditingSlot(slot: EventSlot): void {
-        this.editingSlotId = slot.uid;
-        this.editingSlotName = slot.name;
-    }
-
-    cancelEditingSlot(): void {
-        this.editingSlotId = null;
-        this.editingSlotName = '';
-    }
-
-    async saveSlotName(slot: EventSlot): Promise<void> {
-        const name = this.editingSlotName.trim();
-        if (!name || !slot.uid) {
-            return;
-        }
-
-        const uid = await this.repertoireService.saveEventSlot({
-            ...slot,
-            name,
-        });
-        if (uid) {
-            this.eventSlots = this.eventSlots.map((currentSlot) =>
-                currentSlot.uid === slot.uid ? { ...currentSlot, name } : currentSlot
-            );
-            this.cancelEditingSlot();
-            this.changeDetectorRef.markForCheck();
-        }
-    }
-
-    onSlotDrop(event: CdkDragDrop<EventSlot[]>): void {
-        if (event.previousIndex === event.currentIndex || !this.selectedEventType?.uid) {
-            return;
-        }
-
-        const reorderedSlots = [...this.eventSlots];
-        moveItemInArray(reorderedSlots, event.previousIndex, event.currentIndex);
-        this.eventSlots = reorderedSlots.map((slot, index) => ({ ...slot, order: index }));
-        this.repertoireService.updateEventSlotOrder(
-            this.selectedEventType.uid,
-            this.eventSlots.map((slot) => ({ uid: slot.uid, order: slot.order }))
-        );
-        this.changeDetectorRef.markForCheck();
     }
 
     async createRepertoire(): Promise<void> {
@@ -216,5 +107,21 @@ export class RepertoireComponent implements OnInit, OnDestroy {
 
     trackByUid(_index: number, item: { uid: string }): string {
         return item.uid;
+    }
+
+    get filteredRepertoires(): Repertoire[] {
+        const term = this.normalize(this.repertoireSearchTerm);
+        if (!term) {
+            return this.repertoires;
+        }
+
+        return this.repertoires.filter(
+            (repertoire) => this.normalize(repertoire.title).includes(term) || this.normalize(repertoire.description ?? '').includes(term)
+        );
+    }
+
+    /** Accent-insensitive comparison so "biblica"/"bíblica" or "misa"/"Misa" match the same way. */
+    private normalize(value: string): string {
+        return value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 }

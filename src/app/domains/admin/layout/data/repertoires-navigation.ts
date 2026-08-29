@@ -45,7 +45,7 @@ export class AdminRepertoiresNavigation {
       id: `repertoire-${repertoire.uid}`,
       label: repertoire.title,
       dynamic: true,
-      route: `/repertoires/${repertoire.uid}`,
+      route: `/repertoires/${repertoire.uid}/live`,
     };
   }
 }
