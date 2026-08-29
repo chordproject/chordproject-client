@@ -1,0 +1,23 @@
+@if (songs.length === 0) {
+    <div class="flex h-full flex-col items-center justify-center p-8 text-center">
+        <mat-icon class="mb-4 size-12 text-neutral-400" [svgIcon]="emptyIcon"></mat-icon>
+        <p class="text-lg font-medium">{{ emptyMessage }}</p>
+    </div>
+} @else {
+    <div class="px-6 pb-6 sm:px-8 sm:pb-8">
+        <div class="mx-auto w-full max-w-5xl overflow-hidden rounded-2xl border border-neutral-200 bg-card shadow-sm dark:border-neutral-800">
+            <div class="w-full space-y-0">
+                @for (song of songs; track trackByFn($index, song)) {
+                    <chp-song-item
+                        [song]="song"
+                        (click)="songSelect.emit(song)"
+                        (dblclick)="songDblClick.emit(song)"
+                        class="w-full min-w-0 flex-1"
+                        [selected]="selectedSongId === song.uid"
+                    >
+                    </chp-song-item>
+                }
+            </div>
+        </div>
+    </div>
+}

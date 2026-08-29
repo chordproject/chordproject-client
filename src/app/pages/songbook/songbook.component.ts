@@ -10,11 +10,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Observable, Subject, of, takeUntil } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, take, tap } from 'rxjs/operators';
-import { ChpSongItemComponent } from 'app/components/song-item/song-item.component';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
+import { ChpSongListPanelComponent } from 'app/components/song-list-panel/song-list-panel.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { UserService } from 'app/core/user/user.service';
@@ -39,7 +39,7 @@ import { Songbook } from 'app/models/songbook';
         TranslocoModule,
         ChpEditorComponent,
         ChpSongPreviewComponent,
-        ChpSongItemComponent,
+        ChpSongListPanelComponent,
         ChpSplitLayoutComponent,
     ],
 })

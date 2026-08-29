@@ -1,62 +1,65 @@
-<div class="flex h-full min-h-0 flex-col overflow-auto bg-neutral-50 p-6 dark:bg-neutral-950 sm:p-8">
-    <div class="mx-auto flex w-full max-w-5xl flex-col gap-5">
-        <a routerLink="/repertoires" class="inline-flex w-fit items-center gap-2 text-sm font-medium text-primary-700 hover:text-primary-900 dark:text-primary-300">
-            <mat-icon class="size-4" [svgIcon]="'arrow-left'"></mat-icon>
-            {{ 'repertoire_page.back_to_repertoires' | transloco }}
-        </a>
-
-        @if (loading) {
-            <div class="rounded-lg border border-neutral-200 bg-white p-8 text-center dark:border-neutral-800 dark:bg-neutral-900">
-                {{ 'repertoire_page.loading' | transloco }}
-            </div>
-        } @else if (repertoire && !loadError) {
-            <header class="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-                <div class="flex flex-wrap items-start justify-between gap-4">
-                    <div>
-                        <p class="text-sm font-medium text-primary-600 dark:text-primary-400">{{ eventTypeName }}</p>
-                        <h1 class="mt-1 text-3xl font-bold text-neutral-900 dark:text-neutral-100">{{ repertoire.title }}</h1>
-                        @if (repertoire.description) {
-                            <p class="mt-2 text-neutral-600 dark:text-neutral-300">{{ repertoire.description }}</p>
-                        }
-                        <p class="mt-3 text-sm text-neutral-500 dark:text-neutral-400">{{ repertoire.date | date: 'mediumDate' }}</p>
-                    </div>
-                    <a class="inline-flex items-center gap-2 rounded-md border border-neutral-300 px-3 py-2 text-sm font-medium" [routerLink]="['/repertoires', repertoire.uid]">
-                        <mat-icon [svgIcon]="'square-pen'"></mat-icon>
-                        {{ 'repertoire_page.manage' | transloco }}
-                    </a>
-                </div>
-            </header>
-
-            @if (currentSong; as song) {
-                <section class="rounded-lg border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-                    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 px-5 py-4 dark:border-neutral-800">
-                        <div>
-                            <p class="text-sm font-medium text-primary-600 dark:text-primary-400">{{ currentSlot?.name }}</p>
-                            <h2 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100">{{ song.title }}</h2>
-                        </div>
-                        <span class="text-sm text-neutral-500 dark:text-neutral-400">{{ currentIndex + 1 }} / {{ songs.length }}</span>
-                    </div>
-                    <div class="whitespace-pre-wrap p-5 text-sm sm:p-8">{{ song.content || song.lyrics || '' }}</div>
-                    <footer class="flex items-center justify-between gap-3 border-t border-neutral-200 px-5 py-4 dark:border-neutral-800">
-                        <button class="inline-flex items-center gap-2 rounded-md border border-neutral-300 px-3 py-2 text-sm font-medium disabled:opacity-50" type="button" [disabled]="currentIndex === 0" (click)="previous()">
-                            <mat-icon [svgIcon]="'arrow-left'"></mat-icon>
-                            {{ 'repertoire_page.previous' | transloco }}
-                        </button>
-                        <button class="inline-flex items-center gap-2 rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white disabled:opacity-50" type="button" [disabled]="currentIndex >= songs.length - 1" (click)="next()">
-                            {{ 'repertoire_page.next' | transloco }}
-                            <mat-icon [svgIcon]="'arrow-right'"></mat-icon>
-                        </button>
-                    </footer>
-                </section>
-            } @else {
-                <div class="rounded-lg border border-dashed border-neutral-300 bg-white p-8 text-center text-neutral-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400">
-                    {{ 'repertoire_page.live_empty' | transloco }}
-                </div>
-            }
-        } @else {
-            <div class="rounded-lg border border-dashed border-neutral-300 bg-white p-8 text-center text-neutral-500 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400">
-                {{ 'repertoire_page.load_error' | transloco }}
-            </div>
-        }
+@if (loading) {
+    <div class="flex h-full items-center justify-center bg-neutral-50 p-8 text-center dark:bg-neutral-950">
+        {{ 'repertoire_page.loading' | transloco }}
     </div>
-</div>
+} @else if (repertoire && !loadError) {
+    <chp-split-layout
+        class="h-full w-full flex-auto"
+        [leftTemplate]="songList"
+        [rightTemplate]="viewer"
+        [hasSecondaryContent]="!!selectedSong"
+    >
+    </chp-split-layout>
+} @else {
+    <div class="flex h-full items-center justify-center bg-neutral-50 p-8 text-center dark:bg-neutral-950">
+        <p class="text-neutral-500 dark:text-neutral-400">{{ 'repertoire_page.load_error' | transloco }}</p>
+    </div>
+}
+
+<ng-template #songList>
+    <div class="flex h-full flex-col bg-neutral-50 dark:bg-neutral-950">
+        <div class="px-6 pt-6 sm:px-8">
+            <a
+                routerLink="/repertoires"
+                class="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-primary-700 hover:text-primary-900 dark:text-primary-300 dark:hover:text-primary-100"
+            >
+                <mat-icon class="size-4" [svgIcon]="'arrow-left'"></mat-icon>
+                {{ 'repertoire_page.back_to_repertoires' | transloco }}
+            </a>
+        </div>
+        <div class="px-6 pb-5 pt-4 sm:px-8">
+            <header class="mx-auto flex w-full max-w-5xl flex-col gap-4 rounded-lg border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900 sm:flex-row sm:items-start sm:justify-between">
+                <div class="min-w-0">
+                    <p class="text-sm font-medium text-primary-600 dark:text-primary-400">{{ eventTypeName }}</p>
+                    <h1 class="mt-1 text-3xl font-bold text-neutral-950 dark:text-neutral-50">{{ repertoire.title }}</h1>
+                    @if (repertoire.description) {
+                        <p class="mt-2 text-neutral-600 dark:text-neutral-300">{{ repertoire.description }}</p>
+                    }
+                    <p class="mt-3 text-sm text-neutral-500 dark:text-neutral-400">{{ repertoire.date | date: 'mediumDate' }}</p>
+                </div>
+                <a
+                    class="inline-flex shrink-0 items-center gap-2 rounded-md border border-neutral-300 px-3 py-2 text-sm font-medium dark:border-neutral-700"
+                    [routerLink]="['/repertoires', repertoire.uid]"
+                >
+                    <mat-icon [svgIcon]="'square-pen'"></mat-icon>
+                    {{ 'repertoire_page.manage' | transloco }}
+                </a>
+            </header>
+        </div>
+        <div class="bg-card flex-1">
+            <chp-song-list-panel
+                [songs]="songItems"
+                [selectedSongId]="selectedSong?.uid ?? null"
+                [emptyMessage]="'repertoire_page.live_empty' | transloco"
+                (songSelect)="selectSong($event)"
+            ></chp-song-list-panel>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #viewer>
+    @if (selectedSong; as song) {
+        <chp-song-preview [song]="song"></chp-song-preview>
+    }
+</ng-template>
+

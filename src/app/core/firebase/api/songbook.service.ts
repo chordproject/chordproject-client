@@ -210,6 +210,21 @@ export class SongbookService {
         }
     }
 
+    /** Without an explicit member order, keep groups readable by falling back to alphabetical order. */
+    private sortGroupSongbooks(songbooks: Songbook[], hasCustomOrder: boolean): Songbook[] {
+        if (hasCustomOrder) {
+            return songbooks;
+        }
+
+        return [...songbooks].sort((first, second) => first.name.localeCompare(second.name, 'es', { sensitivity: 'base' }));
+    }
+
+    /** All members defaulting to the same order (usually 0) means nobody has ordered this group on purpose. */
+    private hasDistinctOrder(memberDocs: { data(): { order?: number } }[]): boolean {
+        const orders = new Set(memberDocs.map((memberDocument) => Number(memberDocument.data().order ?? 0)));
+        return orders.size > 1;
+    }
+
     getRecommendedGroups(): Observable<import('app/models/songbook-group').SongbookGroupWithChildren[]> {
         return from(getDocs(query(collection(this._firestore, 'songbook_groups'), where('published', '==', true)))).pipe(
             switchMap((groupSnapshot) => {
@@ -224,6 +239,7 @@ export class SongbookService {
                         where('groupId', '==', group.uid),
                         where('groupPublic', '==', true)
                     ));
+                    const hasCustomOrder = this.hasDistinctOrder(memberSnapshot.docs);
                     const songbooks = await Promise.all(memberSnapshot.docs
                         .sort((first, second) => Number(first.data().order ?? 0) - Number(second.data().order ?? 0))
                         .map(async (memberDocument) => {
@@ -234,7 +250,7 @@ export class SongbookService {
                                 : null;
                         }));
 
-                    return { group, songbooks: songbooks.filter((songbook): songbook is Songbook => songbook !== null) };
+                    return { group, songbooks: this.sortGroupSongbooks(songbooks.filter((songbook): songbook is Songbook => songbook !== null), hasCustomOrder) };
                 })));
             }),
             switchMap((groups) => groups ? of(groups) : of([])),
@@ -266,13 +282,14 @@ export class SongbookService {
                         where('groupId', '==', group.uid),
                         where('groupOwnerId', '==', userId)
                     ));
+                    const hasCustomOrder = this.hasDistinctOrder(memberSnapshot.docs);
                     const songbooks = await Promise.all(memberSnapshot.docs
                         .sort((first, second) => Number(first.data().order ?? 0) - Number(second.data().order ?? 0))
                         .map(async (memberDocument) => {
                             const songbookSnapshot = await getDoc(doc(this._firestore, 'songbooks', memberDocument.data().songbookId));
                             return songbookSnapshot.exists() ? ({ ...songbookSnapshot.data(), uid: songbookSnapshot.id } as Songbook) : null;
                         }));
-                    return { group, songbooks: songbooks.filter((songbook): songbook is Songbook => songbook !== null) };
+                    return { group, songbooks: this.sortGroupSongbooks(songbooks.filter((songbook): songbook is Songbook => songbook !== null), hasCustomOrder) };
                 })).then((groups) => groups.filter((group) => group !== null)))),
             catchError((error) => this.handleError(error))
         );

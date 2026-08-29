@@ -1,9 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ChpSongListPanelComponent } from 'app/components/song-list-panel/song-list-panel.component';
+import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
+import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
 import { RepertoireService } from 'app/core/firebase/api/repertoire.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { EventSlot } from 'app/models/event-slot';
@@ -15,14 +19,17 @@ import { Repertoire } from 'app/models/repertoire';
     standalone: true,
     templateUrl: './repertoire-live.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MatIconModule, RouterLink, TranslocoModule],
+    imports: [CommonModule, MatIconModule, RouterLink, TranslocoModule, ChpSongListPanelComponent, ChpSongPreviewComponent, ChpSplitLayoutComponent],
 })
 export class RepertoireLiveComponent implements OnInit, OnDestroy {
+    @ViewChild(ChpSplitLayoutComponent) splitLayout: ChpSplitLayoutComponent;
+
     repertoire: Repertoire | null = null;
     eventTypeName = '';
     slots: EventSlot[] = [];
     songs: { slot: EventSlot; song: PartialSong }[] = [];
-    currentIndex = 0;
+    songItems: PartialSong[] = [];
+    selectedSong: PartialSong | null = null;
     loading = true;
     loadError = false;
     private readonly unsubscribeAll = new Subject<void>();
@@ -77,6 +84,8 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
                         const slot = result.slots.find((item) => item.uid === assignment.slotId);
                         return song && slot ? [{ slot, song }] : [];
                     });
+                    this.songItems = this.songs.map((item) => item.song);
+                    this.selectedSong = this.songs[0]?.song ?? null;
                 }
                 this.loading = false;
                 this.changeDetectorRef.markForCheck();
@@ -84,20 +93,13 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
         });
     }
 
-    get currentSong(): PartialSong | null {
-        return this.songs[this.currentIndex]?.song ?? null;
-    }
+    selectSong(song: PartialSong): void {
+        this.selectedSong = song;
+        this.changeDetectorRef.markForCheck();
 
-    get currentSlot(): EventSlot | null {
-        return this.songs[this.currentIndex]?.slot ?? null;
-    }
-
-    previous(): void {
-        this.currentIndex = Math.max(0, this.currentIndex - 1);
-    }
-
-    next(): void {
-        this.currentIndex = Math.min(this.songs.length - 1, this.currentIndex + 1);
+        if (this.splitLayout?.isMobile) {
+            this.splitLayout.togglePreview();
+        }
     }
 
     ngOnDestroy(): void {

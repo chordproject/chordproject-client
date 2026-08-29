@@ -77,12 +77,16 @@ export class AdminSongbooksNavigation {
   }
 
   private toNavigationItems(songbooks: { uid: string; name: string }[]): NavigationItem[] {
-    return this.sortSongbooks(songbooks).map((songbook): NavigationItem => ({
+    return this.sortSongbooks(songbooks).map((songbook) => this.toNavigationItem(songbook));
+  }
+
+  private toNavigationItem(songbook: { uid: string; name: string }): NavigationItem {
+    return {
       id: `songbook-${songbook.uid}`,
       label: songbook.name,
       dynamic: true,
       route: `/songbook/${songbook.uid}`,
-    }));
+    };
   }
 
   private toGroupNavigationItems(groups: { group: { uid: string; name: string; order?: number }; songbooks: { uid: string; name: string }[] }[]): NavigationItem[] {
@@ -93,7 +97,8 @@ export class AdminSongbooksNavigation {
         label: group.name,
         dynamic: true,
         category: true,
-        children: this.toNavigationItems(songbooks),
+        // Preserve the membership order returned by the service; do not alphabetize grouped songbooks.
+        children: songbooks.map((songbook) => this.toNavigationItem(songbook)),
       }));
   }
 

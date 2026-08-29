@@ -22,6 +22,7 @@ import {
   NavigationItem,
 } from '@/app/domains/admin/layout/data/navigation';
 import { AdminSongbooksNavigation } from '@/app/domains/admin/layout/data/songbooks-navigation';
+import { AdminRepertoiresNavigation } from '@/app/domains/admin/layout/data/repertoires-navigation';
 
 @Component({
   selector: 'navigation',
@@ -163,6 +164,7 @@ export class Navigation {
   // Dependencies
   private router = inject(Router);
   private songbooksNavigation = inject(AdminSongbooksNavigation);
+  private repertoiresNavigation = inject(AdminRepertoiresNavigation);
   private userService = inject(UserService);
   private songSuggestionService = inject(SongSuggestionService);
   private songbookSuggestionService = inject(SongbookSuggestionService);
@@ -189,6 +191,9 @@ export class Navigation {
   protected songbooks = toSignal(this.songbooksNavigation.items$, {
     initialValue: null,
   });
+  protected repertoires = toSignal(this.repertoiresNavigation.items$, {
+    initialValue: null,
+  });
   protected pendingSuggestionsCount = toSignal(
     this.userService.isAdmin().pipe(
       switchMap((isAdmin) =>
@@ -207,6 +212,12 @@ export class Navigation {
     effect(() => {
       const songbooks = this.songbooks();
       this.navigation.update((items) => this.withSongbooks(items, songbooks));
+    });
+
+    // Replace the static "Repertoires" entry with its event-type/repertoire tree
+    effect(() => {
+      const repertoires = this.repertoires();
+      this.navigation.update((items) => this.withRepertoires(items, repertoires));
     });
 
     // Expand active route on initial load
@@ -253,6 +264,42 @@ export class Navigation {
       ...item,
       route: '/songbook',
       children: songbooks,
+    };
+  }
+
+  /**
+   * Replace the static "Repertoires" entry's route with a dynamic tree of
+   * repertoires grouped by event type.
+   */
+  private withRepertoires(
+    items: NavigationItem[],
+    repertoires: NavigationItem[] | null
+  ): NavigationItem[] {
+    return items.map((section) => ({
+      ...section,
+      children: section.children?.map((item) =>
+        item.id === 'general/repertoires'
+          ? this.withRepertoiresItem(item, repertoires)
+          : item
+      ),
+    }));
+  }
+
+  /**
+   * Keep Repertoires clickable even when dynamic data is unavailable.
+   */
+  private withRepertoiresItem(
+    item: NavigationItem,
+    repertoires: NavigationItem[] | null
+  ): NavigationItem {
+    if (!repertoires || repertoires.length === 0) {
+      return { ...item, route: '/repertoires', children: undefined };
+    }
+
+    return {
+      ...item,
+      route: '/repertoires',
+      children: repertoires,
     };
   }
 
