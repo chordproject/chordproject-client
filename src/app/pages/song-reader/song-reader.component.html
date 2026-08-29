@@ -148,25 +148,12 @@
                     </div>
 
                     <div class="bg-card relative flex flex-col border-b">
-                        <chp-viewer-toolbar
+                        <chp-viewer-panel
                             [song]="song"
-                            [deviceType]="deviceType"
-                            [isFullScreen]="viewer.isFullScreen"
+                            [content]="viewerContent"
                             (editSongEvent)="editSong()"
                             (deleteSongEvent)="deleteSong()"
-                            (transposeEvent)="viewer.transpose($event)"
-                            (zoomEvent)="viewer.zoom($event)"
-                            (fullScreenEvent)="viewer.toggleFullScreen()"
-                            (settingsEvent)="toggleSettings()"
-                        >
-                        </chp-viewer-toolbar>
-                        <chp-viewer
-                            #viewer
-                            [content]="viewerContent"
-                            [showMetadata]="false"
-                            class="order-0"
-                        >
-                        </chp-viewer>
+                        ></chp-viewer-panel>
                     </div>
                 } @else {
                     <div class="flex h-full min-h-80 items-center justify-center px-6">

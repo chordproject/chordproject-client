@@ -211,13 +211,17 @@ export class Navigation {
     // Replace the static "Songbooks" entry with the signed-in user's songbooks
     effect(() => {
       const songbooks = this.songbooks();
-      this.navigation.update((items) => this.withSongbooks(items, songbooks));
+      this.navigation.update((items) =>
+        this.expandActiveRoute(this.withSongbooks(items, songbooks))
+      );
     });
 
     // Replace the static "Repertoires" entry with its event-type/repertoire tree
     effect(() => {
       const repertoires = this.repertoires();
-      this.navigation.update((items) => this.withRepertoires(items, repertoires));
+      this.navigation.update((items) =>
+        this.expandActiveRoute(this.withRepertoires(items, repertoires))
+      );
     });
 
     // Expand active route on initial load
@@ -260,10 +264,17 @@ export class Navigation {
       return { ...item, route: '/songbook', children: undefined };
     }
 
+    const generalChild: NavigationItem = {
+      id: 'general/songbooks/main',
+      label: 'nav.general',
+      icon: 'layout-grid',
+      route: '/songbook',
+    };
+
     return {
       ...item,
-      route: '/songbook',
-      children: songbooks,
+      route: undefined,
+      children: [generalChild, ...songbooks],
     };
   }
 
@@ -296,10 +307,17 @@ export class Navigation {
       return { ...item, route: '/repertoires', children: undefined };
     }
 
+    const generalChild: NavigationItem = {
+      id: 'general/repertoires/main',
+      label: 'nav.general',
+      icon: 'layout-grid',
+      route: '/repertoires',
+    };
+
     return {
       ...item,
-      route: '/repertoires',
-      children: repertoires,
+      route: undefined,
+      children: [generalChild, ...repertoires],
     };
   }
 

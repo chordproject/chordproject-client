@@ -24,6 +24,7 @@
         "create": "Crear",
         "songbooks": "Cancioneros",
         "repertoires": "Repertorios",
+        "general": "General",
         "suggestions": "Sugerencias",
         "feedback": "Feedback",
         "sign_in": "Iniciar sesión",
@@ -133,6 +134,15 @@
         "reorder_space": "Reordenar espacio",
         "edit_space": "Editar espacio",
         "save_space": "Guardar espacio",
+        "delete_space": "Eliminar espacio",
+        "delete_space_confirm_title": "Eliminar espacio",
+        "delete_space_confirm_message": "¿Estás seguro de que deseas eliminar este espacio del tipo de evento?",
+        "delete_event_type": "Eliminar tipo de evento",
+        "delete_event_type_confirm_title": "Eliminar tipo de evento",
+        "delete_event_type_confirm_message": "¿Estás seguro de que deseas eliminar este tipo de evento?",
+        "delete_repertoire": "Eliminar repertorio",
+        "delete_repertoire_confirm_title": "Eliminar repertorio",
+        "delete_repertoire_confirm_message": "¿Estás seguro de que deseas eliminar este repertorio?",
         "cancel_edit": "Cancelar edición",
         "new_repertoire": "Nuevo repertorio",
         "new_repertoire_description": "Crea un repertorio con fecha a partir de un tipo de evento.",
@@ -149,7 +159,16 @@
         "repertoires": "Repertorios",
         "no_repertoires": "Aún no hay repertorios creados."
         ,"no_search_matches": "Ningún repertorio coincide con la búsqueda."
-        ,"search_placeholder": "Busca por título, cita bíblica o tema..."
+        ,"search_placeholder": "Busca por título, referencia o tema..."
+        ,"grid_view": "Vista en cuadrícula"
+        ,"list_view": "Vista en lista"
+        ,"type_column": "Tipo"
+        ,"repertoire_column": "Repertorio"
+        ,"date_column": "Fecha"
+        ,"songs_column": "Canciones incluidas"
+        ,"actions_column": "Acciones"
+        ,"no_songs_assigned": "Sin canciones"
+        ,"more_songs": "más"
         ,"show_setup": "Configurar repertorios"
         ,"hide_setup": "Ocultar configuración"
         ,"back_to_repertoires": "Volver a repertorios"
@@ -192,6 +211,12 @@
         "title_required": "Escribe un título.",
         "message_label": "Cuéntanos más",
         "message_error": "Escribe al menos 10 caracteres.",
+        "contact_label": "¿Podemos contactarte sobre tus comentarios?",
+        "contact_yes": "Sí, pueden contactarme",
+        "contact_no": "No, no me contacten",
+        "email_label": "Tu correo electrónico",
+        "email_required": "Escribe tu correo electrónico.",
+        "email_invalid": "Escribe un correo electrónico válido.",
         "submit": "Enviar mensaje",
         "sent": "Gracias. Recibimos tu mensaje."
     },

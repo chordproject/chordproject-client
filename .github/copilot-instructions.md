@@ -15,3 +15,4 @@
 	- `@for (item of items) {}` en vez de `*ngFor`.
 	- `@empty {}` como bloque alternativo para `@for`.
 - Todo el código propuesto debe evitar redundancia al máximo; no repetir código innecesariamente.
+- Los textos de UI (labels, placeholders, tooltips, mensajes) deben ser neutrales para ambos sitios (chordproject.com y homenajesus.com); no asumir contenido religioso ni referencias específicas de un solo sitio (por ejemplo, evitar "cita bíblica" y usar en su lugar términos genéricos como "referencia" o "tema").

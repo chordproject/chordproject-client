@@ -36,6 +36,7 @@ Mantener una base de código compartida con builds, branding, traducciones y con
 - Vista "Abrir en vivo" de un repertorio con lista de canciones asignadas y previsualización de acordes, con el mismo patrón lista + vista previa que cancioneros.
 - Repertorios navegables desde el menú lateral, agrupados por tipo de evento, igual que los cancioneros.
 - Componente compartido de lista de canciones con vista previa (`ChpSongListPanelComponent`), reutilizado por cancioneros y por la vista en vivo de repertorios.
+- Simplificación de la edición de canciones: se eliminó la edición rápida ("Quick edit") inline para utilizar siempre el editor completo (`/songs/create/:uid`) como única vía de edición.
 - Orden de cancioneros dentro de un grupo: se respeta el orden manual cuando existe: si todos los miembros del grupo comparten el mismo valor de orden se ordenan alfabéticamente en su lugar.
 - El contenido de un cancionero recomendado solo expone al usuario anónimo las relaciones `songbook_songs` marcadas como `songbookPublic`.
 - Cancioneros personales y recomendados separados visualmente en "Mis cancioneros" y "Cancioneros recomendados", con el origen (`copiedFrom`) y el estado de sincronización visibles en la copia.

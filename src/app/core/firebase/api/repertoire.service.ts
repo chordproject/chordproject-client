@@ -146,6 +146,55 @@ export class RepertoireService {
         }
     }
 
+    async deleteEventSlot(uid: string): Promise<boolean> {
+        if (!this.verifyAuthentication()) {
+            return false;
+        }
+
+        try {
+            await deleteDoc(doc(this.firestore, 'event_slots', uid));
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    async deleteEventType(uid: string): Promise<boolean> {
+        if (!this.verifyAuthentication()) {
+            return false;
+        }
+
+        try {
+            await deleteDoc(doc(this.firestore, 'event_types', uid));
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    async deleteRepertoire(uid: string): Promise<boolean> {
+        if (!this.verifyAuthentication()) {
+            return false;
+        }
+
+        try {
+            await deleteDoc(doc(this.firestore, 'repertoires', uid));
+            const snapshot = await getDocs(
+                query(collection(this.firestore, 'repertoire_songs'), where('repertoireId', '==', uid))
+            );
+            if (!snapshot.empty) {
+                const batch = writeBatch(this.firestore);
+                snapshot.docs.forEach((document) => {
+                    batch.delete(doc(this.firestore, 'repertoire_songs', document.id));
+                });
+                await batch.commit();
+            }
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
     saveRepertoireSlotStatus(
         repertoireId: string,
         slotId: string,

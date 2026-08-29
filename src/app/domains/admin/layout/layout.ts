@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -61,10 +61,10 @@ import { environment } from 'environments/environment';
       <mat-sidenav
         class="w-64 border-r border-neutral-200 scheme-dark dark:border-neutral-800 dark:bg-neutral-900 print:hidden"
         [mode]="isMobile() ? 'over' : 'side'"
-        [opened]="!isMobile()"
+        [opened]="sidebarOpen()"
+        (openedChange)="sidebarOpen.set($event)"
         [disableClose]="!isMobile()"
         fixedInViewport
-        #sidenav="matSidenav"
       >
         <admin-sidebar />
       </mat-sidenav>
@@ -74,7 +74,7 @@ import { environment } from 'environments/environment';
       >
         <!-- Toolbar -->
         <div class="relative flex items-center border-b px-4 py-2.5 print:hidden">
-          @if (isMobile() && !sidenav.opened) {
+          @if (isMobile() && !sidebarOpen()) {
             <a
               [routerLink]="['/home']"
               class="mr-3 inline-flex items-center"
@@ -90,7 +90,7 @@ import { environment } from 'environments/environment';
 
           <button
             matIconButton
-            (click)="sidenav.toggle()"
+            (click)="sidebarOpen.update(opened => !opened)"
           >
             <mat-icon svgIcon="panel-left" />
           </button>
@@ -141,15 +141,35 @@ export class AdminLayout {
   protected isMobile = computed(() =>
     this.media.match(`(max-width: 1023px)`)()
   );
-  protected isHome = toSignal(
+  protected sidebarOpen = signal(!this.isMobile());
+  private currentUrl = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
-      map((event) => event.urlAfterRedirects.startsWith('/home'))
+      map((event) => event.urlAfterRedirects)
     ),
-    { initialValue: this.router.url.startsWith('/home') }
+    { initialValue: this.router.url }
   );
+  protected isHome = computed(() => this.currentUrl().startsWith('/home'));
 
   protected feedbackOpen = signal(false);
+
+  constructor() {
+    // Al cruzar el punto de quiebre móvil/desktop, el sidenav vuelve a su estado
+    // por defecto (abierto en desktop, cerrado en móvil).
+    effect(() => {
+      this.sidebarOpen.set(!this.isMobile());
+    });
+
+    // En pantallas chicas (telefono/tablet) el menú lateral deja de ser
+    // necesario apenas se navega a cualquier sección. En desktop se mantiene
+    // abierto.
+    effect(() => {
+      this.currentUrl();
+      if (this.isMobile()) {
+        this.sidebarOpen.set(false);
+      }
+    });
+  }
 
   protected openFeedback(): void {
     this.feedbackOpen.set(true);

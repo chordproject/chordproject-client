@@ -24,6 +24,7 @@
         "create": "Créer",
         "songbooks": "Carnets",
         "repertoires": "Répertoires",
+        "general": "Général",
         "suggestions": "Suggestions",
         "feedback": "Commentaires",
         "sign_in": "Se connecter",
@@ -133,6 +134,15 @@
         "reorder_space": "Réorganiser l'espace",
         "edit_space": "Modifier l'espace",
         "save_space": "Enregistrer l'espace",
+        "delete_space": "Supprimer l'espace",
+        "delete_space_confirm_title": "Supprimer l'espace",
+        "delete_space_confirm_message": "Êtes-vous sûr de vouloir supprimer cet espace del tipo de evento ?",
+        "delete_event_type": "Supprimer le type d'événement",
+        "delete_event_type_confirm_title": "Supprimer le type d'événement",
+        "delete_event_type_confirm_message": "Êtes-vous sûr de vouloir supprimer ce type d'événement ?",
+        "delete_repertoire": "Supprimer le répertoire",
+        "delete_repertoire_confirm_title": "Supprimer le répertoire",
+        "delete_repertoire_confirm_message": "Êtes-vous sûr de vouloir supprimer ce répertoire ?",
         "cancel_edit": "Annuler la modification",
         "new_repertoire": "Nouveau répertoire",
         "new_repertoire_description": "Créez un répertoire daté à partir d'un type d'événement.",
@@ -149,7 +159,16 @@
         "repertoires": "Répertoires",
         "no_repertoires": "Aucun répertoire créé pour le moment."
         ,"no_search_matches": "Aucun répertoire ne correspond à la recherche."
-        ,"search_placeholder": "Rechercher par titre, citation biblique ou thème..."
+        ,"search_placeholder": "Rechercher par titre, référence ou thème..."
+        ,"grid_view": "Vue en grille"
+        ,"list_view": "Vue en liste"
+        ,"type_column": "Type"
+        ,"repertoire_column": "Répertoire"
+        ,"date_column": "Date"
+        ,"songs_column": "Chansons incluses"
+        ,"actions_column": "Actions"
+        ,"no_songs_assigned": "Aucune chanson"
+        ,"more_songs": "de plus"
         ,"show_setup": "Configurer les répertoires"
         ,"hide_setup": "Masquer la configuration"
         ,"back_to_repertoires": "Retour aux répertoires"
@@ -192,6 +211,12 @@
         "title_required": "Saisissez un titre.",
         "message_label": "Dites-nous en plus",
         "message_error": "Écrivez au moins 10 caractères.",
+        "contact_label": "Pouvons-nous vous contacter à propos de vos commentaires ?",
+        "contact_yes": "Oui, vous pouvez me contacter",
+        "contact_no": "Non, ne me contactez pas",
+        "email_label": "Votre adresse e-mail",
+        "email_required": "Saisissez votre adresse e-mail.",
+        "email_invalid": "Saisissez une adresse e-mail valide.",
         "submit": "Envoyer le message",
         "sent": "Merci. Nous avons reçu votre message."
     },

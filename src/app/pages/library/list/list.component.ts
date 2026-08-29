@@ -3,8 +3,11 @@ import {
     ChangeDetectorRef,
     Component,
     ElementRef,
+    EventEmitter,
+    Input,
     OnDestroy,
     OnInit,
+    Output,
     ViewChild,
     ViewEncapsulation,
     computed,
@@ -17,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import {
     BehaviorSubject,
@@ -41,7 +44,6 @@ import {
     SongSort,
     SongSortField,
 } from 'app/models/partialsong';
-import { LibraryComponent } from '../library.component';
 
 const SONGS_PAGE_SIZE = 60;
 
@@ -73,7 +75,10 @@ export class SongsListComponent implements OnInit, OnDestroy {
     readonly visibleSongs = computed(() => this.songs().slice(0, this.visibleCount()));
     readonly hasMore = computed(() => this.visibleCount() < this.songs().length);
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    selectedSong: PartialSong;
+    @Input() selectedSong: PartialSong | null = null;
+    @Output() songSelect = new EventEmitter<PartialSong>();
+    @Output() songDblClick = new EventEmitter<PartialSong>();
+    @Output() selectionCleared = new EventEmitter<void>();
     @ViewChild('scrollRoot', { static: true }) private _scrollRoot: ElementRef<HTMLElement>;
     private _sort$ = new BehaviorSubject<SongSort>(DEFAULT_SONG_SORT);
     private _loadMoreObserver: IntersectionObserver;
@@ -81,9 +86,7 @@ export class SongsListComponent implements OnInit, OnDestroy {
 
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _songService: SongService,
-        private _router: Router,
-        private _libraryComponent: LibraryComponent 
+        private _songService: SongService
     ) {}
 
     // El centinela vive dentro de un bloque condicional, por eso se observa desde el setter.
@@ -137,26 +140,6 @@ export class SongsListComponent implements OnInit, OnDestroy {
         this.searchInputControl.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(() => this.clearSelection());
-
-        // Get the song
-        this._songService.song$.pipe(takeUntil(this._unsubscribeAll)).subscribe((song: PartialSong) => {
-            // Update the selected song
-            this.selectedSong = song;
-
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
-        });
-
-        // Subscribe to MatDrawer opened change
-        this._libraryComponent.matDrawer.openedChange.subscribe((opened) => {
-            if (!opened) {
-                // Remove the selected song when drawer closed
-                this.selectedSong = null;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            }
-        });
     }
 
     ngOnDestroy(): void {
@@ -196,31 +179,19 @@ export class SongsListComponent implements OnInit, OnDestroy {
     /** Reordenar o buscar cambia lo que se ve en la lista, así que la canción abierta deja de tener contexto. */
     private clearSelection(): void {
         if (this.selectedSong) {
-            // Volver a /library cierra el outlet `drawer`, y al cerrarse se limpia selectedSong.
-            this._router.navigateByUrl('/library');
+            this.selectionCleared.emit();
         }
     }
 
     onSongClick(song: PartialSong): void {
-        if (this.selectedSong && this.selectedSong.uid === song.uid) {
-            if (!this._libraryComponent.matDrawer.opened) {
-                this._libraryComponent.matDrawer.open();
-            }
-            return;
-        }
-
-        // Asegurarse de que el drawer está abierto
-        this._libraryComponent.matDrawer.open();
-
-        // Utilizar navigateByUrl con la ruta auxiliar correctamente formateada
-        this._router.navigateByUrl(`/library/(drawer:${song.uid})`);
+        this.songSelect.emit(song);
     }
 
     onDblClick(song: PartialSong): void {
-        this._router.navigate(['/songs/read', song.uid]);
+        this.songDblClick.emit(song);
     }
 
-    trackByFn(index: number, item: PartialSong): any {
+    trackByFn(index: number, item: any): any {
         return item.uid || index;
     }
 }

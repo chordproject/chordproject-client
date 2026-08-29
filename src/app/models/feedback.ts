@@ -9,6 +9,8 @@ export class Feedback extends BaseDocument {
     title: string;
     message: string;
     pageUrl?: string;
+    allowContact?: boolean;
+    contactEmail?: string;
     responseMessage?: string;
     authorName?: string;
 }

@@ -7,10 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { RepertoireService } from 'app/core/firebase/api/repertoire.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { EventSlot } from 'app/models/event-slot';
@@ -32,6 +34,7 @@ import { RepertoireSong } from 'app/models/repertoire-song';
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
+        MatTooltipModule,
         RouterLink,
         TranslocoModule,
     ],
@@ -53,8 +56,10 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly route: ActivatedRoute,
+        private readonly router: Router,
         private readonly repertoireService: RepertoireService,
         private readonly songService: SongService,
+        private readonly confirmationService: FuseConfirmationService,
         private readonly changeDetectorRef: ChangeDetectorRef
     ) {}
 
@@ -240,6 +245,41 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
             control.disable({ emitEvent: false });
         }
         this.changeDetectorRef.markForCheck();
+    }
+
+    deleteRepertoire(): void {
+        if (!this.repertoire?.uid) {
+            return;
+        }
+
+        this.confirmationService
+            .open({
+                title: 'repertoire_page.delete_repertoire_confirm_title',
+                message: 'repertoire_page.delete_repertoire_confirm_message',
+                icon: {
+                    name: 'trash-2',
+                    color: 'error',
+                },
+                actions: {
+                    confirm: {
+                        label: 'repertoire_page.delete_repertoire',
+                        color: 'error',
+                    },
+                    cancel: {
+                        label: 'repertoire_page.cancel_edit',
+                    },
+                },
+            })
+            .afterClosed()
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe(async (result) => {
+                if (result === 'confirmed' && this.repertoire?.uid) {
+                    const success = await this.repertoireService.deleteRepertoire(this.repertoire.uid);
+                    if (success) {
+                        this.router.navigate(['/repertoires']);
+                    }
+                }
+            });
     }
 
     getSongSearchControl(slot: EventSlot): UntypedFormControl {

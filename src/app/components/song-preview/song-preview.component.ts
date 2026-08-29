@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
-import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
+import { ChpViewerPanelComponent } from 'app/components/viewer/viewer-panel/viewer-panel.component';
 import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
 
@@ -12,11 +12,10 @@ import { Song } from 'app/models/song';
     selector: 'chp-song-preview',
     standalone: true,
     templateUrl: './song-preview.component.html',
-    imports: [MatButtonModule, MatIconModule, MatTooltipModule, RouterLink, TranslocoModule, ChpViewerComponent],
+    imports: [MatButtonModule, MatIconModule, MatTooltipModule, RouterLink, TranslocoModule, ChpViewerPanelComponent],
 })
 export class ChpSongPreviewComponent {
     @Input() song: Song | PartialSong;
-    @Input() showQuickEdit = false;
     @Input() showFullEditor = false;
     @Input() showClose = false;
     @Input() pendingSuggestion = false;
@@ -27,7 +26,6 @@ export class ChpSongPreviewComponent {
         return this.alternateVersionRoute === 'editor' ? ['/songs/create', uid] : ['/songs/read', uid];
     }
 
-    @Output() quickEdit = new EventEmitter<void>();
     @Output() openFullEditor = new EventEmitter<void>();
     @Output() close = new EventEmitter<void>();
 

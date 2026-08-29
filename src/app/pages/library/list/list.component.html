@@ -18,10 +18,10 @@
             </div>
         </div>
 
-        <div class="mt-4 flex items-center sm:mt-0 md:mt-4">
+        <div class="mt-4 flex flex-wrap items-center gap-2 sm:mt-0 sm:flex-nowrap md:mt-4">
             <!-- Search -->
-            <div class="flex-auto">
-                <mat-form-field class="fuse-mat-dense fuse-mat-rounded w-full min-w-50" subscriptSizing="dynamic">
+            <div class="w-full sm:w-auto sm:flex-auto">
+                <mat-form-field class="fuse-mat-dense fuse-mat-rounded w-full min-w-0 sm:min-w-50" subscriptSizing="dynamic">
                     <mat-icon class="size-5" matPrefix [svgIcon]="'search'"></mat-icon>
                     <input
                         matInput
@@ -32,7 +32,7 @@
                 </mat-form-field>
             </div>
             <!-- Sort field -->
-            <button class="ml-4" mat-stroked-button [matMenuTriggerFor]="sortMenu">
+            <button mat-stroked-button [matMenuTriggerFor]="sortMenu">
                 <mat-icon [svgIcon]="'arrow-up-down'"></mat-icon>
                 <span class="ml-2 mr-1">{{ 'library_page.sort.' + sort().field | transloco }}</span>
             </button>
@@ -50,9 +50,9 @@
                 ></mat-icon>
             </button>
             <!-- Add song button -->
-            <button class="ml-4" mat-flat-button [color]="'primary'" [routerLink]="['/songs/create']">
+            <button class="ml-auto sm:ml-0" mat-flat-button [color]="'primary'" [routerLink]="['/songs/create']">
                 <mat-icon [svgIcon]="'plus'"></mat-icon>
-                <span class="ml-2 mr-1">Add</span>
+                <span class="ml-2 mr-1 hidden sm:inline">Add</span>
             </button>
         </div>
     </div>

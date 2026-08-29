@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoModule } from '@jsverse/transloco';
+import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
 import { DeleteToolComponent } from './tools/delete.component';
 import { EditToolComponent } from './tools/edit.component';
@@ -35,8 +36,9 @@ import { ZoomToolComponent } from './tools/zoom.component';
 })
 export class ChpViewerToolbarComponent {
     @Input() deviceType = 'phone';
-    @Input() song: Song;
+    @Input() song: Song | PartialSong;
     @Input() isFullScreen = false;
+    @Input() showEditDelete = true;
 
     @Output() editSongEvent = new EventEmitter<void>();
     @Output() transposeEvent = new EventEmitter<'up' | 'down'>();

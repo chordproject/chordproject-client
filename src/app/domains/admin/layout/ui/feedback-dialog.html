@@ -40,6 +40,26 @@
             }
         </mat-form-field>
 
+        <div class="flex flex-col gap-2">
+            <span class="text-sm font-semibold">{{ 'feedback.contact_label' | transloco }}</span>
+            <mat-radio-group class="flex flex-col gap-2" formControlName="allowContact">
+                <mat-radio-button value="yes">{{ 'feedback.contact_yes' | transloco }}</mat-radio-button>
+                <mat-radio-button value="no">{{ 'feedback.contact_no' | transloco }}</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        @if (form.controls.allowContact.value === 'yes' && !isAuthenticated()) {
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label>{{ 'feedback.email_label' | transloco }}</mat-label>
+                <input matInput type="email" formControlName="email" />
+                @if (form.controls.email.hasError('required')) {
+                    <mat-error>{{ 'feedback.email_required' | transloco }}</mat-error>
+                } @else if (form.controls.email.hasError('email')) {
+                    <mat-error>{{ 'feedback.email_invalid' | transloco }}</mat-error>
+                }
+            </mat-form-field>
+        }
+
         <footer class="flex justify-end gap-3 pt-2">
             <button matButton="outlined" type="button" (click)="cancelled.emit()">
                 {{ 'confirmation.cancel' | transloco }}

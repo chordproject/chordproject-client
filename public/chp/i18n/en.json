@@ -24,6 +24,7 @@
         "create": "Create",
         "songbooks": "Songbooks",
         "repertoires": "Repertoires",
+        "general": "General",
         "suggestions": "Suggestions",
         "feedback": "Feedback",
         "sign_in": "Sign in",
@@ -133,6 +134,15 @@
         "reorder_space": "Reorder space",
         "edit_space": "Edit space",
         "save_space": "Save space",
+        "delete_space": "Delete space",
+        "delete_space_confirm_title": "Delete space",
+        "delete_space_confirm_message": "Are you sure you want to delete this space from the event type?",
+        "delete_event_type": "Delete event type",
+        "delete_event_type_confirm_title": "Delete event type",
+        "delete_event_type_confirm_message": "Are you sure you want to delete this event type?",
+        "delete_repertoire": "Delete repertoire",
+        "delete_repertoire_confirm_title": "Delete repertoire",
+        "delete_repertoire_confirm_message": "Are you sure you want to delete this repertoire?",
         "cancel_edit": "Cancel editing",
         "new_repertoire": "New repertoire",
         "new_repertoire_description": "Create a dated repertoire from an event type.",
@@ -149,7 +159,16 @@
         "repertoires": "Repertoires",
         "no_repertoires": "No repertoires created yet."
         ,"no_search_matches": "No repertoire matches your search."
-        ,"search_placeholder": "Search by title, Bible passage or theme..."
+        ,"search_placeholder": "Search by title, reference or theme..."
+        ,"grid_view": "Grid view"
+        ,"list_view": "List view"
+        ,"type_column": "Type"
+        ,"repertoire_column": "Repertoire"
+        ,"date_column": "Date"
+        ,"songs_column": "Included songs"
+        ,"actions_column": "Actions"
+        ,"no_songs_assigned": "No songs"
+        ,"more_songs": "more"
         ,"show_setup": "Configure repertoires"
         ,"hide_setup": "Hide configuration"
         ,"back_to_repertoires": "Back to repertoires"
@@ -192,6 +211,12 @@
         "title_required": "Enter a title.",
         "message_label": "Tell us more",
         "message_error": "Write at least 10 characters.",
+        "contact_label": "May we contact you about your feedback?",
+        "contact_yes": "Yes, you can contact me",
+        "contact_no": "No, do not contact me",
+        "email_label": "Your email address",
+        "email_required": "Enter your email address.",
+        "email_invalid": "Enter a valid email address.",
         "submit": "Send message",
         "sent": "Thank you. We received your message."
     },

@@ -10,6 +10,8 @@ export type CreateFeedbackInput = {
     title: string;
     message: string;
     pageUrl?: string;
+    allowContact?: boolean;
+    contactEmail?: string;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -51,8 +53,10 @@ export class FeedbackService {
             title: input.title,
             message: input.message,
             pageUrl: input.pageUrl || undefined,
+            allowContact: input.allowContact ?? false,
+            contactEmail: input.contactEmail || undefined,
             authorId: user?.uid || null,
-            authorName: user?.displayName || user?.email || undefined,
+            authorName: user?.displayName || user?.email || input.contactEmail || undefined,
             ownerId: user?.uid || undefined,
             source: 'user',
             creationDate: serverTimestamp(),

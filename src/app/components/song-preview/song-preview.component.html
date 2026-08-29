@@ -39,26 +39,16 @@
                     </div>
                 }
             </div>
-            @if (showQuickEdit || showFullEditor || showClose) {
+            @if (showFullEditor || showClose) {
                 <div class="flex shrink-0 items-center gap-1">
-                    @if (showQuickEdit) {
-                        <button
-                            type="button"
-                            mat-icon-button
-                            [matTooltip]="'preview.quick_edit' | transloco"
-                            (click)="quickEdit.emit()"
-                        >
-                            <mat-icon class="size-5" [svgIcon]="'square-pen'"></mat-icon>
-                        </button>
-                    }
                     @if (showFullEditor) {
                         <button
                             type="button"
                             mat-icon-button
-                            [matTooltip]="'preview.open_full_editor' | transloco"
+                            [matTooltip]="'viewer_toolbar.edit' | transloco"
                             (click)="openFullEditor.emit()"
                         >
-                            <mat-icon class="size-5" [svgIcon]="'external-link'"></mat-icon>
+                            <mat-icon class="size-5" [svgIcon]="'square-pen'"></mat-icon>
                         </button>
                     }
                     @if (showClose) {
@@ -105,10 +95,14 @@
             }
         </div>
     </div>
-    <div class="min-h-0 flex-1">
-        <div class="mx-auto h-full w-full max-w-3xl">
-            <chp-viewer [content]="content" isPreview="true" [showMetadata]="false" [compactPreview]="true">
-            </chp-viewer>
-        </div>
+    <div class="min-h-0 flex-1 flex flex-col">
+        <chp-viewer-panel
+            [song]="song"
+            [content]="content"
+            [isPreview]="true"
+            [compactPreview]="true"
+            [showEditDelete]="false"
+            [centerContent]="true"
+        ></chp-viewer-panel>
     </div>
 </div>

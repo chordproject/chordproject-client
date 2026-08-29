@@ -15,8 +15,7 @@ import { Observable, firstValueFrom, of, Subject, switchMap, takeUntil } from 'r
 import { catchError, debounceTime, map, startWith, take } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { ChpViewerToolbarComponent } from 'app/components/viewer/viewer-toolbar/viewer-toolbar.component';
-import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
+import { ChpViewerPanelComponent } from 'app/components/viewer/viewer-panel/viewer-panel.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongSuggestionService } from 'app/core/firebase/api/song-suggestion.service';
 import { SongService } from 'app/core/firebase/api/song.service';
@@ -41,8 +40,7 @@ import { JoinPipe } from 'app/pipes/join.pipe';
         MatSidenavModule,
         RouterOutlet,
         JoinPipe,
-        ChpViewerToolbarComponent,
-        ChpViewerComponent,
+        ChpViewerPanelComponent,
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
@@ -63,7 +61,6 @@ export class SongReaderComponent implements OnInit, OnDestroy {
     versions: PartialSong[] = [];
     associatedTags: Tag[] = [];
     drawerMode: 'side' | 'over';
-    deviceType: 'phone' | 'tablet' | 'desktop' = 'desktop';
     songbookSearchControl: UntypedFormControl = new UntypedFormControl('');
     filteredSongbooks$: Observable<Songbook[]>;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -110,14 +107,7 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         this._fuseMediaWatcherService.onMediaChange$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe(({ matchingAliases }) => {
-                if (matchingAliases.includes('lg')) {
-                    this.drawerMode = 'side';
-                    this.deviceType = 'desktop';
-                } else if (matchingAliases.includes('md')) {
-                    this.deviceType = 'tablet';
-                } else {
-                    this.deviceType = 'phone';
-                }
+                this.drawerMode = matchingAliases.includes('lg') ? 'side' : 'over';
                 this._changeDetectorRef.markForCheck();
             });
     }
@@ -389,8 +379,6 @@ export class SongReaderComponent implements OnInit, OnDestroy {
             this._changeDetectorRef.markForCheck();
         });
     }
-
-    toggleSettings(): void {}
 
     removeSongFromSongbook(songbook: Songbook): void {
         if (!this.song?.uid || !songbook?.uid) {

@@ -10,6 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, takeUntil } from 'rxjs';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { RepertoireService } from 'app/core/firebase/api/repertoire.service';
 import { EventSlot } from 'app/models/event-slot';
 import { EventType } from 'app/models/event-type';
@@ -44,6 +45,7 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly repertoireService: RepertoireService,
+        private readonly confirmationService: FuseConfirmationService,
         private readonly changeDetectorRef: ChangeDetectorRef
     ) {}
 
@@ -149,6 +151,82 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
             this.cancelEditingSlot();
             this.changeDetectorRef.markForCheck();
         }
+    }
+
+    deleteSlot(slot: EventSlot): void {
+        if (!slot.uid) {
+            return;
+        }
+
+        this.confirmationService
+            .open({
+                title: 'repertoire_page.delete_space_confirm_title',
+                message: 'repertoire_page.delete_space_confirm_message',
+                icon: {
+                    name: 'trash-2',
+                    color: 'error',
+                },
+                actions: {
+                    confirm: {
+                        label: 'repertoire_page.delete_space',
+                        color: 'error',
+                    },
+                    cancel: {
+                        label: 'repertoire_page.cancel_edit',
+                    },
+                },
+            })
+            .afterClosed()
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe(async (result) => {
+                if (result === 'confirmed') {
+                    const success = await this.repertoireService.deleteEventSlot(slot.uid);
+                    if (success) {
+                        this.eventSlots = this.eventSlots.filter((item) => item.uid !== slot.uid);
+                        this.changeDetectorRef.markForCheck();
+                    }
+                }
+            });
+    }
+
+    deleteEventType(eventType: EventType, event: MouseEvent): void {
+        event.stopPropagation();
+        if (!eventType.uid) {
+            return;
+        }
+
+        this.confirmationService
+            .open({
+                title: 'repertoire_page.delete_event_type_confirm_title',
+                message: 'repertoire_page.delete_event_type_confirm_message',
+                icon: {
+                    name: 'trash-2',
+                    color: 'error',
+                },
+                actions: {
+                    confirm: {
+                        label: 'repertoire_page.delete_event_type',
+                        color: 'error',
+                    },
+                    cancel: {
+                        label: 'repertoire_page.cancel_edit',
+                    },
+                },
+            })
+            .afterClosed()
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe(async (result) => {
+                if (result === 'confirmed') {
+                    const success = await this.repertoireService.deleteEventType(eventType.uid);
+                    if (success) {
+                        if (this.selectedEventType?.uid === eventType.uid) {
+                            this.selectedEventType = null;
+                            this.eventSlots = [];
+                        }
+                        this.loadEventTypes();
+                    }
+                }
+            });
     }
 
     onSlotDrop(event: CdkDragDrop<EventSlot[]>): void {

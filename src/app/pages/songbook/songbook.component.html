@@ -100,24 +100,12 @@
 
 <ng-template #viewer>
     @if (selectedSong(); as song) {
-        @if (editingPreview()) {
-            <chp-editor
-                [mode]="'quick'"
-                [(content)]="previewContent"
-                (close)="closeQuickEdit()"
-                (save)="saveQuickEdit()"
-                (remove)="removePreviewSong()"
-            ></chp-editor>
-        } @else {
-            <chp-song-preview
-                [song]="song"
-                [showQuickEdit]="currentSongbook() ? isEditable(currentSongbook()) : false"
-                [showFullEditor]="currentSongbook() ? isEditable(currentSongbook()) : false"
-                [showClose]="true"
-                (quickEdit)="startQuickEdit()"
-                (openFullEditor)="onDblClick(song)"
-                (close)="closePreview()"
-            ></chp-song-preview>
-        }
+        <chp-song-preview
+            [song]="song"
+            [showFullEditor]="currentSongbook() ? isEditable(currentSongbook()) : false"
+            [showClose]="true"
+            (openFullEditor)="openEditorForSong(song)"
+            (close)="closePreview()"
+        ></chp-song-preview>
     }
 </ng-template>

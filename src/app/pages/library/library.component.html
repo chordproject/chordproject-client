@@ -1,18 +1,29 @@
-<div class="absolute inset-0 flex min-w-0 flex-col overflow-hidden">
-    <mat-drawer-container class="bg-card h-full flex-auto dark:bg-transparent">
-        <mat-drawer
-            class="w-160 border-l-4 border-neutral-200 dark:border-neutral-700 dark:bg-neutral-900"
-            [mode]="drawerMode"
-            [opened]="false"
-            [position]="'end'"
-            [disableClose]="true"
-            #matDrawer
-        >
-            <router-outlet name="drawer"></router-outlet>
-        </mat-drawer>
+<chp-split-layout
+    class="absolute inset-0 flex min-w-0 flex-col overflow-hidden"
+    [leftTemplate]="songList"
+    [rightTemplate]="viewer"
+    [hasSecondaryContent]="!!selectedSong"
+>
+</chp-split-layout>
 
-        <mat-drawer-content class="flex flex-col">
-            <router-outlet></router-outlet>
-        </mat-drawer-content>
-    </mat-drawer-container>
-</div>
+<ng-template #songList>
+    <songs-list
+        [selectedSong]="selectedSong"
+        (songSelect)="selectSong($event)"
+        (songDblClick)="onDblClick($event)"
+        (selectionCleared)="closePreview()"
+    ></songs-list>
+</ng-template>
+
+<ng-template #viewer>
+    @if (selectedSong; as song) {
+        <chp-song-preview
+            [song]="song"
+            [showFullEditor]="true"
+            [showClose]="true"
+            (openFullEditor)="openFullEditor()"
+            (close)="closePreview()"
+        ></chp-song-preview>
+    }
+</ng-template>
+

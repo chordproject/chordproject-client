@@ -12,10 +12,8 @@ import { Observable, Subject, of, takeUntil } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
-import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
 import { ChpSongListPanelComponent } from 'app/components/song-list-panel/song-list-panel.component';
-import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { UserService } from 'app/core/user/user.service';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
@@ -37,7 +35,6 @@ import { Songbook } from 'app/models/songbook';
         ReactiveFormsModule,
         RouterLink,
         TranslocoModule,
-        ChpEditorComponent,
         ChpSongPreviewComponent,
         ChpSongListPanelComponent,
         ChpSplitLayoutComponent,
@@ -55,9 +52,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
     songbook$: Observable<Songbook>;
     songs$: Observable<PartialSong[]>;
     songsList = signal<PartialSong[]>([]);
-    editingPreview = signal(false);
     isAuthenticated;
-    previewContent = '';
     songSearchControl = new UntypedFormControl('');
     filteredSongs$: Observable<PartialSong[]>;
     addingSongId = signal<string | null>(null);
@@ -68,8 +63,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
         private _songbookService: SongbookService,
         private _songService: SongService,
         private _userService: UserService,
-        private _confirmationService: FuseConfirmationService,
-        private _editorService: EditorService
+        private _confirmationService: FuseConfirmationService
     ) {
         this.isAuthenticated = toSignal(this._userService.isAuthenticated(), { initialValue: false });
     }
@@ -219,7 +213,6 @@ export class SongbookComponent implements OnInit, OnDestroy {
 
     closePreview(): void {
         this.selectedSong.set(null);
-        this.editingPreview.set(false);
     }
 
     isEditable(songbook: Songbook): boolean {
@@ -234,53 +227,10 @@ export class SongbookComponent implements OnInit, OnDestroy {
         return Boolean(songbook.copiedFrom) && songbook.syncStatus !== 'customized';
     }
 
-    startQuickEdit(): void {
-        const song = this.selectedSong();
-        if (!song) {
-            return;
+    openEditorForSong(song: PartialSong): void {
+        if (song?.uid) {
+            this._router.navigate(['/songs/create', song.uid]);
         }
-
-        this.previewContent = song.content || '';
-        this.editingPreview.set(true);
-    }
-
-    closeQuickEdit(): void {
-        this.editingPreview.set(false);
-    }
-
-    async saveQuickEdit(): Promise<void> {
-        const selectedSong = this.selectedSong();
-        if (!selectedSong?.uid) {
-            return;
-        }
-
-        const updatedSong = this._editorService.prepareSongFromContent(this.previewContent);
-        const savedSong = await this._songService.save({
-            ...selectedSong,
-            ...updatedSong,
-        } as Song);
-
-        if (savedSong) {
-            this.selectedSong.set({
-                ...selectedSong,
-                ...updatedSong,
-                content: this.previewContent,
-            });
-            this.editingPreview.set(false);
-        }
-    }
-
-    removePreviewSong(): void {
-        const selectedSong = this.selectedSong();
-        if (!selectedSong) {
-            return;
-        }
-
-        this._editorService.confirmAndDelete(selectedSong as Song).subscribe((success) => {
-            if (success) {
-                this.closePreview();
-            }
-        });
     }
 
     onDblClick(song: PartialSong): void {

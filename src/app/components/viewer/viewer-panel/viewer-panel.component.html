@@ -1,0 +1,20 @@
+<chp-viewer-toolbar
+    [song]="song"
+    [deviceType]="deviceType"
+    [isFullScreen]="viewer.isFullScreen"
+    [showEditDelete]="showEditDelete"
+    (editSongEvent)="editSongEvent.emit()"
+    (deleteSongEvent)="deleteSongEvent.emit()"
+    (transposeEvent)="viewer.transpose($event)"
+    (zoomEvent)="viewer.zoom($event)"
+    (fullScreenEvent)="viewer.toggleFullScreen()"
+></chp-viewer-toolbar>
+<div class="h-full w-full min-h-0 flex-1" [class.mx-auto]="centerContent" [class.max-w-3xl]="centerContent">
+    <chp-viewer
+        #viewer
+        [content]="content"
+        [isPreview]="isPreview"
+        [showMetadata]="false"
+        [compactPreview]="compactPreview"
+    ></chp-viewer>
+</div>

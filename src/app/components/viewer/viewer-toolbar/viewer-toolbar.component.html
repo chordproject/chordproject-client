@@ -1,8 +1,10 @@
 @if (deviceType === 'phone') {
     <div class="fixed bottom-0 z-10 w-full border-t">
         <div class="flex justify-center gap-6 bg-neutral-100 px-4 py-3 dark:bg-neutral-800">
-            <chp-edit-tool (editSongEvent)="editSongEvent.emit()"></chp-edit-tool>
-            <chp-delete-tool (deleteSongEvent)="deleteSongEvent.emit()"></chp-delete-tool>
+            @if (showEditDelete) {
+                <chp-edit-tool (editSongEvent)="editSongEvent.emit()"></chp-edit-tool>
+                <chp-delete-tool (deleteSongEvent)="deleteSongEvent.emit()"></chp-delete-tool>
+            }
             <chp-transpose-tool
                 [initialKey]="song?.songKey"
                 (transposeEvent)="transposeEvent.emit($event)"
@@ -17,9 +19,11 @@
     </div>
 } @else {
     <div class="flex gap-2 bg-neutral-100 px-4 py-3 dark:bg-neutral-800">
-        <chp-edit-tool (editSongEvent)="editSongEvent.emit()"></chp-edit-tool>
-        <chp-delete-tool (deleteSongEvent)="deleteSongEvent.emit()"></chp-delete-tool>
-        <div class="border-l border-gray-300 dark:border-gray-600"></div>
+        @if (showEditDelete) {
+            <chp-edit-tool (editSongEvent)="editSongEvent.emit()"></chp-edit-tool>
+            <chp-delete-tool (deleteSongEvent)="deleteSongEvent.emit()"></chp-delete-tool>
+            <div class="border-l border-gray-300 dark:border-gray-600"></div>
+        }
         <chp-transpose-tool
             [isMobile]="false"
             [initialKey]="song?.songKey"

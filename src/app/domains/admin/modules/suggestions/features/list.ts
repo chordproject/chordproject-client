@@ -105,6 +105,11 @@ export default class SuggestionsList implements OnInit, OnDestroy {
         return (value as { toDate?: () => Date })?.toDate?.() ?? null;
     }
 
+    getSortTime(value: unknown): number {
+        const d = this.toDate(value);
+        return d ? d.getTime() : 0;
+    }
+
     isAutomaticMessage(message: string | undefined): boolean {
         return message === 'Solicitud para incluir esta canción en el cancionero.';
     }
@@ -195,35 +200,40 @@ export default class SuggestionsList implements OnInit, OnDestroy {
                 switchMap(([songSuggestions, songbookSuggestions]) =>
                     this.resolveNames(songSuggestions, songbookSuggestions).pipe(
                         catchError(() => of({ songs: [], songbooks: [] })),
-                        map(({ songs, songbooks }) => [
-                            ...songSuggestions.map((suggestion): SongEditRow => {
-                                const originalSong = songs.find((song) => song.uid === suggestion.targetSongId);
-                                const originalContent = originalSong?.content || originalSong?.lyrics || '';
-                                return {
-                                    kind: 'song_edit',
+                        map(({ songs, songbooks }) => {
+                            const allRows: SuggestionRow[] = [
+                                ...songSuggestions.map((suggestion): SongEditRow => {
+                                    const originalSong = songs.find((song) => song.uid === suggestion.targetSongId);
+                                    const originalContent = originalSong?.content || originalSong?.lyrics || '';
+                                    return {
+                                        kind: 'song_edit',
+                                        suggestion,
+                                        songTitle: originalSong?.title || suggestion.targetSongId,
+                                        responseMessage: '',
+                                        diffRows: computeLineDiff(originalContent, suggestion.proposedSong.content ?? originalContent),
+                                        authorName: suggestion.authorName || suggestion.authorId,
+                                    };
+                                }),
+                                ...songbookSuggestions.map((suggestion): SongbookRow => ({
+                                    kind: 'songbook',
                                     suggestion,
-                                    songTitle: originalSong?.title || suggestion.targetSongId,
+                                    songbookName:
+                                        songbooks.find((songbook) => songbook.uid === suggestion.targetSongbookId)?.name ||
+                                        suggestion.suggestedName ||
+                                        suggestion.targetSongbookId ||
+                                        '-',
+                                    songTitle:
+                                        songs.find((song) => song.uid === suggestion.targetSongId)?.title ||
+                                        suggestion.targetSongId ||
+                                        '-',
                                     responseMessage: '',
-                                    diffRows: computeLineDiff(originalContent, suggestion.proposedSong.content ?? originalContent),
                                     authorName: suggestion.authorName || suggestion.authorId,
-                                };
-                            }),
-                            ...songbookSuggestions.map((suggestion): SongbookRow => ({
-                                kind: 'songbook',
-                                suggestion,
-                                songbookName:
-                                    songbooks.find((songbook) => songbook.uid === suggestion.targetSongbookId)?.name ||
-                                    suggestion.suggestedName ||
-                                    suggestion.targetSongbookId ||
-                                    '-',
-                                songTitle:
-                                    songs.find((song) => song.uid === suggestion.targetSongId)?.title ||
-                                    suggestion.targetSongId ||
-                                    '-',
-                                responseMessage: '',
-                                authorName: suggestion.authorName || suggestion.authorId,
-                            })),
-                        ])
+                                })),
+                            ];
+                            return allRows.sort(
+                                (a, b) => this.getSortTime(b.suggestion.creationDate) - this.getSortTime(a.suggestion.creationDate)
+                            );
+                        })
                     )
                 )
             )
@@ -239,8 +249,8 @@ export default class SuggestionsList implements OnInit, OnDestroy {
                 takeUntil(this._unsubscribeAll),
                 switchMap(([songSuggestions, songbookSuggestions]) =>
                     this.resolveNames(songSuggestions, songbookSuggestions).pipe(
-                        switchMap(({ songs, songbooks }) =>
-                            of([
+                        switchMap(({ songs, songbooks }) => {
+                            const myRows: MyRow[] = [
                                 ...songSuggestions.map(
                                     (suggestion): MySongEditRow => {
                                         const originalSong = songs.find((song) => song.uid === suggestion.targetSongId);
@@ -251,7 +261,7 @@ export default class SuggestionsList implements OnInit, OnDestroy {
                                             suggestion,
                                             songTitle: originalSong?.title || suggestion.targetSongId,
                                             diffRows: computeLineDiff(originalContent, proposedContent),
-                                                authorName: suggestion.authorName || suggestion.authorId,
+                                            authorName: suggestion.authorName || suggestion.authorId,
                                         };
                                     }
                                 ),
@@ -267,11 +277,15 @@ export default class SuggestionsList implements OnInit, OnDestroy {
                                             songs.find((song) => song.uid === suggestion.targetSongId)?.title ||
                                             suggestion.targetSongId ||
                                             '-',
-                                            authorName: suggestion.authorName || suggestion.authorId,
+                                        authorName: suggestion.authorName || suggestion.authorId,
                                     })
                                 ),
-                            ])
-                        )
+                            ];
+                            myRows.sort(
+                                (a, b) => this.getSortTime(b.suggestion.creationDate) - this.getSortTime(a.suggestion.creationDate)
+                            );
+                            return of(myRows);
+                        })
                     )
                 )
             )
@@ -296,31 +310,38 @@ export default class SuggestionsList implements OnInit, OnDestroy {
                 takeUntil(this._unsubscribeAll),
                 switchMap(([songSuggestions, songbookSuggestions]) =>
                     this.resolveNames(songSuggestions, songbookSuggestions).pipe(
-                        map(({ songs, songbooks }) => [
-                            ...songSuggestions.map(
-                                (suggestion): HistoryRow => ({
-                                    kind: 'song_edit',
-                                    suggestion,
-                                    songTitle: songs.find((song) => song.uid === suggestion.targetSongId)?.title || suggestion.targetSongId,
+                        map(({ songs, songbooks }) => {
+                            const historyRows: HistoryRow[] = [
+                                ...songSuggestions.map(
+                                    (suggestion): HistoryRow => ({
+                                        kind: 'song_edit',
+                                        suggestion,
+                                        songTitle: songs.find((song) => song.uid === suggestion.targetSongId)?.title || suggestion.targetSongId,
                                         authorName: suggestion.authorName || suggestion.authorId,
-                                })
-                            ),
-                            ...songbookSuggestions.map(
-                                (suggestion): HistoryRow => ({
-                                    kind: 'songbook',
-                                    suggestion,
-                                    songbookName:
-                                        songbooks.find((songbook) => songbook.uid === suggestion.targetSongbookId)?.name ||
-                                        suggestion.suggestedName ||
-                                        '-',
-                                    songTitle:
-                                        songs.find((song) => song.uid === suggestion.targetSongId)?.title ||
-                                        suggestion.targetSongId ||
-                                        '-',
+                                    })
+                                ),
+                                ...songbookSuggestions.map(
+                                    (suggestion): HistoryRow => ({
+                                        kind: 'songbook',
+                                        suggestion,
+                                        songbookName:
+                                            songbooks.find((songbook) => songbook.uid === suggestion.targetSongbookId)?.name ||
+                                            suggestion.suggestedName ||
+                                            '-',
+                                        songTitle:
+                                            songs.find((song) => song.uid === suggestion.targetSongId)?.title ||
+                                            suggestion.targetSongId ||
+                                            '-',
                                         authorName: suggestion.authorName || suggestion.authorId,
-                                })
-                            ),
-                        ])
+                                    })
+                                ),
+                            ];
+                            return historyRows.sort((a, b) => {
+                                const timeA = this.getSortTime(a.suggestion.lastUpdateDate) || this.getSortTime(a.suggestion.creationDate);
+                                const timeB = this.getSortTime(b.suggestion.lastUpdateDate) || this.getSortTime(b.suggestion.creationDate);
+                                return timeB - timeA;
+                            });
+                        })
                     )
                 )
             )
