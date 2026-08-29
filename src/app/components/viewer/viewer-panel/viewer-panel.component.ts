@@ -23,6 +23,7 @@ export class ChpViewerPanelComponent implements OnInit, OnDestroy {
     @Input() isPreview = false;
     @Input() compactPreview = false;
     @Input() showEditDelete = true;
+    @Input() showDelete = true;
     @Input() centerContent = false;
 
     @Output() editSongEvent = new EventEmitter<void>();

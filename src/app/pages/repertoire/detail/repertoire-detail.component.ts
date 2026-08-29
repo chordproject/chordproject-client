@@ -48,6 +48,7 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
     assignedSongIds: Record<string, string> = {};
     assignedSongs: Record<string, PartialSong[]> = {};
     assignmentIds: Record<string, Record<string, string>> = {};
+    addingSongSlotIds = new Set<string>();
     skippedSlotIds = new Set<string>();
     songSearchControls: Record<string, UntypedFormControl> = {};
     editingHeader = false;
@@ -129,23 +130,24 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
                                 .map((item) => item.slotId)
                         );
                         const assignedSongIds = [...new Set(assignments.map((item) => item.songId))];
-                        const titleRequests = assignedSongIds.map((songId) =>
-                            this.songService.get(songId).pipe(catchError(() => of(null)))
-                        );
-                        forkJoin(titleRequests.length ? titleRequests : [of(null)])
-                            .pipe(takeUntil(this.unsubscribeAll))
+                        this.songService
+                            .getAll(assignedSongIds)
+                            .pipe(
+                                catchError(() => of([] as PartialSong[])),
+                                takeUntil(this.unsubscribeAll)
+                            )
                             .subscribe((assignedSongs) => {
-                                assignedSongs.filter(Boolean).forEach((song) => {
+                                assignedSongs.forEach((song) => {
                                     this.assignedSongTitles[song.uid] = song.title || '';
                                 });
-                                const songsById = new Map(
-                                    assignedSongs.filter(Boolean).map((song) => [song.uid, song])
+                                const songsById = new Map<string, PartialSong>(
+                                    assignedSongs.map((song): [string, PartialSong] => [song.uid, song])
                                 );
                                 this.slots.forEach((slot) => {
                                     this.assignedSongs[slot.uid] = assignments
                                         .filter((item) => item.slotId === slot.uid)
                                         .map((item) => songsById.get(item.songId))
-                                        .filter(Boolean);
+                                        .filter((song): song is PartialSong => !!song);
                                     this.setupSongSearch(slot);
                                 });
                                 this.loading = false;
@@ -181,11 +183,8 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
                 ? currentSongs
                 : [...currentSongs, song];
             this.assignedSongs = { ...this.assignedSongs, [slot.uid]: nextSongs };
-            if (nextSongs.length === 1) {
-                this.getSongSearchControl(slot).setValue(song.title || '', { emitEvent: false });
-            } else {
-                this.getSongSearchControl(slot).setValue('', { emitEvent: false });
-            }
+            this.getSongSearchControl(slot).setValue('', { emitEvent: false });
+            this.addingSongSlotIds.delete(slot.uid);
             this.assignmentIds = {
                 ...this.assignmentIds,
                 [slot.uid]: { ...this.assignmentIds[slot.uid], [song.uid]: uid },
@@ -211,10 +210,56 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
             const slotAssignments = { ...this.assignmentIds[slot.uid] };
             delete slotAssignments[song.uid];
             this.assignmentIds = { ...this.assignmentIds, [slot.uid]: slotAssignments };
-            const remainingSong = this.assignedSongs[slot.uid][0];
-            this.getSongSearchControl(slot).setValue(remainingSong?.title || '', { emitEvent: false });
+            this.getSongSearchControl(slot).setValue('', { emitEvent: false });
+            if (!this.assignedSongs[slot.uid]?.length) {
+                this.addingSongSlotIds.delete(slot.uid);
+            }
             this.changeDetectorRef.markForCheck();
         }
+    }
+
+    async moveSong(slot: EventSlot, songIndex: number, direction: -1 | 1): Promise<void> {
+        const currentSongs = this.assignedSongs[slot.uid] || [];
+        const nextIndex = songIndex + direction;
+        if (nextIndex < 0 || nextIndex >= currentSongs.length) {
+            return;
+        }
+
+        const nextSongs = [...currentSongs];
+        const [song] = nextSongs.splice(songIndex, 1);
+        nextSongs.splice(nextIndex, 0, song);
+
+        const songOrders = nextSongs
+            .map((assignedSong, index) => ({
+                uid: this.assignmentIds[slot.uid]?.[assignedSong.uid],
+                songOrder: index,
+            }))
+            .filter((item): item is { uid: string; songOrder: number } => !!item.uid);
+
+        if (songOrders.length !== nextSongs.length) {
+            return;
+        }
+
+        if (await this.repertoireService.updateRepertoireSongOrder(songOrders)) {
+            this.assignedSongs = { ...this.assignedSongs, [slot.uid]: nextSongs };
+            this.changeDetectorRef.markForCheck();
+        }
+    }
+
+    startAddingSong(slot: EventSlot): void {
+        this.addingSongSlotIds.add(slot.uid);
+        this.getSongSearchControl(slot).setValue('', { emitEvent: false });
+        this.changeDetectorRef.markForCheck();
+    }
+
+    cancelAddingSong(slot: EventSlot): void {
+        this.addingSongSlotIds.delete(slot.uid);
+        this.getSongSearchControl(slot).setValue('', { emitEvent: false });
+        this.changeDetectorRef.markForCheck();
+    }
+
+    showSongInput(slot: EventSlot): boolean {
+        return !this.assignedSongs[slot.uid]?.length || this.addingSongSlotIds.has(slot.uid);
     }
 
     isSlotSkipped(slot: EventSlot): boolean {
@@ -243,6 +288,7 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
         } else {
             this.skippedSlotIds.add(slot.uid);
             delete this.assignedSongIds[slot.uid];
+            this.addingSongSlotIds.delete(slot.uid);
             const control = this.getSongSearchControl(slot);
             control.setValue('', { emitEvent: false });
             control.disable({ emitEvent: false });
@@ -332,7 +378,7 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
     }
 
     private setupSongSearch(slot: EventSlot): void {
-        const control = new UntypedFormControl(this.assignedSongs[slot.uid]?.length === 1 ? this.assignedSongs[slot.uid][0].title : '');
+        const control = new UntypedFormControl('');
         this.songSearchControls[slot.uid] = control;
         if (this.isSlotSkipped(slot)) {
             control.disable({ emitEvent: false });
@@ -361,7 +407,9 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
             return [];
         }
 
-        return this.songSearchResults[slot.uid] || [];
+        const assignedIds = new Set((this.assignedSongs[slot.uid] || []).map((song) => song.uid));
+
+        return (this.songSearchResults[slot.uid] || []).filter((song) => !assignedIds.has(song.uid));
     }
 
     songTitle(_songId: string): string {

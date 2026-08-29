@@ -52,7 +52,7 @@
             <!-- Add song button -->
             <button class="ml-auto sm:ml-0" mat-flat-button [color]="'primary'" [routerLink]="['/songs/create']">
                 <mat-icon [svgIcon]="'plus'"></mat-icon>
-                <span class="ml-2 mr-1 hidden sm:inline">Add</span>
+                <span class="ml-2 mr-1 hidden sm:inline">{{ 'common.create' | transloco }}</span>
             </button>
         </div>
     </div>

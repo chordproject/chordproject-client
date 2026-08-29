@@ -50,9 +50,21 @@
                                     <mat-icon class="size-4 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200" [svgIcon]="'square-pen'"></mat-icon>
                                 </button>
                             </div>
-                            @if (repertoire.description) {
-                                <p class="mt-2 text-neutral-600 dark:text-neutral-300">{{ repertoire.description }}</p>
-                            }
+                            <div class="mt-2 flex items-center gap-2">
+                                @if (repertoire.description) {
+                                    <p class="text-neutral-600 dark:text-neutral-300">{{ repertoire.description }}</p>
+                                } @else {
+                                    <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ 'repertoire_page.add_reference' | transloco }}</p>
+                                }
+                                <button
+                                    type="button"
+                                    mat-icon-button
+                                    [matTooltip]="'repertoire_page.edit_reference' | transloco"
+                                    (click)="startEditingHeader()"
+                                >
+                                    <mat-icon class="size-4 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200" [svgIcon]="'square-pen'"></mat-icon>
+                                </button>
+                            </div>
                             <p class="mt-3 text-sm text-neutral-500 dark:text-neutral-400">{{ repertoire.date | date: 'mediumDate' }}</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-2">
@@ -86,45 +98,99 @@
                                 <span class="flex size-8 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-sm font-semibold text-neutral-700 dark:bg-neutral-800 dark:text-neutral-200">{{ slot.order + 1 }}</span>
                                 <span class="font-medium text-neutral-900 dark:text-neutral-100">{{ slot.name }}</span>
                             </div>
-                            <mat-form-field class="w-full" subscriptSizing="dynamic">
-                                <input
-                                    matInput
-                                    [formControl]="getSongSearchControl(slot)"
-                                    [matAutocomplete]="songAutocomplete"
-                                    [placeholder]="'repertoire_page.add_song' | transloco"
-                                />
-                                <mat-autocomplete
-                                    #songAutocomplete="matAutocomplete"
-                                    [displayWith]="displaySong"
-                                    (optionSelected)="assignSong(slot, $event.option.value)"
-                                >
-                                    @for (song of filteredSongs(slot); track trackByUid($index, song)) {
-                                        <mat-option [value]="song">{{ song.title }}</mat-option>
-                                    } @empty {
-                                        @if (getSongSearchControl(slot).value) {
-                                            <mat-option disabled>{{ 'repertoire_page.no_song_matches' | transloco }}</mat-option>
+                            <div class="flex min-w-0 flex-col gap-2">
+                                @if ((assignedSongs[slot.uid]?.length || 0) > 0) {
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        @for (song of assignedSongs[slot.uid]; track trackByUid($index, song); let songIndex = $index) {
+                                            <span class="inline-flex items-center gap-1 rounded-full bg-primary-50 px-2 py-1 text-sm text-primary-800 dark:bg-primary-950 dark:text-primary-200">
+                                                @if ((assignedSongs[slot.uid]?.length || 0) > 1) {
+                                                    <button
+                                                        class="flex size-5 shrink-0 items-center justify-center rounded-full text-primary-700 hover:bg-primary-100 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent dark:text-primary-200 dark:hover:bg-primary-900 dark:disabled:hover:bg-transparent"
+                                                        type="button"
+                                                        [disabled]="songIndex === 0"
+                                                        [attr.aria-label]="'repertoire_page.move_song_earlier' | transloco"
+                                                        [title]="'repertoire_page.move_song_earlier' | transloco"
+                                                        (click)="moveSong(slot, songIndex, -1)"
+                                                    >
+                                                        <mat-icon class="size-3.5" [svgIcon]="'chevron-left'"></mat-icon>
+                                                    </button>
+                                                }
+                                                {{ song.title }}
+                                                @if ((assignedSongs[slot.uid]?.length || 0) > 1) {
+                                                    <button
+                                                        class="flex size-5 shrink-0 items-center justify-center rounded-full text-primary-700 hover:bg-primary-100 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent dark:text-primary-200 dark:hover:bg-primary-900 dark:disabled:hover:bg-transparent"
+                                                        type="button"
+                                                        [disabled]="songIndex === (assignedSongs[slot.uid]?.length || 0) - 1"
+                                                        [attr.aria-label]="'repertoire_page.move_song_later' | transloco"
+                                                        [title]="'repertoire_page.move_song_later' | transloco"
+                                                        (click)="moveSong(slot, songIndex, 1)"
+                                                    >
+                                                        <mat-icon class="size-3.5" [svgIcon]="'chevron-right'"></mat-icon>
+                                                    </button>
+                                                }
+                                                <button
+                                                    class="flex size-5 shrink-0 items-center justify-center rounded-full text-primary-700 hover:bg-primary-100 dark:text-primary-200 dark:hover:bg-primary-900"
+                                                    type="button"
+                                                    [attr.aria-label]="'repertoire_page.remove_song' | transloco"
+                                                    [title]="'repertoire_page.remove_song' | transloco"
+                                                    (click)="removeSong(slot, song)"
+                                                >
+                                                    <mat-icon class="size-3.5" [svgIcon]="'x'"></mat-icon>
+                                                </button>
+                                            </span>
                                         }
+                                            @if (!showSongInput(slot)) {
+                                                <button
+                                                    mat-icon-button
+                                                    type="button"
+                                                    class="size-8"
+                                                    [attr.aria-label]="'repertoire_page.add_another_song_action' | transloco"
+                                                    [title]="'repertoire_page.add_another_song_action' | transloco"
+                                                    [matTooltip]="'repertoire_page.add_another_song_action' | transloco"
+                                                    (click)="startAddingSong(slot)"
+                                                >
+                                                    <mat-icon class="size-4" [svgIcon]="'plus'"></mat-icon>
+                                                </button>
+                                            }
+                                    </div>
+                                }
+                                    @if (showSongInput(slot)) {
+                                        <div class="flex items-center gap-2">
+                                            <mat-form-field class="w-full" subscriptSizing="dynamic">
+                                                <input
+                                                    matInput
+                                                    [formControl]="getSongSearchControl(slot)"
+                                                    [matAutocomplete]="songAutocomplete"
+                                                    [placeholder]="((assignedSongs[slot.uid]?.length || 0) ? 'repertoire_page.add_another_song' : 'repertoire_page.add_song') | transloco"
+                                                />
+                                                <mat-autocomplete
+                                                    #songAutocomplete="matAutocomplete"
+                                                    [displayWith]="displaySong"
+                                                    (optionSelected)="assignSong(slot, $event.option.value)"
+                                                >
+                                                    @for (song of filteredSongs(slot); track trackByUid($index, song)) {
+                                                        <mat-option [value]="song">{{ song.title }}</mat-option>
+                                                    } @empty {
+                                                        @if (getSongSearchControl(slot).value) {
+                                                            <mat-option disabled>{{ 'repertoire_page.no_song_matches' | transloco }}</mat-option>
+                                                        }
+                                                    }
+                                                </mat-autocomplete>
+                                            </mat-form-field>
+                                            @if ((assignedSongs[slot.uid]?.length || 0) > 0) {
+                                                <button
+                                                    mat-icon-button
+                                                    type="button"
+                                                    [attr.aria-label]="'repertoire_page.cancel_add_song' | transloco"
+                                                    [title]="'repertoire_page.cancel_add_song' | transloco"
+                                                    (click)="cancelAddingSong(slot)"
+                                                >
+                                                    <mat-icon class="size-5" [svgIcon]="'x'"></mat-icon>
+                                                </button>
+                                            }
+                                        </div>
                                     }
-                                </mat-autocomplete>
-                            </mat-form-field>
-                            @if ((assignedSongs[slot.uid]?.length || 0) > 1) {
-                                <div class="flex flex-wrap gap-2 sm:col-start-2">
-                                    @for (song of assignedSongs[slot.uid]; track trackByUid($index, song)) {
-                                        <span class="inline-flex items-center gap-1 rounded-full bg-primary-50 px-3 py-1 text-sm text-primary-800 dark:bg-primary-950 dark:text-primary-200">
-                                            {{ song.title }}
-                                            <button
-                                                class="flex size-5 shrink-0 items-center justify-center rounded-full text-primary-700 hover:bg-primary-100 dark:text-primary-200 dark:hover:bg-primary-900"
-                                                type="button"
-                                                [attr.aria-label]="'repertoire_page.remove_song' | transloco"
-                                                [title]="'repertoire_page.remove_song' | transloco"
-                                                (click)="removeSong(slot, song)"
-                                            >
-                                                <mat-icon class="size-3.5" [svgIcon]="'x'"></mat-icon>
-                                            </button>
-                                        </span>
-                                    }
-                                </div>
-                            }
+                            </div>
                             <button
                                 mat-icon-button
                                 type="button"

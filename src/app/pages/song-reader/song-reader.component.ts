@@ -1,21 +1,15 @@
-import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { TranslocoModule } from '@jsverse/transloco';
-import { Observable, firstValueFrom, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { Observable, combineLatest, firstValueFrom, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { catchError, debounceTime, map, startWith, take } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { ChpViewerPanelComponent } from 'app/components/viewer/viewer-panel/viewer-panel.component';
+import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongSuggestionService } from 'app/core/firebase/api/song-suggestion.service';
 import { SongService } from 'app/core/firebase/api/song.service';
@@ -28,7 +22,8 @@ import { SongSuggestion } from 'app/models/song-suggestion';
 import { Songbook } from 'app/models/songbook';
 import { SongbookSuggestion } from 'app/models/songbook-suggestion';
 import { Tag } from 'app/models/tag';
-import { JoinPipe } from 'app/pipes/join.pipe';
+
+export type TagOption = Tag & { isNew?: boolean };
 
 @Component({
     selector: 'song-reader',
@@ -39,17 +34,8 @@ import { JoinPipe } from 'app/pipes/join.pipe';
         MatCardModule,
         MatSidenavModule,
         RouterOutlet,
-        JoinPipe,
-        ChpViewerPanelComponent,
+        ChpSongPreviewComponent,
         ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatMenuModule,
-        MatAutocompleteModule,
-        MatTooltipModule,
-        RouterLink,
-        AsyncPipe,
-        MatIconModule,
         TranslocoModule,
     ],
 })
@@ -61,12 +47,21 @@ export class SongReaderComponent implements OnInit, OnDestroy {
     versions: PartialSong[] = [];
     associatedTags: Tag[] = [];
     drawerMode: 'side' | 'over';
+    isAuthenticated = false;
+    canDelete = signal(false);
     songbookSearchControl: UntypedFormControl = new UntypedFormControl('');
     filteredSongbooks$: Observable<Songbook[]>;
+    tagSearchControl: UntypedFormControl = new UntypedFormControl('');
+    filteredTags$: Observable<TagOption[]>;
+    private _allTags: Tag[] = [];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     private _songbookIdsBeingAdded = new Set<string>();
     private _songbookSuggestionIds = new Map<string, string>();
     private _pendingSongbooks: Songbook[] = [];
+
+    get pendingSongbooksList(): Songbook[] {
+        return this._pendingSongbooks;
+    }
 
     get allVisibleSongbooks(): Songbook[] {
         return [...this.associatedSongbooks, ...this._pendingSongbooks];
@@ -95,13 +90,25 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _confirmationService: FuseConfirmationService,
-        private _userService: UserService
+        private _userService: UserService,
+        private _translocoService: TranslocoService,
+        private _snackBar: MatSnackBar
     ) {}
 
     ngOnInit(): void {
         this.drawerMode = 'over';
         this.loadSong();
         this.setupSongbookSearch();
+        this.setupTagSearch();
+
+        this._userService
+            .isAuthenticated()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((authenticated) => {
+                this.isAuthenticated = authenticated;
+                this.updateCanDelete();
+                this._changeDetectorRef.markForCheck();
+            });
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
@@ -127,6 +134,7 @@ export class SongReaderComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
                 this.song = data;
                 this.songLoadError = !data;
+                this.updateCanDelete();
                 this.associatedSongbooks = [];
                 this.associatedTags = [];
                 this.pendingSuggestion = null;
@@ -197,16 +205,17 @@ export class SongReaderComponent implements OnInit, OnDestroy {
                             this._changeDetectorRef.markForCheck();
                         });
                 }
+
                 const songTags = data?.tags ?? [];
-                if (songTags.length) {
-                    this._songService
-                        .getTags()
-                        .pipe(takeUntil(this._unsubscribeAll), catchError(() => of([])))
-                        .subscribe((tags) => {
-                            this.associatedTags = tags.filter((tag) => songTags.includes(tag.id));
-                            this._changeDetectorRef.markForCheck();
-                        });
-                }
+                this._songService
+                    .getTags()
+                    .pipe(takeUntil(this._unsubscribeAll), catchError(() => of([])))
+                    .subscribe((tags) => {
+                        this._allTags = tags;
+                        this.associatedTags = tags.filter((tag) => songTags.includes(tag.id));
+                        this.refreshTagSearch();
+                        this._changeDetectorRef.markForCheck();
+                    });
                 this._changeDetectorRef.markForCheck();
             });
     }
@@ -264,13 +273,158 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         this.songbookSearchControl.setValue(this.songbookSearchControl.value, { emitEvent: true });
     }
 
+    private setupTagSearch(): void {
+        this.filteredTags$ = this.tagSearchControl.valueChanges.pipe(
+            startWith(''),
+            debounceTime(150),
+            map((value: string | TagOption) => {
+                const searchTerm = typeof value === 'string' ? value.trim() : value?.title ?? '';
+                const normalizedSearch = this.normalize(searchTerm);
+
+                const unassigned = this._allTags.filter(
+                    (tag) => !this.associatedTags.some((associated) => associated.id === tag.id)
+                );
+
+                if (!normalizedSearch) {
+                    return unassigned;
+                }
+
+                const matches: TagOption[] = unassigned.filter((tag) =>
+                    this.normalize(tag.title).includes(normalizedSearch)
+                );
+
+                const exactMatch = this._allTags.some(
+                    (tag) => this.normalize(tag.title) === normalizedSearch
+                );
+
+                if (!exactMatch && searchTerm.length >= 2) {
+                    return [...matches, { id: '__new__', title: searchTerm, isNew: true }];
+                }
+
+                return matches;
+            })
+        );
+    }
+
+    private refreshTagSearch(): void {
+        this.tagSearchControl.setValue(this.tagSearchControl.value, { emitEvent: true });
+    }
+
+    displayTag(value: TagOption | string | null): string {
+        if (!value) {
+            return '';
+        }
+        return typeof value === 'string' ? value : value.title || '';
+    }
+
+    async onTagSelected(option: TagOption): Promise<void> {
+        if (!this.song?.uid || !option) {
+            return;
+        }
+
+        this.tagSearchControl.setValue('', { emitEvent: false });
+
+        if (!this.isAuthenticated) {
+            this._translocoService
+                .selectTranslate('song_service.authentication_required')
+                .pipe(take(1))
+                .subscribe((message) => {
+                    this._snackBar.open(message, undefined, { duration: 5000, panelClass: ['warning'] });
+                });
+            this.refreshTagSearch();
+            this._changeDetectorRef.markForCheck();
+            return;
+        }
+
+        if (option.isNew) {
+            this._songService
+                .createTag(option.title)
+                .pipe(takeUntil(this._unsubscribeAll))
+                .subscribe(async (createdTag) => {
+                    if (createdTag?.id) {
+                        this._allTags = [...this._allTags, createdTag];
+                        await this.addTagToCurrentSong(createdTag);
+                    }
+                });
+        } else {
+            await this.addTagToCurrentSong(option);
+        }
+    }
+
+    private async addTagToCurrentSong(tag: Tag): Promise<void> {
+        if (!this.song?.uid || !tag?.id) {
+            return;
+        }
+
+        const currentTagIds = this.song.tags ?? [];
+        if (currentTagIds.includes(tag.id)) {
+            return;
+        }
+
+        const updatedTagIds = [...new Set([...currentTagIds, tag.id])];
+        const success = await this._songService.updateSongTags(this.song.uid, updatedTagIds);
+
+        if (success) {
+            this.song.tags = updatedTagIds;
+            if (!this.associatedTags.some((t) => t.id === tag.id)) {
+                this.associatedTags = [...this.associatedTags, tag];
+            }
+            this.refreshTagSearch();
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    async removeTag(tag: Tag): Promise<void> {
+        if (!this.song?.uid || !tag?.id) {
+            return;
+        }
+
+        if (!this.isAuthenticated) {
+            this._translocoService
+                .selectTranslate('song_service.authentication_required')
+                .pipe(take(1))
+                .subscribe((message) => {
+                    this._snackBar.open(message, undefined, { duration: 5000, panelClass: ['warning'] });
+                });
+            return;
+        }
+
+        const currentTagIds = this.song.tags ?? [];
+        const updatedTagIds = currentTagIds.filter((id) => id !== tag.id);
+        const success = await this._songService.updateSongTags(this.song.uid, updatedTagIds);
+
+        if (success) {
+            this.song.tags = updatedTagIds;
+            this.associatedTags = this.associatedTags.filter((t) => t.id !== tag.id);
+            this.refreshTagSearch();
+            this._changeDetectorRef.markForCheck();
+        }
+    }
+
+    private normalize(value: string): string {
+        return (value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
     addCurrentSongToSongbook(songbook: Songbook): void {
         if (!this.song?.uid || !songbook?.uid) {
             return;
         }
 
-        this._songbookIdsBeingAdded.add(songbook.uid);
         this.songbookSearchControl.setValue('', { emitEvent: false });
+
+        if (!this.isAuthenticated) {
+            this._translocoService
+                .selectTranslate('songbook_service.authentication_required')
+                .pipe(take(1))
+                .subscribe((message) => {
+                    this._snackBar.open(message, undefined, { duration: 5000, panelClass: ['warning'] });
+                });
+            this.refreshSongbookSearch();
+            this._changeDetectorRef.markForCheck();
+            return;
+        }
+
+        this._songbookIdsBeingAdded.add(songbook.uid);
         this._changeDetectorRef.markForCheck();
 
         this._userService
@@ -367,8 +521,23 @@ export class SongReaderComponent implements OnInit, OnDestroy {
             });
     }
 
-    deleteSong(): void {
+    private updateCanDelete(): void {
         if (!this.song?.uid) {
+            this.canDelete.set(false);
+            return;
+        }
+
+        combineLatest([this._userService.user$, this._userService.isAdmin()])
+            .pipe(take(1))
+            .subscribe(([user, isAdmin]) => {
+                const isAuthor = Boolean(user?.uid && (this.song?.authorId === user.uid || this.song?.ownerId === user.uid));
+                this.canDelete.set(Boolean(isAdmin || isAuthor));
+                this._changeDetectorRef.markForCheck();
+            });
+    }
+
+    deleteSong(): void {
+        if (!this.song?.uid || !this.canDelete()) {
             return;
         }
 

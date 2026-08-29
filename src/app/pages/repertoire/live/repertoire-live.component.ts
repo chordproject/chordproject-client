@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { ChpSongListPanelComponent } from 'app/components/song-list-panel/song-list-panel.component';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
@@ -71,10 +71,20 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
                     this.eventTypeName = eventType.name;
                     this.slots = slots;
                     const activeAssignments = assignments.filter((assignment) => assignment.status !== 'skipped' && assignment.songId && assignment.slotId);
-                    return forkJoin(activeAssignments.map((assignment) => this.songService.get(assignment.songId).pipe(
-                        catchError(() => of(null)),
-                    ))).pipe(
-                        switchMap((songs) => of({ slots, activeAssignments, songs })),
+                    const songIds = [...new Set(activeAssignments.map((assignment) => assignment.songId))];
+
+                    return this.songService.getAll(songIds).pipe(
+                        catchError(() => of([] as PartialSong[])),
+                        switchMap((existingSongs) => {
+                            const existingSongIds = new Set(existingSongs.map((song) => song.uid));
+                            const fullSongRequests = songIds
+                                .filter((songId) => existingSongIds.has(songId))
+                                .map((songId) => this.songService.get(songId).pipe(catchError(() => of(null))));
+
+                            return forkJoin(fullSongRequests.length ? fullSongRequests : [of(null)]).pipe(
+                                map((songs) => ({ slots, activeAssignments, songs: songs.filter(Boolean) }))
+                            );
+                        })
                     );
                 }),
                 catchError(() => of(null)),
@@ -83,8 +93,12 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
                 if (!result) {
                     this.loadError = true;
                 } else {
-                    this.songs = result.activeAssignments.flatMap((assignment, index) => {
-                        const song = result.songs[index];
+                    const songsById = new Map<string, PartialSong>(
+                        result.songs.map((song): [string, PartialSong] => [song.uid, song])
+                    );
+
+                    this.songs = result.activeAssignments.flatMap((assignment) => {
+                        const song = songsById.get(assignment.songId);
                         const slot = result.slots.find((item) => item.uid === assignment.slotId);
                         return song && slot ? [{ slot, song }] : [];
                     });

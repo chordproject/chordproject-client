@@ -50,7 +50,7 @@ export class AdminSongbooksNavigation {
               ...this.toGroupNavigationItems(personalGroups),
               ...this.toNavigationItems(standalonePersonalSongbooks),
             ]),
-            ...this.toNavigationSection('songbooks-hj', 'songbook_page.hj_songbooks', this.toGroupNavigationItems(
+            ...this.toNavigationSection('songbooks-hj', 'songbook_page.recommended_songbooks', this.toGroupNavigationItems(
               recommendedGroups.filter(({ group, songbooks }) => !copiedSourceIds.has(group.uid) || songbooks.some((songbook) => !copiedSourceIds.has(songbook.uid)))
             )),
           ];

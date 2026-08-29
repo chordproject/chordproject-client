@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { Observable, Subject, firstValueFrom, forkJoin, from, map, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatest, firstValueFrom, forkJoin, from, map, switchMap, take, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
@@ -40,6 +40,7 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     song = signal<Song>(new Song());
     hasPendingSuggestion = signal(false);
     isAuthenticated = signal(false);
+    canDelete = signal(false);
     alternateVersions = signal<PartialSong[]>([]);
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     private _savedContent = '';
@@ -81,6 +82,7 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((isAuthenticated) => {
                 this.isAuthenticated.set(isAuthenticated);
+                this.updateCanDelete();
                 this._changeDetectorRef.markForCheck();
             });
         // Capture phase: the third-party chordpro editor stops propagation of its own
@@ -105,6 +107,7 @@ export class SongEditorComponent implements OnInit, OnDestroy {
                     const loadedSong = new Song();
                     Object.assign(loadedSong, data);
                     this.song.set(loadedSong);
+                    this.updateCanDelete();
                     this._savedContent = loadedSong.content ?? '';
                     this.hasPendingSuggestion.set(false);
                     this.alternateVersions.set([]);
@@ -332,7 +335,27 @@ export class SongEditorComponent implements OnInit, OnDestroy {
             .pipe(map((result) => result === 'confirmed'));
     }
 
+    private updateCanDelete(): void {
+        const currentSong = this.song();
+        if (!currentSong?.uid) {
+            this.canDelete.set(false);
+            return;
+        }
+
+        combineLatest([this._userService.user$, this._userService.isAdmin()])
+            .pipe(take(1))
+            .subscribe(([user, isAdmin]) => {
+                const isAuthor = Boolean(user?.uid && (currentSong.authorId === user.uid || currentSong.ownerId === user.uid));
+                this.canDelete.set(Boolean(isAdmin || isAuthor));
+                this._changeDetectorRef.markForCheck();
+            });
+    }
+
     removeSong(): void {
+        if (!this.canDelete()) {
+            return;
+        }
+
         this._editorService.confirmAndDelete(this.song()).subscribe((success) => {
             if (success) {
                 this._allowDeactivate = true;

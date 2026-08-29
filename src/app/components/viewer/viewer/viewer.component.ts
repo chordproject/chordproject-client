@@ -18,6 +18,7 @@ export class ChpViewerComponent implements AfterViewInit {
 
     @Input() isPreview = false;
     @Input() compactPreview = false;
+    @Input() deviceType: 'phone' | 'tablet' | 'desktop' = 'desktop';
     private _showMetadata = true;
     @Input()
     set showMetadata(value: boolean) {
@@ -74,21 +75,47 @@ export class ChpViewerComponent implements AfterViewInit {
     @HostListener('document:fullscreenchange')
     @HostListener('document:webkitfullscreenchange')
     onFullscreenChange(): void {
-        this.isFullScreen = document.fullscreenElement === this.contentElementRef?.nativeElement;
+        const nativeElement = this.contentElementRef?.nativeElement;
+        const fullscreenEl = document.fullscreenElement || (document as any).webkitFullscreenElement;
+        this.isFullScreen = fullscreenEl === nativeElement;
+        this.changeDetectorRef.markForCheck();
     }
 
     async toggleFullScreen(): Promise<void> {
-        if (document.fullscreenElement) {
-            await document.exitFullscreen();
+        if (this.isFullScreen) {
+            const fullscreenEl = document.fullscreenElement || (document as any).webkitFullscreenElement;
+            if (fullscreenEl) {
+                try {
+                    if (document.exitFullscreen) {
+                        await document.exitFullscreen();
+                    } else if ((document as any).webkitExitFullscreen) {
+                        await (document as any).webkitExitFullscreen();
+                    }
+                } catch {
+                    // Ignore native exit errors
+                }
+            }
+            this.isFullScreen = false;
+            this.changeDetectorRef.markForCheck();
             return;
         }
 
         const element = this.contentElementRef?.nativeElement;
-        if (!element) {
-            return;
+        if (element) {
+            const reqFs = element.requestFullscreen || (element as any).webkitRequestFullscreen;
+            if (reqFs && document.fullscreenEnabled !== false) {
+                try {
+                    await reqFs.call(element);
+                    return;
+                } catch (e) {
+                    console.warn('Native requestFullscreen failed or unsupported, using CSS fallback:', e);
+                }
+            }
         }
 
-        await element.requestFullscreen();
+        // Fallback for iOS / iPhone where native fullscreen on DOM elements is unsupported
+        this.isFullScreen = true;
+        this.changeDetectorRef.markForCheck();
     }
 
     private parseSong() {

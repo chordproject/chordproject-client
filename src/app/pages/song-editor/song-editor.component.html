@@ -10,6 +10,7 @@
         <chp-editor
             [content]="song().content"
             (contentChange)="onContentChange($event)"
+            [showDelete]="canDelete()"
             tabindex="0"
             (close)="onEditorClose()"
             (save)="saveSong()"

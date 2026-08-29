@@ -146,6 +146,26 @@ export class RepertoireService {
         }
     }
 
+    async updateRepertoireSongOrder(songOrders: { uid: string; songOrder: number }[]): Promise<boolean> {
+        if (!this.verifyAuthentication()) {
+            return false;
+        }
+
+        try {
+            const batch = writeBatch(this.firestore);
+            songOrders.forEach(({ uid, songOrder }) => {
+                batch.update(doc(this.firestore, 'repertoire_songs', uid), {
+                    songOrder,
+                    lastUpdateDate: serverTimestamp(),
+                });
+            });
+            await batch.commit();
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
     async deleteEventSlot(uid: string): Promise<boolean> {
         if (!this.verifyAuthentication()) {
             return false;

@@ -1,5 +1,11 @@
 <div
     #viewerContent
+    [class.fixed]="isFullScreen"
+    [class.inset-0]="isFullScreen"
+    [class.z-40]="isFullScreen"
+    [class.overflow-auto]="isFullScreen"
+    [class.pt-16]="isFullScreen && deviceType !== 'phone'"
+    [class.pb-24]="isFullScreen && deviceType === 'phone'"
     [class.show-columns]="isPreview ? false : viewSettings?.showColumns"
     [class.lyrics-font-style-italic]="viewSettings?.lyricsFontStyle?.isItalic"
     [class.chords-font-style-italic]="viewSettings?.chordsFontStyle?.isItalic"

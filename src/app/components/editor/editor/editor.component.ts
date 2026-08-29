@@ -1,4 +1,4 @@
- 
+
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
     AfterViewInit,
@@ -33,6 +33,7 @@ export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @Input() style: any = {};
     @Input() mode: 'quick' | 'full' = 'full';
+    @Input() showDelete = true;
 
     @ViewChild('editorDiv', { static: true }) editorDiv!: ElementRef;
 

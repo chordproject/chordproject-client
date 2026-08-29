@@ -127,22 +127,19 @@ export class RepertoireComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                const songRequests = Array.from(allSongIds).map((songId) =>
-                    this.songService.get(songId).pipe(
-                        map((song) => ({ songId, title: song?.title || '' })),
-                        catchError(() => of({ songId, title: '' }))
-                    )
-                );
-
-                forkJoin(songRequests)
-                    .pipe(takeUntil(this.unsubscribeAll))
-                    .subscribe((songTitlesList) => {
+                    this.songService
+                        .getAll(Array.from(allSongIds))
+                        .pipe(
+                            catchError(() => of([])),
+                            takeUntil(this.unsubscribeAll)
+                        )
+                        .subscribe((songs) => {
                         const titleMap = new Map<string, string>();
-                        songTitlesList.forEach((item) => {
-                            if (item?.songId) {
-                                titleMap.set(item.songId, item.title);
-                            }
-                        });
+                            songs.forEach((song) => {
+                                if (song?.uid) {
+                                    titleMap.set(song.uid, song.title || '');
+                                }
+                            });
 
                         const summaryMap: Record<string, { slotName?: string; songTitle: string }[]> = {};
                         results.forEach((res) => {

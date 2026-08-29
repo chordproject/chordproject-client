@@ -48,19 +48,17 @@
     },
     "songbook_page": {
         "title": "Carnets",
-        "description": "Vous avez quatre façons d'utiliser vos carnets :",
-        "option_create": "Créer un nouveau carnet qui vous appartient exclusivement.",
-        "option_use_official": "Utiliser un carnet officiel tel quel ; vous n'avez rien d'autre à faire.",
-        "option_suggest": "Suggérer une modification d'un carnet officiel. L'équipe effectuera une brève validation avant de l'appliquer.",
-        "option_copy": "En dernier recours, créer une copie du carnet officiel. Vous pourrez l'adapter, mais elle ne recevra plus les évolutions ni la synchronisation de l'original.",
+        "description": "Organisez et explorez des collections de chansons :",
+        "option_create": "Créez des carnets personnels pour organiser vos sélections à votre goût.",
+        "option_use_official": "Explorez les carnets publics organisés par genres, artistes ou thématiques.",
+        "option_suggest": "Proposez d'ajouter des chansons aux carnets publics pour enrichir la communauté.",
         "my_songbooks": "Mes carnets",
-        "hj_songbooks": "Recommandés",
-        "official_songbooks": "Carnets officiels",
+        "recommended_songbooks": "Publics",
         "published_by": "Carnet officiel",
-        "hj_description": "Ces carnets sont maintenus à jour. Si vous devez ajouter ou supprimer des chansons, créez un carnet personnel ; si une chanson manque pour tous, vous pouvez suggérer de l'ajouter au carnet officiel.",
-        "empty_personal": "Vous n'avez pas encore de carnets personnels. Créez-en un si vous avez besoin de votre propre sélection ; pour les carnets officiels, utilisez l'original ou suggérez des changements.",
+        "hj_description": "Ces carnets publics sont maintenus à jour. Vous pouvez consulter leurs chansons ou suggérer l'ajout de nouveaux titres.",
+        "empty_personal": "Vous n'avez pas encore de carnets personnels. Créez-en un nouveau pour organiser vos sélections de chansons.",
         "empty_hj": "Aucun carnet publié.",
-        "create_new": "Créer un carnet",
+        "create_new": "Créer",
         "creating": "Création...",
         "view": "Voir",
         "copy_to_customize": "Copier pour personnaliser",
@@ -134,7 +132,9 @@
         "reorder_space": "Réorganiser l'espace",
         "edit_space": "Modifier l'espace",
         "save_space": "Enregistrer l'espace",
-        "edit_title": "Modifier le titre ou la description",
+        "edit_title": "Modifier le titre ou la référence",
+        "edit_reference": "Modifier la référence",
+        "add_reference": "Ajouter une référence",
         "delete_space": "Supprimer l'espace",
         "delete_space_confirm_title": "Supprimer l'espace",
         "delete_space_confirm_message": "Êtes-vous sûr de vouloir supprimer cet espace del tipo de evento ?",
@@ -152,7 +152,7 @@
         "no_event_types_hint": "Créez d'abord un type d'événement pour pouvoir générer des répertoires.",
         "go_to_setup": "Configurer les types d'événement",
         "title_label": "Titre",
-        "description_label": "Description ou référence",
+        "description_label": "Référence ou description",
         "description_hint": "Sert à rechercher ce répertoire de façon plus intelligente plus tard.",
         "date_label": "Date",
         "create": "Créer",
@@ -176,11 +176,16 @@
         ,"back_to_repertoires": "Retour aux répertoires"
         ,"loading": "Chargement du répertoire..."
         ,"event_spaces": "Espaces de l'événement"
-        ,"assign_songs_description": "Attribuez une chanson à chaque espace de ce répertoire."
+        ,"assign_songs_description": "Attribuez une ou plusieurs chansons à chaque espace de ce répertoire."
         ,"song": "Chanson"
         ,"select_song": "Sélectionnez une chanson"
         ,"search_song": "Rechercher une chanson par titre..."
         ,"add_song": "Ajouter une chanson par titre..."
+        ,"add_another_song": "Ajouter une autre chanson par titre..."
+        ,"add_another_song_action": "Ajouter une autre"
+        ,"cancel_add_song": "Annuler l'ajout d'une chanson"
+        ,"move_song_earlier": "Déplacer avant"
+        ,"move_song_later": "Déplacer après"
         ,"no_song_matches": "Aucune chanson trouvée"
         ,"remove_song": "Retirer la chanson"
         ,"skip_space": "Marquer comme inutilisé"
@@ -200,7 +205,11 @@
         "default_message": "Êtes-vous sûr de vouloir confirmer cette action ?"
     },
     "common": {
-        "close": "Fermer"
+        "close": "Fermer",
+        "create": "Créer",
+        "save": "Enregistrer",
+        "delete": "Supprimer",
+        "help": "Aide"
     },
     "feedback": {
         "open": "Parler à l'équipe",
@@ -254,6 +263,10 @@
     },
     "reader": {
         "add_to_songbook": "Ajouter au carnet...",
+        "add_tag": "Ajouter une étiquette...",
+        "create_tag": "Créer \"{{title}}\"",
+        "remove_tag": "Retirer l'étiquette {{name}}",
+        "no_tags_found": "Aucune étiquette trouvée",
         "song_not_available": "La chanson n'est pas disponible",
         "loading_song": "Chargement de la chanson...",
         "remove_from_songbook": "Retirer de {{name}}",

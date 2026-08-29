@@ -48,19 +48,17 @@
     },
     "songbook_page": {
         "title": "Songbooks",
-        "description": "You have four ways to work with your songbooks:",
-        "option_create": "Create a new songbook that belongs only to you.",
-        "option_use_official": "Use an official songbook as it is; you do not need to do anything else.",
-        "option_suggest": "Suggest a change to an official songbook. The team will perform a brief review before applying it.",
-        "option_copy": "As a last resort, create a copy of the official songbook. You can adapt it your way, but it will no longer receive the original's updates or synchronization.",
+        "description": "Organize and explore song collections:",
+        "option_create": "Create personal songbooks to arrange your selections your way.",
+        "option_use_official": "Explore public songbooks organized by genres, artists, or themes.",
+        "option_suggest": "Suggest adding songs to public songbooks to enrich the community.",
         "my_songbooks": "My songbooks",
-        "hj_songbooks": "Recommended",
-        "official_songbooks": "Official songbooks",
+        "recommended_songbooks": "Public",
         "published_by": "Official songbook",
-        "hj_description": "These songbooks are kept up to date. If you need to add or remove songs, create a personal songbook; if a song is missing for everyone, you can suggest adding it to the official one.",
-        "empty_personal": "You do not have personal songbooks yet. Create a new one when you need your own selection; for official songbooks, use the original or suggest changes.",
+        "hj_description": "These public songbooks are kept up to date. You can view their songs or suggest adding new ones.",
+        "empty_personal": "You do not have personal songbooks yet. Create a new one to organize your song selections.",
         "empty_hj": "No songbooks are published.",
-        "create_new": "Create songbook",
+        "create_new": "Create",
         "creating": "Creating...",
         "view": "View",
         "copy_to_customize": "Copy to customize",
@@ -80,7 +78,7 @@
         "customized": "Customized",
         "synced_copy": "Unchanged copy",
         "personal": "Personal",
-        "custom_copy_tooltip": "This is your personal copy; you can modify it without changing the recommended songbook."
+        "custom_copy_tooltip": "This is your personal copy; you can modify it without changing the public songbook."
     },
     "songbook_suggestion": {
         "action": "Suggest improvement",
@@ -134,7 +132,9 @@
         "reorder_space": "Reorder space",
         "edit_space": "Edit space",
         "save_space": "Save space",
-        "edit_title": "Edit title or description",
+        "edit_title": "Edit title or reference",
+        "edit_reference": "Edit reference",
+        "add_reference": "Add reference",
         "delete_space": "Delete space",
         "delete_space_confirm_title": "Delete space",
         "delete_space_confirm_message": "Are you sure you want to delete this space from the event type?",
@@ -152,7 +152,7 @@
         "no_event_types_hint": "Create an event type first to start generating repertoires.",
         "go_to_setup": "Configure event types",
         "title_label": "Title",
-        "description_label": "Description or reference",
+        "description_label": "Reference or description",
         "description_hint": "Used to search this repertoire more intelligently later on.",
         "date_label": "Date",
         "create": "Create",
@@ -176,11 +176,16 @@
         ,"back_to_repertoires": "Back to repertoires"
         ,"loading": "Loading repertoire..."
         ,"event_spaces": "Event spaces"
-        ,"assign_songs_description": "Assign a song to each space in this repertoire."
+        ,"assign_songs_description": "Assign one or more songs to each space in this repertoire."
         ,"song": "Song"
         ,"select_song": "Select a song"
         ,"search_song": "Search song by title..."
         ,"add_song": "Add a song by title..."
+        ,"add_another_song": "Add another song by title..."
+        ,"add_another_song_action": "Add another"
+        ,"cancel_add_song": "Cancel adding song"
+        ,"move_song_earlier": "Move earlier"
+        ,"move_song_later": "Move later"
         ,"no_song_matches": "No matching songs"
         ,"remove_song": "Remove song"
         ,"skip_space": "Mark as not used"
@@ -200,7 +205,11 @@
         "default_message": "Are you sure you want to confirm this action?"
     },
     "common": {
-        "close": "Close"
+        "close": "Close",
+        "create": "Create",
+        "save": "Save",
+        "delete": "Delete",
+        "help": "Help"
     },
     "feedback": {
         "open": "Talk to the team",
@@ -254,6 +263,10 @@
     },
     "reader": {
         "add_to_songbook": "Add to songbook...",
+        "add_tag": "Add tag...",
+        "create_tag": "Create \"{{title}}\"",
+        "remove_tag": "Remove tag {{name}}",
+        "no_tags_found": "No tags found",
         "song_not_available": "Song is not available",
         "loading_song": "Loading song...",
         "remove_from_songbook": "Remove from {{name}}",

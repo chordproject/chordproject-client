@@ -1,24 +1,26 @@
 <div class="flex flex-0 items-center justify-between border-b bg-neutral-50 px-4 py-3 dark:bg-neutral-900">
     <div class="flex items-center gap-2">
-        <button mat-icon-button [matTooltip]="'Save'" (click)="saveSongEvent.emit()">
+        <button mat-icon-button [matTooltip]="'common.save' | transloco" (click)="saveSongEvent.emit()">
             <mat-icon [svgIcon]="'file-down'"></mat-icon>
         </button>
-        <button mat-icon-button [color]="'warn'" [matTooltip]="'Delete'" (click)="removeSongEvent.emit()">
-            <mat-icon [svgIcon]="'trash-2'"></mat-icon>
-        </button>
+        @if (showDelete) {
+            <button mat-icon-button [color]="'warn'" [matTooltip]="'common.delete' | transloco" (click)="removeSongEvent.emit()">
+                <mat-icon [svgIcon]="'trash-2'"></mat-icon>
+            </button>
+        }
         @if (mode === 'quick') {
-            <button mat-icon-button [matTooltip]="'Open in full editor'" (click)="openFullEditorEvent.emit()">
+            <button mat-icon-button [matTooltip]="'preview.open_full_editor' | transloco" (click)="openFullEditorEvent.emit()">
                   <mat-icon [svgIcon]="'external-link'"></mat-icon>
             </button>
         }
         @if (mode === 'full') {
-            <button mat-icon-button [matTooltip]="'Help'" (click)="helpEvent.emit()">
+            <button mat-icon-button [matTooltip]="'common.help' | transloco" (click)="helpEvent.emit()">
                   <mat-icon [svgIcon]="'circle-question-mark'"></mat-icon>
             </button>
         }
     </div>
     <div class="flex items-center">
-        <button mat-icon-button [matTooltip]="'Close'" (click)="closeEvent.emit()">
+        <button mat-icon-button [matTooltip]="'common.close' | transloco" (click)="closeEvent.emit()">
             <mat-icon [svgIcon]="'x'"></mat-icon>
         </button>
     </div>

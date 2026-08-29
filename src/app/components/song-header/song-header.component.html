@@ -1,0 +1,293 @@
+<div class="shrink-0 bg-white px-6 pb-3 pt-5 dark:bg-neutral-900 sm:px-8">
+    <div [class.mx-auto]="centerContent" [class.max-w-3xl]="centerContent" class="flex w-full flex-col gap-3">
+        <!-- Top Row: Title, Artist, Metadata & optional Edit/Close buttons -->
+        <div class="flex items-start justify-between gap-4">
+            <div class="min-w-0 flex-1">
+                <!-- Title & Pending Suggestion Badge -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <h1 class="truncate text-2xl font-bold leading-tight text-neutral-900 dark:text-neutral-100 sm:text-3xl">
+                        {{ song?.title || '' }}
+                    </h1>
+                    @if (pendingSuggestion) {
+                        <span
+                            class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
+                            [matTooltip]="'reader.pending_suggestion_tooltip' | transloco"
+                        >
+                            {{ 'reader.pending_suggestion' | transloco }}
+                        </span>
+                    }
+                </div>
+
+                <!-- Artists -->
+                @if (song?.artists?.length) {
+                    <p class="mt-0.5 truncate text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                        {{ song.artists | join: ' - ' }}
+                    </p>
+                }
+
+                <!-- Metadata Row (Key, Capo, Tempo, Time, Year, etc.) -->
+                @if (hasMetadata) {
+                    <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                        @if (song?.subtitle) {
+                            <span>{{ song.subtitle }}</span>
+                        }
+                        @if (song?.songKey) {
+                            <span>Key: <strong class="text-neutral-700 dark:text-neutral-300">{{ song.songKey }}</strong></span>
+                        }
+                        @if (song?.capo) {
+                            <span>Capo: <strong class="text-neutral-700 dark:text-neutral-300">{{ song.capo }}</strong></span>
+                        }
+                        @if (song?.tempo) {
+                            <span>Tempo: {{ song.tempo }}</span>
+                        }
+                        @if (song?.time) {
+                            <span>Time: {{ song.time }}</span>
+                        }
+                        @if (song?.year) {
+                            <span>Year: {{ song.year }}</span>
+                        }
+                        @if (song?.composers?.length) {
+                            <span>Composer: {{ song.composers | join: ' - ' }}</span>
+                        }
+                        @if (song?.lyricists?.length) {
+                            <span>Lyricist: {{ song.lyricists | join: ' - ' }}</span>
+                        }
+                        @if (song?.arrangers?.length) {
+                            <span>Arranger: {{ song.arrangers | join: ' - ' }}</span>
+                        }
+                    </div>
+                }
+
+            <!-- Alternate Versions -->
+            @if (alternateVersions.length > 1) {
+                <div class="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                    @for (version of alternateVersions; track version.uid) {
+                        @if (version.uid === song?.uid) {
+                            <span class="rounded-full border border-primary-400 bg-primary-50 px-2.5 py-0.5 font-semibold text-primary-700 dark:border-primary-700 dark:bg-primary-950 dark:text-primary-300">
+                                {{ 'reader.version_label' | transloco: { number: $index + 1 } }}
+                            </span>
+                        } @else {
+                            <a
+                                class="cursor-pointer rounded-full border border-neutral-300 px-2.5 py-0.5 text-neutral-700 hover:border-primary-300 hover:text-primary-700 dark:border-neutral-700 dark:text-neutral-200"
+                                [routerLink]="versionRoute(version.uid)"
+                            >
+                                {{ 'reader.version_label' | transloco: { number: $index + 1 } }}
+                            </a>
+                        }
+                    }
+                </div>
+            }
+
+            <!-- Associated Songbooks -->
+            @if (allVisibleSongbooks.length) {
+                <div class="mt-2 flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                    @for (songbook of primarySongbooks; track songbook.uid) {
+                        <div class="flex min-w-0 max-w-full items-center gap-1">
+                            <a
+                                class="truncate text-neutral-600 hover:text-primary-700 hover:underline dark:text-neutral-300 dark:hover:text-primary-300"
+                                [routerLink]="['/songbook', songbook.uid]"
+                            >
+                                {{ songbook.name }}
+                            </a>
+                            @if (isPendingSongbook(songbook)) {
+                                <span class="text-xs text-amber-700 dark:text-amber-300">({{ 'reader.pending_assignment' | transloco }})</span>
+                            }
+                            @if (songbookSearchControl) {
+                                <button
+                                    type="button"
+                                    class="flex size-5 shrink-0 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
+                                    [attr.aria-label]="'reader.remove_from_songbook' | transloco: { name: songbook.name }"
+                                    (click)="removeSongbook.emit(songbook)"
+                                >
+                                    <mat-icon class="size-3.5" [svgIcon]="'x'"></mat-icon>
+                                </button>
+                            }
+                        </div>
+                    }
+                    @if (additionalSongbooks.length) {
+                        <button
+                            type="button"
+                            class="cursor-pointer text-xs font-medium text-primary-700 hover:underline dark:text-primary-300"
+                            [matMenuTriggerFor]="additionalSongbooksMenu"
+                        >
+                            +{{ additionalSongbooks.length }}
+                        </button>
+                    }
+                </div>
+
+                <mat-menu #additionalSongbooksMenu="matMenu">
+                    @for (songbook of additionalSongbooks; track songbook.uid) {
+                        <div mat-menu-item class="flex items-center gap-2">
+                            <a class="min-w-0 flex-1 truncate" [routerLink]="['/songbook', songbook.uid]">
+                                {{ songbook.name }}
+                            </a>
+                            @if (songbookSearchControl) {
+                                <button
+                                    mat-icon-button
+                                    type="button"
+                                    [attr.aria-label]="'reader.remove_from_songbook' | transloco: { name: songbook.name }"
+                                    (click)="removeSongbook.emit(songbook)"
+                                >
+                                    <mat-icon class="size-4" [svgIcon]="'x'"></mat-icon>
+                                </button>
+                            }
+                        </div>
+                    }
+                </mat-menu>
+            }
+
+            <!-- Associated Tags -->
+            @if (associatedTags.length) {
+                    <div class="mt-2.5 flex flex-wrap items-center gap-2">
+                        @for (tag of associatedTags; track tag.id) {
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 dark:bg-primary-950/80 dark:text-primary-300"
+                            >
+                                {{ tag.title }}
+                                @if (tagSearchControl) {
+                                    <button
+                                        type="button"
+                                        class="flex size-4 items-center justify-center rounded-full text-primary-600 hover:bg-primary-200/60 dark:text-primary-300 dark:hover:bg-primary-800/60"
+                                        [attr.aria-label]="'reader.remove_tag' | transloco: { name: tag.title }"
+                                        [matTooltip]="'reader.remove_tag' | transloco: { name: tag.title }"
+                                        (click)="removeTag.emit(tag)"
+                                    >
+                                        <mat-icon class="size-3" [svgIcon]="'x'"></mat-icon>
+                                    </button>
+                                }
+                            </span>
+                        }
+                    </div>
+                }
+            </div>
+
+            <!-- Right Column: Optional Edit/Close Buttons & Stacked Expandable Inputs -->
+            <div class="z-10 flex shrink-0 flex-col items-end gap-2">
+                @if (showFullEditor || showClose) {
+                    <div class="flex items-center gap-1">
+                        @if (showFullEditor) {
+                            <button
+                                type="button"
+                                mat-icon-button
+                                [matTooltip]="'viewer_toolbar.edit' | transloco"
+                                (click)="openFullEditor.emit()"
+                            >
+                                <mat-icon class="size-5" [svgIcon]="'square-pen'"></mat-icon>
+                            </button>
+                        }
+                        @if (showClose) {
+                            <button
+                                type="button"
+                                mat-icon-button
+                                [matTooltip]="'preview.close' | transloco"
+                                (click)="close.emit()"
+                            >
+                                <mat-icon class="size-5" [svgIcon]="'x'"></mat-icon>
+                            </button>
+                        }
+                    </div>
+                }
+
+                @if (songbookSearchControl) {
+                    <div
+                        class="relative flex justify-end"
+                        (mouseenter)="isSongbookHovered.set(true)"
+                        (mouseleave)="isSongbookHovered.set(false)"
+                    >
+                        <mat-form-field
+                            class="fuse-mat-dense fuse-mat-rounded overflow-hidden transition-all duration-300 ease-in-out"
+                            [class.w-10]="!isSongbookExpanded"
+                            [class.w-52]="isSongbookExpanded"
+                            [matTooltip]="(!isSongbookExpanded ? ('reader.add_to_songbook' | transloco) : '')"
+                            subscriptSizing="dynamic"
+                        >
+                            <mat-icon class="size-4 shrink-0" matPrefix [svgIcon]="'book-open'"></mat-icon>
+                            <input
+                                matInput
+                                [formControl]="songbookSearchControl"
+                                [placeholder]="'reader.add_to_songbook' | transloco"
+                                [matAutocomplete]="songbookAutocomplete"
+                                (focus)="isSongbookOpen.set(true)"
+                                (blur)="isSongbookOpen.set(false)"
+                            />
+                            <mat-autocomplete
+                                #songbookAutocomplete="matAutocomplete"
+                                [displayWith]="displaySongbook"
+                                [panelWidth]="'230px'"
+                                (optionSelected)="addSongToSongbook.emit($event.option.value)"
+                            >
+                                @if (filteredSongbooks$ | async; as songbooks) {
+                                    @for (songbook of songbooks; track songbook.uid) {
+                                        <mat-option [value]="songbook">
+                                            {{ songbook.name }}
+                                        </mat-option>
+                                    } @empty {
+                                        @if (songbookSearchControl.value) {
+                                            <mat-option disabled>
+                                                {{ 'reader.no_songbooks_available' | transloco }}
+                                            </mat-option>
+                                        }
+                                    }
+                                }
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                }
+
+                @if (tagSearchControl) {
+                    <div
+                        class="relative flex justify-end"
+                        (mouseenter)="isTagHovered.set(true)"
+                        (mouseleave)="isTagHovered.set(false)"
+                    >
+                        <mat-form-field
+                            class="fuse-mat-dense fuse-mat-rounded overflow-hidden transition-all duration-300 ease-in-out"
+                            [class.w-10]="!isTagExpanded"
+                            [class.w-52]="isTagExpanded"
+                            [matTooltip]="(!isTagExpanded ? ('reader.add_tag' | transloco) : '')"
+                            subscriptSizing="dynamic"
+                        >
+                            <mat-icon class="size-4 shrink-0" matPrefix [svgIcon]="'tags'"></mat-icon>
+                            <input
+                                matInput
+                                [formControl]="tagSearchControl"
+                                [placeholder]="'reader.add_tag' | transloco"
+                                [matAutocomplete]="tagAutocomplete"
+                                (focus)="isTagOpen.set(true)"
+                                (blur)="isTagOpen.set(false)"
+                            />
+                            <mat-autocomplete
+                                #tagAutocomplete="matAutocomplete"
+                                [displayWith]="displayTag"
+                                [panelWidth]="'230px'"
+                                (optionSelected)="tagSelected.emit($event.option.value)"
+                            >
+                                @if (filteredTags$ | async; as tags) {
+                                    @for (item of tags; track item.id || item.title) {
+                                        <mat-option [value]="item">
+                                            @if (item.isNew) {
+                                                <span class="flex items-center gap-1.5 font-medium text-primary-600 dark:text-primary-400">
+                                                    <mat-icon class="size-4" [svgIcon]="'plus'"></mat-icon>
+                                                    {{ 'reader.create_tag' | transloco: { title: item.title } }}
+                                                </span>
+                                            } @else {
+                                                {{ item.title }}
+                                            }
+                                        </mat-option>
+                                    } @empty {
+                                        @if (tagSearchControl.value) {
+                                            <mat-option disabled>
+                                                {{ 'reader.no_tags_found' | transloco }}
+                                            </mat-option>
+                                        }
+                                    }
+                                }
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                }
+            </div>
+        </div>
+    <!-- Divider -->
+    <div [class.mx-auto]="centerContent" [class.max-w-3xl]="centerContent" class="mt-3 w-full border-b border-neutral-200 dark:border-neutral-800"></div>
+</div>

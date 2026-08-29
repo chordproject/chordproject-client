@@ -11,150 +11,33 @@
             <router-outlet></router-outlet>
         </mat-drawer>
         <mat-drawer-content class="flex flex-col">
-            <div class="flex-auto">
-                <!-- Header -->
+            <div class="h-full flex-auto">
+                <!-- Header & Viewer -->
                 @if (song) {
-                    <div
-                        class="flex flex-auto flex-col justify-between border-b px-6 py-4 sm:flex-row md:flex-col md:px-8"
-                    >
-                        <div class="flex w-full flex-col gap-2 lg:flex-row lg:items-start lg:justify-between">
-                            <!-- Title -->
-                            <div>
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <div class="text-4xl font-extrabold leading-none tracking-tight">{{ song.title }}</div>
-                                    @if (pendingSuggestion) {
-                                        <span
-                                            class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
-                                            [matTooltip]="'reader.pending_suggestion_tooltip' | transloco"
-                                        >
-                                            {{ 'reader.pending_suggestion' | transloco }}
-                                        </span>
-                                    }
-                                </div>
-                                <div class="text-secondary ml-0.5 font-medium">
-                                    {{ song.artists | join: ' - ' }}
-                                </div>
-                                @if (versions.length > 1) {
-                                    <div class="mt-1 flex flex-wrap items-center gap-2 text-sm">
-                                        @for (version of versions; track version.uid) {
-                                            @if (version.uid === song.uid) {
-                                                <span class="rounded-full border border-primary-400 bg-primary-50 px-3 py-1 font-semibold text-primary-700 dark:border-primary-700 dark:bg-primary-950 dark:text-primary-300">
-                                                    {{ versionLabel(version, $index) }}
-                                                </span>
-                                            } @else {
-                                                <a
-                                                    class="cursor-pointer rounded-full border border-neutral-300 px-3 py-1 text-neutral-700 hover:border-primary-300 hover:text-primary-700 dark:border-neutral-700 dark:text-neutral-200"
-                                                    [routerLink]="['/songs/read', version.uid]"
-                                                >
-                                                    {{ versionLabel(version, $index) }}
-                                                </a>
-                                            }
-                                        }
-                                    </div>
-                                }
-                                @if (allVisibleSongbooks.length) {
-                                    <div class="mt-2 flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-                                        @for (songbook of primarySongbooks; track songbook.uid) {
-                                            <div class="flex min-w-0 max-w-full items-center gap-1">
-                                                <a
-                                                    class="truncate text-neutral-600 hover:text-primary-700 hover:underline dark:text-neutral-300 dark:hover:text-primary-300"
-                                                    [routerLink]="['/songbook', songbook.uid]"
-                                                >
-                                                    {{ songbook.name }}
-                                                </a>
-                                                @if (isPendingSongbook(songbook)) {
-                                                    <span class="text-xs text-amber-700 dark:text-amber-300">({{ 'reader.pending_assignment' | transloco }})</span>
-                                                }
-                                                <button
-                                                    type="button"
-                                                    class="flex size-5 shrink-0 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
-                                                    [attr.aria-label]="'reader.remove_from_songbook' | transloco: { name: songbook.name }"
-                                                    (click)="removeSongbookAssociation(songbook)"
-                                                >
-                                                    <mat-icon class="size-3.5" [svgIcon]="'x'"></mat-icon>
-                                                </button>
-                                            </div>
-                                        }
-                                        @if (additionalSongbooks.length) {
-                                            <button
-                                                type="button"
-                                                class="cursor-pointer text-xs font-medium text-primary-700 hover:underline dark:text-primary-300"
-                                                [matMenuTriggerFor]="additionalSongbooksMenu"
-                                            >
-                                                +{{ additionalSongbooks.length }}
-                                            </button>
-                                        }
-                                    </div>
-
-                                    <mat-menu #additionalSongbooksMenu="matMenu">
-                                        @for (songbook of additionalSongbooks; track songbook.uid) {
-                                            <div mat-menu-item class="flex items-center gap-2">
-                                                <a class="min-w-0 flex-1 truncate" [routerLink]="['/songbook', songbook.uid]">
-                                                    {{ songbook.name }}
-                                                </a>
-                                                <button
-                                                    mat-icon-button
-                                                    type="button"
-                                                    [attr.aria-label]="'reader.remove_from_songbook' | transloco: { name: songbook.name }"
-                                                    (click)="removeSongbookAssociation(songbook)"
-                                                >
-                                                    <mat-icon class="size-4" [svgIcon]="'x'"></mat-icon>
-                                                </button>
-                                            </div>
-                                        }
-                                    </mat-menu>
-                                }
-                                @if (associatedTags.length) {
-                                    <div class="mt-2 flex flex-wrap gap-2">
-                                        @for (tag of associatedTags; track tag.id) {
-                                            <span
-                                                class="rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 dark:bg-primary-900/30 dark:text-primary-200"
-                                            >
-                                                {{ tag.title }}
-                                            </span>
-                                        }
-                                    </div>
-                                }
-                            </div>
-
-                            <mat-form-field class="w-full lg:w-80" subscriptSizing="dynamic">
-                                <input
-                                    matInput
-                                    [formControl]="songbookSearchControl"
-                                    [placeholder]="'reader.add_to_songbook' | transloco"
-                                    [matAutocomplete]="songbookAutocomplete"
-                                />
-                                <mat-autocomplete
-                                    #songbookAutocomplete="matAutocomplete"
-                                    [displayWith]="displaySongbook"
-                                    (optionSelected)="addCurrentSongToSongbook($event.option.value)"
-                                >
-                                    @if (filteredSongbooks$ | async; as songbooks) {
-                                        @for (songbook of songbooks; track songbook.uid) {
-                                            <mat-option [value]="songbook">
-                                                {{ songbook.name }} ({{ songbookTypeLabel(songbook) | transloco }})
-                                            </mat-option>
-                                        } @empty {
-                                            @if (songbookSearchControl.value) {
-                                                <mat-option disabled>
-                                                    {{ 'reader.no_songbooks_available' | transloco }}
-                                                </mat-option>
-                                            }
-                                        }
-                                    }
-                                </mat-autocomplete>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="bg-card relative flex flex-col border-b">
-                        <chp-viewer-panel
-                            [song]="song"
-                            [content]="viewerContent"
-                            (editSongEvent)="editSong()"
-                            (deleteSongEvent)="deleteSong()"
-                        ></chp-viewer-panel>
-                    </div>
+                    <chp-song-preview
+                        [song]="song"
+                        [pendingSuggestion]="!!pendingSuggestion"
+                        [alternateVersions]="versions"
+                        [alternateVersionRoute]="'reader'"
+                        [associatedSongbooks]="associatedSongbooks"
+                        [pendingSongbooks]="pendingSongbooksList"
+                        [associatedTags]="associatedTags"
+                        [songbookSearchControl]="songbookSearchControl"
+                        [filteredSongbooks$]="filteredSongbooks$"
+                        [tagSearchControl]="tagSearchControl"
+                        [filteredTags$]="filteredTags$"
+                        [isPreview]="false"
+                        [compactPreview]="false"
+                        [showEditDelete]="true"
+                        [showDelete]="canDelete()"
+                        [centerContent]="false"
+                        (editSongEvent)="editSong()"
+                        (deleteSongEvent)="deleteSong()"
+                        (removeSongbook)="removeSongbookAssociation($event)"
+                        (addSongToSongbook)="addCurrentSongToSongbook($event)"
+                        (removeTag)="removeTag($event)"
+                        (tagSelected)="onTagSelected($event)"
+                    ></chp-song-preview>
                 } @else {
                     <div class="flex h-full min-h-80 items-center justify-center px-6">
                         <div class="text-center">

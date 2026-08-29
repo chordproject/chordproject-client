@@ -14,8 +14,8 @@ Mantener una base de código compartida con builds, branding, traducciones y con
 - Las canciones son una biblioteca compartida. Todos pueden leerlas; solo el autor o un administrador puede editarlas o eliminarlas.
 - `tags` y cancioneros son conceptos distintos. `tags` clasifica canciones; `songbook_songs` representa pertenencia a un cancionero.
 - Los cancioneros y repertorios personales no deben mutar contenido compartido.
-- HomenaJesus puede ofrecer cancioneros y repertorios recomendados publicados.
-- Un usuario puede crear una copia personal tipo fork desde un contenido recomendado.
+- HomenaJesus puede ofrecer cancioneros y repertorios públicos.
+- Un usuario puede crear una copia personal tipo fork desde un contenido público.
 - La copia conserva `copiedFrom` y puede modificarse sin afectar al original.
 - Los usuarios anónimos no deben ver asociaciones personales de otros usuarios.
 - Las lecturas públicas no requieren guard de ruta; las escrituras requieren autenticación y reglas de propiedad.
@@ -38,8 +38,8 @@ Mantener una base de código compartida con builds, branding, traducciones y con
 - Componente compartido de lista de canciones con vista previa (`ChpSongListPanelComponent`), reutilizado por cancioneros y por la vista en vivo de repertorios.
 - Simplificación de la edición de canciones: se eliminó la edición rápida ("Quick edit") inline para utilizar siempre el editor completo (`/songs/create/:uid`) como única vía de edición.
 - Orden de cancioneros dentro de un grupo: se respeta el orden manual cuando existe: si todos los miembros del grupo comparten el mismo valor de orden se ordenan alfabéticamente en su lugar.
-- El contenido de un cancionero recomendado solo expone al usuario anónimo las relaciones `songbook_songs` marcadas como `songbookPublic`.
-- Cancioneros personales y recomendados separados visualmente en "Mis cancioneros" y "Cancioneros recomendados", con el origen (`copiedFrom`) y el estado de sincronización visibles en la copia.
+- El contenido de un cancionero público solo expone al usuario anónimo las relaciones `songbook_songs` marcadas como `songbookPublic`.
+- Cancioneros personales y públicos separados visualmente en "Mis cancioneros" y "Públicos", con el origen (`copiedFrom`) y el estado de sincronización visibles en la copia.
 - Fork de cancioneros y sus relaciones (`forkSongbooks`/`forkMany`), usado hoy desde el flujo de sugerencias para crear la copia personal antes de aplicar un cambio.
 - Un cancionero base (`isTemplate: true`, `scope: shared`, `published: true`) no puede editarse desde una copia: bloqueado por reglas de Firestore y por `isEditable()` en el cliente.
 - Logos, favicons, títulos, metadata, marcas de agua y traducciones adaptados a cada marca.

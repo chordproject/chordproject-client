@@ -13,5 +13,8 @@
         ],
         "platform_title": "¿También tocas otros géneros?",
         "platform_description": "HomenaJesus está centrado en la música cristiana y en las necesidades de los ministerios de la Iglesia. Para otros géneros musicales, también puedes usar <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>."
+    },
+    "songbook_page": {
+        "option_use_official": "Explora los cancioneros públicos organizados por tiempos, temáticas o celebraciones."
     }
 }

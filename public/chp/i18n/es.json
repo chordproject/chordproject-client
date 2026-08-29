@@ -48,19 +48,17 @@
     },
     "songbook_page": {
         "title": "Cancioneros",
-        "description": "Tienes estas cuatro formas de trabajar con tus cancioneros:",
-        "option_create": "Crear un cancionero nuevo que solo te pertenece a ti.",
-        "option_use_official": "Usar un cancionero oficial tal y como está; no necesitas hacer nada más.",
-        "option_suggest": "Sugerir un cambio en un cancionero oficial. El equipo hará una pequeña validación antes de aplicarlo.",
-        "option_copy": "Como última opción, crear una copia del oficial. Podrás adaptarla a tu manera, pero dejará de recibir la evolución y sincronización del original.",
+        "description": "Organiza y explora colecciones de canciones:",
+        "option_create": "Crea cancioneros personales para organizar tus selecciones a tu gusto.",
+        "option_use_official": "Explora los cancioneros públicos organizados por géneros, artistas o temáticas.",
+        "option_suggest": "Sugiere agregar canciones a los cancioneros públicos para enriquecer la comunidad.",
         "my_songbooks": "Mis cancioneros",
-        "hj_songbooks": "Recomendados",
-        "official_songbooks": "Cancioneros oficiales",
+        "recommended_songbooks": "Públicos",
         "published_by": "Cancionero oficial",
-        "hj_description": "Estos cancioneros se mantienen actualizados. Si necesitas agregar o quitar canciones, crea un cancionero personal; si falta una canción para todos, puedes sugerir agregarla al oficial.",
-        "empty_personal": "Aún no tienes cancioneros personales. Crea uno nuevo si necesitas una selección propia; para los oficiales, usa el original o sugiere cambios.",
+        "hj_description": "Estos cancioneros públicos se mantienen actualizados. Puedes consultar sus canciones o sugerir la inclusión de nuevos temas.",
+        "empty_personal": "Aún no tienes cancioneros personales. Crea uno nuevo para organizar tus propias selecciones de canciones.",
         "empty_hj": "No hay cancioneros publicados.",
-        "create_new": "Crear cancionero",
+        "create_new": "Crear",
         "creating": "Creando...",
         "view": "Ver",
         "copy_to_customize": "Copiar para personalizar",
@@ -80,7 +78,7 @@
         "customized": "Personalizado",
         "synced_copy": "Copia sin cambios",
         "personal": "Personal",
-        "custom_copy_tooltip": "Esta es tu copia personal; puedes modificarla sin cambiar el cancionero recomendado."
+        "custom_copy_tooltip": "Esta es tu copia personal; puedes modificarla sin cambiar el cancionero público."
     },
     "songbook_suggestion": {
         "action": "Sugerir mejora",
@@ -134,7 +132,9 @@
         "reorder_space": "Reordenar espacio",
         "edit_space": "Editar espacio",
         "save_space": "Guardar espacio",
-        "edit_title": "Editar título o descripción",
+        "edit_title": "Editar título o referencia",
+        "edit_reference": "Editar referencia",
+        "add_reference": "Agregar referencia",
         "delete_space": "Eliminar espacio",
         "delete_space_confirm_title": "Eliminar espacio",
         "delete_space_confirm_message": "¿Estás seguro de que deseas eliminar este espacio del tipo de evento?",
@@ -152,7 +152,7 @@
         "no_event_types_hint": "Primero crea un tipo de evento para poder generar repertorios.",
         "go_to_setup": "Configurar tipos de evento",
         "title_label": "Título",
-        "description_label": "Descripción o referencia",
+        "description_label": "Referencia o descripción",
         "description_hint": "Sirve para buscar este repertorio de forma más inteligente más adelante.",
         "date_label": "Fecha",
         "create": "Crear",
@@ -176,11 +176,16 @@
         ,"back_to_repertoires": "Volver a repertorios"
         ,"loading": "Cargando repertorio..."
         ,"event_spaces": "Espacios del evento"
-        ,"assign_songs_description": "Asigna una canción a cada espacio de este repertorio."
+        ,"assign_songs_description": "Asigna una o más canciones a cada espacio de este repertorio."
         ,"song": "Canción"
         ,"select_song": "Selecciona una canción"
         ,"search_song": "Busca una canción por título..."
         ,"add_song": "Añade una canción por título..."
+        ,"add_another_song": "Añade otra canción por título..."
+        ,"add_another_song_action": "Agregar otra"
+        ,"cancel_add_song": "Cancelar agregar canción"
+        ,"move_song_earlier": "Mover antes"
+        ,"move_song_later": "Mover después"
         ,"no_song_matches": "No se encontraron canciones"
         ,"remove_song": "Quitar canción"
         ,"skip_space": "Marcar como no utilizado"
@@ -200,7 +205,11 @@
         "default_message": "¿Estás seguro de que quieres confirmar esta acción?"
     },
     "common": {
-        "close": "Cerrar"
+        "close": "Cerrar",
+        "create": "Crear",
+        "save": "Guardar",
+        "delete": "Eliminar",
+        "help": "Ayuda"
     },
     "feedback": {
         "open": "Hablar con el equipo",
@@ -254,6 +263,10 @@
     },
     "reader": {
         "add_to_songbook": "Agregar al cancionero...",
+        "add_tag": "Agregar etiqueta...",
+        "create_tag": "Crear \"{{title}}\"",
+        "remove_tag": "Quitar etiqueta {{name}}",
+        "no_tags_found": "No se encontraron etiquetas",
         "song_not_available": "La canción no está disponible",
         "loading_song": "Cargando canción...",
         "remove_from_songbook": "Quitar de {{name}}",

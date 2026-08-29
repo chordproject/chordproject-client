@@ -1,20 +1,44 @@
-<chp-viewer-toolbar
-    [song]="song"
-    [deviceType]="deviceType"
-    [isFullScreen]="viewer.isFullScreen"
-    [showEditDelete]="showEditDelete"
-    (editSongEvent)="editSongEvent.emit()"
-    (deleteSongEvent)="deleteSongEvent.emit()"
-    (transposeEvent)="viewer.transpose($event)"
-    (zoomEvent)="viewer.zoom($event)"
-    (fullScreenEvent)="viewer.toggleFullScreen()"
-></chp-viewer-toolbar>
-<div class="h-full w-full min-h-0 flex-1" [class.mx-auto]="centerContent" [class.max-w-3xl]="centerContent">
-    <chp-viewer
-        #viewer
-        [content]="content"
-        [isPreview]="isPreview"
-        [showMetadata]="false"
-        [compactPreview]="compactPreview"
-    ></chp-viewer>
+<div class="relative flex h-full w-full min-h-0 flex-1 flex-col overflow-hidden">
+    @if (deviceType !== 'phone') {
+        <div class="absolute right-6 top-4 z-20">
+            <chp-viewer-toolbar
+                [song]="song"
+                [deviceType]="deviceType"
+                [isFullScreen]="viewer.isFullScreen"
+                [showEditDelete]="showEditDelete"
+                [showDelete]="showDelete"
+                (editSongEvent)="editSongEvent.emit()"
+                (deleteSongEvent)="deleteSongEvent.emit()"
+                (transposeEvent)="viewer.transpose($event)"
+                (zoomEvent)="viewer.zoom($event)"
+                (fullScreenEvent)="viewer.toggleFullScreen()"
+            ></chp-viewer-toolbar>
+        </div>
+    }
+
+    <div class="h-full w-full min-h-0 flex-1 overflow-auto" [class.mx-auto]="centerContent" [class.max-w-3xl]="centerContent">
+        <chp-viewer
+            #viewer
+            [content]="content"
+            [isPreview]="isPreview"
+            [showMetadata]="false"
+            [compactPreview]="compactPreview"
+            [deviceType]="deviceType"
+        ></chp-viewer>
+    </div>
+
+    @if (deviceType === 'phone') {
+        <chp-viewer-toolbar
+            [song]="song"
+            [deviceType]="deviceType"
+            [isFullScreen]="viewer.isFullScreen"
+            [showEditDelete]="showEditDelete"
+            [showDelete]="showDelete"
+            (editSongEvent)="editSongEvent.emit()"
+            (deleteSongEvent)="deleteSongEvent.emit()"
+            (transposeEvent)="viewer.transpose($event)"
+            (zoomEvent)="viewer.zoom($event)"
+            (fullScreenEvent)="viewer.toggleFullScreen()"
+        ></chp-viewer-toolbar>
+    }
 </div>

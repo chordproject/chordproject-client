@@ -61,9 +61,8 @@ export class TransposeToolComponent {
     @Input()
     set initialKey(value: string) {
         if (!value) return;
-        const baseKey = value.replace('m', '');
         this._isMinorKey = value.includes('m');
-        this._initialKey = this.normalizeKey(baseKey);
+        this._initialKey = this.normalizeKey(value);
         this.currentKey = this._initialKey;
     }
     get initialKey(): string {
@@ -71,9 +70,10 @@ export class TransposeToolComponent {
     }
 
     private normalizeKey(key: string): string {
+        const isMinor = key.includes('m');
         const baseKey = key.replace('m', '');
         if (this.pitchClassMap[baseKey] !== undefined) {
-            return key.includes('m') ? `${baseKey}m` : baseKey;
+            return isMinor ? `${baseKey}m` : baseKey;
         }
         return key;
     }

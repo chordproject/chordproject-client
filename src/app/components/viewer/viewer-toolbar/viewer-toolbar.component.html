@@ -1,9 +1,15 @@
 @if (deviceType === 'phone') {
-    <div class="fixed bottom-0 z-10 w-full border-t">
-        <div class="flex justify-center gap-6 bg-neutral-100 px-4 py-3 dark:bg-neutral-800">
+    <div
+        class="fixed bottom-0 left-0 right-0 w-full border-t border-neutral-200/80 bg-white/95 pb-safe pt-2 backdrop-blur dark:border-neutral-800/80 dark:bg-neutral-900/95"
+        [class.z-50]="isFullScreen"
+        [class.z-30]="!isFullScreen"
+    >
+        <div class="flex items-center justify-evenly gap-2 px-3 py-2 [&_mat-icon]:size-6 sm:[&_mat-icon]:size-6.5 [&_button]:size-11 sm:[&_button]:size-12">
             @if (showEditDelete) {
                 <chp-edit-tool (editSongEvent)="editSongEvent.emit()"></chp-edit-tool>
-                <chp-delete-tool (deleteSongEvent)="deleteSongEvent.emit()"></chp-delete-tool>
+                @if (showDelete) {
+                    <chp-delete-tool (deleteSongEvent)="deleteSongEvent.emit()"></chp-delete-tool>
+                }
             }
             <chp-transpose-tool
                 [initialKey]="song?.songKey"
@@ -14,29 +20,34 @@
                 [isFullScreen]="isFullScreen"
                 (fullScreenEvent)="fullScreenEvent.emit()"
             ></chp-fullscreen-tool>
-            <chp-settings-tool (settingsEvent)="settingsEvent.emit()"></chp-settings-tool>
         </div>
     </div>
 } @else {
-    <div class="flex gap-2 bg-neutral-100 px-4 py-3 dark:bg-neutral-800">
+    <div
+        class="flex items-center gap-1.5 rounded-full border border-neutral-200/80 bg-white/90 px-3 py-1.5 shadow-md backdrop-blur dark:border-neutral-800/80 dark:bg-neutral-900/90"
+        [class.fixed]="isFullScreen"
+        [class.top-4]="isFullScreen"
+        [class.right-6]="isFullScreen"
+        [class.z-50]="isFullScreen"
+    >
         @if (showEditDelete) {
             <chp-edit-tool (editSongEvent)="editSongEvent.emit()"></chp-edit-tool>
-            <chp-delete-tool (deleteSongEvent)="deleteSongEvent.emit()"></chp-delete-tool>
-            <div class="border-l border-gray-300 dark:border-gray-600"></div>
+            @if (showDelete) {
+                <chp-delete-tool (deleteSongEvent)="deleteSongEvent.emit()"></chp-delete-tool>
+            }
+            <div class="my-1 h-4 border-l border-neutral-300 dark:border-neutral-700"></div>
         }
         <chp-transpose-tool
             [isMobile]="false"
             [initialKey]="song?.songKey"
             (transposeEvent)="transposeEvent.emit($event)"
         ></chp-transpose-tool>
-        <div class="border-l border-gray-300 dark:border-gray-600"></div>
+        <div class="my-1 h-4 border-l border-neutral-300 dark:border-neutral-700"></div>
         <chp-fullscreen-tool
             [isFullScreen]="isFullScreen"
             (fullScreenEvent)="fullScreenEvent.emit()"
         ></chp-fullscreen-tool>
-        <div class="border-l border-gray-300 dark:border-gray-600"></div>
+        <div class="my-1 h-4 border-l border-neutral-300 dark:border-neutral-700"></div>
         <chp-zoom-tool [isMobile]="false" (zoomEvent)="onZoomEvent($event)"></chp-zoom-tool>
-        <div class="border-l border-gray-300 dark:border-gray-600"></div>
-        <chp-settings-tool (settingsEvent)="settingsEvent.emit()"></chp-settings-tool>
     </div>
 }
