@@ -4,19 +4,30 @@
         "error_title": "Something went wrong while loading songs",
         "error_subtitle": "Please refresh the page to try again",
         "about_title": "About ChordProject",
-        "about_description": "<strong>ChordProject</strong> is your pocket digital <strong>songbook</strong>: write, organize, and play your songs with chords in <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format, on any device.",
-        "overview_title": "What can you do?",
+        "about_description": "<strong>ChordProject</strong> is a platform to write, organize, and play songs with chords in <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a> format. It keeps your library, collections, and repertoires ready on any device.",
+        "overview_title": "For organizing your music",
         "features": [
-            "Chords always perfectly aligned, on any screen or font size.",
-            "Live mode, with autoscroll and quick font size adjustment.",
-            "Your <strong>repertoire</strong> saved online and synced across all your devices.",
-            "Organize your songs into custom <strong>songbooks</strong>.",
-            "You can transpose songs according to musical rules, not just mathematical shifting."
+            "Create and edit <strong>songs</strong> with aligned <strong>chords</strong> on any screen or font size.",
+            "Organize your <strong>library</strong> with <strong>songbooks</strong>, tags, and fast search.",
+            "Prepare <strong>repertoires</strong> by event, with defined spaces, references, and multiple songs when needed.",
+            "Use <strong>live mode</strong> with clear navigation, transposition, fullscreen, and quick font-size controls.",
+            "Keep your music synced and ready to open from desktop, tablet, or mobile."
         ],
-        "platform_title": "Looking for Christian music?",
-        "platform_description": "Visit our sister site <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
+        "platform_title": "Looking for celebration repertoires?",
+        "platform_description": "You can also use <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, an experience prepared for community songbooks and repertoires.",
+        "upcoming_repertoire_eyebrow": "Upcoming repertoire",
+        "upcoming_repertoire_songs": "Included songs",
+        "upcoming_repertoire_song_count": "{{count}} songs",
+        "upcoming_repertoire_empty": "No songs assigned yet.",
+        "upcoming_repertoire_more_songs": "+{{count}} more",
+        "upcoming_repertoire_open_live": "Open live",
+        "upcoming_repertoire_manage": "Manage",
+        "public_songbooks_title": "Public songbooks",
+        "public_songbooks_count": "{{count}}",
+        "public_songbooks_view_group": "View all songbooks in {{name}}",
+        "public_songbooks_view_all": "View all",
         "contribute_title": "Have an idea to improve it?",
-        "contribute_description": "It's an <strong>open source</strong> project - send your Pull Request on <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>. Don't code? You can use AI to help write it."
+        "contribute_description": "You can share ideas through the <a href=\"#feedback\" data-feedback-link=\"true\">feedback form</a>. If you want to contribute code, ChordProject is also an open source project on <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>."
     },
     "nav": {
         "home": "Home",
@@ -374,10 +385,11 @@
         "load_more": "Load more"
     },
     "search": {
-        "placeholder_bar": "Search by title, lyrics or songbook...",
-        "placeholder_basic": "Search by title, lyrics or songbook",
+        "placeholder_bar": "Search by title, artist, lyrics or songbook...",
+        "placeholder_basic": "Search by title, artist, lyrics or songbook",
         "no_results": "No results found!",
         "songs": "SONGS",
+        "artists": "ARTISTS",
         "songs_content": "SONGS CONTENT",
         "songbooks": "SONGBOOKS",
         "songbooks_content": "SONGBOOKS CONTENT"

@@ -52,6 +52,7 @@
                 [placeholder]="'search.placeholder_basic' | transloco"
                 [matAutocomplete]="searchResults?.matAutocomplete"
                 (keydown)="onKeydown($event)"
+                #basicSearchInput
             />
         </mat-form-field>
 

@@ -140,6 +140,24 @@ export class SongService {
         );
     }
 
+    searchByArtist(searchTerm?: string, limitResults?: number): Observable<PartialSong[]> {
+        return this.getCachedSongs().pipe(
+            map((allSongs) => {
+                const normalizedTerm = normalizeText(searchTerm).trim();
+                if (!normalizedTerm) {
+                    return [];
+                }
+
+                const songs = allSongs.filter((song) =>
+                    (song.artists || []).some((artist) => normalizeText(artist).includes(normalizedTerm))
+                );
+
+                return this.sortSongs(songs, { field: 'artists', direction: 'asc' }).slice(0, limitResults ?? songs.length);
+            }),
+            catchError((error) => this.handleError(error))
+        );
+    }
+
     searchByLyrics(searchTerm?: string, limitResults?: number): Observable<PartialSong[]> {
         const normalizedTerm = normalizeText(searchTerm).trim();
 

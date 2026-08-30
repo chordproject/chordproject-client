@@ -1,18 +1,28 @@
 {
     "home": {
         "about_title": "Acerca de HomenaJesus",
-        "about_description": "<strong>HomenaJesus.com</strong> es tu cancionero digital para el ministerio de música de la Iglesia. Te ayuda a preparar el repertorio, organizar tus canciones y tenerlo todo listo para acompañar la Santa Misa y otras celebraciones. Puedes mantener tu contenido disponible y actualizado en línea.",
-        "overview_title": "Para tu ministerio de música",
-        "overview_description": "Aquí puedes preparar y administrar <strong>canciones</strong>, <strong>cancioneros</strong> y <strong>repertorios</strong> para tus celebraciones.",
+        "about_description": "<strong>HomenaJesus</strong> es un cancionero digital para ministerios de música que preparan celebraciones. Reúne canciones, cancioneros, acordes y repertorios en línea para que cada servicio tenga sus cantos listos y ordenados.",
+        "overview_title": "Para preparar cada celebración",
+        "overview_description": "Administra <strong>canciones</strong>, <strong>cancioneros</strong> y <strong>repertorios</strong> desde un solo lugar.",
         "features": [
-            "Acordes siempre bien alineados, en cualquier pantalla o tamaño de letra.",
-            "Modo en vivo, con desplazamiento automático y ajuste rápido del tamaño de letra.",
-            "Tu <strong>repertorio</strong> guardado en línea y disponible para todo tu equipo.",
-            "Tus canciones organizadas en <strong>cancioneros</strong> personalizados.",
-            "Puedes transponer tus canciones siguiendo reglas musicales, no solo cambios matemáticos."
+            "Edita <strong>canciones</strong> con <strong>acordes</strong> alineados y una vista clara para ensayar o acompañar.",
+            "Consulta <strong>cancioneros</strong> públicos organizados por tiempos, temáticas o celebraciones, y crea <strong>copias personales</strong> cuando necesites adaptarlos.",
+            "Prepara <strong>repertorios</strong> con espacios del evento, referencias y más de una canción en un mismo momento si hace falta.",
+            "Abre el <strong>modo en vivo</strong> para seguir el orden del repertorio con transposición, pantalla completa y ajuste de tamaño de letra.",
+            "Mantén el material disponible para el <strong>equipo</strong> desde computador, tablet o móvil."
         ],
-        "platform_title": "¿También tocas otros géneros?",
-        "platform_description": "HomenaJesus está centrado en la música cristiana y en las necesidades de los ministerios de la Iglesia. Para otros géneros musicales, también puedes usar <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>."
+        "platform_title": "¿También organizas otros repertorios?",
+        "platform_description": "Para otros estilos musicales puedes usar <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>, la versión general de la plataforma.",
+        "upcoming_repertoire_eyebrow": "Próxima celebración",
+        "upcoming_repertoire_songs": "Cantos preparados",
+        "upcoming_repertoire_song_count": "{{count}} cantos",
+        "upcoming_repertoire_empty": "Aún no hay cantos asignados.",
+        "public_songbooks_title": "Cancioneros públicos",
+        "public_songbooks_count": "{{count}}",
+        "public_songbooks_view_group": "Ver todos los cancioneros de {{name}}",
+        "public_songbooks_view_all": "Ver todos",
+        "contribute_title": "¿Tienes una idea para mejorarlo?",
+        "contribute_description": "Puedes compartir sugerencias, errores o necesidades de tu equipo desde el <a href=\"#feedback\" data-feedback-link=\"true\">formulario de feedback</a>. Cada comentario ayuda a priorizar nuevas mejoras."
     },
     "songbook_page": {
         "option_use_official": "Explora los cancioneros públicos organizados por tiempos, temáticas o celebraciones."

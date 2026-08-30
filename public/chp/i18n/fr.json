@@ -4,19 +4,30 @@
         "error_title": "Une erreur s'est produite lors du chargement des chansons",
         "error_subtitle": "Veuillez rafraîchir la page pour réessayer",
         "about_title": "À propos de ChordProject",
-        "about_description": "<strong>ChordProject</strong> est votre <strong>carnet de chansons</strong> numérique de poche : écrivez, organisez et jouez vos chansons avec accords au format <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>, sur n'importe quel appareil.",
-        "overview_title": "Que pouvez-vous faire ?",
+        "about_description": "<strong>ChordProject</strong> est une plateforme pour écrire, organiser et jouer des chansons avec accords au format <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>. Elle garde votre bibliothèque, vos collections et vos répertoires prêts sur tout appareil.",
+        "overview_title": "Pour organiser votre musique",
         "features": [
-            "Des accords toujours parfaitement alignés, sur tout écran ou taille de police.",
-            "Mode live, avec défilement automatique et ajustement rapide de la taille du texte.",
-            "Votre <strong>répertoire</strong> sauvegardé en ligne et synchronisé sur tous vos appareils.",
-            "Vos chansons organisées dans des <strong>carnets</strong> personnalisés.",
-            "Vous pouvez transposer vos chansons selon des règles musicales, et pas seulement par des changements mathématiques."
+            "Créez et modifiez des <strong>chansons</strong> avec des <strong>accords</strong> alignés sur tout écran ou taille de police.",
+            "Organisez votre <strong>bibliothèque</strong> avec des <strong>carnets</strong>, des étiquettes et une recherche rapide.",
+            "Préparez des <strong>répertoires</strong> par événement, avec des espaces définis, des références et plusieurs chansons si nécessaire.",
+            "Utilisez le <strong>mode live</strong> avec navigation claire, transposition, plein écran et réglage rapide de la taille du texte.",
+            "Gardez votre musique synchronisée et prête à ouvrir depuis ordinateur, tablette ou mobile."
         ],
-        "platform_title": "Vous cherchez de la musique chrétienne ?",
-        "platform_description": "Visitez notre site frère <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
+        "platform_title": "Vous cherchez des répertoires pour des célébrations ?",
+        "platform_description": "Vous pouvez aussi utiliser <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, une expérience préparée pour les carnets et répertoires de communauté.",
+        "upcoming_repertoire_eyebrow": "Prochain répertoire",
+        "upcoming_repertoire_songs": "Chansons incluses",
+        "upcoming_repertoire_song_count": "{{count}} chansons",
+        "upcoming_repertoire_empty": "Aucune chanson attribuée pour le moment.",
+        "upcoming_repertoire_more_songs": "+{{count}} de plus",
+        "upcoming_repertoire_open_live": "Ouvrir en direct",
+        "upcoming_repertoire_manage": "Gérer",
+        "public_songbooks_title": "Carnets publics",
+        "public_songbooks_count": "{{count}}",
+        "public_songbooks_view_group": "Voir tous les carnets de {{name}}",
+        "public_songbooks_view_all": "Voir tout",
         "contribute_title": "Une idée pour l'améliorer ?",
-        "contribute_description": "C'est un projet <strong>open source</strong> : proposez votre Pull Request sur <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>. Vous ne codez pas ? Vous pouvez vous aider de l'IA pour l'écrire."
+        "contribute_description": "Vous pouvez partager vos idées avec le <a href=\"#feedback\" data-feedback-link=\"true\">formulaire de feedback</a>. Si vous voulez contribuer au code, ChordProject est aussi un projet open source sur <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>."
     },
     "nav": {
         "home": "Accueil",
@@ -374,10 +385,11 @@
         "load_more": "Charger plus"
     },
     "search": {
-        "placeholder_bar": "Rechercher par titre, paroles ou carnet...",
-        "placeholder_basic": "Rechercher par titre, paroles ou carnet",
+        "placeholder_bar": "Rechercher par titre, artiste, paroles ou carnet...",
+        "placeholder_basic": "Rechercher par titre, artiste, paroles ou carnet",
         "no_results": "Aucun résultat trouvé !",
         "songs": "CHANSONS",
+        "artists": "ARTISTES",
         "songs_content": "CONTENU DES CHANSONS",
         "songbooks": "CARNETS",
         "songbooks_content": "CONTENU DES CARNETS"

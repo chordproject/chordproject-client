@@ -19,6 +19,8 @@ export class FeedbackService {
     private _firestore: Firestore;
     private _auth: Auth;
     private _changed = new Subject<void>();
+    private _openRequested = new Subject<void>();
+    openRequested$ = this._openRequested.asObservable();
 
     constructor() {
         const firebase = inject(FirebaseService);
@@ -42,6 +44,10 @@ export class FeedbackService {
             switchMap(() => from(getDocs(query(collection(this._firestore, 'feedback'), where('status', '==', 'open'))))),
             map((snapshot) => snapshot.docs.map((feedbackDoc) => ({ ...feedbackDoc.data(), uid: feedbackDoc.id }) as Feedback)),
         );
+    }
+
+    requestOpen(): void {
+        this._openRequested.next();
     }
 
     private async createFeedback(input: CreateFeedbackInput): Promise<string> {

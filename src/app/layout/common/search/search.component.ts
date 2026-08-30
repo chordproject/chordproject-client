@@ -75,6 +75,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     @ViewChild('searchResults') searchResults: SearchResultsComponent;
+    @ViewChild('basicSearchInput') basicSearchInput: ElementRef<HTMLInputElement>;
 
     constructor(
         private _songService: SongService,
@@ -141,6 +142,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
                 switchMap((searchTerm) =>
                     forkJoin({
                     songs: this._songService.searchByTitle(searchTerm, 5),
+                    songsByArtist: this._songService.searchByArtist(searchTerm, 5),
                     songsContent: this._songService.searchByLyrics(searchTerm, 5),
                     songbooks: this._songbookService.searchSongbooks(searchTerm, 3),
                     songsInSongbooks: of([]),
@@ -148,9 +150,14 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
                 )
             )
             .subscribe((resultSets) => {
-                    // Filtrar duplicados: quitar de songsContent los que ya están en songs
+                    // Filtrar duplicados entre secciones, preservando primero titulo y luego artista.
                     const songUids = new Set(resultSets.songs.map((song) => song.uid));
-                    resultSets.songsContent = resultSets.songsContent.filter((song) => !songUids.has(song.uid));
+                    resultSets.songsByArtist = resultSets.songsByArtist.filter((song) => !songUids.has(song.uid));
+                    const visibleSongUids = new Set([
+                        ...resultSets.songs.map((song) => song.uid),
+                        ...resultSets.songsByArtist.map((song) => song.uid),
+                    ]);
+                    resultSets.songsContent = resultSets.songsContent.filter((song) => !visibleSongUids.has(song.uid));
                     // Store the result sets
                     this.resultSets.set(resultSets);
 
@@ -177,6 +184,18 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
+    @HostListener('document:keydown', ['$event'])
+    onDocumentKeydown(event: KeyboardEvent): void {
+        if (event.key.toLowerCase() !== 'f' || (!event.ctrlKey && !event.metaKey) || event.altKey) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        this.opened.set(true);
+        setTimeout(() => this.focusInput());
+    }
+
     open(event: Event): void {
         event.stopPropagation();
         // Return if it's already opened
@@ -185,6 +204,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         }
         // Open the search
         this.opened.set(true);
+        setTimeout(() => this.focusInput());
     }
 
     close(): void {
@@ -204,5 +224,14 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         if (!this._elementRef.nativeElement.contains(event.target)) {
             this.close();
         }
+    }
+
+    private focusInput(): void {
+        const input = this.appearance === 'bar'
+            ? this._elementRef.nativeElement.querySelector('input')
+            : this.basicSearchInput?.nativeElement;
+
+        input?.focus();
+        input?.select();
     }
 }

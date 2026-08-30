@@ -7,6 +7,7 @@
     @if (
         resultSets &&
         !resultSets.songs?.length &&
+        !resultSets.songsByArtist?.length &&
         !resultSets.songsContent?.length &&
         !resultSets.songbooks?.length &&
         !resultSets.songsInSongbooks?.length
@@ -33,6 +34,28 @@
                         [innerHTML]="highlightSearchTerm(song.title, searchValue)"
                     ></span>
                     <div class="text-secondary truncate text-xs">{{ song.lyrics }}</div>
+                </div>
+            </mat-option>
+        }
+    }
+
+    <!-- SONGS (by artist) -->
+    @if (resultSets?.songsByArtist?.length) {
+        <mat-optgroup class="mt-2 flex items-center px-2">
+            <span class="text-secondary text-sm font-semibold tracking-wider">{{ 'search.artists' | transloco }}</span>
+        </mat-optgroup>
+        @for (song of resultSets.songsByArtist; track song.uid) {
+            <mat-option
+                class="group relative mb-1 rounded-md px-6 py-0 text-md dark:hover:bg-hover hover:bg-primary-100"
+                [routerLink]="['/songs/read', song.uid]"
+                [value]="song.title"
+            >
+                <div>
+                    <span class="font-semibold dark:group-hover:text-primary-900">{{ song.title }}</span>
+                    <div
+                        class="text-secondary truncate text-xs"
+                        [innerHTML]="highlightSearchTerm(artistsText(song), searchValue)"
+                    ></div>
                 </div>
             </mat-option>
         }

@@ -1,18 +1,28 @@
 {
     "home": {
         "about_title": "À propos de HomenaJesus",
-        "about_description": "<strong>HomenaJesus.com</strong> est un recueil de chants numérique pour les ministères de musique de l'Église. Il aide les responsables à préparer leur répertoire, organiser les chants et être prêts à accompagner la Sainte Messe et les autres célébrations. Le contenu reste disponible en ligne et peut être mis à jour selon les besoins du ministère.",
-        "overview_title": "Pour votre ministère de musique",
-        "overview_description": "Vous pouvez y préparer et gérer des <strong>chants</strong>, des <strong>recueils</strong> et des <strong>répertoires</strong> pour vos célébrations.",
+        "about_description": "<strong>HomenaJesus</strong> est un carnet de chants numérique pour les ministères de musique qui préparent des célébrations. Il rassemble chants, carnets, accords et répertoires en ligne pour que chaque service ait ses chants prêts et organisés.",
+        "overview_title": "Pour préparer chaque célébration",
+        "overview_description": "Gérez les <strong>chants</strong>, <strong>carnets</strong> et <strong>répertoires</strong> depuis un seul endroit.",
         "features": [
-            "Des accords toujours parfaitement alignés, sur tout écran ou taille de police.",
-            "Mode live, avec défilement automatique et ajustement rapide de la taille du texte.",
-            "Votre <strong>répertoire</strong> sauvegardé en ligne et accessible à toute votre équipe.",
-            "Vos chants organisés dans des <strong>recueils</strong> personnalisés.",
-            "Vous pouvez transposer vos chants selon des règles musicales, et pas seulement par des changements mathématiques."
+            "Modifiez les <strong>chants</strong> avec des <strong>accords</strong> alignés et une vue claire pour répéter ou accompagner.",
+            "Consultez les <strong>carnets</strong> publics organisés par temps, thématiques ou célébrations, et créez des <strong>copies personnelles</strong> lorsque vous devez les adapter.",
+            "Préparez des <strong>répertoires</strong> avec les espaces de l'événement, des références et plusieurs chants dans un même moment si nécessaire.",
+            "Ouvrez le <strong>mode live</strong> pour suivre l'ordre du répertoire avec transposition, plein écran et réglage de la taille du texte.",
+            "Gardez le matériel disponible pour l'<strong>équipe</strong> depuis ordinateur, tablette ou mobile."
         ],
-        "platform_title": "Vous jouez aussi d'autres genres musicaux ?",
-        "platform_description": "HomenaJesus se concentre sur la musique chrétienne et les besoins des ministères de l'Église. Pour d'autres genres musicaux, vous pouvez également utiliser <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>."
+        "platform_title": "Vous organisez aussi d'autres répertoires ?",
+        "platform_description": "Pour d'autres styles musicaux, vous pouvez utiliser <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>, la version générale de la plateforme.",
+        "upcoming_repertoire_eyebrow": "Prochaine célébration",
+        "upcoming_repertoire_songs": "Chants préparés",
+        "upcoming_repertoire_song_count": "{{count}} chants",
+        "upcoming_repertoire_empty": "Aucun chant attribué pour le moment.",
+        "public_songbooks_title": "Carnets publics",
+        "public_songbooks_count": "{{count}}",
+        "public_songbooks_view_group": "Voir tous les carnets de {{name}}",
+        "public_songbooks_view_all": "Voir tout",
+        "contribute_title": "Une idée pour l'améliorer ?",
+        "contribute_description": "Vous pouvez partager vos suggestions, problèmes ou besoins d'équipe avec le <a href=\"#feedback\" data-feedback-link=\"true\">formulaire de feedback</a>. Chaque commentaire aide à prioriser les prochaines améliorations."
     },
     "songbook_page": {
         "option_use_official": "Explorez les carnets publics organisés par temps, thématiques ou célébrations."

@@ -4,19 +4,30 @@
         "error_title": "Ocurrió un error al cargar las canciones",
         "error_subtitle": "Por favor recarga la página para intentarlo de nuevo",
         "about_title": "Acerca de ChordProject",
-        "about_description": "<strong>ChordProject</strong> es tu <strong>cancionero</strong> digital de bolsillo: escribe, organiza y toca tus canciones con acordes en formato <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>, desde cualquier dispositivo.",
-        "overview_title": "¿Qué puedes hacer?",
+        "about_description": "<strong>ChordProject</strong> es una plataforma para escribir, organizar y tocar canciones con acordes en formato <a href=\"https://chordpro.org\" target=\"_blank\" rel=\"noopener noreferrer\">ChordPro</a>. Mantiene tu biblioteca, tus colecciones y tus repertorios listos desde cualquier dispositivo.",
+        "overview_title": "Para organizar tu música",
         "features": [
-            "Acordes siempre bien alineados, en cualquier pantalla o tamaño de letra.",
-            "Modo en vivo, con scroll automático y ajuste rápido del tamaño de letra.",
-            "Tu <strong>repertorio</strong> guardado en línea y sincronizado en todos tus dispositivos.",
-            "Tus canciones organizadas en <strong>cancioneros</strong> personalizados.",
-            "Puedes transponer tus canciones siguiendo reglas musicales, no solo cambios matemáticos."
+            "Crea y edita <strong>canciones</strong> con <strong>acordes</strong> alineados en cualquier pantalla o tamaño de letra.",
+            "Organiza tu <strong>biblioteca</strong> con <strong>cancioneros</strong>, etiquetas y búsquedas rápidas.",
+            "Prepara <strong>repertorios</strong> por evento, con espacios definidos, referencias y varias canciones cuando haga falta.",
+            "Usa el <strong>modo en vivo</strong> con navegación clara, transposición, pantalla completa y ajuste rápido del tamaño de letra.",
+            "Mantén tu música sincronizada y lista para abrir desde computador, tablet o móvil."
         ],
-        "platform_title": "¿Buscas música cristiana?",
-        "platform_description": "Visita nuestro sitio hermano <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>.",
+        "platform_title": "¿Buscas repertorios para celebraciones?",
+        "platform_description": "También puedes usar <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, una experiencia preparada para cancioneros y repertorios de comunidad.",
+        "upcoming_repertoire_eyebrow": "Próximo repertorio",
+        "upcoming_repertoire_songs": "Canciones incluidas",
+        "upcoming_repertoire_song_count": "{{count}} canciones",
+        "upcoming_repertoire_empty": "Aún no hay canciones asignadas.",
+        "upcoming_repertoire_more_songs": "+{{count}} más",
+        "upcoming_repertoire_open_live": "Abrir en vivo",
+        "upcoming_repertoire_manage": "Administrar",
+        "public_songbooks_title": "Cancioneros públicos",
+        "public_songbooks_count": "{{count}}",
+        "public_songbooks_view_group": "Ver todos los cancioneros de {{name}}",
+        "public_songbooks_view_all": "Ver todos",
         "contribute_title": "¿Tienes una idea para mejorarlo?",
-        "contribute_description": "Es un proyecto <strong>open source</strong>: envía tu Pull Request en <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>. ¿No programas? Puedes apoyarte en IA para escribir el código."
+        "contribute_description": "Puedes compartir ideas desde el <a href=\"#feedback\" data-feedback-link=\"true\">formulario de feedback</a>. Si quieres aportar código, ChordProject también es un proyecto open source en <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>."
     },
     "nav": {
         "home": "Inicio",
@@ -372,10 +383,11 @@
         "copy_creation_failed": "No se pudo crear la copia personal."
     },
     "search": {
-        "placeholder_bar": "Busca por título, letra o cancionero...",
-        "placeholder_basic": "Busca por título, letra o cancionero",
+        "placeholder_bar": "Busca por título, artista, letra o cancionero...",
+        "placeholder_basic": "Busca por título, artista, letra o cancionero",
         "no_results": "¡No se encontraron resultados!",
         "songs": "CANCIONES",
+        "artists": "ARTISTAS",
         "songs_content": "CONTENIDO DE CANCIONES",
         "songbooks": "CANCIONEROS",
         "songbooks_content": "CONTENIDO DE CANCIONEROS"

@@ -1,18 +1,28 @@
 {
     "home": {
         "about_title": "About HomenaJesus",
-        "about_description": "<strong>HomenaJesus.com</strong> is a digital songbook for Church music ministries. It helps ministry directors prepare their repertoire, organize songs, and have everything ready to accompany Holy Mass and other celebrations. Content stays available online and can be updated whenever the ministry needs it.",
-        "overview_title": "For your music ministry",
-        "overview_description": "Use it to prepare and manage <strong>songs</strong>, <strong>songbooks</strong>, and <strong>repertoires</strong> for your celebrations.",
+        "about_description": "<strong>HomenaJesus</strong> is a digital songbook for music ministries preparing celebrations. It brings songs, songbooks, chords, and repertoires online so each service has its music ready and organized.",
+        "overview_title": "For preparing each celebration",
+        "overview_description": "Manage <strong>songs</strong>, <strong>songbooks</strong>, and <strong>repertoires</strong> from one place.",
         "features": [
-            "Chords are always perfectly aligned, on any screen or font size.",
-            "Live mode, with autoscroll and quick font size adjustment.",
-            "Your <strong>repertoire</strong> saved online and available to your whole team.",
-            "Your songs organized into custom <strong>songbooks</strong>.",
-            "You can transpose songs according to musical rules, not just mathematical shifting."
+            "Edit <strong>songs</strong> with aligned <strong>chords</strong> and a clear view for rehearsal or accompaniment.",
+            "Browse public <strong>songbooks</strong> organized by seasons, themes, or celebrations, and create <strong>personal copies</strong> when you need to adapt them.",
+            "Prepare <strong>repertoires</strong> with event spaces, references, and more than one song in the same moment when needed.",
+            "Open <strong>live mode</strong> to follow the repertoire order with transposition, fullscreen, and font-size controls.",
+            "Keep material available to the <strong>team</strong> from desktop, tablet, or mobile."
         ],
-        "platform_title": "Do you also play other musical genres?",
-        "platform_description": "HomenaJesus focuses on Christian music and the needs of Church ministries. For other musical genres, you can also use <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>."
+        "platform_title": "Do you also organize other repertoires?",
+        "platform_description": "For other musical styles, you can use <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>, the general version of the platform.",
+        "upcoming_repertoire_eyebrow": "Next celebration",
+        "upcoming_repertoire_songs": "Prepared songs",
+        "upcoming_repertoire_song_count": "{{count}} songs",
+        "upcoming_repertoire_empty": "No songs assigned yet.",
+        "public_songbooks_title": "Public songbooks",
+        "public_songbooks_count": "{{count}}",
+        "public_songbooks_view_group": "View all songbooks in {{name}}",
+        "public_songbooks_view_all": "View all",
+        "contribute_title": "Have an idea to improve it?",
+        "contribute_description": "You can share suggestions, issues, or your team's needs through the <a href=\"#feedback\" data-feedback-link=\"true\">feedback form</a>. Every comment helps prioritize future improvements."
     },
     "songbook_page": {
         "option_use_official": "Explore public songbooks organized by seasons, themes, or celebrations."

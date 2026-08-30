@@ -24,6 +24,10 @@ export class SearchResultsComponent {
         return text.replace(regex, '<mark>$&</mark>');
     }
 
+    artistsText(song: { artists?: string[] }): string {
+        return (song.artists || []).join(', ');
+    }
+
     trackByUid(index: number, item: any): string {
         return item.uid;
     }

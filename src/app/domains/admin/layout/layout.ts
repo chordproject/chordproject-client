@@ -149,6 +149,10 @@ export class AdminLayout {
     ),
     { initialValue: this.router.url }
   );
+  private feedbackRequest = toSignal(
+    this.feedbackService.openRequested$.pipe(map(() => Date.now())),
+    { initialValue: 0 }
+  );
   protected isHome = computed(() => this.currentUrl().startsWith('/home'));
 
   protected feedbackOpen = signal(false);
@@ -167,6 +171,12 @@ export class AdminLayout {
       this.currentUrl();
       if (this.isMobile()) {
         this.sidebarOpen.set(false);
+      }
+    });
+
+    effect(() => {
+      if (this.feedbackRequest()) {
+        this.feedbackOpen.set(true);
       }
     });
   }
