@@ -47,6 +47,8 @@
         "song": "song",
         "songs": "songs",
         "load_more": "Load more",
+        "artist_groups": "Artists",
+        "unknown_artist": "Unknown artist",
         "sort": {
             "title": "Title",
             "artists": "Artist",

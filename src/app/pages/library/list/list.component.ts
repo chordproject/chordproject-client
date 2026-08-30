@@ -47,6 +47,12 @@ import {
 
 const SONGS_PAGE_SIZE = 60;
 
+type ArtistSongGroup = {
+    key: string;
+    artist: string;
+    songs: PartialSong[];
+};
+
 @Component({
     selector: 'songs-list',
     templateUrl: './list.component.html',
@@ -75,6 +81,24 @@ export class SongsListComponent implements OnInit, OnDestroy {
     readonly visibleCount = signal(SONGS_PAGE_SIZE);
     readonly visibleSongs = computed(() => this.songs().slice(0, this.visibleCount()));
     readonly hasMore = computed(() => this.visibleCount() < this.songs().length);
+    readonly expandedArtistKeys = signal<Set<string>>(new Set());
+    readonly artistGroups = computed(() => {
+        const groups = new Map<string, ArtistSongGroup>();
+
+        for (const song of this.songs()) {
+            const artist = this.primaryArtist(song);
+            const key = this.normalizeText(artist || '#');
+            const group = groups.get(key) || { key, artist, songs: [] };
+            group.songs.push(song);
+            groups.set(key, group);
+        }
+
+        const direction = this.sort().direction === 'desc' ? -1 : 1;
+
+        return [...groups.values()].sort((first, second) =>
+            direction * first.artist.localeCompare(second.artist, 'es', { sensitivity: 'base' })
+        );
+    });
 
     readonly existingLetters = computed(() => {
         const set = new Set<string>();
@@ -144,6 +168,7 @@ export class SongsListComponent implements OnInit, OnDestroy {
                 this.songs.set(songs);
                 this.visibleCount.set(SONGS_PAGE_SIZE);
                 this.loaded.set(true);
+                this.expandedArtistKeys.set(new Set());
             });
 
         // Sin debounce: clearSelection ya solo actúa cuando queda algo que deseleccionar.
@@ -179,15 +204,29 @@ export class SongsListComponent implements OnInit, OnDestroy {
         this.visibleCount.update((count) => Math.min(count + SONGS_PAGE_SIZE, this.songs().length));
     }
 
+    toggleArtistGroup(groupKey: string): void {
+        this.expandedArtistKeys.update((keys) => {
+            const nextKeys = new Set(keys);
+
+            if (nextKeys.has(groupKey)) {
+                nextKeys.delete(groupKey);
+            } else {
+                nextKeys.add(groupKey);
+            }
+
+            return nextKeys;
+        });
+    }
+
+    isArtistGroupExpanded(groupKey: string): boolean {
+        return this.expandedArtistKeys().has(groupKey);
+    }
+
     getInitialLetter(title: string | undefined): string {
         if (!title) {
             return '#';
         }
-        const normalized = title
-            .trim()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toUpperCase();
+        const normalized = this.normalizeText(title).toUpperCase();
         const match = normalized.match(/[A-Z]/);
         return match ? match[0] : '#';
     }
@@ -256,6 +295,22 @@ export class SongsListComponent implements OnInit, OnDestroy {
 
     onDblClick(song: PartialSong): void {
         this.songDblClick.emit(song);
+    }
+
+    trackByArtistGroup(_index: number, item: ArtistSongGroup): string {
+        return item.key;
+    }
+
+    private primaryArtist(song: PartialSong): string {
+        return song.artists?.[0]?.trim() || '';
+    }
+
+    private normalizeText(value: string): string {
+        return (value || '')
+            .trim()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase();
     }
 
     trackByFn(index: number, item: any): any {

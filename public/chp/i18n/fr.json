@@ -47,6 +47,8 @@
         "song": "chanson",
         "songs": "chansons",
         "load_more": "Charger plus",
+        "artist_groups": "Artistes",
+        "unknown_artist": "Artiste inconnu",
         "sort": {
             "title": "Titre",
             "artists": "Artiste",

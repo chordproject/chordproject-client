@@ -32,7 +32,7 @@
                 </mat-form-field>
             </div>
             <!-- Sort field -->
-            <button mat-stroked-button [matMenuTriggerFor]="sortMenu">
+            <button class="sm:hidden" mat-stroked-button [matMenuTriggerFor]="sortMenu">
                 <mat-icon [svgIcon]="'arrow-up-down'"></mat-icon>
                 <span class="ml-2 mr-1">{{ 'library_page.sort.' + sort().field | transloco }}</span>
             </button>
@@ -43,6 +43,23 @@
                     </button>
                 }
             </mat-menu>
+            <div class="hidden overflow-hidden rounded-md border border-neutral-300 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-900 sm:flex">
+                @for (field of sortFields; track field) {
+                    <button
+                        type="button"
+                        class="border-r border-neutral-200 px-3 py-2 text-sm font-medium last:border-r-0 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-800"
+                        [class.bg-primary-50]="sort().field === field"
+                        [class.text-primary-700]="sort().field === field"
+                        [class.dark:bg-primary-950]="sort().field === field"
+                        [class.dark:text-primary-200]="sort().field === field"
+                        [class.text-neutral-700]="sort().field !== field"
+                        [class.dark:text-neutral-200]="sort().field !== field"
+                        (click)="setSortField(field)"
+                    >
+                        {{ 'library_page.sort.' + field | transloco }}
+                    </button>
+                }
+            </div>
             <!-- Sort direction -->
             <button mat-icon-button (click)="toggleSortDirection()" [matTooltip]="directionLabel() | transloco">
                 <mat-icon
@@ -83,33 +100,74 @@
         </div>
     }
 
+    @if (sort().field === 'artists' && songs().length > 0) {
+        <div class="sticky top-0 z-20 border-b bg-neutral-50/95 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-neutral-400 backdrop-blur dark:bg-neutral-900/95 sm:px-6 md:px-8">
+            {{ 'library_page.artist_groups' | transloco }}
+        </div>
+    }
+
     <!-- Songs list -->
     <div class="bg-card relative border-b">
         @if (visibleSongs().length) {
-            @for (song of visibleSongs(); track trackByFn($index, song)) {
-                @if (showLetterHeader($index)) {
-                    <div
-                        [id]="'letter-header-' + getInitialLetter(song.title)"
-                        class="scroll-mt-14 border-b border-t border-neutral-200/80 bg-neutral-100/90 px-6 py-1 text-xs font-bold text-neutral-600 backdrop-blur dark:border-neutral-800/80 dark:bg-neutral-800/90 dark:text-neutral-300 sm:px-8"
-                    >
-                        {{ getInitialLetter(song.title) }}
+            @if (sort().field === 'artists') {
+                @for (group of artistGroups(); track trackByArtistGroup($index, group)) {
+                    <div class="border-b border-neutral-200 dark:border-neutral-800">
+                        <button
+                            type="button"
+                            class="flex w-full items-center gap-3 px-6 py-4 text-left hover:bg-neutral-50 dark:hover:bg-neutral-900 sm:px-8"
+                            (click)="toggleArtistGroup(group.key)"
+                        >
+                            <mat-icon class="size-5 text-neutral-400" [svgIcon]="isArtistGroupExpanded(group.key) ? 'chevron-down' : 'chevron-right'"></mat-icon>
+                            <span class="min-w-0 flex-1 truncate text-base font-semibold text-neutral-950 dark:text-neutral-50">
+                                {{ group.artist || ('library_page.unknown_artist' | transloco) }}
+                            </span>
+                            <span class="rounded-full bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700 dark:bg-primary-950 dark:text-primary-200">
+                                {{ group.songs.length }}
+                            </span>
+                        </button>
+
+                        @if (isArtistGroupExpanded(group.key)) {
+                            <div class="border-t border-neutral-100 dark:border-neutral-800">
+                                @for (song of group.songs; track trackByFn($index, song)) {
+                                    <chp-song-item
+                                        [id]="'song-item-' + song.uid"
+                                        class="block"
+                                        [song]="song"
+                                        (click)="onSongClick(song)"
+                                        (dblclick)="onDblClick(song)"
+                                        [selected]="selectedSong && selectedSong.uid === song.uid"
+                                    ></chp-song-item>
+                                }
+                            </div>
+                        }
                     </div>
                 }
-                <chp-song-item
-                    [id]="'song-item-' + song.uid"
-                    class="scroll-mt-14 block"
-                    [song]="song"
-                    (click)="onSongClick(song)"
-                    (dblclick)="onDblClick(song)"
-                    [selected]="selectedSong && selectedSong.uid === song.uid"
-                ></chp-song-item>
-            }
-            @if (hasMore()) {
-                <div class="flex justify-center p-4" #loadMoreSentinel>
-                    <button mat-stroked-button (click)="showMore()">
-                        {{ 'library_page.load_more' | transloco }}
-                    </button>
-                </div>
+            } @else {
+                @for (song of visibleSongs(); track trackByFn($index, song)) {
+                    @if (showLetterHeader($index)) {
+                        <div
+                            [id]="'letter-header-' + getInitialLetter(song.title)"
+                            class="scroll-mt-14 border-b border-t border-neutral-200/80 bg-neutral-100/90 px-6 py-1 text-xs font-bold text-neutral-600 backdrop-blur dark:border-neutral-800/80 dark:bg-neutral-800/90 dark:text-neutral-300 sm:px-8"
+                        >
+                            {{ getInitialLetter(song.title) }}
+                        </div>
+                    }
+                    <chp-song-item
+                        [id]="'song-item-' + song.uid"
+                        class="scroll-mt-14 block"
+                        [song]="song"
+                        (click)="onSongClick(song)"
+                        (dblclick)="onDblClick(song)"
+                        [selected]="selectedSong && selectedSong.uid === song.uid"
+                    ></chp-song-item>
+                }
+                @if (hasMore()) {
+                    <div class="flex justify-center p-4" #loadMoreSentinel>
+                        <button mat-stroked-button (click)="showMore()">
+                            {{ 'library_page.load_more' | transloco }}
+                        </button>
+                    </div>
+                }
             }
         } @else if (loaded()) {
             <div class="flex flex-col items-center justify-center p-8 sm:p-16">
