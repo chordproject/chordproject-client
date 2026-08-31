@@ -3,6 +3,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, 
 import { Song } from 'chordproject-parser';
 import { ParserService } from 'app/core/chordpro/parser.service';
 import { ViewSettingsService } from 'app/core/chordpro/viewsettings.service';
+import { FullscreenToolComponent } from 'app/components/viewer/viewer-toolbar/tools/fullscreen.component';
 import { SafeHtmlPipe } from 'app/pipes/safeHtml.pipe';
 import { ViewSettings } from 'app/tools/view-customization/view-settings';
 
@@ -11,7 +12,7 @@ import { ViewSettings } from 'app/tools/view-customization/view-settings';
     templateUrl: './viewer.component.html',
     styleUrls: ['./viewer.component.scss'],
     standalone: true,
-    imports: [CommonModule, SafeHtmlPipe],
+    imports: [CommonModule, SafeHtmlPipe, FullscreenToolComponent],
 })
 export class ChpViewerComponent implements AfterViewInit {
     @ViewChild('viewerContent') contentElementRef: ElementRef;

@@ -36,19 +36,57 @@
                             [class.dark:hover:bg-neutral-800]="selectedEventType?.uid !== eventType.uid"
                             (click)="selectEventType(eventType)"
                         >
-                            <span class="truncate font-medium">{{ eventType.name }}</span>
-                            <div class="flex items-center gap-1">
-                                <button
-                                    type="button"
-                                    mat-icon-button
-                                    class="opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100"
-                                    [matTooltip]="'repertoire_page.delete_event_type' | transloco"
-                                    (click)="deleteEventType(eventType, $event)"
-                                >
-                                    <mat-icon class="size-4 text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
-                                </button>
-                                <mat-icon class="size-5" [svgIcon]="'chevron-right'"></mat-icon>
-                            </div>
+                            @if (editingEventTypeId === eventType.uid) {
+                                <input
+                                    matInput
+                                    class="min-w-0 flex-1 bg-transparent px-1 py-1 font-medium outline-none"
+                                    [(ngModel)]="editingEventTypeName"
+                                    (click)="$event.stopPropagation()"
+                                    (keyup.enter)="saveEventTypeName(eventType)"
+                                    (keyup.escape)="cancelEditingEventType()"
+                                />
+                                <div class="flex items-center gap-1">
+                                    <button
+                                        type="button"
+                                        mat-icon-button
+                                        [matTooltip]="'repertoire_page.save_event_type' | transloco"
+                                        (click)="saveEventTypeName(eventType); $event.stopPropagation()"
+                                    >
+                                        <mat-icon class="size-4" [svgIcon]="'check'"></mat-icon>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        mat-icon-button
+                                        [matTooltip]="'repertoire_page.cancel_edit' | transloco"
+                                        (click)="cancelEditingEventType(); $event.stopPropagation()"
+                                    >
+                                        <mat-icon class="size-4" [svgIcon]="'x'"></mat-icon>
+                                    </button>
+                                </div>
+                            } @else {
+                                <span class="truncate font-medium">{{ eventType.name }}</span>
+                                <div class="flex items-center gap-1">
+                                    <button
+                                        type="button"
+                                        mat-icon-button
+                                        class="opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100"
+                                        [matTooltip]="'repertoire_page.edit_event_type' | transloco"
+                                        (click)="startEditingEventType(eventType, $event)"
+                                    >
+                                        <mat-icon class="size-4 text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400" [svgIcon]="'square-pen'"></mat-icon>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        mat-icon-button
+                                        class="opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100"
+                                        [matTooltip]="'repertoire_page.delete_event_type' | transloco"
+                                        (click)="deleteEventType(eventType, $event)"
+                                    >
+                                        <mat-icon class="size-4 text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
+                                    </button>
+                                    <mat-icon class="size-5" [svgIcon]="'chevron-right'"></mat-icon>
+                                </div>
+                            }
                         </div>
                     } @empty {
                         <p class="rounded-md border border-dashed border-neutral-300 p-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">

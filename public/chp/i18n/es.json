@@ -151,6 +151,8 @@
         "delete_space": "Eliminar espacio",
         "delete_space_confirm_title": "Eliminar espacio",
         "delete_space_confirm_message": "¿Estás seguro de que deseas eliminar este espacio del tipo de evento?",
+        "edit_event_type": "Editar tipo de evento",
+        "save_event_type": "Guardar tipo de evento",
         "delete_event_type": "Eliminar tipo de evento",
         "delete_event_type_confirm_title": "Eliminar tipo de evento",
         "delete_event_type_confirm_message": "¿Estás seguro de que deseas eliminar este tipo de evento?",
@@ -209,6 +211,7 @@
         ,"open_live": "Abrir en vivo"
         ,"previous": "Anterior"
         ,"next": "Siguiente"
+        ,"back_to_list": "Lista de canciones"
         ,"live_empty": "Este repertorio no tiene canciones asignadas."
     },
     "confirmation": {
@@ -318,12 +321,15 @@
     "editor": {
         "delete_song_title": "Eliminar canción",
         "delete_song_message": "¿Estás seguro de que quieres eliminar esta canción? ¡Esta acción no se puede deshacer!",
+        "delete_song_version_title": "Eliminar esta versión",
+        "delete_song_version_message": "Vas a eliminar únicamente esta versión/arreglo de la canción, no la canción completa ni sus otras versiones. ¡Esta acción no se puede deshacer!",
         "delete_song_confirm": "Eliminar",
         "unsaved_changes_title": "Cambios sin guardar",
         "unsaved_changes_message": "Tienes cambios sin guardar. ¿Estás seguro de que quieres salir de esta página?",
         "unsaved_changes_discard": "Descartar cambios",
         "guest_editing_notice": "Estás editando como invitado. Inicia sesión para guardar tus cambios.",
-        "login_to_save": "Inicia sesión para guardar tus cambios."
+        "login_to_save": "Inicia sesión para guardar tus cambios.",
+        "preview_song": "Ver vista previa"
     },
     "song_suggestion": {
         "title": "Enviar como sugerencia",

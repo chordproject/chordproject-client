@@ -1,16 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { Observable, combineLatest, firstValueFrom, of, Subject, switchMap, takeUntil } from 'rxjs';
+import { Observable, firstValueFrom, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { catchError, debounceTime, map, startWith, take } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
-import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongSuggestionService } from 'app/core/firebase/api/song-suggestion.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SongbookSuggestionService } from 'app/core/firebase/api/songbook-suggestion.service';
@@ -48,7 +47,6 @@ export class SongReaderComponent implements OnInit, OnDestroy {
     associatedTags: Tag[] = [];
     drawerMode: 'side' | 'over';
     isAuthenticated = false;
-    canDelete = signal(false);
     songbookSearchControl: UntypedFormControl = new UntypedFormControl('');
     filteredSongbooks$: Observable<Songbook[]>;
     tagSearchControl: UntypedFormControl = new UntypedFormControl('');
@@ -85,7 +83,6 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         private _songSuggestionService: SongSuggestionService,
         private _songbookSuggestionService: SongbookSuggestionService,
         private _songbookService: SongbookService,
-        private _editorService: EditorService,
         private route: ActivatedRoute,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
@@ -106,7 +103,6 @@ export class SongReaderComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((authenticated) => {
                 this.isAuthenticated = authenticated;
-                this.updateCanDelete();
                 this._changeDetectorRef.markForCheck();
             });
 
@@ -134,7 +130,6 @@ export class SongReaderComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
                 this.song = data;
                 this.songLoadError = !data;
-                this.updateCanDelete();
                 this.associatedSongbooks = [];
                 this.associatedTags = [];
                 this.pendingSuggestion = null;
@@ -519,34 +514,6 @@ export class SongReaderComponent implements OnInit, OnDestroy {
                     this._changeDetectorRef.markForCheck();
                 }
             });
-    }
-
-    private updateCanDelete(): void {
-        if (!this.song?.uid) {
-            this.canDelete.set(false);
-            return;
-        }
-
-        combineLatest([this._userService.user$, this._userService.isAdmin()])
-            .pipe(take(1))
-            .subscribe(([user, isAdmin]) => {
-                const isAuthor = Boolean(user?.uid && (this.song?.authorId === user.uid || this.song?.ownerId === user.uid));
-                this.canDelete.set(Boolean(isAdmin || isAuthor));
-                this._changeDetectorRef.markForCheck();
-            });
-    }
-
-    deleteSong(): void {
-        if (!this.song?.uid || !this.canDelete()) {
-            return;
-        }
-
-        this._editorService.confirmAndDelete(this.song).subscribe((success) => {
-            if (success) {
-                this._router.navigate(['/library']);
-            }
-            this._changeDetectorRef.markForCheck();
-        });
     }
 
     removeSongFromSongbook(songbook: Songbook): void {

@@ -4,6 +4,7 @@ import {
     Component,
     ElementRef,
     EventEmitter,
+    HostBinding,
     Input,
     OnDestroy,
     OnInit,
@@ -73,6 +74,8 @@ type ArtistSongGroup = {
     ],
 })
 export class SongsListComponent implements OnInit, OnDestroy {
+    @HostBinding('class') readonly hostClass = 'block h-full min-h-0';
+
     readonly sortFields = SONG_SORT_FIELDS;
     readonly alphabet = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
     readonly songs = signal<PartialSong[]>([]);

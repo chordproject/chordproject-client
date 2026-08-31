@@ -30,8 +30,9 @@
     "rules:hj": "npm_config_cache=${TMPDIR:-/tmp}/npm-cache npx firebase-tools deploy --project hj --only firestore:rules",
     "release": "npm run deploy:chp && npm run deploy:hj",
     "set-admin-claim": "node scripts/set-admin-claim.mjs --project homenajesus-app",
-    "start": "npm run start-chp",
-    "start-chp": "sh -c 'pids=$(lsof -tiTCP:3873 -sTCP:LISTEN 2>/dev/null); if [ -n \"$pids\" ]; then kill $pids 2>/dev/null || true; fi; exec ng serve --no-hmr --configuration=chp --port=3873 \"$@\"' --",
+    "start": "npm run start-all",
+    "start-all": "sh -c 'npm run start-hj & hj=$!; npm run start-chp & chp=$!; trap \"kill $hj $chp 2>/dev/null\" INT TERM EXIT; wait'",
+    "start-chp": "sh -c 'pids=$(lsof -tiTCP:3874 -sTCP:LISTEN 2>/dev/null); if [ -n \"$pids\" ]; then kill $pids 2>/dev/null || true; fi; exec ng serve --no-hmr --configuration=chp --port=3874 \"$@\"' --",
     "start-hj": "sh -c 'pids=$(lsof -tiTCP:3873 -sTCP:LISTEN 2>/dev/null); if [ -n \"$pids\" ]; then kill $pids 2>/dev/null || true; fi; exec ng serve --no-hmr --configuration=hj --port=3873 \"$@\"' --",
     "test": "ng test",
     "watch": "ng build --watch --configuration development"

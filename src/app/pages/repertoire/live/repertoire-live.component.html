@@ -60,7 +60,46 @@
 
 <ng-template #viewer>
     @if (selectedSong; as song) {
-        <chp-song-preview [song]="song"></chp-song-preview>
+        <div class="flex h-full min-h-0 flex-col">
+            @if (splitLayout?.isMobile) {
+                <div class="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-200 bg-white px-3 py-2 dark:border-neutral-800 dark:bg-neutral-900">
+                    <button
+                        type="button"
+                        class="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                        (click)="backToList()"
+                    >
+                        <mat-icon class="size-4.5" [svgIcon]="'list'"></mat-icon>
+                        {{ 'repertoire_page.back_to_list' | transloco }}
+                    </button>
+                    <div class="flex items-center gap-1">
+                        <button
+                            type="button"
+                            mat-icon-button
+                            [matTooltip]="'repertoire_page.previous' | transloco"
+                            [disabled]="!hasPreviousSong"
+                            (click)="goToPreviousSong()"
+                        >
+                            <mat-icon [svgIcon]="'chevron-left'"></mat-icon>
+                        </button>
+                        <span class="min-w-12 text-center text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                            {{ selectedIndex + 1 }} / {{ songItems.length }}
+                        </span>
+                        <button
+                            type="button"
+                            mat-icon-button
+                            [matTooltip]="'repertoire_page.next' | transloco"
+                            [disabled]="!hasNextSong"
+                            (click)="goToNextSong()"
+                        >
+                            <mat-icon [svgIcon]="'chevron-right'"></mat-icon>
+                        </button>
+                    </div>
+                </div>
+            }
+            <div class="min-h-0 flex-1">
+                <chp-song-preview [song]="song"></chp-song-preview>
+            </div>
+        </div>
     }
 </ng-template>
 

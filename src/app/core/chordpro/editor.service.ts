@@ -68,10 +68,11 @@ export class EditorService {
     }
 
     confirmAndDelete(song: Song): Observable<boolean> {
+        const isVariant = !!song.variantOf;
         return this.confirmationService
             .open({
-                title: 'editor.delete_song_title',
-                message: 'editor.delete_song_message',
+                title: isVariant ? 'editor.delete_song_version_title' : 'editor.delete_song_title',
+                message: isVariant ? 'editor.delete_song_version_message' : 'editor.delete_song_message',
                 actions: {
                     confirm: {
                         label: 'editor.delete_song_confirm',

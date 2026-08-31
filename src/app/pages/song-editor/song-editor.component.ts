@@ -4,6 +4,7 @@ import {
     Component,
     OnDestroy,
     OnInit,
+    ViewChild,
     ViewContainerRef,
     signal,
 } from '@angular/core';
@@ -12,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { Observable, Subject, combineLatest, firstValueFrom, forkJoin, from, map, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, combineLatest, firstValueFrom, from, map, switchMap, take, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { ChpEditorComponent } from 'app/components/editor/editor/editor.component';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
@@ -21,7 +22,6 @@ import { EditorService } from 'app/core/chordpro/editor.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { SongSuggestionService } from 'app/core/firebase/api/song-suggestion.service';
 import { UserService } from 'app/core/user/user.service';
-import { PartialSong } from 'app/models/partialsong';
 import { Song } from 'app/models/song';
 import {
     SongSuggestionDialogComponent,
@@ -37,11 +37,13 @@ import {
     imports: [MatCardModule, ChpSplitLayoutComponent, ChpSongPreviewComponent, ChpEditorComponent, TranslocoModule],
 })
 export class SongEditorComponent implements OnInit, OnDestroy {
+    @ViewChild(ChpSplitLayoutComponent) splitLayout: ChpSplitLayoutComponent;
+    @ViewChild('songPreview') songPreview: ChpSongPreviewComponent;
+
     song = signal<Song>(new Song());
     hasPendingSuggestion = signal(false);
     isAuthenticated = signal(false);
     canDelete = signal(false);
-    alternateVersions = signal<PartialSong[]>([]);
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     private _savedContent = '';
     private _allowDeactivate = false;
@@ -110,23 +112,7 @@ export class SongEditorComponent implements OnInit, OnDestroy {
                     this.updateCanDelete();
                     this._savedContent = loadedSong.content ?? '';
                     this.hasPendingSuggestion.set(false);
-                    this.alternateVersions.set([]);
                     if (data.uid) {
-                        const canonicalId = data.variantOf || data.uid;
-                        forkJoin({
-                            canonical: this._songService.get(canonicalId),
-                            variants: this._songService.getVariants(canonicalId),
-                        })
-                            .pipe(takeUntil(this._unsubscribeAll))
-                            .subscribe(({ canonical, variants }) => {
-                                this.alternateVersions.set(
-                                    [canonical, ...variants].sort((first, second) => {
-                                        const firstIsCanonical = first.uid === canonicalId;
-                                        const secondIsCanonical = second.uid === canonicalId;
-                                        return Number(secondIsCanonical) - Number(firstIsCanonical);
-                                    })
-                                );
-                            });
                         this._songSuggestionService
                             .getMineOpenForSong(data.uid)
                             .pipe(takeUntil(this._unsubscribeAll))
@@ -373,6 +359,22 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         if (current?.uid) {
             this._router.navigate(['/songs/read', current.uid]);
         }
+    }
+
+    closePreview(): void {
+        if (this.splitLayout?.isMobile) {
+            this.splitLayout.togglePreview();
+        }
+    }
+
+    openPreview(): void {
+        if (this.splitLayout?.isMobile && this.splitLayout.showPrimaryArea) {
+            this.splitLayout.togglePreview();
+        }
+    }
+
+    transposeSong(direction: 'up' | 'down'): void {
+        this.songPreview?.transpose(direction);
     }
 
     ngOnDestroy(): void {

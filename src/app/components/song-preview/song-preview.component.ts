@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ChpSongHeaderComponent } from 'app/components/song-header/song-header.component';
@@ -18,14 +18,18 @@ export class ChpSongPreviewComponent {
     @Input() song: Song | PartialSong;
     @Input() showFullEditor = false;
     @Input() showClose = false;
+    @Input() closeOnlyOnMobile = false;
     @Input() pendingSuggestion = false;
     @Input() alternateVersions: PartialSong[] = [];
     @Input() alternateVersionRoute: 'reader' | 'editor' = 'reader';
     @Input() isPreview = true;
     @Input() compactPreview = true;
+    @Input() showToolbar = true;
     @Input() showEditDelete = false;
     @Input() showDelete = true;
     @Input() centerContent = true;
+
+    @ViewChild(ChpViewerPanelComponent) private _viewerPanel: ChpViewerPanelComponent;
 
     // Optional Songbook / Tag inputs passed down to header
     @Input() associatedSongbooks: Songbook[] = [];
@@ -47,5 +51,10 @@ export class ChpSongPreviewComponent {
 
     get content(): string {
         return this.song?.content || this.song?.lyrics || '';
+    }
+
+    /** Lets an external toolbar (e.g. the song editor's) drive transposition when the reader toolbar is hidden. */
+    transpose(direction: 'up' | 'down'): void {
+        this._viewerPanel?.transpose(direction);
     }
 }

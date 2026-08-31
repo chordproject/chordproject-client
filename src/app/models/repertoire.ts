@@ -4,6 +4,6 @@ export class Repertoire extends BaseDocument {
     eventTypeId: string;
     title: string;
     description?: string;
-    date: unknown;
+    date: Date;
     additionalDates?: unknown[];
 }

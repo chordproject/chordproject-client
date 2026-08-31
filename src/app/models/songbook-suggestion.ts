@@ -12,4 +12,5 @@ export class SongbookSuggestion extends BaseDocument {
     targetParentId?: string;
     suggestedName?: string;
     message: string;
+    responseMessage?: string;
 }

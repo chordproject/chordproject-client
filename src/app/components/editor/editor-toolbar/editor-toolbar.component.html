@@ -1,11 +1,18 @@
 <div class="flex flex-0 items-center justify-between border-b bg-neutral-50 px-4 py-3 dark:bg-neutral-900">
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1">
+        <!-- Primary action -->
         <button mat-icon-button [matTooltip]="'common.save' | transloco" (click)="saveSongEvent.emit()">
             <mat-icon [svgIcon]="'file-down'"></mat-icon>
         </button>
-        @if (showDelete) {
-            <button mat-icon-button [color]="'warn'" [matTooltip]="'common.delete' | transloco" (click)="removeSongEvent.emit()">
-                <mat-icon [svgIcon]="'trash-2'"></mat-icon>
+
+        @if (mode === 'full') {
+            <div class="mx-1 h-4 border-l border-neutral-300 dark:border-neutral-700"></div>
+            <!-- Content tools -->
+            <chp-transpose-tool [isMobile]="true" [initialKey]="songKey" (transposeEvent)="transposeEvent.emit($event)"></chp-transpose-tool>
+
+            <!-- Only meaningful on mobile, where editor/preview are shown one at a time -->
+            <button mat-icon-button class="lg:hidden" [matTooltip]="'editor.preview_song' | transloco" (click)="previewEvent.emit()">
+                  <mat-icon [svgIcon]="'eye'"></mat-icon>
             </button>
         }
         @if (mode === 'quick') {
@@ -13,13 +20,19 @@
                   <mat-icon [svgIcon]="'external-link'"></mat-icon>
             </button>
         }
+    </div>
+    <div class="flex items-center gap-1">
         @if (mode === 'full') {
             <button mat-icon-button [matTooltip]="'common.help' | transloco" (click)="helpEvent.emit()">
                   <mat-icon [svgIcon]="'circle-question-mark'"></mat-icon>
             </button>
         }
-    </div>
-    <div class="flex items-center">
+        @if (showDelete) {
+            <button mat-icon-button [color]="'warn'" [matTooltip]="'common.delete' | transloco" (click)="removeSongEvent.emit()">
+                <mat-icon [svgIcon]="'trash-2'"></mat-icon>
+            </button>
+        }
+        <div class="mx-1 h-4 border-l border-neutral-300 dark:border-neutral-700"></div>
         <button mat-icon-button [matTooltip]="'common.close' | transloco" (click)="closeEvent.emit()">
             <mat-icon [svgIcon]="'x'"></mat-icon>
         </button>

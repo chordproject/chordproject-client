@@ -43,6 +43,8 @@ export class ChpSongHeaderComponent {
     @Input() alternateVersionRoute: 'reader' | 'editor' = 'reader';
     @Input() showFullEditor = false;
     @Input() showClose = false;
+    /** Hides the close button above the `lg` breakpoint, e.g. when the preview pane is always visible on desktop. */
+    @Input() closeOnlyOnMobile = false;
     @Input() centerContent = true;
 
     // Optional songbook / tag controls

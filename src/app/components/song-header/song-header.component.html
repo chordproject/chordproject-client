@@ -179,6 +179,7 @@
                             <button
                                 type="button"
                                 mat-icon-button
+                                [class.lg:hidden]="closeOnlyOnMobile"
                                 [matTooltip]="'preview.close' | transloco"
                                 (click)="close.emit()"
                             >

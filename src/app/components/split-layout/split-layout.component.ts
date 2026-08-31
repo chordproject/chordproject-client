@@ -3,6 +3,7 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnDestroy,
@@ -10,8 +11,6 @@ import {
     Output,
     TemplateRef,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { AngularSplitModule } from 'angular-split';
 import { Subject, takeUntil } from 'rxjs';
 import { FuseConfigService } from '@fuse/services/config';
@@ -21,7 +20,7 @@ import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
     selector: 'chp-split-layout',
     standalone: true,
     templateUrl: './split-layout.component.html',
-    imports: [CommonModule, AngularSplitModule, MatIconModule, MatButtonModule],
+    imports: [CommonModule, AngularSplitModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChpSplitLayoutComponent implements OnInit, OnDestroy {
@@ -50,6 +49,7 @@ export class ChpSplitLayoutComponent implements OnInit, OnDestroy {
     showPrimaryArea = true;
 
     constructor(
+        private _elementRef: ElementRef<HTMLElement>,
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseConfigService: FuseConfigService
@@ -91,6 +91,9 @@ export class ChpSplitLayoutComponent implements OnInit, OnDestroy {
     togglePreview(): void {
         this.showPrimaryArea = !this.showPrimaryArea;
         this._changeDetectorRef.markForCheck();
+        // Switching panes on mobile keeps the page's own scrollable ancestor at its old
+        // scroll position, which can leave the newly shown pane looking blank; reset it.
+        this._elementRef.nativeElement.closest('.overflow-auto, .overflow-y-auto')?.scrollTo({ top: 0 });
     }
 
     trackByFn(index: number, item: any): any {

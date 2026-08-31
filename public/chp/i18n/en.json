@@ -151,6 +151,8 @@
         "delete_space": "Delete space",
         "delete_space_confirm_title": "Delete space",
         "delete_space_confirm_message": "Are you sure you want to delete this space from the event type?",
+        "edit_event_type": "Edit event type",
+        "save_event_type": "Save event type",
         "delete_event_type": "Delete event type",
         "delete_event_type_confirm_title": "Delete event type",
         "delete_event_type_confirm_message": "Are you sure you want to delete this event type?",
@@ -209,6 +211,7 @@
         ,"open_live": "Open live"
         ,"previous": "Previous"
         ,"next": "Next"
+        ,"back_to_list": "Song list"
         ,"live_empty": "This repertoire has no assigned songs."
     },
     "confirmation": {
@@ -318,12 +321,15 @@
     "editor": {
         "delete_song_title": "Delete song",
         "delete_song_message": "Are you sure you want to delete this song? This action cannot be undone!",
+        "delete_song_version_title": "Delete this version",
+        "delete_song_version_message": "You are about to delete only this version/arrangement of the song, not the whole song or its other versions. This action cannot be undone!",
         "delete_song_confirm": "Delete",
         "unsaved_changes_title": "Unsaved changes",
         "unsaved_changes_message": "You have unsaved changes. Are you sure you want to leave this page?",
         "unsaved_changes_discard": "Discard changes",
         "guest_editing_notice": "You are editing as a guest. Sign in to save your changes.",
-        "login_to_save": "Sign in to save your changes."
+        "login_to_save": "Sign in to save your changes.",
+        "preview_song": "View preview"
     },
     "song_suggestion": {
         "title": "Submit as suggestion",

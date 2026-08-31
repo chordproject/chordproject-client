@@ -9,12 +9,15 @@
         }
         <chp-editor
             [content]="song().content"
+            [songKey]="song().songKey"
             (contentChange)="onContentChange($event)"
             [showDelete]="canDelete()"
             tabindex="0"
             (close)="onEditorClose()"
             (save)="saveSong()"
             (remove)="removeSong()"
+            (preview)="openPreview()"
+            (transpose)="transposeSong($event)"
             (help)="showHelp()"
         ></chp-editor>
     </mat-card>
@@ -22,9 +25,12 @@
 
 <ng-template #viewer>
     <chp-song-preview
+        #songPreview
         [song]="song()"
         [pendingSuggestion]="hasPendingSuggestion()"
-        [alternateVersions]="alternateVersions()"
-        [alternateVersionRoute]="'editor'"
+        [showToolbar]="false"
+        [showClose]="true"
+        [closeOnlyOnMobile]="true"
+        (close)="closePreview()"
     ></chp-song-preview>
 </ng-template>

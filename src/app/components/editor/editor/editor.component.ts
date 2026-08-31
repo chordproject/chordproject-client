@@ -29,11 +29,14 @@ export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     @Output() save = new EventEmitter<void>();
     @Output() remove = new EventEmitter<void>();
     @Output() openFullEditor = new EventEmitter<void>();
+    @Output() preview = new EventEmitter<void>();
+    @Output() transpose = new EventEmitter<'up' | 'down'>();
     @Output() help = new EventEmitter<void>();
 
     @Input() style: any = {};
     @Input() mode: 'quick' | 'full' = 'full';
     @Input() showDelete = true;
+    @Input() songKey: string;
 
     @ViewChild('editorDiv', { static: true }) editorDiv!: ElementRef;
 
@@ -234,6 +237,12 @@ export class ChpEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     onOpenFullEditor() {
         this.openFullEditor.emit();
+    }
+    onPreview() {
+        this.preview.emit();
+    }
+    onTranspose(direction: 'up' | 'down') {
+        this.transpose.emit(direction);
     }
     onHelp() {
         this.help.emit();

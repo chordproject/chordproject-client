@@ -41,6 +41,8 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
     newSlotName = '';
     editingSlotId: string | null = null;
     editingSlotName = '';
+    editingEventTypeId: string | null = null;
+    editingEventTypeName = '';
     private readonly unsubscribeAll = new Subject<void>();
 
     constructor(
@@ -187,6 +189,39 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
                     }
                 }
             });
+    }
+
+    startEditingEventType(eventType: EventType, event: MouseEvent): void {
+        event.stopPropagation();
+        this.editingEventTypeId = eventType.uid;
+        this.editingEventTypeName = eventType.name;
+    }
+
+    cancelEditingEventType(): void {
+        this.editingEventTypeId = null;
+        this.editingEventTypeName = '';
+    }
+
+    async saveEventTypeName(eventType: EventType): Promise<void> {
+        const name = this.editingEventTypeName.trim();
+        if (!name || !eventType.uid) {
+            return;
+        }
+
+        const uid = await this.repertoireService.saveEventType({
+            ...eventType,
+            name,
+        });
+        if (uid) {
+            this.eventTypes = this.eventTypes.map((currentEventType) =>
+                currentEventType.uid === eventType.uid ? { ...currentEventType, name } : currentEventType
+            );
+            if (this.selectedEventType?.uid === eventType.uid) {
+                this.selectedEventType = { ...this.selectedEventType, name };
+            }
+            this.cancelEditingEventType();
+            this.changeDetectorRef.markForCheck();
+        }
     }
 
     deleteEventType(eventType: EventType, event: MouseEvent): void {

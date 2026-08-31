@@ -36,7 +36,7 @@
             class="-mt-16 grid w-full min-[480px]:max-w-xl grid-cols-1 gap-y-8 sm:-mt-24 sm:max-w-2xl md:max-w-7xl md:grid-cols-3 md:gap-x-6 md:gap-y-8"
         >
             <!-- Recent card -->
-            <div class="flex flex-col gap-6 md:col-span-2">
+            <div class="order-2 flex flex-col gap-6 md:order-1 md:col-span-2">
                 <div
                     class="bg-card relative flex flex-col overflow-hidden rounded-xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg sm:rounded-2xl"
                 >
@@ -124,7 +124,7 @@
                     }
                 }
             </div>
-            <div class="flex flex-col gap-6">
+            <div class="order-1 flex flex-col gap-6 md:order-2">
                 @if (upcomingRepertoire$ | async; as upcoming) {
                     <section class="bg-card relative overflow-hidden rounded-xl border border-primary-100 p-5 shadow transition-shadow duration-150 ease-in-out hover:shadow-lg dark:border-primary-900 sm:rounded-2xl">
                         <div class="absolute right-0 top-0 -m-6 flex h-24 w-24 items-center justify-center">

@@ -1,9 +1,12 @@
 <chp-editor-toolbar
     [mode]="mode"
     [showDelete]="showDelete"
+    [songKey]="songKey"
     (saveSongEvent)="onSave()"
     (removeSongEvent)="onRemove()"
     (openFullEditorEvent)="onOpenFullEditor()"
+    (previewEvent)="onPreview()"
+    (transposeEvent)="onTranspose($event)"
     (closeEvent)="onClose()"
     (helpEvent)="onHelp()"
 ></chp-editor-toolbar>

@@ -1,4 +1,16 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild,
+} from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ChpViewerToolbarComponent } from 'app/components/viewer/viewer-toolbar/viewer-toolbar.component';
@@ -17,17 +29,21 @@ import { Song } from 'app/models/song';
     templateUrl: './viewer-panel.component.html',
     imports: [ChpViewerToolbarComponent, ChpViewerComponent],
 })
-export class ChpViewerPanelComponent implements OnInit, OnDestroy {
+export class ChpViewerPanelComponent implements OnInit, OnChanges, OnDestroy {
     @Input() song: Song | PartialSong;
     @Input() content: string;
     @Input() isPreview = false;
     @Input() compactPreview = false;
+    @Input() showToolbar = true;
     @Input() showEditDelete = true;
     @Input() showDelete = true;
     @Input() centerContent = false;
 
     @Output() editSongEvent = new EventEmitter<void>();
     @Output() deleteSongEvent = new EventEmitter<void>();
+
+    @ViewChild('scrollContainer') private _scrollContainer: ElementRef<HTMLElement>;
+    @ViewChild('viewer') private _viewer: ChpViewerComponent;
 
     deviceType: 'phone' | 'tablet' | 'desktop' = 'desktop';
     private readonly _unsubscribeAll = new Subject<void>();
@@ -36,6 +52,13 @@ export class ChpViewerPanelComponent implements OnInit, OnDestroy {
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _changeDetectorRef: ChangeDetectorRef
     ) {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        // Song navigation replaces content while the viewer stays mounted; reset scroll so the new song starts at the top.
+        if (changes['content'] && !changes['content'].isFirstChange()) {
+            this._scrollContainer?.nativeElement.scrollTo({ top: 0 });
+        }
+    }
 
     ngOnInit(): void {
         this._fuseMediaWatcherService.onMediaChange$
@@ -55,5 +78,10 @@ export class ChpViewerPanelComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
+    }
+
+    /** Lets an external toolbar (e.g. the song editor's) drive transposition when the reader toolbar is hidden. */
+    transpose(direction: 'up' | 'down'): void {
+        this._viewer?.transpose(direction);
     }
 }

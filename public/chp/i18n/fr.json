@@ -151,6 +151,8 @@
         "delete_space": "Supprimer l'espace",
         "delete_space_confirm_title": "Supprimer l'espace",
         "delete_space_confirm_message": "Êtes-vous sûr de vouloir supprimer cet espace del tipo de evento ?",
+        "edit_event_type": "Modifier le type d'événement",
+        "save_event_type": "Enregistrer le type d'événement",
         "delete_event_type": "Supprimer le type d'événement",
         "delete_event_type_confirm_title": "Supprimer le type d'événement",
         "delete_event_type_confirm_message": "Êtes-vous sûr de vouloir supprimer ce type d'événement ?",
@@ -209,6 +211,7 @@
         ,"open_live": "Ouvrir en direct"
         ,"previous": "Précédent"
         ,"next": "Suivant"
+        ,"back_to_list": "Liste des chansons"
         ,"live_empty": "Ce répertoire ne contient aucune chanson assignée."
     },
     "confirmation": {
@@ -318,12 +321,15 @@
     "editor": {
         "delete_song_title": "Supprimer la chanson",
         "delete_song_message": "Êtes-vous sûr de vouloir supprimer cette chanson ? Cette action est irréversible !",
+        "delete_song_version_title": "Supprimer cette version",
+        "delete_song_version_message": "Vous êtes sur le point de supprimer uniquement cette version/arrangement de la chanson, pas la chanson entière ni ses autres versions. Cette action est irréversible !",
         "delete_song_confirm": "Supprimer",
         "unsaved_changes_title": "Modifications non enregistrées",
         "unsaved_changes_message": "Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?",
         "unsaved_changes_discard": "Abandonner les modifications",
         "guest_editing_notice": "Vous modifiez cette chanson en tant qu'invité. Connectez-vous pour enregistrer vos modifications.",
-        "login_to_save": "Connectez-vous pour enregistrer vos modifications."
+        "login_to_save": "Connectez-vous pour enregistrer vos modifications.",
+        "preview_song": "Voir l'aperçu"
     },
     "song_suggestion": {
         "title": "Envoyer comme suggestion",

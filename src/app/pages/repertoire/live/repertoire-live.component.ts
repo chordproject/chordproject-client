@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
@@ -19,7 +21,17 @@ import { Repertoire } from 'app/models/repertoire';
     standalone: true,
     templateUrl: './repertoire-live.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, MatIconModule, RouterLink, TranslocoModule, ChpSongListPanelComponent, ChpSongPreviewComponent, ChpSplitLayoutComponent],
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTooltipModule,
+        RouterLink,
+        TranslocoModule,
+        ChpSongListPanelComponent,
+        ChpSongPreviewComponent,
+        ChpSplitLayoutComponent,
+    ],
 })
 export class RepertoireLiveComponent implements OnInit, OnDestroy {
     @ViewChild(ChpSplitLayoutComponent) splitLayout: ChpSplitLayoutComponent;
@@ -116,6 +128,39 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
         this.changeDetectorRef.markForCheck();
 
         if (this.splitLayout?.isMobile) {
+            this.splitLayout.togglePreview();
+        }
+    }
+
+    /** Index of the currently selected song within the ordered repertoire, or -1 if none. */
+    get selectedIndex(): number {
+        return this.selectedSong ? this.songItems.findIndex((song) => song.uid === this.selectedSong.uid) : -1;
+    }
+
+    get hasPreviousSong(): boolean {
+        return this.selectedIndex > 0;
+    }
+
+    get hasNextSong(): boolean {
+        return this.selectedIndex >= 0 && this.selectedIndex < this.songItems.length - 1;
+    }
+
+    goToPreviousSong(): void {
+        if (this.hasPreviousSong) {
+            this.selectedSong = this.songItems[this.selectedIndex - 1];
+            this.changeDetectorRef.markForCheck();
+        }
+    }
+
+    goToNextSong(): void {
+        if (this.hasNextSong) {
+            this.selectedSong = this.songItems[this.selectedIndex + 1];
+            this.changeDetectorRef.markForCheck();
+        }
+    }
+
+    backToList(): void {
+        if (this.splitLayout?.isMobile && !this.splitLayout.showPrimaryArea) {
             this.splitLayout.togglePreview();
         }
     }

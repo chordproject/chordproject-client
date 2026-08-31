@@ -1,44 +1,9 @@
 <div
-    class="flex w-full min-w-0 flex-col sm:absolute sm:inset-0 sm:overflow-hidden"
+    class="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden absolute inset-0"
 >
-    <!-- Toggle between left and right content on mobile -->
-    <div
-        class="fixed top-1/2 z-[1050]"
-        [class.hidden]="!isMobile || !hasSecondaryContent"
-        [style.right.px]="showPrimaryArea ? -5 : null"
-        [style.left.px]="showPrimaryArea ? null : -5"
-    >
-        <button
-            mat-stroked-button
-            (click)="togglePreview()"
-            style="
-                background: transparent !important;
-                border-color: light-dark(var(--color-neutral-300), var(--color-neutral-700)) !important;
-                border-width: 2px !important;
-                border-radius: 12px !important;
-                box-shadow: none !important;
-                width: 48px !important;
-                height: 48px !important;
-                min-width: 0 !important;
-                padding: 0 !important;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            "
-        >
-            <mat-icon
-                [svgIcon]="
-                    showPrimaryArea
-                        ? 'arrow-left'
-                        : 'arrow-right'
-                "
-                class="text-neutral-500 dark:text-neutral-400"
-            >
-            </mat-icon>
-        </button>
-    </div>
 
     <as-split
+        class="h-full min-h-0"
         direction="horizontal"
         useTransition="true"
         [gutterSize]="hasSecondaryContent ? 12 : 0"
@@ -49,6 +14,7 @@
         <as-split-area
             [size]="hasSecondaryContent ? 60 : 100"
             [visible]="!hasSecondaryContent || !isMobile || showPrimaryArea"
+            [class.hidden]="hasSecondaryContent && isMobile && !showPrimaryArea"
             minSize="30"
             class="border border-neutral-300 dark:border-neutral-700"
         >
@@ -57,6 +23,7 @@
         <as-split-area
             [size]="40"
             [visible]="hasSecondaryContent && (!isMobile || !showPrimaryArea)"
+            [class.hidden]="!hasSecondaryContent || (isMobile && showPrimaryArea)"
             minSize="30"
             class="border border-neutral-300 dark:border-neutral-700"
         >
