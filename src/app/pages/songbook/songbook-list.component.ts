@@ -161,7 +161,7 @@ export class SongbookListComponent implements OnDestroy {
 
     requireAuthentication(): void {
         this._translocoService
-            .selectTranslate('songbook_service.authentication_required')
+            .selectTranslate('common.authentication_required')
             .pipe(take(1))
             .subscribe((message) => {
                 this._snackBar.open(message, undefined, {

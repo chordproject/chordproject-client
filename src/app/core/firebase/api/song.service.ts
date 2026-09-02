@@ -24,6 +24,7 @@ import { Song } from 'app/models/song';
 import { normalizeText } from 'app/models/song-index';
 import { Tag } from 'app/models/tag';
 import { environment } from 'environments/environment';
+import { AuthService } from '../auth/auth.service';
 import { FirebaseService } from '../firebase.service';
 import { SongIndexService } from './song-index.service';
 
@@ -36,6 +37,7 @@ export class SongService {
     private _snackBar: MatSnackBar;
     private _translocoService: TranslocoService;
     private _userService: UserService;
+    private _authService: AuthService;
     private _songIndex: SongIndexService;
     private _songsCache$: Observable<PartialSong[]>;
     private _fullSongsCache$: Observable<PartialSong[]>;
@@ -57,6 +59,7 @@ export class SongService {
         this._snackBar = inject(MatSnackBar);
         this._translocoService = inject(TranslocoService);
         this._userService = inject(UserService);
+        this._authService = inject(AuthService);
         this._songIndex = inject(SongIndexService);
     }
 
@@ -282,7 +285,7 @@ export class SongService {
     private async verifyAuthentication(): Promise<boolean> {
         const isAuthenticated = await firstValueFrom(this._userService.isAuthenticated());
         if (!isAuthenticated) {
-            this.showSnackbar('song_service.authentication_required', 3000, 'warning');
+            this._authService.promptSignIn();
             return false;
         }
         return true;
@@ -310,7 +313,7 @@ export class SongService {
             errorMessage = error.message;
         }
 
-        this.showSnackbar('song_service.unexpected_error', 3000, 'error');
+        this.showSnackbar('common.unexpected_error', 3000, 'error');
         return throwError(() => new Error(errorMessage));
     }
 

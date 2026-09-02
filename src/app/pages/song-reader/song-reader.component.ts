@@ -321,7 +321,7 @@ export class SongReaderComponent implements OnInit, OnDestroy {
 
         if (!this.isAuthenticated) {
             this._translocoService
-                .selectTranslate('song_service.authentication_required')
+                .selectTranslate('common.authentication_required')
                 .pipe(take(1))
                 .subscribe((message) => {
                     this._snackBar.open(message, undefined, { duration: 5000, panelClass: ['warning'] });
@@ -376,7 +376,7 @@ export class SongReaderComponent implements OnInit, OnDestroy {
 
         if (!this.isAuthenticated) {
             this._translocoService
-                .selectTranslate('song_service.authentication_required')
+                .selectTranslate('common.authentication_required')
                 .pipe(take(1))
                 .subscribe((message) => {
                     this._snackBar.open(message, undefined, { duration: 5000, panelClass: ['warning'] });
@@ -409,7 +409,7 @@ export class SongReaderComponent implements OnInit, OnDestroy {
 
         if (!this.isAuthenticated) {
             this._translocoService
-                .selectTranslate('songbook_service.authentication_required')
+                .selectTranslate('common.authentication_required')
                 .pipe(take(1))
                 .subscribe((message) => {
                     this._snackBar.open(message, undefined, { duration: 5000, panelClass: ['warning'] });

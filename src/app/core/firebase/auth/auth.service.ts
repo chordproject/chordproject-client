@@ -1,5 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
 import {
     Auth,
     confirmPasswordReset,
@@ -14,6 +16,7 @@ import {
     User,
 } from 'firebase/auth';
 import { BehaviorSubject, from, Observable } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 import { FirebaseService } from '../firebase.service';
 
 @Injectable({
@@ -22,6 +25,8 @@ import { FirebaseService } from '../firebase.service';
 export class AuthService {
     private _auth: Auth;
     private _snackBar: MatSnackBar;
+    private _router: Router;
+    private _translocoService: TranslocoService;
     private _user = new BehaviorSubject<User>(null);
     private _authenticated = new BehaviorSubject<boolean>(false);
     private _authReady = new BehaviorSubject<boolean>(false);
@@ -30,6 +35,8 @@ export class AuthService {
         const firebase = inject(FirebaseService);
         this._auth = firebase.auth;
         this._snackBar = inject(MatSnackBar);
+        this._router = inject(Router);
+        this._translocoService = inject(TranslocoService);
 
         onAuthStateChanged(this._auth, (user) => {
             if (user) {
@@ -153,5 +160,31 @@ export class AuthService {
             horizontalPosition: 'center',
             verticalPosition: 'bottom',
         });
+    }
+
+    /** Shows an actionable "authentication required" snackbar; its action navigates to sign-in and returns to `returnUrl` (defaults to the current page) once signed in. */
+    promptSignIn(returnUrl?: string): void {
+        const targetUrl = returnUrl ?? this._router.url;
+        this._translocoService
+            .selectTranslate('common.authentication_required')
+            .pipe(
+                switchMap((message) =>
+                    this._translocoService
+                        .selectTranslate('nav.sign_in')
+                        .pipe(map((signInLabel) => ({ message, signInLabel })))
+                ),
+                take(1)
+            )
+            .subscribe(({ message, signInLabel }) => {
+                const snackBarRef = this._snackBar.open(message, signInLabel, {
+                    duration: 6000,
+                    horizontalPosition: 'center',
+                    verticalPosition: 'top',
+                    panelClass: ['warning'],
+                });
+                snackBarRef.onAction().subscribe(() => {
+                    this._router.navigate(['/auth/sign-in'], { queryParams: { returnUrl: targetUrl } });
+                });
+            });
     }
 }

@@ -19,7 +19,7 @@ import { environment } from 'environments/environment';
       [src]="brand === 'hj' ? '/hj/logo/logo.svg' : '/chp/logo/logo.svg'"
       alt=""
       aria-hidden="true"
-      class="pointer-events-none absolute left-1/2 bottom-24 hidden w-40 -translate-x-1/2 opacity-[0.12] dark:invert sm:block"
+      class="pointer-events-none absolute left-1/2 bottom-24 block w-40 -translate-x-1/2 opacity-[0.12] dark:invert"
     />
 
     <!-- Header -->
@@ -34,7 +34,8 @@ import { environment } from 'environments/environment';
       </a>
     </div>
 
-    <!-- Navigation -->    <navigation class="relative z-10 mt-8 mb-4 flex-auto" />
+    <!-- Navigation -->
+    <navigation class="relative z-10 mt-8 mb-4 min-h-0 flex-auto overflow-y-auto" />
 
     <!-- Spacer -->
     <div class="flex-auto"></div>

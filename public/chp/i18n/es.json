@@ -177,6 +177,8 @@
         "no_repertoires": "Aún no hay repertorios creados."
         ,"no_search_matches": "Ningún repertorio coincide con la búsqueda."
         ,"search_placeholder": "Busca por título, referencia o tema..."
+        ,"filter_by_event_type": "Tipo de evento"
+        ,"all_event_types": "Todos los tipos"
         ,"grid_view": "Vista en cuadrícula"
         ,"list_view": "Vista en lista"
         ,"type_column": "Tipo"
@@ -225,7 +227,9 @@
         "create": "Crear",
         "save": "Guardar",
         "delete": "Eliminar",
-        "help": "Ayuda"
+        "help": "Ayuda",
+        "authentication_required": "Se requiere autenticación",
+        "unexpected_error": "Ocurrió un error inesperado"
     },
     "feedback": {
         "open": "Hablar con el equipo",
@@ -245,7 +249,6 @@
         "email_label": "Tu correo electrónico",
         "email_required": "Escribe tu correo electrónico.",
         "email_invalid": "Escribe un correo electrónico válido.",
-        "close": "Cerrar",
         "submit": "Enviar mensaje",
         "sent": "Gracias. Recibimos tu mensaje."
     },
@@ -300,9 +303,7 @@
         "title_required": "El título es obligatorio",
         "song_saved": "Canción guardada correctamente",
         "song_deleted": "Canción eliminada correctamente",
-        "authentication_required": "Se requiere autenticación",
-        "song_tags_updated": "Tags de la canción actualizados",
-        "unexpected_error": "Ocurrió un error inesperado"
+        "song_tags_updated": "Tags de la canción actualizados"
     },
     "songbook_service": {
         "content_load_failed": "No se pudo cargar el contenido del cancionero",
@@ -314,9 +315,7 @@
         "song_removed": "Canción quitada del cancionero",
         "copy_removed": "Copia eliminada correctamente",
         "songbook_removed": "Cancionero eliminado correctamente",
-        "no_songs_found": "No se encontraron canciones en el cancionero",
-        "authentication_required": "Se requiere autenticación",
-        "unexpected_error": "Ocurrió un error inesperado"
+        "no_songs_found": "No se encontraron canciones en el cancionero"
     },
     "editor": {
         "delete_song_title": "Eliminar canción",

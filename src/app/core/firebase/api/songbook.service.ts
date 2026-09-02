@@ -21,6 +21,7 @@ import { catchError, map, shareReplay, startWith, switchMap, take } from 'rxjs/o
 import { PartialSong } from 'app/models/partialsong';
 import { Relation } from 'app/models/relation';
 import { Songbook } from 'app/models/songbook';
+import { AuthService } from '../auth/auth.service';
 import { FirebaseService } from '../firebase.service';
 import { SongService } from './song.service';
 
@@ -31,6 +32,7 @@ export class SongbookService {
     private _firestore: Firestore;
     private _auth: Auth;
     private _translocoService: TranslocoService;
+    private _authService: AuthService;
     private _songbooksCache$: Observable<Songbook[]>;
     private _personalSongbooksCache$: Observable<Songbook[]>;
     private _recommendedSongbooksCache$: Observable<Songbook[]>;
@@ -44,6 +46,7 @@ export class SongbookService {
         this._firestore = this._firebase.firestore;
         this._auth = this._firebase.auth;
         this._translocoService = inject(TranslocoService);
+        this._authService = inject(AuthService);
     }
 
     get(id: string): Observable<Songbook> {
@@ -226,7 +229,9 @@ export class SongbookService {
     }
 
     getRecommendedGroups(): Observable<import('app/models/songbook-group').SongbookGroupWithChildren[]> {
-        return from(getDocs(query(collection(this._firestore, 'songbook_groups'), where('published', '==', true)))).pipe(
+        return this._songbooksChanged.pipe(
+            startWith(undefined),
+            switchMap(() => from(getDocs(query(collection(this._firestore, 'songbook_groups'), where('published', '==', true))))),
             switchMap((groupSnapshot) => {
                 if (groupSnapshot.empty) {
                     return of(null);
@@ -864,7 +869,7 @@ export class SongbookService {
     private verifyAuthentication(): boolean {
         const user = this._auth.currentUser;
         if (!user) {
-            this.showSnackbar('songbook_service.authentication_required');
+            this._authService.promptSignIn();
             return false;
         }
         return true;
@@ -918,7 +923,7 @@ export class SongbookService {
             errorMessage = error.message;
         }
 
-        this.showSnackbar('songbook_service.unexpected_error');
+        this.showSnackbar('common.unexpected_error');
         return throwError(() => new Error(errorMessage));
     }
 }

@@ -12,10 +12,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, forkJoin, of, takeUntil } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { RepertoireService } from 'app/core/firebase/api/repertoire.service';
 import { SongService } from 'app/core/firebase/api/song.service';
+import { AuthService } from 'app/core/firebase/auth/auth.service';
+import { UserService } from 'app/core/user/user.service';
 import { EventType } from 'app/models/event-type';
 import { Repertoire } from 'app/models/repertoire';
 
@@ -40,10 +42,13 @@ import { Repertoire } from 'app/models/repertoire';
     ],
 })
 export class RepertoireComponent implements OnInit, OnDestroy {
+    private static readonly DRAFT_STORAGE_KEY = 'repertoire_new_draft';
+
     eventTypes: EventType[] = [];
     repertoires: Repertoire[] = [];
     repertoireSongsMap: Record<string, { slotName?: string; songTitle: string }[]> = {};
     repertoireSearchTerm = '';
+    repertoireEventTypeFilter = 'all';
     viewMode: 'grid' | 'list' = 'grid';
     newRepertoireEventTypeId: string | null = null;
     newRepertoireTitle = '';
@@ -55,11 +60,14 @@ export class RepertoireComponent implements OnInit, OnDestroy {
     constructor(
         private readonly repertoireService: RepertoireService,
         private readonly songService: SongService,
+        private readonly authService: AuthService,
+        private readonly userService: UserService,
         private readonly confirmationService: FuseConfirmationService,
         private readonly changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
+        this.restoreDraftIfAuthenticated();
         this.loadEventTypes();
         this.loadRepertoires();
     }
@@ -178,6 +186,24 @@ export class RepertoireComponent implements OnInit, OnDestroy {
             return;
         }
 
+        const isAuthenticated = await new Promise<boolean>((resolve) =>
+            this.userService.isAuthenticated().pipe(take(1)).subscribe(resolve)
+        );
+        if (!isAuthenticated) {
+            // Sign-in navigates away, so stash the draft to restore once the user is back and authenticated.
+            sessionStorage.setItem(
+                RepertoireComponent.DRAFT_STORAGE_KEY,
+                JSON.stringify({
+                    eventTypeId: this.newRepertoireEventTypeId,
+                    title,
+                    description,
+                    date: this.newRepertoireDate.toISOString(),
+                })
+            );
+            this.authService.promptSignIn();
+            return;
+        }
+
         const uid = await this.repertoireService.saveRepertoire({
             eventTypeId: this.newRepertoireEventTypeId,
             title,
@@ -189,6 +215,35 @@ export class RepertoireComponent implements OnInit, OnDestroy {
             this.newRepertoireDescription = '';
             this.loadRepertoires();
         }
+    }
+
+    /** Restores a draft stashed before a sign-in redirect, once the user is authenticated again. */
+    private restoreDraftIfAuthenticated(): void {
+        const raw = sessionStorage.getItem(RepertoireComponent.DRAFT_STORAGE_KEY);
+        if (!raw) {
+            return;
+        }
+
+        this.userService
+            .isAuthenticated()
+            .pipe(take(1))
+            .subscribe((isAuthenticated) => {
+                if (!isAuthenticated) {
+                    return;
+                }
+
+                sessionStorage.removeItem(RepertoireComponent.DRAFT_STORAGE_KEY);
+                try {
+                    const draft = JSON.parse(raw);
+                    this.newRepertoireEventTypeId = draft.eventTypeId ?? null;
+                    this.newRepertoireTitle = draft.title ?? '';
+                    this.newRepertoireDescription = draft.description ?? '';
+                    this.newRepertoireDate = draft.date ? new Date(draft.date) : new Date();
+                    this.changeDetectorRef.markForCheck();
+                } catch {
+                    // Ignore a corrupted draft.
+                }
+            });
     }
 
     deleteRepertoire(repertoire: Repertoire, event?: MouseEvent): void {
@@ -237,9 +292,12 @@ export class RepertoireComponent implements OnInit, OnDestroy {
 
     get filteredRepertoires(): Repertoire[] {
         const term = this.normalize(this.repertoireSearchTerm);
-        const filtered = !term
+        const byType = this.repertoireEventTypeFilter === 'all'
             ? this.repertoires
-            : this.repertoires.filter((repertoire) => {
+            : this.repertoires.filter((repertoire) => repertoire.eventTypeId === this.repertoireEventTypeFilter);
+        const filtered = !term
+            ? byType
+            : byType.filter((repertoire) => {
                 const matchesTitle = this.normalize(repertoire.title).includes(term);
                 const matchesDesc = this.normalize(repertoire.description ?? '').includes(term);
                 const matchesType = this.normalize(this.getEventTypeName(repertoire.eventTypeId)).includes(term);

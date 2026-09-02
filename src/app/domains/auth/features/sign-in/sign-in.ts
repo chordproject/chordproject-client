@@ -12,7 +12,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@/app/core/firebase/auth/auth.service';
@@ -38,6 +38,7 @@ export default class AuthSignIn {
   // Dependencies
   protected readonly watermarkTiles = Array.from({ length: 120 });
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
 
   // State
@@ -52,6 +53,12 @@ export default class AuthSignIn {
     required(form.password, { message: 'auth.password_required' });
   });
 
+  /** Only allow same-app relative paths as a redirect target, to avoid an open redirect. */
+  private getReturnUrl(): string {
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    return returnUrl && returnUrl.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : '/home';
+  }
+
   signIn(event: Event) {
     event.preventDefault();
 
@@ -59,7 +66,7 @@ export default class AuthSignIn {
       const { email, password } = this.signInFormModel();
       try {
         await firstValueFrom(this.authService.signInWithEmail(email, password));
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl(this.getReturnUrl());
       } catch {
         // Error already surfaced to the user via AuthService's snackbar.
       }
@@ -68,13 +75,13 @@ export default class AuthSignIn {
 
   signInWithGoogle() {
     this.authService.signInWithGoogle().subscribe({
-      next: () => this.router.navigateByUrl('/home'),
+      next: () => this.router.navigateByUrl(this.getReturnUrl()),
     });
   }
 
   signInWithGithub() {
     this.authService.signInWithGithub().subscribe({
-      next: () => this.router.navigateByUrl('/home'),
+      next: () => this.router.navigateByUrl(this.getReturnUrl()),
     });
   }
 }

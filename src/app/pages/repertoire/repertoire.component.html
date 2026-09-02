@@ -105,10 +105,23 @@
                     </button>
                 </div>
             </div>
-            <mat-form-field class="mb-5 w-full" subscriptSizing="dynamic">
-                <mat-icon matPrefix class="mr-2 text-neutral-400 icon-size-5" [svgIcon]="'search'"></mat-icon>
-                <input matInput [(ngModel)]="repertoireSearchTerm" [placeholder]="'repertoire_page.search_placeholder' | transloco" />
-            </mat-form-field>
+            <div class="mb-5 flex flex-col gap-3 sm:flex-row">
+                <mat-form-field class="w-full" subscriptSizing="dynamic">
+                    <mat-icon matPrefix class="mr-2 text-neutral-400 icon-size-5" [svgIcon]="'search'"></mat-icon>
+                    <input matInput [(ngModel)]="repertoireSearchTerm" [placeholder]="'repertoire_page.search_placeholder' | transloco" />
+                </mat-form-field>
+                @if (eventTypes.length > 1) {
+                    <mat-form-field class="w-full sm:w-56" subscriptSizing="dynamic">
+                        <mat-icon matPrefix class="mr-2 text-neutral-400 icon-size-5" [svgIcon]="'sliders-horizontal'"></mat-icon>
+                        <mat-select [(ngModel)]="repertoireEventTypeFilter" [attr.aria-label]="'repertoire_page.filter_by_event_type' | transloco">
+                            <mat-option value="all">{{ 'repertoire_page.all_event_types' | transloco }}</mat-option>
+                            @for (eventType of eventTypes; track trackByUid($index, eventType)) {
+                                <mat-option [value]="eventType.uid">{{ eventType.name }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                }
+            </div>
             @if (viewMode === 'grid') {
                 <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                     @for (repertoire of filteredRepertoires; track trackByUid($index, repertoire)) {

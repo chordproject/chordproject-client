@@ -124,9 +124,13 @@
                     }
                 }
             </div>
-            <div class="order-1 flex flex-col gap-6 md:order-2">
+            <!-- `contents` on mobile exposes these two cards as independent grid items (so
+                 "About" can be ordered last); on desktop it becomes a real flex column again
+                 so both cards stack together, sized independently from the other column
+                 (avoids a shared CSS-grid row forcing a huge gap under a tall left column). -->
+            <div class="contents md:order-2 md:flex md:flex-col md:gap-6">
                 @if (upcomingRepertoire$ | async; as upcoming) {
-                    <section class="bg-card relative overflow-hidden rounded-xl border border-primary-100 p-5 shadow transition-shadow duration-150 ease-in-out hover:shadow-lg dark:border-primary-900 sm:rounded-2xl">
+                    <section class="order-1 bg-card relative overflow-hidden rounded-xl border border-primary-100 p-5 shadow transition-shadow duration-150 ease-in-out hover:shadow-lg dark:border-primary-900 sm:rounded-2xl">
                         <div class="absolute right-0 top-0 -m-6 flex h-24 w-24 items-center justify-center">
                             <mat-icon class="size-16 text-primary-400 opacity-20" [svgIcon]="'calendar-days'"></mat-icon>
                         </div>
@@ -153,9 +157,9 @@
                     </section>
                 }
 
-                <!-- About card -->
+                <!-- About card: ordered last on mobile -->
                 <div
-                    class="bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg"
+                    class="order-3 bg-card relative flex flex-col overflow-hidden rounded-2xl shadow transition-shadow duration-150 ease-in-out hover:shadow-lg"
                 >
                     <div class="absolute right-0 top-0 -m-6 flex h-24 w-24 items-center justify-center">
                         <mat-icon

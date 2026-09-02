@@ -177,6 +177,8 @@
         "no_repertoires": "Aucun répertoire créé pour le moment."
         ,"no_search_matches": "Aucun répertoire ne correspond à la recherche."
         ,"search_placeholder": "Rechercher par titre, référence ou thème..."
+        ,"filter_by_event_type": "Type d'événement"
+        ,"all_event_types": "Tous les types"
         ,"grid_view": "Vue en grille"
         ,"list_view": "Vue en liste"
         ,"type_column": "Type"
@@ -225,7 +227,9 @@
         "create": "Créer",
         "save": "Enregistrer",
         "delete": "Supprimer",
-        "help": "Aide"
+        "help": "Aide",
+        "authentication_required": "Authentification requise",
+        "unexpected_error": "Une erreur inattendue s'est produite"
     },
     "feedback": {
         "open": "Parler à l'équipe",
@@ -245,7 +249,6 @@
         "email_label": "Votre adresse e-mail",
         "email_required": "Saisissez votre adresse e-mail.",
         "email_invalid": "Saisissez une adresse e-mail valide.",
-        "close": "Fermer",
         "submit": "Envoyer le message",
         "sent": "Merci. Nous avons reçu votre message."
     },
@@ -300,9 +303,7 @@
         "title_required": "Le titre est obligatoire",
         "song_saved": "Chanson enregistrée avec succès",
         "song_deleted": "Chanson supprimée avec succès",
-        "authentication_required": "Authentification requise",
-        "song_tags_updated": "Tags de la chanson mis à jour",
-        "unexpected_error": "Une erreur inattendue s'est produite"
+        "song_tags_updated": "Tags de la chanson mis à jour"
     },
     "songbook_service": {
         "content_load_failed": "Échec du chargement du contenu du carnet",
@@ -314,9 +315,7 @@
         "song_removed": "Chanson retirée du carnet",
         "copy_removed": "Copie supprimée avec succès",
         "songbook_removed": "Carnet supprimé avec succès",
-        "no_songs_found": "Aucune chanson trouvée dans le carnet",
-        "authentication_required": "Authentification requise",
-        "unexpected_error": "Une erreur inattendue s'est produite"
+        "no_songs_found": "Aucune chanson trouvée dans le carnet"
     },
     "editor": {
         "delete_song_title": "Supprimer la chanson",

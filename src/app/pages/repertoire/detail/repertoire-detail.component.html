@@ -169,7 +169,12 @@
                                                     (optionSelected)="assignSong(slot, $event.option.value)"
                                                 >
                                                     @for (song of filteredSongs(slot); track trackByUid($index, song)) {
-                                                        <mat-option [value]="song">{{ song.title }}</mat-option>
+                                                        <mat-option [value]="song">
+                                                            {{ song.title }}
+                                                            @if (songOptionSubtitle(song, slot); as subtitle) {
+                                                                <span class="text-neutral-400"> — {{ subtitle }}</span>
+                                                            }
+                                                        </mat-option>
                                                     } @empty {
                                                         @if (getSongSearchControl(slot).value) {
                                                             <mat-option disabled>{{ 'repertoire_page.no_song_matches' | transloco }}</mat-option>

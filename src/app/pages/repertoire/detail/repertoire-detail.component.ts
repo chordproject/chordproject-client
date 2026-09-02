@@ -412,6 +412,20 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
         return (this.songSearchResults[slot.uid] || []).filter((song) => !assignedIds.has(song.uid));
     }
 
+    /** Shows the artist alongside the title only when another matching song shares the same title. */
+    songOptionSubtitle(song: PartialSong, slot: EventSlot): string | null {
+        if (!song.artists?.length) {
+            return null;
+        }
+
+        const normalizedTitle = song.title?.trim().toLocaleLowerCase();
+        const hasDuplicateTitle = this.filteredSongs(slot).some(
+            (other) => other.uid !== song.uid && other.title?.trim().toLocaleLowerCase() === normalizedTitle
+        );
+
+        return hasDuplicateTitle ? song.artists.join(', ') : null;
+    }
+
     songTitle(_songId: string): string {
         return this.assignedSongTitles[_songId] || '';
     }

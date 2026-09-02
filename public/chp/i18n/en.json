@@ -177,6 +177,8 @@
         "no_repertoires": "No repertoires created yet."
         ,"no_search_matches": "No repertoire matches your search."
         ,"search_placeholder": "Search by title, reference or theme..."
+        ,"filter_by_event_type": "Event type"
+        ,"all_event_types": "All types"
         ,"grid_view": "Grid view"
         ,"list_view": "List view"
         ,"type_column": "Type"
@@ -225,7 +227,9 @@
         "create": "Create",
         "save": "Save",
         "delete": "Delete",
-        "help": "Help"
+        "help": "Help",
+        "authentication_required": "Authentication required",
+        "unexpected_error": "An unexpected error occurred"
     },
     "feedback": {
         "open": "Talk to the team",
@@ -245,7 +249,6 @@
         "email_label": "Your email address",
         "email_required": "Enter your email address.",
         "email_invalid": "Enter a valid email address.",
-        "close": "Close",
         "submit": "Send message",
         "sent": "Thank you. We received your message."
     },
@@ -300,9 +303,7 @@
         "title_required": "Title is required",
         "song_saved": "Song saved successfully",
         "song_deleted": "Song deleted successfully",
-        "authentication_required": "Authentication required",
-        "song_tags_updated": "Song tags updated",
-        "unexpected_error": "An unexpected error occurred"
+        "song_tags_updated": "Song tags updated"
     },
     "songbook_service": {
         "content_load_failed": "Failed to load songbook content",
@@ -314,9 +315,7 @@
         "song_removed": "Song removed from songbook",
         "copy_removed": "Copy removed successfully",
         "songbook_removed": "Songbook deleted successfully",
-        "no_songs_found": "No songs found in songbook",
-        "authentication_required": "Authentication required",
-        "unexpected_error": "An unexpected error occurred"
+        "no_songs_found": "No songs found in songbook"
     },
     "editor": {
         "delete_song_title": "Delete song",

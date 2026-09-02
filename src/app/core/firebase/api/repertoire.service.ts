@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslocoService } from '@jsverse/transloco';
 import { Auth } from 'firebase/auth';
 import {
     Firestore,
@@ -16,12 +14,13 @@ import {
     where,
     writeBatch,
 } from 'firebase/firestore';
-import { Observable, from, throwError } from 'rxjs';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { Observable, Subject, from, throwError } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { EventSlot } from 'app/models/event-slot';
 import { EventType } from 'app/models/event-type';
 import { Repertoire } from 'app/models/repertoire';
 import { RepertoireSong } from 'app/models/repertoire-song';
+import { AuthService } from '../auth/auth.service';
 import { FirebaseService } from '../firebase.service';
 
 @Injectable({
@@ -30,18 +29,20 @@ import { FirebaseService } from '../firebase.service';
 export class RepertoireService {
     private readonly firestore: Firestore;
     private readonly auth: Auth;
+    private readonly _changed = new Subject<void>();
 
     constructor(
         private readonly firebase: FirebaseService,
-        private readonly snackBar: MatSnackBar,
-        private readonly translocoService: TranslocoService
+        private readonly authService: AuthService
     ) {
         this.firestore = firebase.firestore;
         this.auth = firebase.auth;
     }
 
     getEventTypes(): Observable<EventType[]> {
-        return from(getDocs(query(collection(this.firestore, 'event_types'), orderBy('name')))).pipe(
+        return this._changed.pipe(
+            startWith(undefined),
+            switchMap(() => from(getDocs(query(collection(this.firestore, 'event_types'), orderBy('name'))))),
             map((snapshot) => snapshot.docs.map((document) => ({ uid: document.id, ...document.data() }) as EventType)),
             catchError((error) => this.handleError(error))
         );
@@ -78,7 +79,9 @@ export class RepertoireService {
     }
 
     getRepertoires(): Observable<Repertoire[]> {
-        return from(getDocs(query(collection(this.firestore, 'repertoires'), orderBy('date', 'desc')))).pipe(
+        return this._changed.pipe(
+            startWith(undefined),
+            switchMap(() => from(getDocs(query(collection(this.firestore, 'repertoires'), orderBy('date', 'desc'))))),
             map((snapshot) => snapshot.docs.map((document) => this.toRepertoire(document.id, document.data()))),
             catchError((error) => this.handleError(error))
         );
@@ -140,6 +143,7 @@ export class RepertoireService {
 
         try {
             await deleteDoc(doc(this.firestore, 'repertoire_songs', uid));
+            this._changed.next();
             return true;
         } catch {
             return false;
@@ -173,6 +177,7 @@ export class RepertoireService {
 
         try {
             await deleteDoc(doc(this.firestore, 'event_slots', uid));
+            this._changed.next();
             return true;
         } catch {
             return false;
@@ -186,6 +191,7 @@ export class RepertoireService {
 
         try {
             await deleteDoc(doc(this.firestore, 'event_types', uid));
+            this._changed.next();
             return true;
         } catch {
             return false;
@@ -209,6 +215,7 @@ export class RepertoireService {
                 });
                 await batch.commit();
             }
+            this._changed.next();
             return true;
         } catch {
             return false;
@@ -301,6 +308,7 @@ export class RepertoireService {
 
         try {
             await setDoc(doc(this.firestore, collectionName, uid), data);
+            this._changed.next();
             return uid;
         } catch {
             return null;
@@ -322,23 +330,6 @@ export class RepertoireService {
     }
 
     private showAuthenticationRequired(): void {
-        this.translocoService
-            .selectTranslate('song_service.authentication_required')
-            .pipe(
-                switchMap((message) =>
-                    this.translocoService
-                        .selectTranslate('common.close')
-                        .pipe(map((closeLabel) => ({ message, closeLabel })))
-                ),
-                take(1)
-            )
-            .subscribe(({ message, closeLabel }) => {
-                this.snackBar.open(message, closeLabel, {
-                    duration: 3000,
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    panelClass: ['warning'],
-                });
-            });
+        this.authService.promptSignIn();
     }
 }
