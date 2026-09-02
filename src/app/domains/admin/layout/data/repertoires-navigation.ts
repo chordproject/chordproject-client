@@ -15,16 +15,18 @@ export class AdminRepertoiresNavigation {
   readonly items$: Observable<NavigationItem[]> = combineLatest([
     this.repertoireService.getEventTypes(),
     this.repertoireService.getRepertoires(),
+    this.repertoireService.getRepertoireGroups(),
   ]).pipe(
-    map(([eventTypes, repertoires]) => {
+    map(([eventTypes, repertoires, repertoireGroups]) => {
+      const groupedRepertoireIds = new Set(repertoireGroups.flatMap(({ repertoires }) => repertoires.map(({ uid }) => uid)));
       const byEventType = new Map<string, Repertoire[]>();
-      for (const repertoire of repertoires) {
+      for (const repertoire of repertoires.filter(({ uid }) => !groupedRepertoireIds.has(uid))) {
         const group = byEventType.get(repertoire.eventTypeId) ?? [];
         group.push(repertoire);
         byEventType.set(repertoire.eventTypeId, group);
       }
 
-      return eventTypes
+      const eventTypeItems = eventTypes
         .filter((eventType) => byEventType.has(eventType.uid))
         .map((eventType): NavigationItem => ({
           id: `repertoire-group-${eventType.uid}`,
@@ -33,6 +35,17 @@ export class AdminRepertoiresNavigation {
           category: true,
           children: (byEventType.get(eventType.uid) ?? []).map((repertoire) => this.toNavigationItem(repertoire)),
         }));
+      const customGroupItems = repertoireGroups
+        .filter(({ repertoires }) => repertoires.length > 0)
+        .map(({ group, repertoires }): NavigationItem => ({
+            id: `repertoire-group-${group.uid}`,
+            label: group.name,
+            dynamic: true,
+            category: true,
+            children: repertoires.map((repertoire) => this.toNavigationItem(repertoire)),
+        }));
+
+      return [...customGroupItems, ...eventTypeItems];
     }),
     catchError((error) => {
       console.error('Failed to load repertoires navigation:', error);

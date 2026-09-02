@@ -127,6 +127,22 @@ export class SongService {
         );
     }
 
+    /** Exact (normalized) title matches, used to warn about likely duplicates before creating a new song. */
+    findByExactTitle(title: string, excludeUid?: string): Observable<PartialSong[]> {
+        const normalizedTitle = normalizeText(title).trim();
+        if (!normalizedTitle) {
+            return of([]);
+        }
+
+        return this.getCachedSongs().pipe(
+            map((allSongs) =>
+                allSongs.filter(
+                    (song) => song.uid !== excludeUid && !song.variantOf && normalizeText(song.title).trim() === normalizedTitle
+                )
+            )
+        );
+    }
+
     searchByTitleContains(searchTerm: string, limitResults = 20): Observable<PartialSong[]> {
         return this.getCachedSongs().pipe(
             map((allSongs) => {
@@ -372,7 +388,13 @@ export class SongService {
     }
 
     private compareByTitle(first: PartialSong, second: PartialSong): number {
-        return (first.title || '').localeCompare(second.title || '', 'es', { sensitivity: 'base' });
+        return this.getTitleSortKey(first.title).localeCompare(this.getTitleSortKey(second.title), 'es', {
+            sensitivity: 'base',
+        });
+    }
+
+    private getTitleSortKey(title: string | undefined): string {
+        return normalizeText(title || '').replace(/^[^a-z0-9]+/, '');
     }
 
     /** Firestore Timestamp, Date o el objeto plano `{ seconds }` que llega desde el backup/SSR. */

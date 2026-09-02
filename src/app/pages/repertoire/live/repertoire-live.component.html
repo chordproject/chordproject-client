@@ -38,11 +38,12 @@
                     <p class="mt-3 text-sm text-neutral-500 dark:text-neutral-400">{{ repertoire.date | date: 'mediumDate' }}</p>
                 </div>
                 <a
-                    class="inline-flex shrink-0 items-center gap-2 rounded-md border border-neutral-300 px-3 py-2 text-sm font-medium dark:border-neutral-700"
+                    mat-icon-button
+                    class="shrink-0"
+                    [matTooltip]="'repertoire_page.manage' | transloco"
                     [routerLink]="['/repertoires', repertoire.uid]"
                 >
                     <mat-icon [svgIcon]="'square-pen'"></mat-icon>
-                    {{ 'repertoire_page.manage' | transloco }}
                 </a>
             </header>
         </div>

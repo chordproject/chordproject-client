@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, forkJoin, of, takeUntil } from 'rxjs';
 import { catchError, map, take } from 'rxjs/operators';
@@ -20,6 +20,7 @@ import { AuthService } from 'app/core/firebase/auth/auth.service';
 import { UserService } from 'app/core/user/user.service';
 import { EventType } from 'app/models/event-type';
 import { Repertoire } from 'app/models/repertoire';
+import { RepertoireGroupWithChildren } from 'app/models/repertoire-group';
 
 @Component({
     selector: 'repertoire-page',
@@ -43,12 +44,15 @@ import { Repertoire } from 'app/models/repertoire';
 })
 export class RepertoireComponent implements OnInit, OnDestroy {
     private static readonly DRAFT_STORAGE_KEY = 'repertoire_new_draft';
+    private static readonly UNGROUPED_FILTER = 'ungrouped';
 
     eventTypes: EventType[] = [];
     repertoires: Repertoire[] = [];
+    repertoireGroups: RepertoireGroupWithChildren[] = [];
     repertoireSongsMap: Record<string, { slotName?: string; songTitle: string }[]> = {};
     repertoireSearchTerm = '';
     repertoireEventTypeFilter = 'all';
+    repertoireGroupFilter = 'all';
     viewMode: 'grid' | 'list' = 'grid';
     newRepertoireEventTypeId: string | null = null;
     newRepertoireTitle = '';
@@ -63,13 +67,15 @@ export class RepertoireComponent implements OnInit, OnDestroy {
         private readonly authService: AuthService,
         private readonly userService: UserService,
         private readonly confirmationService: FuseConfirmationService,
-        private readonly changeDetectorRef: ChangeDetectorRef
+        private readonly changeDetectorRef: ChangeDetectorRef,
+        private readonly router: Router
     ) {}
 
     ngOnInit(): void {
         this.restoreDraftIfAuthenticated();
         this.loadEventTypes();
         this.loadRepertoires();
+        this.loadRepertoireGroups();
     }
 
     ngOnDestroy(): void {
@@ -97,6 +103,23 @@ export class RepertoireComponent implements OnInit, OnDestroy {
             .subscribe((repertoires) => {
                 this.repertoires = repertoires;
                 this.loadSongsSummaries(repertoires);
+                this.changeDetectorRef.markForCheck();
+            });
+    }
+
+    loadRepertoireGroups(): void {
+        this.repertoireService
+            .getRepertoireGroups()
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe((groups) => {
+                this.repertoireGroups = groups;
+                if (
+                    this.repertoireGroupFilter !== 'all' &&
+                    this.repertoireGroupFilter !== RepertoireComponent.UNGROUPED_FILTER &&
+                    !groups.some(({ group }) => group.uid === this.repertoireGroupFilter)
+                ) {
+                    this.repertoireGroupFilter = 'all';
+                }
                 this.changeDetectorRef.markForCheck();
             });
     }
@@ -213,7 +236,7 @@ export class RepertoireComponent implements OnInit, OnDestroy {
         if (uid) {
             this.newRepertoireTitle = '';
             this.newRepertoireDescription = '';
-            this.loadRepertoires();
+            this.router.navigate(['/repertoires', uid]);
         }
     }
 
@@ -295,9 +318,14 @@ export class RepertoireComponent implements OnInit, OnDestroy {
         const byType = this.repertoireEventTypeFilter === 'all'
             ? this.repertoires
             : this.repertoires.filter((repertoire) => repertoire.eventTypeId === this.repertoireEventTypeFilter);
-        const filtered = !term
+        const byGroup = this.repertoireGroupFilter === 'all'
             ? byType
-            : byType.filter((repertoire) => {
+            : this.repertoireGroupFilter === RepertoireComponent.UNGROUPED_FILTER
+                ? byType.filter((repertoire) => !this.isRepertoireInAnyGroup(repertoire.uid))
+            : byType.filter((repertoire) => this.isRepertoireInGroup(repertoire.uid, this.repertoireGroupFilter));
+        const filtered = !term
+            ? byGroup
+            : byGroup.filter((repertoire) => {
                 const matchesTitle = this.normalize(repertoire.title).includes(term);
                 const matchesDesc = this.normalize(repertoire.description ?? '').includes(term);
                 const matchesType = this.normalize(this.getEventTypeName(repertoire.eventTypeId)).includes(term);
@@ -311,6 +339,18 @@ export class RepertoireComponent implements OnInit, OnDestroy {
             });
 
         return [...filtered].sort((first, second) => this.getTime(second.date) - this.getTime(first.date));
+    }
+
+    private isRepertoireInGroup(repertoireId: string, groupId: string): boolean {
+        return this.repertoireGroups
+            .find(({ group }) => group.uid === groupId)
+            ?.repertoires.some((repertoire) => repertoire.uid === repertoireId) ?? false;
+    }
+
+    private isRepertoireInAnyGroup(repertoireId: string): boolean {
+        return this.repertoireGroups.some(({ repertoires }) =>
+            repertoires.some((repertoire) => repertoire.uid === repertoireId)
+        );
     }
 
     private getTime(value: unknown): number {

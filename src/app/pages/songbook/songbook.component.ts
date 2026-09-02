@@ -3,22 +3,22 @@ import { Component, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Observable, Subject, of, takeUntil } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { ChpSongListPanelComponent } from 'app/components/song-list-panel/song-list-panel.component';
 import { ChpSongPreviewComponent } from 'app/components/song-preview/song-preview.component';
 import { ChpSplitLayoutComponent } from 'app/components/split-layout/split-layout.component';
-import { ChpViewerComponent } from 'app/components/viewer/viewer/viewer.component';
-import { ChpSongListPanelComponent } from 'app/components/song-list-panel/song-list-panel.component';
 import { SongService } from 'app/core/firebase/api/song.service';
-import { UserService } from 'app/core/user/user.service';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Song } from 'app/models/song';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
+import { UserService } from 'app/core/user/user.service';
 import { PartialSong } from 'app/models/partialsong';
 import { Songbook } from 'app/models/songbook';
 
@@ -29,9 +29,11 @@ import { Songbook } from 'app/models/songbook';
     imports: [
         CommonModule,
         MatAutocompleteModule,
+        MatButtonModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
+        MatTooltipModule,
         ReactiveFormsModule,
         RouterLink,
         TranslocoModule,
@@ -53,6 +55,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
     songs$: Observable<PartialSong[]>;
     songsList = signal<PartialSong[]>([]);
     isAuthenticated;
+    isAdmin;
     songSearchControl = new UntypedFormControl('');
     filteredSongs$: Observable<PartialSong[]>;
     addingSongId = signal<string | null>(null);
@@ -66,6 +69,7 @@ export class SongbookComponent implements OnInit, OnDestroy {
         private _confirmationService: FuseConfirmationService
     ) {
         this.isAuthenticated = toSignal(this._userService.isAuthenticated(), { initialValue: false });
+        this.isAdmin = toSignal(this._userService.isAdmin(), { initialValue: false });
     }
 
     ngOnInit(): void {
@@ -221,6 +225,38 @@ export class SongbookComponent implements OnInit, OnDestroy {
 
     isRecommended(songbook: Songbook): boolean {
         return songbook.scope === 'shared' && songbook.published === true;
+    }
+
+    deleteSongbook(songbook: Songbook): void {
+        if (!songbook.uid) {
+            return;
+        }
+
+        this._confirmationService
+            .open({
+                title: 'songbook_page.delete_songbook_title',
+                message: 'songbook_page.delete_songbook_message',
+                icon: {
+                    name: 'trash-2',
+                    color: 'error',
+                },
+                actions: {
+                    confirm: {
+                        label: 'songbook_page.delete_confirm',
+                        color: 'error',
+                    },
+                },
+            })
+            .afterClosed()
+            .pipe(
+                take(1),
+                switchMap((result) => (result === 'confirmed' ? this._songbookService.deletePublicSongbook(songbook.uid) : of(false)))
+            )
+            .subscribe((deleted) => {
+                if (deleted) {
+                    this._router.navigate(['/songbook']);
+                }
+            });
     }
 
     requiresCustomizationConfirmation(songbook: Songbook): boolean {

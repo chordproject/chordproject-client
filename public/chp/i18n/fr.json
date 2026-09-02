@@ -135,6 +135,19 @@
         "description": "Créez des types d'événements et définissez les espaces qui organisent chaque répertoire.",
         "event_types": "Types d'événements",
         "event_types_description": "Structures réutilisables pour les événements.",
+        "groups": "Groupes de répertoires",
+        "groups_description": "Regroupez des répertoires associés dans une section réductible de la barre latérale.",
+        "no_groups": "Aucun groupe de répertoires pour le moment.",
+        "new_group": "Nouveau groupe",
+        "add_group": "Ajouter un groupe",
+        "selected_group": "Groupe sélectionné",
+        "select_group": "Sélectionnez ou créez un groupe pour inclure des répertoires.",
+        "group_order": "Ordre dans la barre latérale",
+        "reorder_repertoire": "Réorganiser le répertoire",
+        "group_members": "Répertoires inclus",
+        "delete_group": "Supprimer le groupe",
+        "delete_group_confirm_title": "Supprimer le groupe",
+        "delete_group_confirm_message": "Êtes-vous sûr de vouloir supprimer ce groupe ? Les répertoires ne seront pas supprimés.",
         "no_event_types": "Aucun type d'événement pour le moment.",
         "new_event_type": "Nouveau type d'événement",
         "add_event_type": "Ajouter un type d'événement",
@@ -179,6 +192,9 @@
         ,"search_placeholder": "Rechercher par titre, référence ou thème..."
         ,"filter_by_event_type": "Type d'événement"
         ,"all_event_types": "Tous les types"
+        ,"filter_by_group": "Groupe de répertoires"
+        ,"all_groups": "Tous les groupes"
+        ,"no_group": "Sans groupe"
         ,"grid_view": "Vue en grille"
         ,"list_view": "Vue en liste"
         ,"type_column": "Type"
@@ -328,7 +344,10 @@
         "unsaved_changes_discard": "Abandonner les modifications",
         "guest_editing_notice": "Vous modifiez cette chanson en tant qu'invité. Connectez-vous pour enregistrer vos modifications.",
         "login_to_save": "Connectez-vous pour enregistrer vos modifications.",
-        "preview_song": "Voir l'aperçu"
+        "preview_song": "Voir l'aperçu",
+        "duplicate_title_title": "Chanson potentiellement en double",
+        "duplicate_title_message": "Une chanson portant ce titre existe déjà : {{matches}}. Voulez-vous créer celle-ci comme une autre version de cette chanson ?",
+        "duplicate_title_confirm": "Créer comme une autre version de cette chanson"
     },
     "song_suggestion": {
         "title": "Envoyer comme suggestion",

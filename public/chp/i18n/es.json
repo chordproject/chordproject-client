@@ -135,6 +135,19 @@
         "description": "Crea tipos de evento y define los espacios que organizan cada repertorio.",
         "event_types": "Tipos de evento",
         "event_types_description": "Estructuras reutilizables para eventos.",
+        "groups": "Grupos de repertorios",
+        "groups_description": "Agrupa repertorios relacionados en una sección plegable de la barra lateral.",
+        "no_groups": "Aún no hay grupos de repertorios.",
+        "new_group": "Nuevo grupo",
+        "add_group": "Agregar grupo",
+        "selected_group": "Grupo seleccionado",
+        "select_group": "Selecciona o crea un grupo para incluir repertorios.",
+        "group_order": "Orden en la barra lateral",
+        "reorder_repertoire": "Reordenar repertorio",
+        "group_members": "Repertorios incluidos",
+        "delete_group": "Eliminar grupo",
+        "delete_group_confirm_title": "Eliminar grupo",
+        "delete_group_confirm_message": "¿Estás seguro de que deseas eliminar este grupo? Los repertorios no se eliminarán.",
         "no_event_types": "Aún no hay tipos de evento.",
         "new_event_type": "Nuevo tipo de evento",
         "add_event_type": "Agregar tipo de evento",
@@ -179,6 +192,9 @@
         ,"search_placeholder": "Busca por título, referencia o tema..."
         ,"filter_by_event_type": "Tipo de evento"
         ,"all_event_types": "Todos los tipos"
+        ,"filter_by_group": "Grupo de repertorios"
+        ,"all_groups": "Todos los grupos"
+        ,"no_group": "Sin grupo"
         ,"grid_view": "Vista en cuadrícula"
         ,"list_view": "Vista en lista"
         ,"type_column": "Tipo"
@@ -328,7 +344,10 @@
         "unsaved_changes_discard": "Descartar cambios",
         "guest_editing_notice": "Estás editando como invitado. Inicia sesión para guardar tus cambios.",
         "login_to_save": "Inicia sesión para guardar tus cambios.",
-        "preview_song": "Ver vista previa"
+        "preview_song": "Ver vista previa",
+        "duplicate_title_title": "Posible canción duplicada",
+        "duplicate_title_message": "Ya existe una canción con este título: {{matches}}. ¿Quieres crear esta como otra versión de esa canción?",
+        "duplicate_title_confirm": "Crear como otra versión de esa canción"
     },
     "song_suggestion": {
         "title": "Enviar como sugerencia",

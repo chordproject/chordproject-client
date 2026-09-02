@@ -397,6 +397,37 @@ export class SongbookService {
         return from(this.deleteCopiedSongbooks(songbookIds));
     }
 
+    /** Admin-only removal of a public songbook (its song relations, group membership, and the songbook itself); enforced by Firestore rules. */
+    deletePublicSongbook(songbookId: string): Observable<boolean> {
+        if (!this.verifyAuthentication()) {
+            return of(false);
+        }
+
+        return from(this.removePublicSongbook(songbookId));
+    }
+
+    private async removePublicSongbook(songbookId: string): Promise<boolean> {
+        try {
+            const relationSnapshot = await getDocs(
+                query(collection(this._firestore, 'songbook_songs'), where('songbookId', '==', songbookId))
+            );
+            const memberSnapshot = await getDocs(
+                query(collection(this._firestore, 'songbook_group_members'), where('songbookId', '==', songbookId))
+            );
+            const batch = writeBatch(this._firestore);
+            relationSnapshot.docs.forEach((relation) => batch.delete(relation.ref));
+            memberSnapshot.docs.forEach((member) => batch.delete(member.ref));
+            batch.delete(doc(this._firestore, 'songbooks', songbookId));
+            await batch.commit();
+            this.clearSongbooksCache();
+            this.showSnackbar('songbook_service.songbook_removed');
+            return true;
+        } catch (error) {
+            console.error('Failed to delete public songbook:', error);
+            return false;
+        }
+    }
+
     deletePersonalGroup(groupId: string): Observable<boolean> {
         if (!this.verifyAuthentication()) {
             return of(false);

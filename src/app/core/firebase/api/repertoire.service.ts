@@ -19,6 +19,8 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { EventSlot } from 'app/models/event-slot';
 import { EventType } from 'app/models/event-type';
 import { Repertoire } from 'app/models/repertoire';
+import { RepertoireGroup, RepertoireGroupWithChildren } from 'app/models/repertoire-group';
+import { RepertoireGroupMember } from 'app/models/repertoire-group-member';
 import { RepertoireSong } from 'app/models/repertoire-song';
 import { AuthService } from '../auth/auth.service';
 import { FirebaseService } from '../firebase.service';
@@ -87,6 +89,44 @@ export class RepertoireService {
         );
     }
 
+    getRepertoireGroups(): Observable<RepertoireGroupWithChildren[]> {
+        return this._changed.pipe(
+            startWith(undefined),
+            switchMap(() =>
+                from(
+                    Promise.all([
+                        getDocs(collection(this.firestore, 'repertoire_groups')),
+                        getDocs(collection(this.firestore, 'repertoire_group_members')),
+                        getDocs(collection(this.firestore, 'repertoires')),
+                    ])
+                )
+            ),
+            map(([groupSnapshot, memberSnapshot, repertoireSnapshot]) => {
+                const repertoiresById = new Map(
+                    repertoireSnapshot.docs.map((document) => [document.id, this.toRepertoire(document.id, document.data())])
+                );
+
+                return groupSnapshot.docs
+                    .map((document) => {
+                        const group = { uid: document.id, ...document.data() } as RepertoireGroup;
+                        const repertoires = memberSnapshot.docs
+                            .map((memberDocument) => ({ uid: memberDocument.id, ...memberDocument.data() }) as RepertoireGroupMember)
+                            .filter((member) => member.groupId === group.uid)
+                            .sort((first, second) => first.order - second.order)
+                            .map((member) => repertoiresById.get(member.repertoireId))
+                            .filter((repertoire): repertoire is Repertoire => !!repertoire);
+
+                        return { group, repertoires };
+                    })
+                    .sort((first, second) => Number(first.group.order ?? 0) - Number(second.group.order ?? 0));
+            }),
+            catchError((error) => {
+                console.warn('Repertoire groups are unavailable:', error);
+                return from([[] as RepertoireGroupWithChildren[]]);
+            })
+        );
+    }
+
     getRepertoire(uid: string): Observable<Repertoire> {
         return from(getDoc(doc(this.firestore, 'repertoires', uid))).pipe(
             map((snapshot) => {
@@ -130,6 +170,48 @@ export class RepertoireService {
 
     saveRepertoire(repertoire: Repertoire): Promise<string | null> {
         return this.saveDocument('repertoires', repertoire, 'title');
+    }
+
+    saveRepertoireGroup(group: RepertoireGroup): Promise<string | null> {
+        return this.saveDocument('repertoire_groups', group, 'name');
+    }
+
+    async saveRepertoireGroupMembers(groupId: string, repertoireIds: string[]): Promise<boolean> {
+        if (!this.verifyAuthentication()) {
+            return false;
+        }
+
+        try {
+            const memberSnapshot = await getDocs(
+                query(collection(this.firestore, 'repertoire_group_members'), where('groupId', '==', groupId))
+            );
+            const otherMemberSnapshot = repertoireIds.length
+                ? await getDocs(
+                    query(
+                        collection(this.firestore, 'repertoire_group_members'),
+                        where('repertoireId', 'in', repertoireIds)
+                    )
+                )
+                : null;
+            const batch = writeBatch(this.firestore);
+            memberSnapshot.docs.forEach((member) => batch.delete(member.ref));
+            otherMemberSnapshot?.docs
+                .filter((member) => member.data().groupId !== groupId)
+                .forEach((member) => batch.delete(member.ref));
+            repertoireIds.forEach((repertoireId, order) => {
+                batch.set(doc(collection(this.firestore, 'repertoire_group_members')), {
+                    groupId,
+                    repertoireId,
+                    order,
+                    authorId: this.auth.currentUser.uid,
+                });
+            });
+            await batch.commit();
+            this._changed.next();
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     saveRepertoireSong(repertoireSong: RepertoireSong): Promise<string | null> {
@@ -222,6 +304,26 @@ export class RepertoireService {
         }
     }
 
+    async deleteRepertoireGroup(uid: string): Promise<boolean> {
+        if (!this.verifyAuthentication()) {
+            return false;
+        }
+
+        try {
+            const memberSnapshot = await getDocs(
+                query(collection(this.firestore, 'repertoire_group_members'), where('groupId', '==', uid))
+            );
+            const batch = writeBatch(this.firestore);
+            memberSnapshot.docs.forEach((member) => batch.delete(member.ref));
+            batch.delete(doc(this.firestore, 'repertoire_groups', uid));
+            await batch.commit();
+            this._changed.next();
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
     saveRepertoireSlotStatus(
         repertoireId: string,
         slotId: string,
@@ -283,7 +385,7 @@ export class RepertoireService {
 
     private async saveDocument(
         collectionName: string,
-        value: EventType | EventSlot | Repertoire | RepertoireSong,
+        value: EventType | EventSlot | Repertoire | RepertoireGroup | RepertoireSong,
         requiredField?: 'name' | 'title' | 'songId'
     ): Promise<string | null> {
         if (!this.auth.currentUser) {

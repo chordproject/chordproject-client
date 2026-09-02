@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +15,8 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { RepertoireService } from 'app/core/firebase/api/repertoire.service';
 import { EventSlot } from 'app/models/event-slot';
 import { EventType } from 'app/models/event-type';
+import { Repertoire } from 'app/models/repertoire';
+import { RepertoireGroup, RepertoireGroupWithChildren } from 'app/models/repertoire-group';
 
 @Component({
     selector: 'repertoire-settings-page',
@@ -25,6 +28,7 @@ import { EventType } from 'app/models/event-type';
         DragDropModule,
         FormsModule,
         MatButtonModule,
+        MatCheckboxModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
@@ -35,9 +39,13 @@ import { EventType } from 'app/models/event-type';
 })
 export class RepertoireSettingsComponent implements OnInit, OnDestroy {
     eventTypes: EventType[] = [];
+    repertoires: Repertoire[] = [];
+    repertoireGroups: RepertoireGroupWithChildren[] = [];
     selectedEventType: EventType | null = null;
+    selectedRepertoireGroup: RepertoireGroup | null = null;
     eventSlots: EventSlot[] = [];
     newEventTypeName = '';
+    newRepertoireGroupName = '';
     newSlotName = '';
     editingSlotId: string | null = null;
     editingSlotName = '';
@@ -53,6 +61,8 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.loadEventTypes();
+        this.loadRepertoires();
+        this.loadRepertoireGroups();
     }
 
     ngOnDestroy(): void {
@@ -68,6 +78,31 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
                 this.eventTypes = eventTypes;
                 if (!this.selectedEventType && eventTypes.length) {
                     this.selectEventType(eventTypes[0]);
+                }
+                this.changeDetectorRef.markForCheck();
+            });
+    }
+
+    loadRepertoires(): void {
+        this.repertoireService
+            .getRepertoires()
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe((repertoires) => {
+                this.repertoires = repertoires;
+                this.changeDetectorRef.markForCheck();
+            });
+    }
+
+    loadRepertoireGroups(): void {
+        this.repertoireService
+            .getRepertoireGroups()
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe((groups) => {
+                this.repertoireGroups = groups;
+                if (this.selectedRepertoireGroup) {
+                    this.selectedRepertoireGroup = groups.find(
+                        ({ group }) => group.uid === this.selectedRepertoireGroup?.uid
+                    )?.group ?? null;
                 }
                 this.changeDetectorRef.markForCheck();
             });
@@ -96,6 +131,95 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
             this.newEventTypeName = '';
             this.loadEventTypes();
         }
+    }
+
+    async createRepertoireGroup(): Promise<void> {
+        const name = this.newRepertoireGroupName.trim();
+        if (!name) {
+            return;
+        }
+
+        const uid = await this.repertoireService.saveRepertoireGroup({ name } as RepertoireGroup);
+        if (uid) {
+            this.newRepertoireGroupName = '';
+            this.selectedRepertoireGroup = { uid, name } as RepertoireGroup;
+            this.loadRepertoireGroups();
+        }
+    }
+
+    selectRepertoireGroup(group: RepertoireGroup): void {
+        this.selectedRepertoireGroup = group;
+    }
+
+    isRepertoireInSelectedGroup(repertoireId: string): boolean {
+        return !!this.repertoireGroups
+            .find(({ group }) => group.uid === this.selectedRepertoireGroup?.uid)
+            ?.repertoires.some((repertoire) => repertoire.uid === repertoireId);
+    }
+
+    get selectedGroupRepertoires(): Repertoire[] {
+        return this.repertoireGroups
+            .find(({ group }) => group.uid === this.selectedRepertoireGroup?.uid)
+            ?.repertoires ?? [];
+    }
+
+    async toggleRepertoireInSelectedGroup(repertoireId: string, checked: boolean): Promise<void> {
+        if (!this.selectedRepertoireGroup?.uid) {
+            return;
+        }
+
+        const current = this.repertoireGroups.find(({ group }) => group.uid === this.selectedRepertoireGroup?.uid);
+        const repertoireIds = current?.repertoires.map(({ uid }) => uid) ?? [];
+        const updatedRepertoireIds = checked
+            ? [...repertoireIds, repertoireId]
+            : repertoireIds.filter((id) => id !== repertoireId);
+
+        if (await this.repertoireService.saveRepertoireGroupMembers(this.selectedRepertoireGroup.uid, updatedRepertoireIds)) {
+            this.loadRepertoireGroups();
+        }
+    }
+
+    async onRepertoireGroupDrop(event: CdkDragDrop<Repertoire[]>): Promise<void> {
+        if (event.previousIndex === event.currentIndex || !this.selectedRepertoireGroup?.uid) {
+            return;
+        }
+
+        const reordered = [...this.selectedGroupRepertoires];
+        moveItemInArray(reordered, event.previousIndex, event.currentIndex);
+        this.repertoireGroups = this.repertoireGroups.map((groupWithChildren) =>
+            groupWithChildren.group.uid === this.selectedRepertoireGroup?.uid
+                ? { ...groupWithChildren, repertoires: reordered }
+                : groupWithChildren
+        );
+        this.changeDetectorRef.markForCheck();
+
+        await this.repertoireService.saveRepertoireGroupMembers(
+            this.selectedRepertoireGroup.uid,
+            reordered.map((repertoire) => repertoire.uid)
+        );
+    }
+
+    deleteRepertoireGroup(group: RepertoireGroup): void {
+        this.confirmationService
+            .open({
+                title: 'repertoire_page.delete_group_confirm_title',
+                message: 'repertoire_page.delete_group_confirm_message',
+                icon: { name: 'trash-2', color: 'error' },
+                actions: {
+                    confirm: { label: 'repertoire_page.delete_group', color: 'error' },
+                    cancel: { label: 'repertoire_page.cancel_edit' },
+                },
+            })
+            .afterClosed()
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe(async (result) => {
+                if (result === 'confirmed' && (await this.repertoireService.deleteRepertoireGroup(group.uid))) {
+                    if (this.selectedRepertoireGroup?.uid === group.uid) {
+                        this.selectedRepertoireGroup = null;
+                    }
+                    this.loadRepertoireGroups();
+                }
+            });
     }
 
     async createEventSlot(): Promise<void> {

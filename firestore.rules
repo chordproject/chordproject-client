@@ -266,6 +266,28 @@ service cloud.firestore {
       allow delete: if isAdmin() || owns(resource.data);
     }
 
+    match /repertoire_groups/{groupId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if isAdmin()
+        || (owns(resource.data)
+        && keepsAuthorId()
+        && keepsOwnerId());
+      allow delete: if isAdmin() || owns(resource.data);
+    }
+
+    match /repertoire_group_members/{memberId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if isAdmin()
+        || (owns(resource.data)
+        && keepsAuthorId()
+        && keepsOwnerId());
+      allow delete: if isAdmin() || owns(resource.data);
+    }
+
     match /repertoire_songs/{repertoireSongId} {
       allow read: if true;
       allow create: if isSignedIn()

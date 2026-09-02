@@ -67,7 +67,7 @@
                             </div>
                             <p class="mt-3 text-sm text-neutral-500 dark:text-neutral-400">{{ repertoire.date | date: 'mediumDate' }}</p>
                         </div>
-                        <div class="flex flex-wrap items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-5">
                             <button
                                 type="button"
                                 mat-icon-button
@@ -76,9 +76,8 @@
                             >
                                 <mat-icon class="size-5 text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
                             </button>
-                            <a matButton="filled" [routerLink]="['/repertoires', repertoire.uid, 'live']">
+                            <a matButton="filled" class="repertoire-open-live-button" [matTooltip]="'repertoire_page.open_live' | transloco" [routerLink]="['/repertoires', repertoire.uid, 'live']">
                                 <mat-icon [svgIcon]="'play'"></mat-icon>
-                                {{ 'repertoire_page.open_live' | transloco }}
                             </a>
                         </div>
                     </div>

@@ -46,9 +46,15 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
     loadError = false;
     private readonly unsubscribeAll = new Subject<void>();
 
-    /** Bound as `labelFor` on `chp-song-list-panel` to show each song's space as a badge. */
-    getSlotLabel = (song: PartialSong): string | undefined =>
-        this.songs.find((item) => item.song.uid === song.uid)?.slot.name;
+    /** Bound as `labelFor` on `chp-song-list-panel` to show each song's space as a badge.
+     *  Omitted when the event type only defines a single space, since repeating the
+     *  same badge on every song adds no information. */
+    getSlotLabel = (song: PartialSong): string | undefined => {
+        if (this.slots.length <= 1) {
+            return undefined;
+        }
+        return this.songs.find((item) => item.song.uid === song.uid)?.slot.name;
+    };
 
     constructor(
         private readonly route: ActivatedRoute,

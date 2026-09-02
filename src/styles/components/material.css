@@ -381,6 +381,23 @@
     &.mat-mdc-unelevated-button {
     }
 
+    &.repertoire-open-live-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      min-width: 2.5rem;
+      padding: 0;
+
+      .mdc-button__label {
+        display: none;
+      }
+
+      .mat-icon {
+        margin: 0;
+      }
+    }
+
     &.small {
       --mat-button-text-container-height: 1.75rem;
       --mat-button-outlined-container-height: 1.75rem;

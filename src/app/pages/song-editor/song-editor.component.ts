@@ -176,7 +176,56 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         Object.assign(updatedSong, current, updatedFields);
         this.song.set(updatedSong);
 
+        if (!current.uid) {
+            // Only new songs can be accidental duplicates; edits to an existing song keep its own uid.
+            this.linkAsVersionIfDuplicateTitle(updatedSong).then((canProceed) => {
+                if (canProceed) {
+                    this.saveOrSuggest();
+                }
+            });
+            return;
+        }
+
         this.saveOrSuggest();
+    }
+
+    /** Warns when another song already has the same (normalized) title; on confirm, links the new song as
+     *  a version of the existing one (`variantOf`) instead of creating an unrelated duplicate. */
+    private async linkAsVersionIfDuplicateTitle(song: Song): Promise<boolean> {
+        if (!song.title) {
+            return true;
+        }
+
+        const duplicates = await firstValueFrom(this._songService.findByExactTitle(song.title));
+        if (!duplicates.length) {
+            return true;
+        }
+
+        const matches = duplicates
+            .map((duplicate) => (duplicate.artists?.length ? `${duplicate.title} (${duplicate.artists.join(', ')})` : duplicate.title))
+            .join(', ');
+        const message = this._translocoService.translate('editor.duplicate_title_message', { matches });
+
+        const confirmed = await firstValueFrom(
+            this._confirmationService
+                .open({
+                    title: 'editor.duplicate_title_title',
+                    message,
+                    icon: { name: 'triangle-alert', color: 'primary' },
+                    actions: {
+                        confirm: { label: 'editor.duplicate_title_confirm' },
+                    },
+                })
+                .afterClosed()
+                .pipe(map((result) => result === 'confirmed'))
+        );
+
+        if (confirmed) {
+            song.variantOf = duplicates[0].uid;
+            this.song.set(song);
+        }
+
+        return confirmed;
     }
 
     private async saveOrSuggest(): Promise<void> {

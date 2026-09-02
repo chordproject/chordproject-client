@@ -135,6 +135,19 @@
         "description": "Create event types and define the spaces that organize each repertoire.",
         "event_types": "Event types",
         "event_types_description": "Reusable structures for events.",
+        "groups": "Repertoire groups",
+        "groups_description": "Group related repertoires in a collapsible Sidebar section.",
+        "no_groups": "No repertoire groups yet.",
+        "new_group": "New group",
+        "add_group": "Add group",
+        "selected_group": "Selected group",
+        "select_group": "Select or create a group to include repertoires.",
+        "group_order": "Sidebar order",
+        "reorder_repertoire": "Reorder repertoire",
+        "group_members": "Included repertoires",
+        "delete_group": "Delete group",
+        "delete_group_confirm_title": "Delete group",
+        "delete_group_confirm_message": "Are you sure you want to delete this group? Its repertoires will not be deleted.",
         "no_event_types": "No event types yet.",
         "new_event_type": "New event type",
         "add_event_type": "Add event type",
@@ -179,6 +192,9 @@
         ,"search_placeholder": "Search by title, reference or theme..."
         ,"filter_by_event_type": "Event type"
         ,"all_event_types": "All types"
+        ,"filter_by_group": "Repertoire group"
+        ,"all_groups": "All groups"
+        ,"no_group": "No group"
         ,"grid_view": "Grid view"
         ,"list_view": "List view"
         ,"type_column": "Type"
@@ -328,7 +344,10 @@
         "unsaved_changes_discard": "Discard changes",
         "guest_editing_notice": "You are editing as a guest. Sign in to save your changes.",
         "login_to_save": "Sign in to save your changes.",
-        "preview_song": "View preview"
+        "preview_song": "View preview",
+        "duplicate_title_title": "Possible duplicate song",
+        "duplicate_title_message": "A song with this title already exists: {{matches}}. Do you want to create this one as another version of that song?",
+        "duplicate_title_confirm": "Create as another version of that song"
     },
     "song_suggestion": {
         "title": "Submit as suggestion",

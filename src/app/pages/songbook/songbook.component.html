@@ -45,7 +45,17 @@
                             {{ songbook.name }}
                         </h1>
                     </div>
-
+                    @if (isRecommended(songbook) && isAdmin()) {
+                        <button
+                            type="button"
+                            mat-icon-button
+                            class="shrink-0"
+                            [matTooltip]="'songbook_page.delete_songbook' | transloco"
+                            (click)="deleteSongbook(songbook)"
+                        >
+                            <mat-icon class="text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
+                        </button>
+                    }
                 </header>
             </div>
             @if (isEditable(songbook)) {

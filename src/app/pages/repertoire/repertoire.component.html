@@ -121,6 +121,18 @@
                         </mat-select>
                     </mat-form-field>
                 }
+                @if (repertoireGroups.length) {
+                    <mat-form-field class="w-full sm:w-56" subscriptSizing="dynamic">
+                        <mat-icon matPrefix class="mr-2 text-neutral-400 icon-size-5" [svgIcon]="'folder-tree'"></mat-icon>
+                        <mat-select [(ngModel)]="repertoireGroupFilter" [attr.aria-label]="'repertoire_page.filter_by_group' | transloco">
+                            <mat-option value="all">{{ 'repertoire_page.all_groups' | transloco }}</mat-option>
+                            <mat-option value="ungrouped">{{ 'repertoire_page.no_group' | transloco }}</mat-option>
+                            @for (groupWithChildren of repertoireGroups; track trackByUid($index, groupWithChildren.group)) {
+                                <mat-option [value]="groupWithChildren.group.uid">{{ groupWithChildren.group.name }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                }
             </div>
             @if (viewMode === 'grid') {
                 <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -155,13 +167,11 @@
                             </a>
                             <div class="mt-4 flex items-center justify-between gap-2 border-t border-neutral-100 pt-3 dark:border-neutral-800/80">
                                 <div class="flex flex-wrap gap-2">
-                                    <a matButton="outlined" [routerLink]="['/repertoires', repertoire.uid]">
+                                    <a mat-icon-button [matTooltip]="'repertoire_page.manage' | transloco" [routerLink]="['/repertoires', repertoire.uid]">
                                         <mat-icon [svgIcon]="'square-pen'"></mat-icon>
-                                        {{ 'repertoire_page.manage' | transloco }}
                                     </a>
-                                    <a matButton="filled" [routerLink]="['/repertoires', repertoire.uid, 'live']">
+                                    <a matButton="filled" class="repertoire-open-live-button" [matTooltip]="'repertoire_page.open_live' | transloco" [routerLink]="['/repertoires', repertoire.uid, 'live']">
                                         <mat-icon [svgIcon]="'play'"></mat-icon>
-                                        {{ 'repertoire_page.open_live' | transloco }}
                                     </a>
                                 </div>
                                 <button
@@ -235,17 +245,16 @@
                                     </td>
                                     <td class="px-4 py-3.5 align-middle text-right whitespace-nowrap">
                                         <div class="flex items-center justify-end gap-1.5">
-                                            <a matButton="outlined" [routerLink]="['/repertoires', repertoire.uid]">
+                                            <a mat-icon-button [matTooltip]="'repertoire_page.manage' | transloco" [routerLink]="['/repertoires', repertoire.uid]">
                                                 <mat-icon [svgIcon]="'square-pen'"></mat-icon>
-                                                {{ 'repertoire_page.manage' | transloco }}
                                             </a>
-                                            <a matButton="filled" [routerLink]="['/repertoires', repertoire.uid, 'live']">
+                                            <a matButton="filled" class="repertoire-open-live-button" [matTooltip]="'repertoire_page.open_live' | transloco" [routerLink]="['/repertoires', repertoire.uid, 'live']">
                                                 <mat-icon [svgIcon]="'play'"></mat-icon>
-                                                {{ 'repertoire_page.open_live' | transloco }}
                                             </a>
                                             <button
                                                 type="button"
                                                 mat-icon-button
+                                                class="ml-3"
                                                 [matTooltip]="'repertoire_page.delete_repertoire' | transloco"
                                                 (click)="deleteRepertoire(repertoire, $event)"
                                             >
