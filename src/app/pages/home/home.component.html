@@ -130,7 +130,10 @@
                  (avoids a shared CSS-grid row forcing a huge gap under a tall left column). -->
             <div class="contents md:order-2 md:flex md:flex-col md:gap-6">
                 @if (upcomingRepertoire$ | async; as upcoming) {
-                    <section class="order-1 bg-card relative overflow-hidden rounded-xl border border-primary-100 p-5 shadow transition-shadow duration-150 ease-in-out hover:shadow-lg dark:border-primary-900 sm:rounded-2xl">
+                    <a
+                        class="order-1 bg-card relative block overflow-hidden rounded-xl border border-primary-100 p-5 shadow transition-shadow duration-150 ease-in-out hover:shadow-lg dark:border-primary-900 sm:rounded-2xl"
+                        [routerLink]="['/repertoires', upcoming.repertoire.uid, 'live']"
+                    >
                         <div class="absolute right-0 top-0 -m-6 flex h-24 w-24 items-center justify-center">
                             <mat-icon class="size-16 text-primary-400 opacity-20" [svgIcon]="'calendar-days'"></mat-icon>
                         </div>
@@ -148,13 +151,14 @@
                                 <span class="rounded-full bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700 dark:bg-primary-950 dark:text-primary-200">
                                     {{ 'home.upcoming_repertoire_song_count' | transloco: { count: upcoming.songCount } }}
                                 </span>
-                                <a matButton="filled" [routerLink]="['/repertoires', upcoming.repertoire.uid, 'live']">
+                                <!-- Decorative: the whole card is already the link, so this isn't a separate control. -->
+                                <span class="inline-flex items-center gap-1.5 rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white">
                                     <mat-icon [svgIcon]="'play'"></mat-icon>
                                     {{ 'home.upcoming_repertoire_open_live' | transloco }}
-                                </a>
+                                </span>
                             </div>
                         </div>
-                    </section>
+                    </a>
                 }
 
                 <!-- About card: ordered last on mobile -->

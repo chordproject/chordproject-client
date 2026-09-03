@@ -29,6 +29,12 @@ export class LibraryComponent implements OnDestroy {
     ) {}
 
     selectSong(song: PartialSong): void {
+        // No double-tap on touch devices, so the preview panel had a close button but no way to reach the full reader; go straight there instead.
+        if (this.splitLayout?.isMobile) {
+            this._router.navigate(['/songs/read', song.uid]);
+            return;
+        }
+
         if (this.selectedSong?.uid !== song.uid) {
             this._songService
                 .get(song.uid)
@@ -37,10 +43,6 @@ export class LibraryComponent implements OnDestroy {
                     this.selectedSong = { ...fullSong, tags: fullSong?.tags ?? [] };
                     this._changeDetectorRef.markForCheck();
                 });
-        }
-
-        if (this.splitLayout?.isMobile) {
-            this.splitLayout.togglePreview();
         }
     }
 

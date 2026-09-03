@@ -91,18 +91,11 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
                     const activeAssignments = assignments.filter((assignment) => assignment.status !== 'skipped' && assignment.songId && assignment.slotId);
                     const songIds = [...new Set(activeAssignments.map((assignment) => assignment.songId))];
 
-                    return this.songService.getAll(songIds).pipe(
-                        catchError(() => of([] as PartialSong[])),
-                        switchMap((existingSongs) => {
-                            const existingSongIds = new Set(existingSongs.map((song) => song.uid));
-                            const fullSongRequests = songIds
-                                .filter((songId) => existingSongIds.has(songId))
-                                .map((songId) => this.songService.get(songId).pipe(catchError(() => of(null))));
+                    // Fetched directly (not via getAll + existence check) to avoid an extra network round-trip.
+                    const fullSongRequests = songIds.map((songId) => this.songService.get(songId).pipe(catchError(() => of(null))));
 
-                            return forkJoin(fullSongRequests.length ? fullSongRequests : [of(null)]).pipe(
-                                map((songs) => ({ slots, activeAssignments, songs: songs.filter(Boolean) }))
-                            );
-                        })
+                    return forkJoin(fullSongRequests.length ? fullSongRequests : [of(null)]).pipe(
+                        map((songs) => ({ slots, activeAssignments, songs: songs.filter(Boolean) }))
                     );
                 }),
                 catchError(() => of(null)),

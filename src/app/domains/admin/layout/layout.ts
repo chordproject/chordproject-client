@@ -76,9 +76,10 @@ import { environment } from 'environments/environment';
         <div class="relative flex items-center border-b px-4 py-2.5 print:hidden">
           @if (isMobile() && !sidebarOpen()) {
             <a
-              [routerLink]="['/home']"
+              [routerLink]="isHome() ? null : ['/home']"
               class="mr-3 inline-flex items-center"
               [attr.aria-label]="brand === 'hj' ? 'HomenaJesus' : 'ChordProject'"
+              (click)="onLogoClick($event)"
             >
               <img
                 [src]="'/' + brand + '/logo/logo.svg'"
@@ -183,6 +184,14 @@ export class AdminLayout {
 
   protected openFeedback(): void {
     this.feedbackOpen.set(true);
+  }
+
+  /** Already on Home: tapping the logo opens the sidebar instead of navigating nowhere. */
+  protected onLogoClick(event: MouseEvent): void {
+    if (this.isHome()) {
+      event.preventDefault();
+      this.sidebarOpen.set(true);
+    }
   }
 
   protected closeFeedback(): void {

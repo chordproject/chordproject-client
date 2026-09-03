@@ -32,7 +32,7 @@
         ></chp-viewer>
     </div>
 
-    @if (showToolbar && deviceType === 'phone') {
+    @if (showToolbar && deviceType === 'phone' && !viewer.isFullScreen) {
         <chp-viewer-toolbar
             [song]="song"
             [deviceType]="deviceType"

@@ -245,7 +245,8 @@
         "delete": "Eliminar",
         "help": "Ayuda",
         "authentication_required": "Se requiere autenticación",
-        "unexpected_error": "Ocurrió un error inesperado"
+        "unexpected_error": "Ocurrió un error inesperado",
+        "back": "Atrás"
     },
     "feedback": {
         "open": "Hablar con el equipo",

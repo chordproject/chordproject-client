@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -60,7 +61,8 @@ export class SongEditorComponent implements OnInit, OnDestroy {
         private _snackBar: MatSnackBar,
         private _translocoService: TranslocoService,
         private _route: ActivatedRoute,
-        private _router: Router
+        private _router: Router,
+        private _location: Location
     ) {
         this._handleKeyboardEvent = this._handleKeyboardEvent.bind(this);
     }
@@ -404,10 +406,9 @@ export class SongEditorComponent implements OnInit, OnDestroy {
     }
 
     onEditorClose() {
-        const current = this.song();
-        if (current?.uid) {
-            this._router.navigate(['/songs/read', current.uid]);
-        }
+        // Pushing a new /songs/read navigation here would leave a duplicate reader entry in
+        // history, trapping the reader's own Back button in a reader-editor-reader loop.
+        this._location.back();
     }
 
     closePreview(): void {

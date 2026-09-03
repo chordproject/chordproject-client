@@ -47,6 +47,7 @@ import {
 } from 'app/models/partialsong';
 
 const SONGS_PAGE_SIZE = 60;
+const STATE_STORAGE_KEY = 'library_list_state';
 
 type ArtistSongGroup = {
     key: string;
@@ -147,8 +148,17 @@ export class SongsListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        const persisted = this.readPersistedState();
+        if (persisted?.searchTerm) {
+            this.searchInputControl.setValue(persisted.searchTerm, { emitEvent: false });
+        }
+        if (persisted?.sort) {
+            this.sort.set(persisted.sort);
+            this._sort$.next(persisted.sort);
+        }
+
         const search$ = merge(
-            of(''), // inicial
+            of(this.searchInputControl.value || ''), // inicial (posiblemente restaurada)
             this.searchInputControl.valueChanges.pipe(debounceTime(300), distinctUntilChanged()),
             // cuando se elimina una canción, se rehace la consulta con el término vigente
             this._songService.songsChanged$.pipe(map(() => this.searchInputControl.value || ''))
@@ -177,7 +187,30 @@ export class SongsListComponent implements OnInit, OnDestroy {
         // Sin debounce: clearSelection ya solo actúa cuando queda algo que deseleccionar.
         this.searchInputControl.valueChanges
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(() => this.clearSelection());
+            .subscribe(() => {
+                this.clearSelection();
+                this.persistState();
+            });
+    }
+
+    private readPersistedState(): { searchTerm: string; sort: SongSort } | null {
+        try {
+            const raw = sessionStorage.getItem(STATE_STORAGE_KEY);
+            return raw ? JSON.parse(raw) : null;
+        } catch {
+            return null;
+        }
+    }
+
+    private persistState(): void {
+        try {
+            sessionStorage.setItem(
+                STATE_STORAGE_KEY,
+                JSON.stringify({ searchTerm: this.searchInputControl.value || '', sort: this.sort() })
+            );
+        } catch {
+            // Ignore storage errors (e.g. private browsing).
+        }
     }
 
     ngOnDestroy(): void {
@@ -281,6 +314,7 @@ export class SongsListComponent implements OnInit, OnDestroy {
     private updateSort(sort: SongSort): void {
         this.sort.set(sort);
         this._sort$.next(sort);
+        this.persistState();
         this._scrollRoot?.nativeElement.scrollTo({ top: 0 });
         this.clearSelection();
     }

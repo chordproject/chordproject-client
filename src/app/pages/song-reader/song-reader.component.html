@@ -14,6 +14,14 @@
             <div class="h-full flex-auto">
                 <!-- Header & Viewer -->
                 @if (song) {
+                    <button
+                        type="button"
+                        class="inline-flex cursor-pointer items-center gap-2 px-6 pt-4 text-sm font-medium text-primary-700 hover:text-primary-900 dark:text-primary-300 dark:hover:text-primary-100 sm:px-8"
+                        (click)="goBack()"
+                    >
+                        <mat-icon class="size-4" svgIcon="arrow-left"></mat-icon>
+                        {{ 'common.back' | transloco }}
+                    </button>
                     <chp-song-preview
                         [song]="song"
                         [pendingSuggestion]="!!pendingSuggestion"

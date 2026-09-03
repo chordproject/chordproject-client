@@ -1,6 +1,8 @@
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -31,6 +33,7 @@ export type TagOption = Tag & { isNew?: boolean };
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatCardModule,
+        MatIconModule,
         MatSidenavModule,
         RouterOutlet,
         ChpSongPreviewComponent,
@@ -89,8 +92,14 @@ export class SongReaderComponent implements OnInit, OnDestroy {
         private _confirmationService: FuseConfirmationService,
         private _userService: UserService,
         private _translocoService: TranslocoService,
-        private _snackBar: MatSnackBar
+        private _snackBar: MatSnackBar,
+        private _location: Location
     ) {}
+
+    /** Reached from many places (search, home, library, songbooks...), so browser history is the only universal "back". */
+    goBack(): void {
+        this._location.back();
+    }
 
     ngOnInit(): void {
         this.drawerMode = 'over';

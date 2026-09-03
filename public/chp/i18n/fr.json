@@ -245,7 +245,8 @@
         "delete": "Supprimer",
         "help": "Aide",
         "authentication_required": "Authentification requise",
-        "unexpected_error": "Une erreur inattendue s'est produite"
+        "unexpected_error": "Une erreur inattendue s'est produite",
+        "back": "Retour"
     },
     "feedback": {
         "open": "Parler à l'équipe",

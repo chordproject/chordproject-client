@@ -245,7 +245,8 @@
         "delete": "Delete",
         "help": "Help",
         "authentication_required": "Authentication required",
-        "unexpected_error": "An unexpected error occurred"
+        "unexpected_error": "An unexpected error occurred",
+        "back": "Back"
     },
     "feedback": {
         "open": "Talk to the team",
