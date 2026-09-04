@@ -139,6 +139,73 @@ export class RepertoireService {
         );
     }
 
+    /** Only the author (or an admin) can edit a repertoire in place; everyone else must fork their own copy. */
+    isOwnedByCurrentUser(repertoire: Pick<Repertoire, 'authorId' | 'ownerId'>): boolean {
+        const currentUserId = this.auth.currentUser?.uid;
+        return Boolean(currentUserId) && (repertoire.authorId === currentUserId || repertoire.ownerId === currentUserId);
+    }
+
+    isSharedRepertoire(repertoire: Pick<Repertoire, 'authorId' | 'ownerId' | 'scope' | 'published'>): boolean {
+        return repertoire.scope === 'shared' && repertoire.published === true;
+    }
+
+    /** Clones a repertoire and its song assignments into a personal, unpublished copy owned by the current user. */
+    forkRepertoire(repertoireId: string): Observable<string | null> {
+        if (!this.verifyAuthentication()) {
+            return from([null]);
+        }
+
+        return from(this.copyRepertoire(repertoireId));
+    }
+
+    private async copyRepertoire(repertoireId: string): Promise<string | null> {
+        try {
+            const user = this.auth.currentUser;
+            const sourceSnapshot = await getDoc(doc(this.firestore, 'repertoires', repertoireId));
+            if (!sourceSnapshot.exists()) {
+                return null;
+            }
+
+            const { uid: _uid, ...sourceData } = { uid: sourceSnapshot.id, ...sourceSnapshot.data() };
+            const newRepertoireId = doc(collection(this.firestore, 'repertoires')).id;
+            await setDoc(doc(this.firestore, 'repertoires', newRepertoireId), {
+                ...sourceData,
+                authorId: user.uid,
+                ownerId: user.uid,
+                scope: 'personal',
+                source: 'fork',
+                copiedFrom: repertoireId,
+                published: false,
+                creationDate: serverTimestamp(),
+                lastUpdateDate: serverTimestamp(),
+            });
+
+            const songsSnapshot = await getDocs(
+                query(collection(this.firestore, 'repertoire_songs'), where('repertoireId', '==', repertoireId))
+            );
+            if (!songsSnapshot.empty) {
+                const batch = writeBatch(this.firestore);
+                songsSnapshot.docs.forEach((songDoc) => {
+                    const { uid: _songUid, ...songData } = { uid: songDoc.id, ...songDoc.data() };
+                    const newSongRef = doc(collection(this.firestore, 'repertoire_songs'));
+                    batch.set(newSongRef, {
+                        ...songData,
+                        repertoireId: newRepertoireId,
+                        authorId: user.uid,
+                        ownerId: user.uid,
+                    });
+                });
+                await batch.commit();
+            }
+
+            this._changed.next();
+            return newRepertoireId;
+        } catch (error) {
+            console.error('Failed to fork repertoire:', error);
+            return null;
+        }
+    }
+
     getRepertoireSongs(repertoireId: string): Observable<RepertoireSong[]> {
         return from(
             getDocs(
@@ -199,7 +266,8 @@ export class RepertoireService {
                 .filter((member) => member.data().groupId !== groupId)
                 .forEach((member) => batch.delete(member.ref));
             repertoireIds.forEach((repertoireId, order) => {
-                batch.set(doc(collection(this.firestore, 'repertoire_group_members')), {
+                const memberRef = doc(collection(this.firestore, 'repertoire_group_members'));
+                batch.set(memberRef, {
                     groupId,
                     repertoireId,
                     order,
@@ -286,17 +354,15 @@ export class RepertoireService {
         }
 
         try {
-            await deleteDoc(doc(this.firestore, 'repertoires', uid));
             const snapshot = await getDocs(
                 query(collection(this.firestore, 'repertoire_songs'), where('repertoireId', '==', uid))
             );
-            if (!snapshot.empty) {
-                const batch = writeBatch(this.firestore);
-                snapshot.docs.forEach((document) => {
-                    batch.delete(doc(this.firestore, 'repertoire_songs', document.id));
-                });
-                await batch.commit();
-            }
+
+            const batch = writeBatch(this.firestore);
+            snapshot.docs.forEach((document) => batch.delete(document.ref));
+            batch.delete(doc(this.firestore, 'repertoires', uid));
+            await batch.commit();
+
             this._changed.next();
             return true;
         } catch {
@@ -398,12 +464,19 @@ export class RepertoireService {
         }
 
         const uid = value.uid || doc(collection(this.firestore, collectionName)).id;
+        const normalizedValue = { ...value } as Record<string, unknown>;
+
+        if (collectionName === 'repertoires') {
+            normalizedValue.scope = normalizedValue.scope ?? 'personal';
+            normalizedValue.published = normalizedValue.published ?? false;
+        }
+
         const data = Object.fromEntries(
             Object.entries({
-                ...value,
+                ...normalizedValue,
                 uid: undefined,
-                authorId: value.authorId || this.auth.currentUser.uid,
-                creationDate: value.creationDate || serverTimestamp(),
+                authorId: normalizedValue.authorId || this.auth.currentUser.uid,
+                creationDate: normalizedValue.creationDate || serverTimestamp(),
                 lastUpdateDate: serverTimestamp(),
             }).filter(([, fieldValue]) => fieldValue !== undefined)
         );

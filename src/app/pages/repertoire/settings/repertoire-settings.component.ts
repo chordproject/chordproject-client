@@ -4,9 +4,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
@@ -17,6 +19,7 @@ import { EventSlot } from 'app/models/event-slot';
 import { EventType } from 'app/models/event-type';
 import { Repertoire } from 'app/models/repertoire';
 import { RepertoireGroup, RepertoireGroupWithChildren } from 'app/models/repertoire-group';
+import { RepertoireGroupCreateDialogComponent } from './repertoire-group-create-dialog.component';
 
 @Component({
     selector: 'repertoire-settings-page',
@@ -32,12 +35,15 @@ import { RepertoireGroup, RepertoireGroupWithChildren } from 'app/models/reperto
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
+        MatMenuModule,
         MatTooltipModule,
         RouterLink,
         TranslocoModule,
     ],
 })
 export class RepertoireSettingsComponent implements OnInit, OnDestroy {
+    activeSection: 'event-types' | 'groups' = 'event-types';
+    mobileDetailOpen = false;
     eventTypes: EventType[] = [];
     repertoires: Repertoire[] = [];
     repertoireGroups: RepertoireGroupWithChildren[] = [];
@@ -47,6 +53,7 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
     newEventTypeName = '';
     newRepertoireGroupName = '';
     newSlotName = '';
+    groupRepertoireSearchTerm = '';
     editingSlotId: string | null = null;
     editingSlotName = '';
     editingEventTypeId: string | null = null;
@@ -56,6 +63,7 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
     constructor(
         private readonly repertoireService: RepertoireService,
         private readonly confirmationService: FuseConfirmationService,
+        private readonly dialog: MatDialog,
         private readonly changeDetectorRef: ChangeDetectorRef
     ) {}
 
@@ -103,6 +111,8 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
                     this.selectedRepertoireGroup = groups.find(
                         ({ group }) => group.uid === this.selectedRepertoireGroup?.uid
                     )?.group ?? null;
+                } else if (groups.length) {
+                    this.selectedRepertoireGroup = groups[0].group;
                 }
                 this.changeDetectorRef.markForCheck();
             });
@@ -110,6 +120,7 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
 
     selectEventType(eventType: EventType): void {
         this.selectedEventType = eventType;
+        this.mobileDetailOpen = true;
         this.eventSlots = [];
         this.repertoireService
             .getEventSlots(eventType.uid)
@@ -147,8 +158,30 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
         }
     }
 
+    openCreateGroupDialog(): void {
+        this.dialog
+            .open(RepertoireGroupCreateDialogComponent)
+            .afterClosed()
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe((name) => {
+                if (!name) {
+                    return;
+                }
+
+                this.newRepertoireGroupName = name;
+                this.createRepertoireGroup();
+            });
+    }
+
     selectRepertoireGroup(group: RepertoireGroup): void {
         this.selectedRepertoireGroup = group;
+        this.groupRepertoireSearchTerm = '';
+        this.mobileDetailOpen = true;
+    }
+
+    selectSection(section: 'event-types' | 'groups'): void {
+        this.activeSection = section;
+        this.mobileDetailOpen = false;
     }
 
     isRepertoireInSelectedGroup(repertoireId: string): boolean {
@@ -161,6 +194,36 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
         return this.repertoireGroups
             .find(({ group }) => group.uid === this.selectedRepertoireGroup?.uid)
             ?.repertoires ?? [];
+    }
+
+    get availableGroupRepertoires(): Repertoire[] {
+        const selectedIds = new Set(this.selectedGroupRepertoires.map(({ uid }) => uid));
+        const searchTerm = this.groupRepertoireSearchTerm.trim().toLocaleLowerCase();
+
+        if (searchTerm.length < 2) {
+            return [];
+        }
+
+        return this.repertoires
+            .filter(({ uid, title }) => !selectedIds.has(uid) && (!searchTerm || title.toLocaleLowerCase().includes(searchTerm)))
+            .slice(0, 50);
+    }
+
+    get groupRepertoireSearchReady(): boolean {
+        return this.groupRepertoireSearchTerm.trim().length >= 2;
+    }
+
+    get hasMoreGroupRepertoires(): boolean {
+        const selectedIds = new Set(this.selectedGroupRepertoires.map(({ uid }) => uid));
+        const searchTerm = this.groupRepertoireSearchTerm.trim().toLocaleLowerCase();
+
+        if (searchTerm.length < 2) {
+            return false;
+        }
+
+        return this.repertoires.filter(({ uid, title }) =>
+            !selectedIds.has(uid) && (!searchTerm || title.toLocaleLowerCase().includes(searchTerm))
+        ).length > this.availableGroupRepertoires.length;
     }
 
     async toggleRepertoireInSelectedGroup(repertoireId: string, checked: boolean): Promise<void> {
@@ -216,6 +279,7 @@ export class RepertoireSettingsComponent implements OnInit, OnDestroy {
                 if (result === 'confirmed' && (await this.repertoireService.deleteRepertoireGroup(group.uid))) {
                     if (this.selectedRepertoireGroup?.uid === group.uid) {
                         this.selectedRepertoireGroup = null;
+                        this.mobileDetailOpen = false;
                     }
                     this.loadRepertoireGroups();
                 }

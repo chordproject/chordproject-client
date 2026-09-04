@@ -1,5 +1,5 @@
 <div
-    class="group flex cursor-pointer overflow-hidden border-b border-neutral-200 px-3 hover:bg-primary-100 dark:border-neutral-800 dark:hover:bg-primary-900/40"
+    class="group flex min-w-0 cursor-pointer overflow-hidden border-b border-neutral-200 px-3 hover:bg-primary-100 dark:border-neutral-800 dark:hover:bg-primary-900/40"
     [ngClass]="[ngClass || '', selected ? 'border-l-4 border-l-primary-500 bg-primary-100 text-primary-900 dark:border-l-primary-400 dark:bg-primary-900/45 dark:text-primary-50' : '']"
 >
     @if (showDragHandle) {
@@ -8,7 +8,7 @@
         </div>
     }
 
-    <div class="flex-1 overflow-hidden px-3 py-3 sm:py-4 md:px-4">
+    <div class="min-w-0 flex-1 overflow-hidden px-3 py-3 sm:py-4 md:px-4">
         <div class="flex flex-wrap items-center gap-y-1">
             <div class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 overflow-hidden">
                 @if (prefixLabel) {
@@ -33,7 +33,7 @@
                     }
                 </div>
             </div>
-            <div class="flex shrink-0 max-w-[40%] flex-nowrap gap-x-1 overflow-x-hidden truncate text-xs">
+            <div class="flex min-w-0 shrink-0 max-w-[40%] flex-nowrap gap-x-1 overflow-x-hidden truncate text-xs">
                 @if (song.uniqueChords?.length > 0) {
                     @for (chord of song.uniqueChords; track chord) {
                         <span class="rounded bg-primary-100 px-2 py-0.5 font-mono text-primary-700 dark:bg-primary-900/40 dark:text-primary-100">{{ chord }}</span>

@@ -13,6 +13,15 @@
                 {{ 'repertoire_page.loading' | transloco }}
             </div>
         } @else if (repertoire && !loadError) {
+            @if (!canEdit) {
+                <div class="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-primary-200 bg-primary-50 p-4 text-sm text-primary-800 dark:border-primary-900 dark:bg-primary-950 dark:text-primary-200">
+                    <p>{{ 'repertoire_page.read_only_notice' | transloco }}</p>
+                    <button matButton="filled" type="button" [disabled]="forking" (click)="forkRepertoire()">
+                        <mat-icon [svgIcon]="'copy'"></mat-icon>
+                        {{ 'repertoire_page.create_my_copy' | transloco }}
+                    </button>
+                </div>
+            }
             <header class="relative mb-6 rounded-lg border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
                 @if (editingHeader) {
                     <div class="flex flex-col gap-4">
@@ -41,42 +50,48 @@
                             <p class="text-sm font-medium text-primary-600 dark:text-primary-400">{{ eventTypeName }}</p>
                             <div class="mt-1 flex items-center gap-2">
                                 <h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100">{{ repertoire.title }}</h1>
-                                <button
-                                    type="button"
-                                    mat-icon-button
-                                    [matTooltip]="'repertoire_page.edit_title' | transloco"
-                                    (click)="startEditingHeader()"
-                                >
-                                    <mat-icon class="size-4 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200" [svgIcon]="'square-pen'"></mat-icon>
-                                </button>
+                                @if (canEdit) {
+                                    <button
+                                        type="button"
+                                        mat-icon-button
+                                        [matTooltip]="'repertoire_page.edit_title' | transloco"
+                                        (click)="startEditingHeader()"
+                                    >
+                                        <mat-icon class="size-4 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200" [svgIcon]="'square-pen'"></mat-icon>
+                                    </button>
+                                }
                             </div>
                             <div class="mt-2 flex items-center gap-2">
                                 @if (repertoire.description) {
                                     <p class="text-neutral-600 dark:text-neutral-300">{{ repertoire.description }}</p>
-                                } @else {
+                                } @else if (canEdit) {
                                     <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ 'repertoire_page.add_reference' | transloco }}</p>
                                 }
-                                <button
-                                    type="button"
-                                    mat-icon-button
-                                    [matTooltip]="'repertoire_page.edit_reference' | transloco"
-                                    (click)="startEditingHeader()"
-                                >
-                                    <mat-icon class="size-4 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200" [svgIcon]="'square-pen'"></mat-icon>
-                                </button>
+                                @if (canEdit) {
+                                    <button
+                                        type="button"
+                                        mat-icon-button
+                                        [matTooltip]="'repertoire_page.edit_reference' | transloco"
+                                        (click)="startEditingHeader()"
+                                    >
+                                        <mat-icon class="size-4 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200" [svgIcon]="'square-pen'"></mat-icon>
+                                    </button>
+                                }
                             </div>
                             <p class="mt-3 text-sm text-neutral-500 dark:text-neutral-400">{{ repertoire.date | date: 'mediumDate' }}</p>
                         </div>
                         <!-- Floats over the card's own content instead of taking up its own row. -->
                         <div class="absolute bottom-4 right-4 flex items-center gap-2 rounded-full bg-white/90 p-1 shadow-md backdrop-blur-sm dark:bg-neutral-900/90">
-                            <button
-                                type="button"
-                                mat-icon-button
-                                [matTooltip]="'repertoire_page.delete_repertoire' | transloco"
-                                (click)="deleteRepertoire()"
-                            >
-                                <mat-icon class="size-5 text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
-                            </button>
+                            @if (canEdit) {
+                                <button
+                                    type="button"
+                                    mat-icon-button
+                                    [matTooltip]="'repertoire_page.delete_repertoire' | transloco"
+                                    (click)="deleteRepertoire()"
+                                >
+                                    <mat-icon class="size-5 text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
+                                </button>
+                            }
                             <a matButton="filled" class="repertoire-open-live-button" [matTooltip]="'repertoire_page.open_live' | transloco" [routerLink]="['/repertoires', repertoire.uid, 'live']">
                                 <mat-icon [svgIcon]="'play'"></mat-icon>
                             </a>
@@ -103,7 +118,7 @@
                                     <div class="flex flex-wrap items-center gap-2">
                                         @for (song of assignedSongs[slot.uid]; track trackByUid($index, song); let songIndex = $index) {
                                             <span class="inline-flex items-center gap-1 rounded-full bg-primary-50 px-2 py-1 text-sm text-primary-800 dark:bg-primary-950 dark:text-primary-200">
-                                                @if ((assignedSongs[slot.uid]?.length || 0) > 1) {
+                                                @if (canEdit && (assignedSongs[slot.uid]?.length || 0) > 1) {
                                                     <button
                                                         class="flex size-5 shrink-0 items-center justify-center rounded-full text-primary-700 hover:bg-primary-100 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent dark:text-primary-200 dark:hover:bg-primary-900 dark:disabled:hover:bg-transparent"
                                                         type="button"
@@ -116,7 +131,7 @@
                                                     </button>
                                                 }
                                                 {{ song.title }}
-                                                @if ((assignedSongs[slot.uid]?.length || 0) > 1) {
+                                                @if (canEdit && (assignedSongs[slot.uid]?.length || 0) > 1) {
                                                     <button
                                                         class="flex size-5 shrink-0 items-center justify-center rounded-full text-primary-700 hover:bg-primary-100 disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent dark:text-primary-200 dark:hover:bg-primary-900 dark:disabled:hover:bg-transparent"
                                                         type="button"
@@ -128,18 +143,20 @@
                                                         <mat-icon class="size-3.5" [svgIcon]="'chevron-right'"></mat-icon>
                                                     </button>
                                                 }
-                                                <button
-                                                    class="flex size-5 shrink-0 items-center justify-center rounded-full text-primary-700 hover:bg-primary-100 dark:text-primary-200 dark:hover:bg-primary-900"
-                                                    type="button"
-                                                    [attr.aria-label]="'repertoire_page.remove_song' | transloco"
-                                                    [title]="'repertoire_page.remove_song' | transloco"
-                                                    (click)="removeSong(slot, song)"
-                                                >
-                                                    <mat-icon class="size-3.5" [svgIcon]="'x'"></mat-icon>
-                                                </button>
+                                                @if (canEdit) {
+                                                    <button
+                                                        class="flex size-5 shrink-0 items-center justify-center rounded-full text-primary-700 hover:bg-primary-100 dark:text-primary-200 dark:hover:bg-primary-900"
+                                                        type="button"
+                                                        [attr.aria-label]="'repertoire_page.remove_song' | transloco"
+                                                        [title]="'repertoire_page.remove_song' | transloco"
+                                                        (click)="removeSong(slot, song)"
+                                                    >
+                                                        <mat-icon class="size-3.5" [svgIcon]="'x'"></mat-icon>
+                                                    </button>
+                                                }
                                             </span>
                                         }
-                                            @if (!showSongInput(slot)) {
+                                            @if (canEdit && !showSongInput(slot)) {
                                                 <button
                                                     mat-icon-button
                                                     type="button"
@@ -154,7 +171,7 @@
                                             }
                                     </div>
                                 }
-                                    @if (showSongInput(slot)) {
+                                    @if (canEdit && showSongInput(slot)) {
                                         <div class="flex items-center gap-2">
                                             <mat-form-field class="w-full" subscriptSizing="dynamic">
                                                 <input
@@ -196,16 +213,18 @@
                                         </div>
                                     }
                             </div>
-                            <button
-                                mat-icon-button
-                                type="button"
-                                class="absolute right-2 top-2 sm:static sm:right-auto sm:top-auto"
-                                [attr.aria-label]="(isSlotSkipped(slot) ? 'repertoire_page.use_space' : 'repertoire_page.skip_space') | transloco"
-                                [title]="(isSlotSkipped(slot) ? 'repertoire_page.use_space' : 'repertoire_page.skip_space') | transloco"
-                                (click)="toggleSlotSkipped(slot)"
-                            >
-                                <mat-icon [svgIcon]="isSlotSkipped(slot) ? 'square-pen' : 'circle-minus'"></mat-icon>
-                            </button>
+                            @if (canEdit) {
+                                <button
+                                    mat-icon-button
+                                    type="button"
+                                    class="absolute right-2 top-2 sm:static sm:right-auto sm:top-auto"
+                                    [attr.aria-label]="(isSlotSkipped(slot) ? 'repertoire_page.use_space' : 'repertoire_page.skip_space') | transloco"
+                                    [title]="(isSlotSkipped(slot) ? 'repertoire_page.use_space' : 'repertoire_page.skip_space') | transloco"
+                                    (click)="toggleSlotSkipped(slot)"
+                                >
+                                    <mat-icon [svgIcon]="isSlotSkipped(slot) ? 'square-pen' : 'circle-minus'"></mat-icon>
+                                </button>
+                            }
                         </div>
                     } @empty {
                         <p class="rounded-md border border-dashed border-neutral-300 p-5 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">{{ 'repertoire_page.no_spaces' | transloco }}</p>

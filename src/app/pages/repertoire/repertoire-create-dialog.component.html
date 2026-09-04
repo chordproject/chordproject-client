@@ -1,0 +1,53 @@
+<div class="flex w-full flex-col sm:min-w-100">
+    <header class="border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
+        <h2 class="text-xl font-semibold">{{ 'repertoire_page.new_repertoire' | transloco }}</h2>
+        <p class="text-secondary mt-1 text-sm">{{ 'repertoire_page.new_repertoire_description' | transloco }}</p>
+    </header>
+
+    <form class="flex flex-col gap-4 p-6" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'repertoire_page.event_type_label' | transloco }}</mat-label>
+            <mat-select formControlName="eventTypeId">
+                @for (eventType of data.eventTypes; track eventType.uid) {
+                    <mat-option [value]="eventType.uid">{{ eventType.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'repertoire_page.title_label' | transloco }}</mat-label>
+            <input matInput formControlName="title" />
+            @if (form.controls.title.hasError('required') || form.controls.title.hasError('minlength')) {
+                <mat-error>{{ 'repertoire_page.title_error' | transloco }}</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'repertoire_page.description_label' | transloco }}</mat-label>
+            <input matInput formControlName="description" />
+            <mat-icon
+                matSuffix
+                class="size-4 cursor-help text-neutral-400"
+                [svgIcon]="'info'"
+                [matTooltip]="'repertoire_page.description_hint' | transloco"
+                matTooltipPosition="above"
+            ></mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'repertoire_page.date_label' | transloco }}</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" />
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <footer class="flex justify-end gap-3 pt-2">
+            <button matButton="outlined" type="button" [matDialogClose]="undefined">
+                {{ 'confirmation.cancel' | transloco }}
+            </button>
+            <button matButton="filled" type="submit">
+                {{ 'repertoire_page.create' | transloco }}
+            </button>
+        </footer>
+    </form>
+</div>

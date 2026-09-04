@@ -1,76 +1,39 @@
-<div class="flex h-full min-h-0 flex-col overflow-auto bg-neutral-50 p-6 dark:bg-neutral-950 sm:p-8">
+<div class="bg-card flex h-full min-h-0 flex-col overflow-auto p-6 sm:p-8">
     <div class="mx-auto w-full max-w-6xl">
-        <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <header class="mb-6 flex flex-col gap-2">
             <div>
                 <p class="text-sm font-semibold uppercase tracking-wide text-primary-600 dark:text-primary-400">{{ 'repertoire_page.eyebrow' | transloco }}</p>
                 <h1 class="mt-2 text-3xl font-bold text-neutral-900 dark:text-neutral-100">{{ 'repertoire_page.title' | transloco }}</h1>
             </div>
-            <a mat-stroked-button class="shrink-0" routerLink="/repertoires/settings">
-                <mat-icon [svgIcon]="'sliders-horizontal'"></mat-icon>
-                {{ 'repertoire_page.show_setup' | transloco }}
-            </a>
-        </div>
-
-        <section class="mb-6 rounded-lg border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-            <div class="mb-5 flex items-start justify-between gap-4">
-                <div>
-                    <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{{ 'repertoire_page.new_repertoire' | transloco }}</h2>
-                    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{{ 'repertoire_page.new_repertoire_description' | transloco }}</p>
-                </div>
-                <mat-icon class="text-neutral-400" [svgIcon]="'calendar-plus'"></mat-icon>
+            <div class="text-secondary max-w-3xl text-sm">
+                <p>{{ 'repertoire_page.description' | transloco }}</p>
+                <p class="mt-2">
+                    {{ 'repertoire_page.songbook_difference_before' | transloco }}
+                    <a class="font-medium text-primary-700 underline underline-offset-2 hover:text-primary-900 dark:text-primary-300 dark:hover:text-primary-100" routerLink="/songbook">
+                        {{ 'repertoire_page.songbook_difference_link' | transloco }}
+                    </a>{{ 'repertoire_page.songbook_difference_after' | transloco }}
+                </p>
             </div>
+        </header>
 
-            @if (eventTypes.length) {
-                <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
-                    <mat-form-field class="w-full sm:w-56" subscriptSizing="dynamic">
-                        <mat-label>{{ 'repertoire_page.event_type_label' | transloco }}</mat-label>
-                        <mat-select [(ngModel)]="newRepertoireEventTypeId">
-                            @for (eventType of eventTypes; track trackByUid($index, eventType)) {
-                                <mat-option [value]="eventType.uid">{{ eventType.name }}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="flex-1" subscriptSizing="dynamic">
-                        <mat-label>{{ 'repertoire_page.title_label' | transloco }}</mat-label>
-                        <input matInput [(ngModel)]="newRepertoireTitle" (keyup.enter)="createRepertoire()" />
-                    </mat-form-field>
-                    <mat-form-field class="flex-1" subscriptSizing="dynamic">
-                        <mat-label>{{ 'repertoire_page.description_label' | transloco }}</mat-label>
-                        <input matInput [(ngModel)]="newRepertoireDescription" />
-                        <mat-icon
-                            matSuffix
-                            class="size-4 cursor-help text-neutral-400"
-                            [svgIcon]="'info'"
-                            [matTooltip]="'repertoire_page.description_hint' | transloco"
-                            matTooltipPosition="above"
-                        ></mat-icon>
-                    </mat-form-field>
-                    <mat-form-field class="flex-1" subscriptSizing="dynamic">
-                        <mat-label>{{ 'repertoire_page.date_label' | transloco }}</mat-label>
-                        <input matInput [matDatepicker]="picker" [(ngModel)]="newRepertoireDate" />
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                    <button mat-flat-button type="button" (click)="createRepertoire()">
-                        <mat-icon [svgIcon]="'calendar-plus'"></mat-icon>
-                        {{ 'repertoire_page.create' | transloco }}
-                    </button>
-                </div>
-            } @else {
-                <div class="flex flex-col items-start gap-3 rounded-md border border-dashed border-neutral-300 p-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400 sm:flex-row sm:items-center sm:justify-between">
-                    <p>{{ 'repertoire_page.no_event_types_hint' | transloco }}</p>
+        <section class="mb-6">
+            <div class="mb-5 flex flex-wrap items-center justify-end gap-3 border-b border-neutral-200 pb-5 dark:border-neutral-800">
+                <div class="flex items-center gap-3">
                     <a mat-stroked-button routerLink="/repertoires/settings">
                         <mat-icon [svgIcon]="'sliders-horizontal'"></mat-icon>
-                        {{ 'repertoire_page.go_to_setup' | transloco }}
+                        {{ 'repertoire_page.show_setup' | transloco }}
                     </a>
-                </div>
-            }
-        </section>
-
-        <section class="mt-6 rounded-lg border border-neutral-200 bg-white p-5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
-            <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <h2 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100">{{ 'repertoire_page.repertoires' | transloco }}</h2>
-                <div class="inline-flex rounded-lg border border-neutral-200 p-0.5 dark:border-neutral-800">
+                    @if (eventTypes.length) {
+                        <button
+                            class="inline-flex cursor-pointer items-center gap-1.5 rounded-md bg-primary-600 px-3.5 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                            type="button"
+                            (click)="openCreateRepertoireDialog()"
+                        >
+                            <mat-icon class="size-4" [svgIcon]="'plus'"></mat-icon>
+                            {{ 'repertoire_page.create' | transloco }}
+                        </button>
+                    }
+                    <div class="inline-flex rounded-lg border border-neutral-200 p-0.5 dark:border-neutral-800">
                     <button
                         type="button"
                         class="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
@@ -103,6 +66,7 @@
                         <mat-icon class="size-4" [svgIcon]="'layout-list'"></mat-icon>
                         <span class="hidden sm:inline">{{ 'repertoire_page.list_view' | transloco }}</span>
                     </button>
+                    </div>
                 </div>
             </div>
             <div class="mb-5 flex flex-col gap-3 sm:flex-row">
@@ -134,9 +98,26 @@
                     </mat-form-field>
                 }
             </div>
-            @if (viewMode === 'grid') {
-                <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                    @for (repertoire of filteredRepertoires; track trackByUid($index, repertoire)) {
+            @if (!eventTypes.length) {
+                <div class="mb-5 flex w-full rounded-md border border-dashed border-neutral-300 p-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
+                    <p>{{ 'repertoire_page.no_event_types_hint' | transloco }}</p>
+                </div>
+            }
+            @for (section of repertoireSections; track section.key) {
+                <div class="mt-8 first:mt-2">
+                    <div class="mb-5">
+                        <div class="flex items-center gap-2">
+                            <mat-icon class="size-5 text-primary-600" [svgIcon]="section.key === 'personal' ? 'calendar-days' : 'sparkles'"></mat-icon>
+                            <h3 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">{{ section.label | transloco }}</h3>
+                        </div>
+                        <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                            {{ (section.key === 'personal' ? 'repertoire_page.my_repertoires_description' : 'repertoire_page.public_repertoires_description') | transloco }}
+                        </p>
+                    </div>
+                </div>
+                @if (viewMode === 'grid') {
+                    <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                        @for (repertoire of getFilteredRepertoires(section.repertoires); track trackByUid($index, repertoire)) {
                         <div class="flex flex-col justify-between rounded-md border border-neutral-200 p-4 dark:border-neutral-800">
                             <a [routerLink]="['/repertoires', repertoire.uid]" class="block hover:text-primary-700 dark:hover:text-primary-300">
                                 @if (getEventTypeName(repertoire.eventTypeId); as eventTypeName) {
@@ -149,7 +130,6 @@
                                 <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{{ repertoire.date | date: 'mediumDate' }}</p>
 
                                 @if (getRepertoireSongsSummary(repertoire.uid); as songs) {
-                                    @if (songs.length) {
                                         <div class="mt-3 flex flex-wrap gap-1">
                                             @for (song of songs.slice(0, 3); track $index) {
                                                 <span class="inline-flex items-center gap-1 rounded bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
@@ -163,33 +143,42 @@
                                             }
                                         </div>
                                     }
-                                }
                             </a>
                             <div class="mt-4 flex items-center justify-between gap-2 border-t border-neutral-100 pt-3 dark:border-neutral-800/80">
                                 <div class="flex flex-wrap gap-2">
-                                    <a mat-icon-button [matTooltip]="'repertoire_page.manage' | transloco" [routerLink]="['/repertoires', repertoire.uid]">
-                                        <mat-icon [svgIcon]="'square-pen'"></mat-icon>
-                                    </a>
+                                    @if (canEditRepertoire(repertoire)) {
+                                        <a mat-icon-button [matTooltip]="'repertoire_page.manage' | transloco" [routerLink]="['/repertoires', repertoire.uid]">
+                                            <mat-icon [svgIcon]="'square-pen'"></mat-icon>
+                                        </a>
+                                    }
                                     <a matButton="filled" class="repertoire-open-live-button" [matTooltip]="'repertoire_page.open_live' | transloco" [routerLink]="['/repertoires', repertoire.uid, 'live']">
                                         <mat-icon [svgIcon]="'play'"></mat-icon>
                                     </a>
                                 </div>
-                                <button
-                                    type="button"
-                                    mat-icon-button
-                                    [matTooltip]="'repertoire_page.delete_repertoire' | transloco"
-                                    (click)="deleteRepertoire(repertoire, $event)"
-                                >
-                                    <mat-icon class="size-4 text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
-                                </button>
+                                @if (canEditRepertoire(repertoire)) {
+                                    <button
+                                        type="button"
+                                        mat-icon-button
+                                        [matTooltip]="'repertoire_page.delete_repertoire' | transloco"
+                                        (click)="deleteRepertoire(repertoire, $event)"
+                                    >
+                                        <mat-icon class="size-4 text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
+                                    </button>
+                                }
                             </div>
                         </div>
-                    } @empty {
-                        <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ (repertoires.length ? 'repertoire_page.no_search_matches' : 'repertoire_page.no_repertoires') | transloco }}</p>
-                    }
-                </div>
-            } @else {
-                <div class="overflow-x-auto rounded-md border border-neutral-200 dark:border-neutral-800">
+                        } @empty {
+                            @if (section.repertoires.length) {
+                                <p class="text-sm text-neutral-500 dark:text-neutral-400">{{ 'repertoire_page.no_search_matches' | transloco }}</p>
+                            } @else {
+                                <div class="col-span-full w-full rounded-md border border-dashed border-neutral-300 p-4 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
+                                    {{ (section.key === 'personal' ? 'repertoire_page.empty_personal' : 'repertoire_page.no_repertoires') | transloco }}
+                                </div>
+                            }
+                        }
+                    </div>
+                } @else {
+                    <div class="overflow-x-auto rounded-md border border-neutral-200 dark:border-neutral-800">
                     <table class="w-full text-left text-sm">
                         <thead class="border-b border-neutral-200 bg-neutral-100/80 text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-400">
                             <tr>
@@ -201,7 +190,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-neutral-200 dark:divide-neutral-800">
-                            @for (repertoire of filteredRepertoires; track trackByUid($index, repertoire)) {
+                            @for (repertoire of getFilteredRepertoires(section.repertoires); track trackByUid($index, repertoire)) {
                                 <tr class="transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-900/60">
                                     <td class="px-4 py-3.5 align-middle whitespace-nowrap">
                                         @if (getEventTypeName(repertoire.eventTypeId); as eventTypeName) {
@@ -245,34 +234,43 @@
                                     </td>
                                     <td class="px-4 py-3.5 align-middle text-right whitespace-nowrap">
                                         <div class="flex items-center justify-end gap-1.5">
-                                            <a mat-icon-button [matTooltip]="'repertoire_page.manage' | transloco" [routerLink]="['/repertoires', repertoire.uid]">
-                                                <mat-icon [svgIcon]="'square-pen'"></mat-icon>
-                                            </a>
+                                            @if (canEditRepertoire(repertoire)) {
+                                                <a mat-icon-button [matTooltip]="'repertoire_page.manage' | transloco" [routerLink]="['/repertoires', repertoire.uid]">
+                                                    <mat-icon [svgIcon]="'square-pen'"></mat-icon>
+                                                </a>
+                                            }
                                             <a matButton="filled" class="repertoire-open-live-button" [matTooltip]="'repertoire_page.open_live' | transloco" [routerLink]="['/repertoires', repertoire.uid, 'live']">
                                                 <mat-icon [svgIcon]="'play'"></mat-icon>
                                             </a>
-                                            <button
-                                                type="button"
-                                                mat-icon-button
-                                                class="ml-3"
-                                                [matTooltip]="'repertoire_page.delete_repertoire' | transloco"
-                                                (click)="deleteRepertoire(repertoire, $event)"
-                                            >
-                                                <mat-icon class="size-4 text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
-                                            </button>
+                                            @if (canEditRepertoire(repertoire)) {
+                                                <button
+                                                    type="button"
+                                                    mat-icon-button
+                                                    class="ml-3"
+                                                    [matTooltip]="'repertoire_page.delete_repertoire' | transloco"
+                                                    (click)="deleteRepertoire(repertoire, $event)"
+                                                >
+                                                    <mat-icon class="size-4 text-neutral-400 hover:text-red-600 dark:hover:text-red-400" [svgIcon]="'trash-2'"></mat-icon>
+                                                </button>
+                                            }
                                         </div>
                                     </td>
                                 </tr>
                             } @empty {
                                 <tr>
                                     <td colspan="5" class="p-4 text-center text-sm text-neutral-500 dark:text-neutral-400">
-                                        {{ (repertoires.length ? 'repertoire_page.no_search_matches' : 'repertoire_page.no_repertoires') | transloco }}
+                                        @if (section.repertoires.length) {
+                                            {{ 'repertoire_page.no_search_matches' | transloco }}
+                                        } @else {
+                                            {{ (section.key === 'personal' ? 'repertoire_page.empty_personal' : 'repertoire_page.no_repertoires') | transloco }}
+                                        }
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
-                </div>
+                    </div>
+                }
             }
         </section>
     </div>

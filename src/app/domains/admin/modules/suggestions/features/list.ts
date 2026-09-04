@@ -174,25 +174,6 @@ export default class SuggestionsList implements OnInit, OnDestroy {
         );
     }
 
-    createCopyAndAddSong(row: MySongbookRow): void {
-        this.withBusy(row.suggestion.uid, () =>
-            this._songbookSuggestionService.forkAndAddSuggestedSong(row.suggestion).subscribe((songbookId) => {
-                if (songbookId) {
-                    this._router.navigate(['/songbook', songbookId]);
-                } else {
-                    this._translocoService.selectTranslate('admin_suggestions.copy_creation_failed').pipe(takeUntil(this._unsubscribeAll)).subscribe((message) => {
-                        this._snackBar.open(message, undefined, { duration: 5000 });
-                    });
-                }
-                this.busyIds.update((ids) => {
-                    const next = new Set(ids);
-                    next.delete(row.suggestion.uid);
-                    return next;
-                });
-            })
-        );
-    }
-
     private loadSuggestions(): void {
         combineLatest([this._songSuggestionService.getAllOpen(), this._songbookSuggestionService.getAllOpen()])
             .pipe(

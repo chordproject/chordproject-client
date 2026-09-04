@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -21,6 +20,7 @@ import { UserService } from 'app/core/user/user.service';
 import { EventType } from 'app/models/event-type';
 import { Repertoire } from 'app/models/repertoire';
 import { RepertoireGroupWithChildren } from 'app/models/repertoire-group';
+import { RepertoireCreateDialogComponent, RepertoireCreateDialogResult } from './repertoire-create-dialog.component';
 
 @Component({
     selector: 'repertoire-page',
@@ -31,11 +31,9 @@ import { RepertoireGroupWithChildren } from 'app/models/repertoire-group';
         CommonModule,
         FormsModule,
         MatButtonModule,
-        MatDatepickerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
-        MatNativeDateModule,
         MatSelectModule,
         MatTooltipModule,
         RouterLink,
@@ -54,10 +52,6 @@ export class RepertoireComponent implements OnInit, OnDestroy {
     repertoireEventTypeFilter = 'all';
     repertoireGroupFilter = 'all';
     viewMode: 'grid' | 'list' = 'grid';
-    newRepertoireEventTypeId: string | null = null;
-    newRepertoireTitle = '';
-    newRepertoireDescription = '';
-    newRepertoireDate = new Date();
     loading = false;
     private readonly unsubscribeAll = new Subject<void>();
 
@@ -68,7 +62,8 @@ export class RepertoireComponent implements OnInit, OnDestroy {
         private readonly userService: UserService,
         private readonly confirmationService: FuseConfirmationService,
         private readonly changeDetectorRef: ChangeDetectorRef,
-        private readonly router: Router
+        private readonly router: Router,
+        private readonly matDialog: MatDialog
     ) {}
 
     ngOnInit(): void {
@@ -89,9 +84,6 @@ export class RepertoireComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribeAll))
             .subscribe((eventTypes) => {
                 this.eventTypes = eventTypes;
-                if (!this.newRepertoireEventTypeId && eventTypes.length) {
-                    this.newRepertoireEventTypeId = eventTypes[0].uid;
-                }
                 this.changeDetectorRef.markForCheck();
             });
     }
@@ -202,13 +194,72 @@ export class RepertoireComponent implements OnInit, OnDestroy {
         return this.repertoireSongsMap[repertoireId] || [];
     }
 
-    async createRepertoire(): Promise<void> {
-        const title = this.newRepertoireTitle.trim();
-        const description = this.newRepertoireDescription.trim();
-        if (!title || !this.newRepertoireEventTypeId || !this.newRepertoireDate) {
-            return;
-        }
+    get repertoireSections(): { key: 'personal' | 'public'; label: string; repertoires: Repertoire[] }[] {
+        return [
+            {
+                key: 'personal',
+                label: 'repertoire_page.my_repertoires',
+                repertoires: this.repertoires.filter(
+                    (repertoire) => this.repertoireService.isOwnedByCurrentUser(repertoire) && !this.isPublicRepertoire(repertoire)
+                ),
+            },
+            {
+                key: 'public',
+                label: 'repertoire_page.public_repertoires',
+                repertoires: this.repertoires.filter((repertoire) => this.isPublicRepertoire(repertoire)),
+            },
+        ];
+    }
 
+    getFilteredRepertoires(repertoires: Repertoire[]): Repertoire[] {
+        const term = this.normalize(this.repertoireSearchTerm);
+        const byType = this.repertoireEventTypeFilter === 'all'
+            ? repertoires
+            : repertoires.filter((repertoire) => repertoire.eventTypeId === this.repertoireEventTypeFilter);
+        const byGroup = this.repertoireGroupFilter === 'all'
+            ? byType
+            : this.repertoireGroupFilter === RepertoireComponent.UNGROUPED_FILTER
+                ? byType.filter((repertoire) => !this.isRepertoireInAnyGroup(repertoire.uid))
+                : byType.filter((repertoire) => this.isRepertoireInGroup(repertoire.uid, this.repertoireGroupFilter));
+        const filtered = !term
+            ? byGroup
+            : byGroup.filter((repertoire) => {
+                const matchesTitle = this.normalize(repertoire.title).includes(term);
+                const matchesDesc = this.normalize(repertoire.description ?? '').includes(term);
+                const matchesType = this.normalize(this.getEventTypeName(repertoire.eventTypeId)).includes(term);
+                const songs = this.repertoireSongsMap[repertoire.uid] || [];
+                const matchesSongs = songs.some(
+                    (item) =>
+                        this.normalize(item.songTitle).includes(term) ||
+                        (item.slotName && this.normalize(item.slotName).includes(term))
+                );
+                return matchesTitle || matchesDesc || matchesType || matchesSongs;
+            });
+
+        return [...filtered].sort((first, second) => this.getTime(second.date) - this.getTime(first.date));
+    }
+
+    isPublicRepertoire(repertoire: Repertoire): boolean {
+        return this.repertoireService.isSharedRepertoire(repertoire);
+    }
+
+    canEditRepertoire(repertoire: Repertoire): boolean {
+        return this.repertoireService.isOwnedByCurrentUser(repertoire);
+    }
+
+    openCreateRepertoireDialog(): void {
+        this.matDialog
+            .open(RepertoireCreateDialogComponent, { data: { eventTypes: this.eventTypes } })
+            .afterClosed()
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe((result) => {
+                if (result) {
+                    this.saveNewRepertoire(result);
+                }
+            });
+    }
+
+    private async saveNewRepertoire(result: RepertoireCreateDialogResult): Promise<void> {
         const isAuthenticated = await new Promise<boolean>((resolve) =>
             this.userService.isAuthenticated().pipe(take(1)).subscribe(resolve)
         );
@@ -217,10 +268,10 @@ export class RepertoireComponent implements OnInit, OnDestroy {
             sessionStorage.setItem(
                 RepertoireComponent.DRAFT_STORAGE_KEY,
                 JSON.stringify({
-                    eventTypeId: this.newRepertoireEventTypeId,
-                    title,
-                    description,
-                    date: this.newRepertoireDate.toISOString(),
+                    eventTypeId: result.eventTypeId,
+                    title: result.title,
+                    description: result.description,
+                    date: result.date.toISOString(),
                 })
             );
             this.authService.promptSignIn();
@@ -228,19 +279,17 @@ export class RepertoireComponent implements OnInit, OnDestroy {
         }
 
         const uid = await this.repertoireService.saveRepertoire({
-            eventTypeId: this.newRepertoireEventTypeId,
-            title,
-            description: description || undefined,
-            date: this.newRepertoireDate,
+            eventTypeId: result.eventTypeId,
+            title: result.title,
+            description: result.description,
+            date: result.date,
         } as Repertoire);
         if (uid) {
-            this.newRepertoireTitle = '';
-            this.newRepertoireDescription = '';
             this.router.navigate(['/repertoires', uid]);
         }
     }
 
-    /** Restores a draft stashed before a sign-in redirect, once the user is authenticated again. */
+    /** Restores a draft stashed before a sign-in redirect, submitting it automatically once the user is authenticated again. */
     private restoreDraftIfAuthenticated(): void {
         const raw = sessionStorage.getItem(RepertoireComponent.DRAFT_STORAGE_KEY);
         if (!raw) {
@@ -258,11 +307,12 @@ export class RepertoireComponent implements OnInit, OnDestroy {
                 sessionStorage.removeItem(RepertoireComponent.DRAFT_STORAGE_KEY);
                 try {
                     const draft = JSON.parse(raw);
-                    this.newRepertoireEventTypeId = draft.eventTypeId ?? null;
-                    this.newRepertoireTitle = draft.title ?? '';
-                    this.newRepertoireDescription = draft.description ?? '';
-                    this.newRepertoireDate = draft.date ? new Date(draft.date) : new Date();
-                    this.changeDetectorRef.markForCheck();
+                    this.saveNewRepertoire({
+                        eventTypeId: draft.eventTypeId,
+                        title: draft.title,
+                        description: draft.description,
+                        date: draft.date ? new Date(draft.date) : new Date(),
+                    });
                 } catch {
                     // Ignore a corrupted draft.
                 }
@@ -314,31 +364,7 @@ export class RepertoireComponent implements OnInit, OnDestroy {
     }
 
     get filteredRepertoires(): Repertoire[] {
-        const term = this.normalize(this.repertoireSearchTerm);
-        const byType = this.repertoireEventTypeFilter === 'all'
-            ? this.repertoires
-            : this.repertoires.filter((repertoire) => repertoire.eventTypeId === this.repertoireEventTypeFilter);
-        const byGroup = this.repertoireGroupFilter === 'all'
-            ? byType
-            : this.repertoireGroupFilter === RepertoireComponent.UNGROUPED_FILTER
-                ? byType.filter((repertoire) => !this.isRepertoireInAnyGroup(repertoire.uid))
-            : byType.filter((repertoire) => this.isRepertoireInGroup(repertoire.uid, this.repertoireGroupFilter));
-        const filtered = !term
-            ? byGroup
-            : byGroup.filter((repertoire) => {
-                const matchesTitle = this.normalize(repertoire.title).includes(term);
-                const matchesDesc = this.normalize(repertoire.description ?? '').includes(term);
-                const matchesType = this.normalize(this.getEventTypeName(repertoire.eventTypeId)).includes(term);
-                const songs = this.repertoireSongsMap[repertoire.uid] || [];
-                const matchesSongs = songs.some(
-                    (item) =>
-                        this.normalize(item.songTitle).includes(term) ||
-                        (item.slotName && this.normalize(item.slotName).includes(term))
-                );
-                return matchesTitle || matchesDesc || matchesType || matchesSongs;
-            });
-
-        return [...filtered].sort((first, second) => this.getTime(second.date) - this.getTime(first.date));
+        return this.getFilteredRepertoires(this.repertoires);
     }
 
     private isRepertoireInGroup(repertoireId: string, groupId: string): boolean {

@@ -1,0 +1,24 @@
+<div class="flex w-full flex-col sm:min-w-96">
+    <header class="border-b border-neutral-200 px-6 py-4 dark:border-neutral-800">
+        <h2 class="text-xl font-semibold">{{ 'repertoire_page.new_group' | transloco }}</h2>
+    </header>
+
+    <form class="flex flex-col gap-4 p-6" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field class="w-full" subscriptSizing="dynamic">
+            <mat-label>{{ 'repertoire_page.new_group' | transloco }}</mat-label>
+            <input matInput formControlName="name" autocomplete="off" />
+            @if (form.controls.name.hasError('required') || form.controls.name.hasError('minlength')) {
+                <mat-error>{{ 'repertoire_page.group_name_error' | transloco }}</mat-error>
+            }
+        </mat-form-field>
+
+        <footer class="flex justify-end gap-3 pt-2">
+            <button matButton="outlined" type="button" [matDialogClose]="undefined">
+                {{ 'confirmation.cancel' | transloco }}
+            </button>
+            <button matButton="filled" type="submit">
+                {{ 'repertoire_page.add_group' | transloco }}
+            </button>
+        </footer>
+    </form>
+</div>

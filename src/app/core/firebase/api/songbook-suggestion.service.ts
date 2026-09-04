@@ -154,21 +154,6 @@ export class SongbookSuggestionService {
         );
     }
 
-    forkAndAddSuggestedSong(suggestion: SongbookSuggestion): Observable<string | null> {
-        if (suggestion.type !== 'add_song' || !suggestion.targetSongbookId || !suggestion.targetSongId) {
-            return of(null);
-        }
-
-        return this._songbookService.forkMany([suggestion.targetSongbookId]).pipe(
-            switchMap(([songbookId]) =>
-                songbookId
-                    ? from(this._songbookService.addSong(songbookId, suggestion.targetSongId)).pipe(map((relationId) => relationId ? songbookId : null))
-                    : of(null)
-            ),
-            catchError(() => of(null))
-        );
-    }
-
     cancel(suggestion: SongbookSuggestion): Observable<boolean> {
         return from(setDoc(doc(this.firestore, 'songbook_suggestions', suggestion.uid), { status: 'rejected' }, { merge: true })).pipe(
             map(() => true),

@@ -56,6 +56,8 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
     editingDescription = '';
     loading = true;
     loadError = false;
+    canEdit = false;
+    forking = false;
     private readonly unsubscribeAll = new Subject<void>();
 
     constructor(
@@ -89,6 +91,7 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
                 }
 
                 this.repertoire = result;
+                this.canEdit = this.repertoireService.isOwnedByCurrentUser(result);
                 forkJoin({
                     eventType: this.repertoireService.getEventType(this.repertoire.eventTypeId).pipe(catchError(() => of(null))),
                     slots: this.repertoireService
@@ -366,6 +369,27 @@ export class RepertoireDetailComponent implements OnInit, OnDestroy {
                     if (success) {
                         this.router.navigate(['/repertoires']);
                     }
+                }
+            });
+    }
+
+    async forkRepertoire(): Promise<void> {
+        if (!this.repertoire?.uid || this.forking) {
+            return;
+        }
+
+        this.forking = true;
+        this.changeDetectorRef.markForCheck();
+
+        this.repertoireService
+            .forkRepertoire(this.repertoire.uid)
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe((newRepertoireId) => {
+                this.forking = false;
+                if (newRepertoireId) {
+                    this.router.navigate(['/repertoires', newRepertoireId]);
+                } else {
+                    this.changeDetectorRef.markForCheck();
                 }
             });
     }

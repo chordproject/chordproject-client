@@ -4,11 +4,12 @@
             <h1 class="text-3xl font-bold tracking-tight">{{ 'songbook_page.title' | transloco }}</h1>
             <div class="text-secondary max-w-3xl text-sm">
                 <p>{{ 'songbook_page.description' | transloco }}</p>
-                <ul class="mt-2 list-disc space-y-1 pl-5">
-                    <li>{{ 'songbook_page.option_create' | transloco }}</li>
-                    <li>{{ 'songbook_page.option_use_official' | transloco }}</li>
-                    <li>{{ 'songbook_page.option_suggest' | transloco }}</li>
-                </ul>
+                <p class="mt-2">
+                    {{ 'songbook_page.option_difference_before' | transloco }}
+                    <a class="font-medium text-primary-700 underline underline-offset-2 hover:text-primary-900 dark:text-primary-300 dark:hover:text-primary-100" routerLink="/repertoires">
+                        {{ 'songbook_page.option_difference_link' | transloco }}
+                    </a>{{ 'songbook_page.option_difference_after' | transloco }}
+                </p>
             </div>
         </header>
 

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -44,6 +44,7 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
     selectedSong: PartialSong | null = null;
     loading = true;
     loadError = false;
+    private routeSongId: string | null = null;
     private readonly unsubscribeAll = new Subject<void>();
 
     /** Bound as `labelFor` on `chp-song-list-panel` to show each song's space as a badge.
@@ -58,12 +59,20 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly route: ActivatedRoute,
+        private readonly router: Router,
         private readonly repertoireService: RepertoireService,
         private readonly songService: SongService,
         private readonly changeDetectorRef: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
+        this.route.queryParamMap
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe((params) => {
+                this.routeSongId = params.get('song');
+                this.applyRouteSongSelection();
+            });
+
         this.route.paramMap.pipe(
             switchMap((params) => {
                 const repertoireId = params.get('uid');
@@ -91,11 +100,20 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
                     const activeAssignments = assignments.filter((assignment) => assignment.status !== 'skipped' && assignment.songId && assignment.slotId);
                     const songIds = [...new Set(activeAssignments.map((assignment) => assignment.songId))];
 
-                    // Fetched directly (not via getAll + existence check) to avoid an extra network round-trip.
-                    const fullSongRequests = songIds.map((songId) => this.songService.get(songId).pipe(catchError(() => of(null))));
+                    // Existence check first: a stale/deleted songId would otherwise make songService.get() log
+                    // its own console error and show an "unexpected error" toast, even though it's recoverable here.
+                    return this.songService.getAll(songIds).pipe(
+                        catchError(() => of([] as PartialSong[])),
+                        switchMap((existingSongs) => {
+                            const existingSongIds = new Set(existingSongs.map((song) => song.uid));
+                            const fullSongRequests = songIds
+                                .filter((songId) => existingSongIds.has(songId))
+                                .map((songId) => this.songService.get(songId).pipe(catchError(() => of(null))));
 
-                    return forkJoin(fullSongRequests.length ? fullSongRequests : [of(null)]).pipe(
-                        map((songs) => ({ slots, activeAssignments, songs: songs.filter(Boolean) }))
+                            return forkJoin(fullSongRequests.length ? fullSongRequests : [of(null)]).pipe(
+                                map((songs) => ({ slots, activeAssignments, songs: songs.filter(Boolean) }))
+                            );
+                        })
                     );
                 }),
                 catchError(() => of(null)),
@@ -114,7 +132,9 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
                         return song && slot ? [{ slot, song }] : [];
                     });
                     this.songItems = this.songs.map((item) => item.song);
-                    this.selectedSong = this.songs[0]?.song ?? null;
+                    this.selectedSong = this.routeSongId
+                        ? this.songItems.find((song) => song.uid === this.routeSongId) ?? null
+                        : this.songs[0]?.song ?? null;
                 }
                 this.loading = false;
                 this.changeDetectorRef.markForCheck();
@@ -124,6 +144,11 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
 
     selectSong(song: PartialSong): void {
         this.selectedSong = song;
+        void this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { song: song.uid },
+            queryParamsHandling: 'merge',
+        });
         this.changeDetectorRef.markForCheck();
 
         if (this.splitLayout?.isMobile) {
@@ -162,6 +187,35 @@ export class RepertoireLiveComponent implements OnInit, OnDestroy {
         if (this.splitLayout?.isMobile && !this.splitLayout.showPrimaryArea) {
             this.splitLayout.togglePreview();
         }
+        void this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { song: null },
+            queryParamsHandling: 'merge',
+            replaceUrl: true,
+        });
+    }
+
+    private applyRouteSongSelection(): void {
+        if (!this.songItems.length) {
+            return;
+        }
+
+        const routeSong = this.routeSongId
+            ? this.songItems.find((song) => song.uid === this.routeSongId) ?? null
+            : null;
+        if (routeSong) {
+            const wasShowingAnotherSong = this.selectedSong?.uid !== routeSong.uid;
+            this.selectedSong = routeSong;
+            if (wasShowingAnotherSong && this.splitLayout?.isMobile && this.splitLayout.showPrimaryArea) {
+                this.splitLayout.togglePreview();
+            }
+        } else if (!this.routeSongId && this.selectedSong) {
+            this.selectedSong = null;
+            if (this.splitLayout?.isMobile && !this.splitLayout.showPrimaryArea) {
+                this.splitLayout.togglePreview();
+            }
+        }
+        this.changeDetectorRef.markForCheck();
     }
 
     ngOnDestroy(): void {

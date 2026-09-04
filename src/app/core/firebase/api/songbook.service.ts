@@ -5,7 +5,6 @@ import { Auth } from 'firebase/auth';
 import {
     Firestore,
     collection,
-    documentId,
     doc,
     getDoc,
     getDocs,
@@ -381,14 +380,6 @@ export class SongbookService {
         }
     }
 
-    forkMany(songbookIds: string[]): Observable<string[]> {
-        if (!this.verifyAuthentication()) {
-            return of([]);
-        }
-
-        return from(this.forkSongbooks(songbookIds));
-    }
-
     deleteCopies(songbookIds: string[]): Observable<boolean> {
         if (!this.verifyAuthentication()) {
             return of(false);
@@ -644,131 +635,6 @@ export class SongbookService {
         this._songbooksChanged.next();
     }
 
-    private async forkSongbooks(songbookIds: string[]): Promise<string[]> {
-        try {
-            const user = this._auth.currentUser;
-            const uniqueSongbookIds = [...new Set(songbookIds.filter(Boolean))];
-            const sourceSnapshots = await Promise.all(
-                uniqueSongbookIds.map((songbookId) => getDoc(doc(this._firestore, 'songbooks', songbookId)))
-            );
-            const existingCopyDocs = await this.getCurrentUserSongbooks();
-            const copyIdsBySourceId = new Map(
-                existingCopyDocs
-                    .filter((documentSnapshot) => documentSnapshot.data().deleted !== true)
-                    .map((documentSnapshot) => [documentSnapshot.data().copiedFrom, documentSnapshot.id] as [string, string])
-                    .filter(([copiedFrom]) => Boolean(copiedFrom))
-            );
-            const sourceSongbooks = sourceSnapshots
-                .filter((sourceSnapshot) => sourceSnapshot.exists())
-                .map((sourceSnapshot) => ({ ...sourceSnapshot.data(), uid: sourceSnapshot.id }) as Songbook);
-
-            if (sourceSongbooks.length === 0) {
-                return [];
-            }
-
-            const songbookIdMap = new Map<string, string>();
-            const songbooksBatch = writeBatch(this._firestore);
-            let songbooksToCreate = 0;
-
-            sourceSongbooks.forEach((sourceSongbook) => {
-                songbookIdMap.set(
-                    sourceSongbook.uid,
-                    copyIdsBySourceId.get(sourceSongbook.uid) || doc(collection(this._firestore, 'songbooks')).id
-                );
-            });
-
-            for (const sourceSongbook of sourceSongbooks) {
-                if (copyIdsBySourceId.has(sourceSongbook.uid)) {
-                    continue;
-                }
-
-                const newSongbookId = songbookIdMap.get(sourceSongbook.uid);
-                const { uid: _uid, ...sourceSongbookData } = sourceSongbook;
-                songbooksToCreate += 1;
-
-                songbooksBatch.set(doc(this._firestore, 'songbooks', newSongbookId), this.withoutUndefined({
-                    ...sourceSongbookData,
-                    name: sourceSongbook.name,
-                    authorId: user.uid,
-                    ownerId: user.uid,
-                    scope: 'personal',
-                    source: 'fork',
-                    copiedFrom: sourceSongbook.uid,
-                    syncStatus: 'synced',
-                    published: false,
-                    isTemplate: false,
-                    creationDate: serverTimestamp(),
-                    lastUpdateDate: serverTimestamp(),
-                }));
-            }
-
-            if (songbooksToCreate > 0) {
-                await songbooksBatch.commit();
-            }
-
-            let relationsBatch = writeBatch(this._firestore);
-            let relationWrites = 0;
-
-            for (const sourceSongbook of sourceSongbooks) {
-                const newSongbookId = songbookIdMap.get(sourceSongbook.uid);
-                const relationsSnapshot = await getDocs(
-                    query(collection(this._firestore, 'songbook_songs'), where('songbookId', '==', sourceSongbook.uid))
-                );
-                const activeSourceRelations = relationsSnapshot.docs.filter((relationDoc) => relationDoc.data().deleted !== true);
-                const existingTargetRelationsSnapshot = await getDocs(
-                    query(collection(this._firestore, 'songbook_songs'), where('songbookId', '==', newSongbookId))
-                );
-                const copiedRelationIds = new Set(
-                    existingTargetRelationsSnapshot.docs
-                        .map((relationDoc) => relationDoc.data().copiedFrom)
-                        .filter(Boolean)
-                );
-                const targetSongIds = new Set(
-                    existingTargetRelationsSnapshot.docs
-                        .map((relationDoc) => relationDoc.data().songId)
-                        .filter(Boolean)
-                );
-                const existingSongIds = await this.getExistingSongIds(
-                    activeSourceRelations.map((relationDoc) => relationDoc.data().songId).filter(Boolean)
-                );
-
-                const relationsToCopy = activeSourceRelations
-                    .filter((relationDoc) => !copiedRelationIds.has(relationDoc.id))
-                    .filter((relationDoc) => !targetSongIds.has(relationDoc.data().songId))
-                    .filter((relationDoc) => existingSongIds.has(relationDoc.data().songId));
-
-                for (const relationDoc of relationsToCopy) {
-                    const relationId = doc(collection(this._firestore, 'songbook_songs')).id;
-                    relationWrites += 1;
-                    relationsBatch.set(doc(this._firestore, 'songbook_songs', relationId), this.withoutUndefined({
-                        ...relationDoc.data(),
-                        songbookId: newSongbookId,
-                        songbookPublic: false,
-                        author_uid: user.uid,
-                        ownerId: user.uid,
-                        copiedFrom: relationDoc.id,
-                    }));
-
-                    if (relationWrites === 3) {
-                        await relationsBatch.commit();
-                        relationsBatch = writeBatch(this._firestore);
-                        relationWrites = 0;
-                    }
-                }
-            }
-
-            if (relationWrites > 0) {
-                await relationsBatch.commit();
-            }
-            this.clearSongbooksCache();
-            this.showSnackbar('songbook_service.songbook_saved');
-            return sourceSongbooks.map((sourceSongbook) => songbookIdMap.get(sourceSongbook.uid));
-        } catch (error) {
-            this.handleError(error);
-            return [];
-        }
-    }
-
     private async deleteCopiedSongbooks(songbookIds: string[]): Promise<boolean> {
         try {
             const user = this._auth.currentUser;
@@ -904,26 +770,6 @@ export class SongbookService {
             return false;
         }
         return true;
-    }
-
-    private withoutUndefined(value: Record<string, unknown>): Record<string, unknown> {
-        return Object.fromEntries(
-            Object.entries(value).filter(([, fieldValue]) => fieldValue !== undefined)
-        );
-    }
-
-    private async getExistingSongIds(songIds: string[]): Promise<Set<string>> {
-        const uniqueSongIds = [...new Set(songIds)];
-        const chunks = Array.from({ length: Math.ceil(uniqueSongIds.length / 30) }, (_, index) =>
-            uniqueSongIds.slice(index * 30, (index + 1) * 30)
-        );
-        const snapshots = await Promise.all(
-            chunks
-                .filter((chunk) => chunk.length > 0)
-                .map((chunk) => getDocs(query(collection(this._firestore, 'songs'), where(documentId(), 'in', chunk))))
-        );
-
-        return new Set(snapshots.flatMap((snapshot) => snapshot.docs.map((documentSnapshot) => documentSnapshot.id)));
     }
 
     private showSnackbar(messageKey: string, duration = 3000): void {
