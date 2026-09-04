@@ -131,15 +131,26 @@
             <div class="contents min-w-0 md:order-2 md:flex md:flex-col md:gap-6">
                 @if (upcomingRepertoire$ | async; as upcoming) {
                     <a
-                        class="order-1 bg-card relative block overflow-hidden rounded-xl border border-primary-100 p-5 shadow transition-shadow duration-150 ease-in-out hover:shadow-lg dark:border-primary-900 sm:rounded-2xl"
+                        class="order-1 bg-card relative block overflow-hidden rounded-xl border border-primary-100 p-4 shadow transition-shadow duration-150 ease-in-out hover:shadow-lg dark:border-primary-900 sm:rounded-2xl"
                         [routerLink]="['/repertoires', upcoming.repertoire.uid, 'live']"
                     >
-                        <div class="absolute right-0 top-0 -m-6 flex h-24 w-24 items-center justify-center">
-                            <mat-icon class="size-16 text-primary-400 opacity-20" [svgIcon]="'calendar-days'"></mat-icon>
-                        </div>
-                        <div class="relative">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-primary-600 dark:text-primary-400">
-                                {{ 'home.upcoming_repertoire_eyebrow' | transloco }}
+                        @if (brand === 'hj') {
+                            <div class="absolute right-0 top-0 -m-6 flex h-24 w-24 items-center justify-center">
+                                <mat-icon class="size-16 text-primary-400 opacity-20" [svgIcon]="'calendar-days'"></mat-icon>
+                            </div>
+                        } @else {
+                            <div class="absolute right-0 top-0 flex size-18 items-center justify-center">
+                                <mat-icon class="size-18 text-primary-400 opacity-30" [svgIcon]="'guitar'"></mat-icon>
+                            </div>
+                        }
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+                                @if (brand === 'chp') {
+                                    {{ 'home.upcoming_gig_prefix' | transloco }}
+                                    <span class="font-extrabold text-primary-700 dark:text-primary-300">{{ 'home.upcoming_gig_term' | transloco }}</span>
+                                } @else {
+                                    <span class="text-primary-700 dark:text-primary-300">{{ 'home.upcoming_repertoire_eyebrow' | transloco }}</span>
+                                }
                             </p>
                             <h2 class="mt-2 text-lg font-bold text-neutral-950 dark:text-neutral-50">
                                 {{ upcoming.repertoire.title }}
@@ -147,7 +158,8 @@
                             <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
                                 {{ upcoming.scheduledDate | date: 'fullDate' }}
                             </p>
-                            <div class="mt-3 flex items-center justify-between gap-3">
+                        </div>
+                        <div class="mt-3 flex items-center justify-between gap-3">
                                 <span class="rounded-full bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700 dark:bg-primary-950 dark:text-primary-200">
                                     {{ 'home.upcoming_repertoire_song_count' | transloco: { count: upcoming.songCount } }}
                                 </span>
@@ -157,7 +169,6 @@
                                     {{ 'home.upcoming_repertoire_open_live' | transloco }}
                                 </span>
                             </div>
-                        </div>
                     </a>
                 }
 

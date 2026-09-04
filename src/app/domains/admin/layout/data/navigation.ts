@@ -37,7 +37,7 @@ export const NAVIGATION: NavigationItem[] = [
       {
         id: 'general/create',
         label: 'nav.create',
-        icon: 'code-xml',
+        icon: 'brackets',
         route: '/songs/create',
       },
       {

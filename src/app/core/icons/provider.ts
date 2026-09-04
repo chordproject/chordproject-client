@@ -19,5 +19,9 @@ export const provideIcons = (): EnvironmentProviders =>
         domSanitizer.bypassSecurityTrustHtml(lucideIcons),
         { viewBox: '0 0 24 24' }
       );
+      matIconRegistry.addSvgIcon(
+        'guitar',
+        domSanitizer.bypassSecurityTrustResourceUrl('/chp/logo/guitar.svg')
+      );
     }),
   ]);

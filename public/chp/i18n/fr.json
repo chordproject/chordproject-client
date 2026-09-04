@@ -15,7 +15,9 @@
         ],
         "platform_title": "Vous cherchez des répertoires pour des célébrations ?",
         "platform_description": "Vous pouvez aussi utiliser <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, une expérience préparée pour les carnets et répertoires de communauté.",
-        "upcoming_repertoire_eyebrow": "Prochain répertoire",
+        "upcoming_repertoire_eyebrow": "Prochain gig",
+        "upcoming_gig_prefix": "Prochain",
+        "upcoming_gig_term": "gig",
         "upcoming_repertoire_songs": "Chansons incluses",
         "upcoming_repertoire_song_count": "{{count}} chansons",
         "upcoming_repertoire_empty": "Aucune chanson attribuée pour le moment.",
@@ -496,6 +498,7 @@
         "reset_password_title": "Réinitialiser le mot de passe",
         "reset_password_subtitle": "Créez un nouveau mot de passe pour votre compte",
         "password_validation_label": "Confirmer le mot de passe",
-        "passwords_mismatch": "Les mots de passe ne correspondent pas"
+        "passwords_mismatch": "Les mots de passe ne correspondent pas",
+        "back_to_home": "Retour à ChordProject"
     }
 }

@@ -2,7 +2,7 @@
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 222 49">
 	<defs>
-		<style>.cls-hj-1{fill:#222b45;}.cls-hj-2{fill:#1f273f;}.cls-hj-3{fill:#1c2339;}</style>
+		<style>.cls-hj-1,.cls-hj-2,.cls-hj-3{fill:#222b45 !important;}</style>
 		<linearGradient id="gradient" x1="33.44" y1="41.99" x2="199.07" y2="41.53" gradientUnits="userSpaceOnUse">
 			<stop offset="0.35" stop-color="#808082"/>
 			<stop offset="0.37" stop-color="#78797d"/>

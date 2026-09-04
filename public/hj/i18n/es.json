@@ -1,4 +1,7 @@
 {
+    "auth": {
+        "back_to_home": "Volver a HomenaJesus"
+    },
     "home": {
         "about_title": "Acerca de HomenaJesus",
         "about_description": "<strong>HomenaJesus</strong> es un cancionero digital que reúne canciones, cancioneros, acordes y repertorios en un solo lugar en línea, para que cada servicio tenga sus cantos listos y ordenados sin depender de hojas sueltas o carpetas dispersas.",

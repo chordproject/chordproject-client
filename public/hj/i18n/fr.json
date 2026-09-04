@@ -1,4 +1,7 @@
 {
+    "auth": {
+        "back_to_home": "Retour à HomenaJesus"
+    },
     "home": {
         "about_title": "À propos de HomenaJesus",
         "about_description": "<strong>HomenaJesus</strong> est un carnet de chants numérique qui rassemble chants, carnets, accords et répertoires en un seul endroit en ligne, pour que chaque service ait ses chants prêts et organisés, sans feuilles volantes ni classeurs éparpillés.",

@@ -1,4 +1,7 @@
 {
+    "auth": {
+        "back_to_home": "Back to HomenaJesus"
+    },
     "home": {
         "about_title": "About HomenaJesus",
         "about_description": "<strong>HomenaJesus</strong> is a digital songbook that brings songs, songbooks, chords, and repertoires together in one online place, so each service has its music ready and organized instead of scattered across loose sheets and folders.",
@@ -13,7 +16,7 @@
         ],
         "platform_title": "Do you also organize other repertoires?",
         "platform_description": "For other musical styles, you can use <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>, the general version of the platform.",
-        "upcoming_repertoire_eyebrow": "Next celebration",
+        "upcoming_repertoire_eyebrow": "Upcoming celebration",
         "upcoming_repertoire_songs": "Prepared songs",
         "upcoming_repertoire_song_count": "{{count}} songs",
         "upcoming_repertoire_empty": "No songs assigned yet.",

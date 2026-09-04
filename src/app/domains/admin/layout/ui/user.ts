@@ -66,40 +66,40 @@ import { UserService } from '@/app/core/user/user.service';
       yPosition="above"
       #userMenu="matMenu"
     >
-      <button
-        class="py-2 [&>span]:flex [&>span]:items-center"
-        mat-menu-item
-      >
-        @if (avatarUrl(); as avatarUrl) {
-          <img
-            class="size-9 rounded-lg object-cover"
-            [src]="avatarUrl"
-            alt="User avatar"
-            referrerpolicy="no-referrer"
-            (error)="markAvatarAsFailed(avatarUrl)"
-          />
-        } @else {
-          <div
-            class="flex size-9 items-center justify-center rounded-lg bg-neutral-900/5 dark:bg-neutral-50/10"
-          >
-            <mat-icon svgIcon="user-round" />
-          </div>
-        }
-        <div class="ml-3 flex min-w-0 flex-auto flex-col select-none">
-          <div class="truncate font-medium">
-            @if (displayNameTranslationKey(); as key) {
-              {{ key | transloco }}
-            } @else {
-              {{ displayName() }}
-            }
-          </div>
-          <div class="text-on-surface-variant truncate text-xs">
-            {{ user()?.email || ('user_menu.not_signed_in' | transloco) }}
-          </div>
-        </div>
-      </button>
-      <mat-divider />
       @if (user()) {
+        <button
+          class="py-2 [&>span]:flex [&>span]:items-center"
+          mat-menu-item
+        >
+          @if (avatarUrl(); as avatarUrl) {
+            <img
+              class="size-9 rounded-lg object-cover"
+              [src]="avatarUrl"
+              alt="User avatar"
+              referrerpolicy="no-referrer"
+              (error)="markAvatarAsFailed(avatarUrl)"
+            />
+          } @else {
+            <div
+              class="flex size-9 items-center justify-center rounded-lg bg-neutral-900/5 dark:bg-neutral-50/10"
+            >
+              <mat-icon svgIcon="user-round" />
+            </div>
+          }
+          <div class="ml-3 flex min-w-0 flex-auto flex-col select-none">
+            <div class="truncate font-medium">
+              @if (displayNameTranslationKey(); as key) {
+                {{ key | transloco }}
+              } @else {
+                {{ displayName() }}
+              }
+            </div>
+            <div class="text-on-surface-variant truncate text-xs">
+              {{ user()?.email || ('user_menu.not_signed_in' | transloco) }}
+            </div>
+          </div>
+        </button>
+        <mat-divider />
         <button mat-menu-item>
           <mat-icon svgIcon="user-round" />
           {{ 'user_menu.account' | transloco }}

@@ -15,7 +15,9 @@
         ],
         "platform_title": "¿Buscas repertorios para celebraciones?",
         "platform_description": "También puedes usar <strong><a href=\"https://homenajesus.com\" target=\"_blank\" rel=\"noopener noreferrer\">HomenaJesus.com</a></strong>, una experiencia preparada para cancioneros y repertorios de comunidad.",
-        "upcoming_repertoire_eyebrow": "Próximo repertorio",
+        "upcoming_repertoire_eyebrow": "Próximo gig",
+        "upcoming_gig_prefix": "Próximo",
+        "upcoming_gig_term": "gig",
         "upcoming_repertoire_songs": "Canciones incluidas",
         "upcoming_repertoire_song_count": "{{count}} canciones",
         "upcoming_repertoire_empty": "Aún no hay canciones asignadas.",
@@ -494,6 +496,7 @@
         "reset_password_title": "Restablecer contraseña",
         "reset_password_subtitle": "Crea una nueva contraseña para tu cuenta",
         "password_validation_label": "Confirmar contraseña",
-        "passwords_mismatch": "Las contraseñas no coinciden"
+        "passwords_mismatch": "Las contraseñas no coinciden",
+        "back_to_home": "Volver a ChordProject"
     }
 }
