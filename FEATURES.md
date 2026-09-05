@@ -48,7 +48,7 @@ El cliente y las reglas de Firestore consultan ese claim.
 
 ## Grupos musicales
 
-La ruta autenticada `/group` permite gestionar la pertenencia inicial a un grupo musical sin compartir todavía cancioneros ni repertorios.
+La ruta autenticada `/group` permite gestionar la pertenencia a un grupo musical y sirve como base para compartir cancioneros y repertorios dentro del grupo.
 
 - Crear un grupo con un nombre.
 - Generar un código de unión para compartirlo con otros integrantes.
@@ -57,7 +57,9 @@ La ruta autenticada `/group` permite gestionar la pertenencia inicial a un grupo
 - Salir del grupo.
 - Limitar el modelo actual a un solo grupo activo por usuario.
 - Guardar en el perfil el nombre declarado durante el registro como dato provisional (`declaredGroupName`).
-- Guardar `groupId` y `groupPromptDismissed` para preparar el onboarding y la pertenencia futura.
+- Guardar `groupId` y `groupPromptDismissed` para el onboarding y la pertenencia actual.
+- Crear cancioneros y repertorios con alcance personal o grupal cuando el usuario pertenece a un grupo.
+- Compartir el contenido grupal con los miembros del mismo grupo sin hacerlo público.
 
 Los grupos y membresías tienen reglas de Firestore separadas. El código permite consultar directamente un grupo conocido, pero la colección no permite listar todos los grupos.
 
@@ -199,6 +201,7 @@ Rutas:
 La lista de cancioneros separa:
 
 - Mis cancioneros.
+- Cancioneros del grupo actual.
 - Cancioneros públicos/recomendados de HomenaJesus.
 
 La lista permite:
@@ -206,7 +209,9 @@ La lista permite:
 - agrupar cancioneros;
 - mostrar grupos y miembros;
 - crear cancioneros personales autenticados;
+- crear cancioneros personales o del grupo actual mediante el selector de alcance;
 - abrir cancioneros públicos y personales;
+- abrir cancioneros grupales cuando el usuario pertenece al grupo correspondiente;
 - mostrar el origen y estado de copias históricas mediante `copiedFrom` y `syncStatus`;
 - eliminar cancioneros personales mediante soft delete;
 - eliminar grupos personales y sus relaciones;
@@ -278,6 +283,8 @@ La lista de repertorios permite:
 - abrir la gestión del repertorio;
 - abrir la vista en vivo;
 - crear repertorios mediante diálogo;
+- crear repertorios personales o del grupo actual mediante el selector de alcance;
+- abrir repertorios grupales cuando el usuario pertenece al grupo correspondiente;
 - guardar como borrador en `sessionStorage` una creación iniciada sin autenticación y restaurarla después de iniciar sesión;
 - eliminar repertorios propios con confirmación.
 
@@ -297,7 +304,7 @@ La configuración separa dos áreas:
 
 En escritorio se utiliza un selector directo de sección. En móvil se utiliza breadcrumb y menú contextual. Los repertorios seleccionados solo aparecen en la lista ordenable; los candidatos se buscan y no se cargan cientos de filas inicialmente.
 
-Los repertorios existentes están clasificados como compartidos mediante `scope: shared` y `published: true`. Los repertorios personales creados por un usuario se guardan como `scope: personal` y `published: false`.
+Los repertorios existentes están clasificados como compartidos mediante `scope: shared` y `published: true`. Los repertorios personales creados por un usuario se guardan como `scope: personal` y `published: false`. El contenido creado para un grupo se guarda con `scope: group` y su `groupId`.
 
 ### Detalle y edición
 
@@ -388,6 +395,9 @@ Las reglas de Firestore y los guards aplican los siguientes principios:
 - protección de `authorId` y `ownerId` frente a cambios no autorizados;
 - cancioneros públicos legibles sin autenticación;
 - datos personales restringidos al propietario;
+- contenido grupal legible únicamente para miembros del grupo indicado por `groupId`;
+- consultas de cancioneros y repertorios limitadas al contenido propio, grupal autorizado o compartido publicado;
+- relaciones de canciones protegidas mediante el acceso al cancionero o repertorio padre;
 - templates y cancioneros públicos no editables por usuarios normales;
 - sugerencias limitadas a su autor o administradores;
 - feedback de lectura, actualización y eliminación restringido a administradores;
@@ -465,9 +475,9 @@ Esta sección contiene únicamente trabajo que todavía no está implementado o 
 
 ### Seguridad y datos
 
-- Probar reglas con usuario anónimo, propietario, usuario autenticado ajeno y administrador en ambos proyectos.
-- Verificar en producción la inmutabilidad de `authorId` y `ownerId`.
-- Comparar y aprobar las reglas de ChordProject y HomenaJesus por separado.
+- Completar la prueba manual de reglas con usuario anónimo, propietario, miembro del grupo, usuario autenticado ajeno y administrador en ambos proyectos.
+- Verificar en producción la inmutabilidad de `authorId`, `ownerId`, `scope` y `groupId`.
+- Comparar y aprobar el comportamiento de las reglas de ChordProject y HomenaJesus con datos reales.
 - Decidir si las colecciones antiguas `users` y `relations` todavía son necesarias.
 - Preparar backups verificables y procedimientos de rollback antes de migraciones destructivas.
 
@@ -476,7 +486,7 @@ Esta sección contiene únicamente trabajo que todavía no está implementado o 
 - Diseñar y publicar un catálogo editorial de cancioneros recomendados de HomenaJesus.
 - Decidir si se reintroduce una acción directa para crear copias personales de cancioneros públicos.
 - Definir sincronización futura entre un cancionero original y sus copias.
-- Permitir ownership o colaboración por ministerio/equipo.
+- Ampliar la colaboración actual con permisos de edición por equipo o roles específicos.
 - Normalizar `author_uid` y `ownerId` en relaciones antiguas sin romper datos existentes.
 
 ### Repertorios
