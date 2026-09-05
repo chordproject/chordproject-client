@@ -1,5 +1,7 @@
 {
     "auth": {
+        "group_name_label": "Ministerio o grupo musical (opcional)",
+        "group_name_placeholder": "Nombre del ministerio o grupo",
         "back_to_home": "Volver a HomenaJesus"
     },
     "home": {
@@ -19,13 +21,7 @@
         "upcoming_repertoire_eyebrow": "Próxima celebración",
         "upcoming_repertoire_songs": "Cantos preparados",
         "upcoming_repertoire_song_count": "{{count}} cantos",
-        "upcoming_repertoire_empty": "Aún no hay cantos asignados.",
-        "public_songbooks_title": "Cancioneros públicos",
-        "public_songbooks_count": "{{count}}",
-        "public_songbooks_view_group": "Ver todos los cancioneros de {{name}}",
-        "public_songbooks_view_all": "Ver todos",
-        "contribute_title": "¿Tienes una idea para mejorarlo?",
-        "contribute_description": "Puedes compartir sugerencias, errores o necesidades de tu equipo desde el <a href=\"#feedback\" data-feedback-link=\"true\">formulario de feedback</a>. Cada comentario ayuda a priorizar nuevas mejoras."
+        "upcoming_repertoire_empty": "Aún no hay cantos asignados."
     },
     "songbook_page": {
         "option_use_official": "Explora los cancioneros públicos organizados por tiempos, temáticas o celebraciones."

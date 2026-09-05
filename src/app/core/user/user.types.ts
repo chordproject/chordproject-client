@@ -4,4 +4,7 @@ export type User = {
     email: string;
     emailVerified: boolean;
     avatar?: string;
+    declaredGroupName?: string;
+    groupId?: string | null;
+    groupPromptDismissed?: boolean;
 }

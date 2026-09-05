@@ -1,5 +1,7 @@
 {
     "auth": {
+        "group_name_label": "Ministry or musical group (optional)",
+        "group_name_placeholder": "Ministry or group name",
         "back_to_home": "Back to HomenaJesus"
     },
     "home": {
@@ -17,15 +19,7 @@
         "platform_title": "Do you also organize other repertoires?",
         "platform_description": "For other musical styles, you can use <strong><a href=\"https://chordproject.com\" target=\"_blank\" rel=\"noopener noreferrer\">ChordProject.com</a></strong>, the general version of the platform.",
         "upcoming_repertoire_eyebrow": "Upcoming celebration",
-        "upcoming_repertoire_songs": "Prepared songs",
-        "upcoming_repertoire_song_count": "{{count}} songs",
-        "upcoming_repertoire_empty": "No songs assigned yet.",
-        "public_songbooks_title": "Public songbooks",
-        "public_songbooks_count": "{{count}}",
-        "public_songbooks_view_group": "View all songbooks in {{name}}",
-        "public_songbooks_view_all": "View all",
-        "contribute_title": "Have an idea to improve it?",
-        "contribute_description": "You can share suggestions, issues, or your team's needs through the <a href=\"#feedback\" data-feedback-link=\"true\">feedback form</a>. Every comment helps prioritize future improvements."
+        "upcoming_repertoire_songs": "Prepared songs"
     },
     "songbook_page": {
         "option_use_official": "Explore public songbooks organized by seasons, themes, or celebrations."

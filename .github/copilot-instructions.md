@@ -1,6 +1,6 @@
 - No agregar comentarios obvios.
 - Al generar mensajes de commit, escribir siempre en inglés y describir claramente las funcionalidades y correcciones reales incluidas en el commit, incluyendo los archivos relevantes cuando aporte contexto.
-- Los cambios en `BACKLOG.md` deben incluirse en el commit cuando existan, pero `BACKLOG.md` es solo metadata del commit. Ignorar completamente ese archivo al redactar el asunto y el cuerpo: no leerlo como fuente del mensaje, no resumirlo y no mencionar sus actualizaciones, tareas, decisiones, estado o contenido, aunque sea el único archivo modificado. No generar un mensaje que describa cambios del backlog.
+- Cada vez que el usuario pida crear un commit, revisar y actualizar `FEATURES.md` antes de confirmar los cambios. La actualización puede agregar, editar o eliminar contenido para que las funcionalidades implementadas y las funcionalidades futuras documentadas reflejen fielmente el estado actual del código.
 - No mencionar nunca `.github/copilot-instructions.md` ni ningún cambio, estado local o actualización relacionado con ese archivo.
 - Evitar frases cliché o genéricas como "para mejorar mantenimiento y lisibilidad", "para mejorar funcionalidad" o "para mejorar el rendimiento"; el mensaje debe explicar qué cambió y ser lo bastante detallado para identificar los cambios posteriormente, sin agregar información que no corresponda al commit.
 - Los nuevos componentes deben tener su template en un archivo propio y siempre usar standalone; no crear módulos ni archivos de estilos.

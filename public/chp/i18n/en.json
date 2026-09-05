@@ -29,19 +29,26 @@
         "public_songbooks_view_group": "View all songbooks in {{name}}",
         "public_songbooks_view_all": "View all",
         "contribute_title": "Have an idea to improve it?",
-        "contribute_description": "You can share ideas through the <a href=\"#feedback\" data-feedback-link=\"true\">feedback form</a>. If you want to contribute code, ChordProject is also an open source project on <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>."
+        "contribute_description": "You can share ideas through the <a href=\"#feedback\" data-feedback-link=\"true\">feedback form</a>. If you want to contribute code, this site is also an open source project on <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>."
     },
     "nav": {
         "home": "Home",
         "library": "Library",
-        "create": "Create",
+        "studio": "Studio",
         "songbooks": "Songbooks",
         "repertoires": "Repertoires",
         "general": "General",
         "suggestions": "Suggestions",
         "feedback": "Feedback",
+        "my_group": "My group",
         "sign_in": "Sign in",
         "sign_up": "Sign up"
+    },
+    "studio_page": {
+        "eyebrow": "PLANNING",
+        "title": "Studio",
+        "description": "Create and prepare songs for your celebrations, meetings, and shared repertoires.",
+        "secondary": "Write, review, and save your lyrics with the site editing flow."
     },
     "library_page": {
         "title": "Song Library",
@@ -273,6 +280,11 @@
         "unexpected_error": "An unexpected error occurred",
         "back": "Back"
     },
+    "content_scope": {
+        "label": "Content scope",
+        "personal": "Only me",
+        "group": "My group"
+    },
     "feedback": {
         "open": "Talk to the team",
         "title": "Talk to the team",
@@ -464,6 +476,26 @@
         "switch_to_light": "Switch to light theme",
         "switch_to_dark": "Switch to dark theme"
     },
+    "music_group": {
+        "eyebrow": "Collaboration",
+        "title": "My group",
+        "description": "Create or join your musical group. Shared content will be added in a future phase.",
+        "back_home": "Back to home",
+        "loading": "Loading group...",
+        "current_group": "Current group",
+        "join_code": "Join code",
+        "leave": "Leave group",
+        "create_title": "Create a group",
+        "create_description": "Reserve your group's space so collaboration can be added later.",
+        "name_label": "Group name",
+        "create_action": "Create group",
+        "join_title": "Join a group",
+        "join_description": "Enter the code shared by the group.",
+        "code_label": "Group code",
+        "join_action": "Join",
+        "load_error": "The group could not be loaded.",
+        "action_error": "The action could not be completed."
+    },
     "auth": {
         "email_label": "Email address",
         "password_label": "Password",
@@ -483,10 +515,10 @@
         "sign_up_title": "Sign up",
         "have_account": "Already have an account?",
         "sign_in_link": "Sign in",
-        "name_label": "Name",
-        "company_label": "Company",
+        "display_name_label": "Display name",
+        "group_name_label": "Musical group (optional)",
+        "group_name_placeholder": "Your group name",
         "name_required": "You must enter your name",
-        "company_required": "You must enter your company name",
         "agree_with": "I agree with",
         "terms": "Terms",
         "and": "and",

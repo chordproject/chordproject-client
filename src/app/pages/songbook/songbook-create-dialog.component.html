@@ -13,11 +13,21 @@
             }
         </mat-form-field>
 
+        @if (data.canShareWithGroup) {
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label>{{ 'content_scope.label' | transloco }}</mat-label>
+                <mat-select formControlName="scope">
+                    <mat-option value="personal">{{ 'content_scope.personal' | transloco }}</mat-option>
+                    <mat-option value="group">{{ 'content_scope.group' | transloco }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        }
+
         <footer class="flex justify-end gap-3 pt-2">
             <button matButton="outlined" type="button" [matDialogClose]="undefined">
                 {{ 'confirmation.cancel' | transloco }}
             </button>
-            <button matButton="filled" type="submit">
+            <button matButton="filled" type="submit" [disabled]="form.invalid">
                 {{ 'songbook_create.submit' | transloco }}
             </button>
         </footer>

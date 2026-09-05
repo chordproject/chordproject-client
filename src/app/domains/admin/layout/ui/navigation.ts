@@ -69,7 +69,15 @@ import { AdminRepertoiresNavigation } from '@/app/domains/admin/layout/data/repe
                 cdkMonitorElementFocus
                 ngTreeItem
                 routerLinkActive="bg-neutral-700/10 dark:bg-neutral-300/10"
-                class="navigation-item flex cursor-pointer items-center gap-x-2 rounded-lg px-2.5 py-2 select-none hover:bg-neutral-700/10 dark:hover:bg-neutral-300/10"
+                class="navigation-item flex cursor-pointer items-center gap-x-2 rounded-lg px-2.5 py-2 select-none transition-colors hover:bg-neutral-700/10 dark:hover:bg-neutral-300/10"
+                [class.border]="node.category"
+                [class.border-primary-200]="node.category"
+                [class.bg-primary-50/80]="node.category"
+                [class.text-primary-700]="node.category"
+                [class.dark:border-primary-800/80]="node.category"
+                [class.dark:bg-primary-500/10]="node.category"
+                [class.dark:text-primary-300]="node.category"
+                [class.shadow-sm]="node.category"
                 [parent]="parent"
                 [value]="node.id"
                 [label]="node.dynamic ? node.label : (node.label | transloco)"
@@ -104,7 +112,12 @@ import { AdminRepertoiresNavigation } from '@/app/domains/admin/layout/data/repe
 
                   <!-- Description -->
                   @if (node.description) {
-                    <div class="text-xs">
+                    <div
+                      class="text-[10px] font-medium uppercase tracking-[0.12em]"
+                      [class.text-primary-500]="node.category"
+                      [class.dark:text-primary-300]="node.category"
+                      [class.text-neutral-500]="!node.category"
+                    >
                       {{ node.description }}
                     </div>
                   }

@@ -1,5 +1,7 @@
 {
     "auth": {
+        "group_name_label": "Ministère ou groupe musical (facultatif)",
+        "group_name_placeholder": "Nom du ministère ou du groupe",
         "back_to_home": "Retour à HomenaJesus"
     },
     "home": {
@@ -19,13 +21,7 @@
         "upcoming_repertoire_eyebrow": "Prochaine célébration",
         "upcoming_repertoire_songs": "Chants préparés",
         "upcoming_repertoire_song_count": "{{count}} chants",
-        "upcoming_repertoire_empty": "Aucun chant attribué pour le moment.",
-        "public_songbooks_title": "Carnets publics",
-        "public_songbooks_count": "{{count}}",
-        "public_songbooks_view_group": "Voir tous les carnets de {{name}}",
-        "public_songbooks_view_all": "Voir tout",
-        "contribute_title": "Une idée pour l'améliorer ?",
-        "contribute_description": "Vous pouvez partager vos suggestions, problèmes ou besoins d'équipe avec le <a href=\"#feedback\" data-feedback-link=\"true\">formulaire de feedback</a>. Chaque commentaire aide à prioriser les prochaines améliorations."
+        "upcoming_repertoire_empty": "Aucun chant attribué pour le moment."
     },
     "songbook_page": {
         "option_use_official": "Explorez les carnets publics organisés par temps, thématiques ou célébrations."

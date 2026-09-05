@@ -35,10 +35,16 @@ export const NAVIGATION: NavigationItem[] = [
         route: '/library',
       },
       {
-        id: 'general/create',
-        label: 'nav.create',
+        id: 'general/studio',
+        label: 'nav.studio',
         icon: 'brackets',
         route: '/songs/create',
+      },
+      {
+        id: 'general/group',
+        label: 'nav.my_group',
+        icon: 'users-round',
+        route: '/group',
       },
       {
         id: 'general/songbooks',

@@ -99,10 +99,26 @@ export class SongbookService {
 
         return this._songbooksChanged.pipe(
             startWith(undefined),
-            switchMap(() => from(getDocs(query(collection(this._firestore, 'songbooks'), where('ownerId', '==', userId))))),
-            map((snapshot) => snapshot.docs
+            switchMap(() => from(Promise.all([
+                getDocs(query(collection(this._firestore, 'songbooks'), where('ownerId', '==', userId))),
+                getDoc(doc(this._firestore, 'users', userId)),
+            ]))),
+            switchMap(([ownedSnapshot, userSnapshot]) => {
+                const groupId = userSnapshot.data()?.['groupId'];
+                return groupId
+                    ? from(Promise.all([
+                        Promise.resolve(ownedSnapshot),
+                        getDocs(query(collection(this._firestore, 'songbooks'), where('groupId', '==', groupId))),
+                    ]))
+                    : of([ownedSnapshot, null] as const);
+            }),
+            map(([ownedSnapshot, groupSnapshot]) => {
+                const documents = [...ownedSnapshot.docs, ...(groupSnapshot?.docs ?? [])];
+                const unique = new Map(documents.map((songbookDoc) => [songbookDoc.id, songbookDoc]));
+                return [...unique.values()]
                     .map((songbookDoc) => ({ ...songbookDoc.data(), uid: songbookDoc.id }) as Songbook)
-                    .filter((songbook) => this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook))),
+                    .filter((songbook) => this.isActiveSongbook(songbook) && this.isPersonalSongbook(songbook));
+            }),
             catchError((error) => this.handleError(error))
         );
     }

@@ -14,6 +14,7 @@ import { EventType } from 'app/models/event-type';
 
 export type RepertoireCreateDialogData = {
     eventTypes: EventType[];
+    canShareWithGroup: boolean;
 };
 
 export type RepertoireCreateDialogResult = {
@@ -21,6 +22,7 @@ export type RepertoireCreateDialogResult = {
     title: string;
     description?: string;
     date: Date;
+    scope: 'personal' | 'group';
 };
 
 @Component({
@@ -51,6 +53,7 @@ export class RepertoireCreateDialogComponent {
         title: ['', [Validators.required, Validators.minLength(2)]],
         description: [''],
         date: [new Date(), Validators.required],
+        scope: ['personal' as 'personal' | 'group', Validators.required],
     });
 
     submit(): void {
@@ -65,6 +68,7 @@ export class RepertoireCreateDialogComponent {
             title: value.title.trim(),
             description: value.description?.trim() || undefined,
             date: value.date,
+            scope: value.scope,
         });
     }
 }

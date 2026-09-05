@@ -29,19 +29,26 @@
         "public_songbooks_view_group": "Voir tous les carnets de {{name}}",
         "public_songbooks_view_all": "Voir tout",
         "contribute_title": "Une idée pour l'améliorer ?",
-        "contribute_description": "Vous pouvez partager vos idées avec le <a href=\"#feedback\" data-feedback-link=\"true\">formulaire de feedback</a>. Si vous voulez contribuer au code, ChordProject est aussi un projet open source sur <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>."
+        "contribute_description": "Vous pouvez partager vos idées avec le <a href=\"#feedback\" data-feedback-link=\"true\">formulaire de feedback</a>. Si vous voulez contribuer au code, ce site est aussi un projet open source sur <a href=\"https://github.com/chordproject\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a>."
     },
     "nav": {
         "home": "Accueil",
         "library": "Bibliothèque",
-        "create": "Créer",
+        "studio": "Studio",
         "songbooks": "Carnets",
         "repertoires": "Répertoires",
         "general": "Général",
         "suggestions": "Suggestions",
-        "feedback": "Commentaires",
+        "feedback": "Feedback",
+        "my_group": "Mon groupe",
         "sign_in": "Se connecter",
         "sign_up": "S'inscrire"
+    },
+    "studio_page": {
+        "eyebrow": "PLANIFICATION",
+        "title": "Studio",
+        "description": "Créez et préparez des chansons pour vos célébrations, réunions et répertoires partagés.",
+        "secondary": "Rédigez, révisez et enregistrez vos paroles avec le flux d'édition du site."
     },
     "library_page": {
         "title": "Bibliothèque de chansons",
@@ -273,6 +280,11 @@
         "unexpected_error": "Une erreur inattendue s'est produite",
         "back": "Retour"
     },
+    "content_scope": {
+        "label": "Portée du contenu",
+        "personal": "Moi uniquement",
+        "group": "Mon groupe"
+    },
     "feedback": {
         "open": "Parler à l'équipe",
         "title": "Parler à l'équipe",
@@ -464,6 +476,26 @@
         "switch_to_light": "Passer au thème clair",
         "switch_to_dark": "Passer au thème sombre"
     },
+    "music_group": {
+        "eyebrow": "Collaboration",
+        "title": "Mon groupe",
+        "description": "Créez ou rejoignez votre groupe musical. Le contenu partagé sera ajouté lors d'une prochaine phase.",
+        "back_home": "Retour à l'accueil",
+        "loading": "Chargement du groupe...",
+        "current_group": "Groupe actuel",
+        "join_code": "Code d'invitation",
+        "leave": "Quitter le groupe",
+        "create_title": "Créer un groupe",
+        "create_description": "Réservez l'espace de votre groupe pour préparer la collaboration à venir.",
+        "name_label": "Nom du groupe",
+        "create_action": "Créer le groupe",
+        "join_title": "Rejoindre un groupe",
+        "join_description": "Saisissez le code partagé par le groupe.",
+        "code_label": "Code du groupe",
+        "join_action": "Rejoindre",
+        "load_error": "Le groupe n'a pas pu être chargé.",
+        "action_error": "L'action n'a pas pu être effectuée."
+    },
     "auth": {
         "email_label": "Adresse e-mail",
         "password_label": "Mot de passe",
@@ -483,10 +515,10 @@
         "sign_up_title": "Inscription",
         "have_account": "Vous avez déjà un compte ?",
         "sign_in_link": "Connectez-vous",
-        "name_label": "Nom",
-        "company_label": "Entreprise",
+        "display_name_label": "Nom affiché",
+        "group_name_label": "Groupe musical (facultatif)",
+        "group_name_placeholder": "Nom de votre groupe",
         "name_required": "Vous devez saisir votre nom",
-        "company_required": "Vous devez saisir le nom de votre entreprise",
         "agree_with": "J'accepte les",
         "terms": "Conditions",
         "and": "et",

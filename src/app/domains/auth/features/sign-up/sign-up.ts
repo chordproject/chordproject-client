@@ -46,14 +46,13 @@ export default class AuthSignUp {
     name: '',
     email: '',
     password: '',
-    company: '',
+    declaredGroupName: '',
   });
   protected signUpForm = form(this.signUpFormModel, (form) => {
     required(form.name, { message: 'auth.name_required' });
     required(form.email, { message: 'auth.email_required' });
     email(form.email, { message: 'auth.email_invalid' });
     required(form.password, { message: 'auth.password_required' });
-    required(form.company, { message: 'auth.company_required' });
   });
 
   /** Only allow same-app relative paths as a redirect target, to avoid an open redirect. */
@@ -66,9 +65,9 @@ export default class AuthSignUp {
     event.preventDefault();
 
     submit(this.signUpForm, async () => {
-      const { email, password } = this.signUpFormModel();
+      const { name, email, password, declaredGroupName } = this.signUpFormModel();
       try {
-        await firstValueFrom(this.authService.createUser(email, password));
+        await firstValueFrom(this.authService.createUser(email, password, name, declaredGroupName));
         this.router.navigate(['/auth/sign-in'], { queryParams: { returnUrl: this.getReturnUrl() } });
       } catch {
         // Error already surfaced to the user via AuthService's snackbar.

@@ -14,6 +14,16 @@
             </mat-select>
         </mat-form-field>
 
+        @if (data.canShareWithGroup) {
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
+                <mat-label>{{ 'content_scope.label' | transloco }}</mat-label>
+                <mat-select formControlName="scope">
+                    <mat-option value="personal">{{ 'content_scope.personal' | transloco }}</mat-option>
+                    <mat-option value="group">{{ 'content_scope.group' | transloco }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        }
+
         <mat-form-field class="w-full" subscriptSizing="dynamic">
             <mat-label>{{ 'repertoire_page.title_label' | transloco }}</mat-label>
             <input matInput formControlName="title" />
@@ -45,7 +55,7 @@
             <button matButton="outlined" type="button" [matDialogClose]="undefined">
                 {{ 'confirmation.cancel' | transloco }}
             </button>
-            <button matButton="filled" type="submit">
+            <button matButton="filled" type="submit" [disabled]="form.invalid">
                 {{ 'repertoire_page.create' | transloco }}
             </button>
         </footer>

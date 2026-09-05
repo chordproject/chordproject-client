@@ -10,6 +10,7 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { Observable, Subject, combineLatest, finalize, from, map, of, switchMap, take, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { SongbookService } from 'app/core/firebase/api/songbook.service';
+import { MusicGroupService } from 'app/core/firebase/api/music-group.service';
 import { UserService } from 'app/core/user/user.service';
 import { Songbook } from 'app/models/songbook';
 import { environment } from 'environments/environment';
@@ -38,6 +39,7 @@ export class SongbookListComponent implements OnDestroy {
 
     constructor(
         private _songbookService: SongbookService,
+        private _musicGroupService: MusicGroupService,
         private _confirmationService: FuseConfirmationService,
         private _snackBar: MatSnackBar,
         private _userService: UserService,
@@ -92,17 +94,24 @@ export class SongbookListComponent implements OnDestroy {
             return;
         }
 
-        this._matDialog
-            .open(SongbookCreateDialogComponent)
-            .afterClosed()
+        from(this._musicGroupService.getMyGroup()).pipe(
+            take(1),
+            switchMap((group) => this._matDialog.open(SongbookCreateDialogComponent, { data: { canShareWithGroup: Boolean(group) } }).afterClosed().pipe(
+                map((result) => ({ result, groupId: group?.group.uid }))
+            ))
+        )
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
+            .subscribe(({ result, groupId }) => {
                 if (!result) {
                     return;
                 }
 
                 this.creatingSongbook.set(true);
-                from(this._songbookService.save({ name: result.name, scope: 'personal' } as Songbook))
+                from(this._songbookService.save({
+                    name: result.name,
+                    scope: result.scope,
+                    groupId: result.scope === 'group' ? groupId : undefined,
+                } as Songbook))
                     .pipe(
                         finalize(() => this.creatingSongbook.set(false)),
                         takeUntil(this._unsubscribeAll)

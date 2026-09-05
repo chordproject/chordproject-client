@@ -16,7 +16,7 @@
             <button matButton="outlined" type="button" [matDialogClose]="undefined">
                 {{ 'confirmation.cancel' | transloco }}
             </button>
-            <button matButton="filled" type="submit">
+            <button matButton="filled" type="submit" [disabled]="form.invalid">
                 {{ 'repertoire_page.add_group' | transloco }}
             </button>
         </footer>

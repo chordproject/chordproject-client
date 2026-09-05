@@ -5,7 +5,8 @@ export class BaseDocument {
     authorId: string;
     ownerId?: string;
     source: string;
-    scope?: 'personal' | 'shared';
+    scope?: 'personal' | 'group' | 'shared';
+    groupId?: string;
     published?: boolean;
     isTemplate?: boolean;
     copiedFrom?: string;

@@ -20,6 +20,24 @@ service cloud.firestore {
         );
     }
 
+    function isMemberOf(groupId) {
+      return isSignedIn()
+        && groupId is string
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.groupId == groupId;
+    }
+
+    function canReadScopedContent(data) {
+      return isAdmin()
+        || owns(data)
+        || (data.scope == 'group' && isMemberOf(data.groupId))
+        || (data.scope == 'shared' && data.published == true);
+    }
+
+    function canReadSongbook(songbookId) {
+      return songbookExists(songbookId)
+        && canReadScopedContent(get(/databases/$(database)/documents/songbooks/$(songbookId)).data);
+    }
+
     function keepsAuthorId() {
       return request.resource.data.authorId == resource.data.authorId;
     }
@@ -105,13 +123,14 @@ service cloud.firestore {
     }
 
     match /songbooks/{songbookId} {
-      allow read: if isAdmin()
-        || owns(resource.data)
-        || (resource.data.scope == 'shared' && resource.data.published == true);
+      allow read: if canReadScopedContent(resource.data);
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid
         && request.resource.data.ownerId == request.auth.uid
-        && request.resource.data.scope == 'personal'
+        && (
+          (request.resource.data.scope == 'personal' && !('groupId' in request.resource.data))
+          || (request.resource.data.scope == 'group' && isMemberOf(request.resource.data.groupId))
+        )
         && request.resource.data.published == false
         && request.resource.data.isTemplate == false;
       allow update: if isAdmin()
@@ -145,8 +164,7 @@ service cloud.firestore {
 
     match /songbook_songs/{relationId} {
       allow read: if isAdmin()
-        || songbookOwner(resource.data.songbookId)
-        || resource.data.songbookPublic == true;
+        || canReadSongbook(resource.data.songbookId);
       allow create: if isSignedIn()
         && request.resource.data.author_uid == request.auth.uid
         && request.resource.data.ownerId == request.auth.uid
@@ -233,6 +251,27 @@ service cloud.firestore {
         && request.auth.uid == uid;
     }
 
+    match /music_groups/{groupId} {
+      allow get: if isSignedIn();
+      allow list: if false;
+      allow create: if isSignedIn()
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.status == 'active';
+      allow update: if isAdmin() || (isSignedIn() && resource.data.ownerId == request.auth.uid);
+      allow delete: if isAdmin() || (isSignedIn() && resource.data.ownerId == request.auth.uid);
+    }
+
+    match /music_group_members/{membershipId} {
+      allow read: if isAdmin()
+        || (isSignedIn() && resource.data.userId == request.auth.uid)
+        || (isSignedIn() && exists(/databases/$(database)/documents/music_groups/$(resource.data.groupId))
+          && get(/databases/$(database)/documents/music_groups/$(resource.data.groupId)).data.ownerId == request.auth.uid);
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == 'active';
+      allow delete: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+    }
+
     match /event_types/{eventTypeId} {
       allow read: if true;
       allow create: if isSignedIn()
@@ -256,9 +295,14 @@ service cloud.firestore {
     }
 
     match /repertoires/{repertoireId} {
-      allow read: if true;
+      allow read: if canReadScopedContent(resource.data);
       allow create: if isSignedIn()
-        && request.resource.data.authorId == request.auth.uid;
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.ownerId == request.auth.uid
+        && (
+          (request.resource.data.scope == 'personal' && !('groupId' in request.resource.data))
+          || (request.resource.data.scope == 'group' && isMemberOf(request.resource.data.groupId))
+        );
       allow update: if isAdmin()
         || (owns(resource.data)
         && keepsAuthorId()
@@ -267,7 +311,7 @@ service cloud.firestore {
     }
 
     match /repertoire_groups/{groupId} {
-      allow read: if true;
+      allow read: if isAdmin() || owns(resource.data);
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
       allow update: if isAdmin()
@@ -278,7 +322,7 @@ service cloud.firestore {
     }
 
     match /repertoire_group_members/{memberId} {
-      allow read: if true;
+      allow read: if isAdmin() || owns(resource.data);
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
       allow update: if isAdmin()
@@ -289,7 +333,10 @@ service cloud.firestore {
     }
 
     match /repertoire_songs/{repertoireSongId} {
-      allow read: if true;
+      allow read: if isAdmin()
+        || owns(resource.data)
+        || (exists(/databases/$(database)/documents/repertoires/$(resource.data.repertoireId))
+          && canReadScopedContent(get(/databases/$(database)/documents/repertoires/$(resource.data.repertoireId)).data));
       allow create: if isSignedIn()
         && request.resource.data.authorId == request.auth.uid;
       allow update: if isAdmin()

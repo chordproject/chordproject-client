@@ -94,7 +94,7 @@
         <div class="flex flex-col gap-y-4">
           <!-- Name field -->
           <mat-form-field class="w-full">
-            <mat-label>{{ 'auth.name_label' | transloco }}</mat-label>
+            <mat-label>{{ 'auth.display_name_label' | transloco }}</mat-label>
             <input
               id="name"
               matInput
@@ -109,23 +109,15 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Company field -->
+          <!-- Optional musical group or ministry field -->
           <mat-form-field class="w-full">
-            <mat-label>{{ 'auth.company_label' | transloco }}</mat-label>
+            <mat-label>{{ 'auth.group_name_label' | transloco }}</mat-label>
             <input
-              id="company"
+              id="declaredGroupName"
               matInput
-              [formField]="signUpForm.company"
+              [formField]="signUpForm.declaredGroupName"
+              [placeholder]="'auth.group_name_placeholder' | transloco"
             />
-            <mat-error>
-              @if (
-                signUpForm.company().touched() && signUpForm.company().invalid()
-              ) {
-                @for (error of signUpForm.company().errors(); track error) {
-                  {{ error.message | transloco }}
-                }
-              }
-            </mat-error>
           </mat-form-field>
 
           <!-- Email field -->

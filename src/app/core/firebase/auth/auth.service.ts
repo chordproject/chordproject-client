@@ -14,7 +14,9 @@ import {
     signInWithPopup,
     signOut,
     User,
+    updateProfile,
 } from 'firebase/auth';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { FirebaseService } from '../firebase.service';
@@ -23,6 +25,7 @@ import { FirebaseService } from '../firebase.service';
     providedIn: 'root',
 })
 export class AuthService {
+    private _firebase: FirebaseService;
     private _auth: Auth;
     private _snackBar: MatSnackBar;
     private _router: Router;
@@ -33,6 +36,7 @@ export class AuthService {
 
     constructor() {
         const firebase = inject(FirebaseService);
+        this._firebase = firebase;
         this._auth = firebase.auth;
         this._snackBar = inject(MatSnackBar);
         this._router = inject(Router);
@@ -108,10 +112,28 @@ export class AuthService {
         );
     }
 
-    createUser(email: string, password: string): Observable<User> {
+    createUser(email: string, password: string, displayName?: string, declaredGroupName?: string): Observable<User> {
         return from(
             createUserWithEmailAndPassword(this._auth, email, password)
-                .then((result) => {
+                .then(async (result) => {
+                    const profile = {
+                        displayName: displayName?.trim() || undefined,
+                    };
+                    if (profile.displayName) {
+                        await updateProfile(result.user, profile);
+                    }
+                    const profileData = Object.fromEntries(
+                        Object.entries({
+                            uid: result.user.uid,
+                            email: result.user.email,
+                            displayName: profile.displayName,
+                            declaredGroupName: declaredGroupName?.trim() || undefined,
+                            groupId: null,
+                            groupPromptDismissed: false,
+                            creationDate: serverTimestamp(),
+                        }).filter(([, value]) => value !== undefined)
+                    );
+                    await setDoc(doc(this._firebase.firestore, 'users', result.user.uid), profileData, { merge: true });
                     return result.user;
                 })
                 .catch((error) => {

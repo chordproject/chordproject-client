@@ -48,6 +48,11 @@ const routes: Routes = [
         canActivate: [authGuard],
         loadChildren: () => import('./modules/feedback/routes'),
       },
+      {
+        path: 'group',
+        canActivate: [authGuard],
+        loadComponent: () => import('app/pages/music-group/music-group.component'),
+      },
 
       // -----------------------------------------------------------------------
       // Extras

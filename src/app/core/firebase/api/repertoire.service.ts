@@ -81,23 +81,60 @@ export class RepertoireService {
     }
 
     getRepertoires(): Observable<Repertoire[]> {
+        const userId = this.auth.currentUser?.uid;
+
         return this._changed.pipe(
             startWith(undefined),
-            switchMap(() => from(getDocs(query(collection(this.firestore, 'repertoires'), orderBy('date', 'desc'))))),
-            map((snapshot) => snapshot.docs.map((document) => this.toRepertoire(document.id, document.data()))),
+            switchMap(() => from(Promise.all([
+                userId
+                    ? getDocs(query(collection(this.firestore, 'repertoires'), where('ownerId', '==', userId)))
+                    : Promise.resolve(null),
+                userId ? getDoc(doc(this.firestore, 'users', userId)) : Promise.resolve(null),
+                getDocs(query(
+                    collection(this.firestore, 'repertoires'),
+                    where('scope', '==', 'shared'),
+                    where('published', '==', true)
+                )),
+            ]))),
+            switchMap(([ownedSnapshot, userSnapshot, sharedSnapshot]) => {
+                const groupId = userSnapshot?.data()?.['groupId'];
+                return groupId
+                    ? from(Promise.all([
+                        ownedSnapshot,
+                        getDocs(query(collection(this.firestore, 'repertoires'), where('groupId', '==', groupId))),
+                        sharedSnapshot,
+                    ]))
+                    : from([[ownedSnapshot, null, sharedSnapshot] as const]);
+            }),
+            map(([ownedSnapshot, groupSnapshot, sharedSnapshot]) => {
+                const documents = [
+                    ...(ownedSnapshot?.docs ?? []),
+                    ...(groupSnapshot?.docs ?? []),
+                    ...sharedSnapshot.docs,
+                ];
+                const unique = new Map(documents.map((document) => [document.id, document]));
+                return [...unique.values()]
+                    .map((document) => this.toRepertoire(document.id, document.data()))
+                    .sort((first, second) => second.date.getTime() - first.date.getTime());
+            }),
             catchError((error) => this.handleError(error))
         );
     }
 
     getRepertoireGroups(): Observable<RepertoireGroupWithChildren[]> {
+        const userId = this.auth.currentUser?.uid;
+        if (!userId) {
+            return from([[] as RepertoireGroupWithChildren[]]);
+        }
+
         return this._changed.pipe(
             startWith(undefined),
             switchMap(() =>
                 from(
                     Promise.all([
-                        getDocs(collection(this.firestore, 'repertoire_groups')),
-                        getDocs(collection(this.firestore, 'repertoire_group_members')),
-                        getDocs(collection(this.firestore, 'repertoires')),
+                        getDocs(query(collection(this.firestore, 'repertoire_groups'), where('ownerId', '==', userId))),
+                        getDocs(query(collection(this.firestore, 'repertoire_group_members'), where('authorId', '==', userId))),
+                        getDocs(query(collection(this.firestore, 'repertoires'), where('ownerId', '==', userId))),
                     ])
                 )
             ),
@@ -476,6 +513,7 @@ export class RepertoireService {
                 ...normalizedValue,
                 uid: undefined,
                 authorId: normalizedValue.authorId || this.auth.currentUser.uid,
+                ownerId: normalizedValue.ownerId || this.auth.currentUser.uid,
                 creationDate: normalizedValue.creationDate || serverTimestamp(),
                 lastUpdateDate: serverTimestamp(),
             }).filter(([, fieldValue]) => fieldValue !== undefined)

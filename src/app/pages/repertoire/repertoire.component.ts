@@ -11,8 +11,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, Router } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Subject, forkJoin, of, takeUntil } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { catchError, map, take } from 'rxjs/operators';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
+import { MusicGroupService } from 'app/core/firebase/api/music-group.service';
 import { RepertoireService } from 'app/core/firebase/api/repertoire.service';
 import { SongService } from 'app/core/firebase/api/song.service';
 import { AuthService } from 'app/core/firebase/auth/auth.service';
@@ -63,7 +65,8 @@ export class RepertoireComponent implements OnInit, OnDestroy {
         private readonly confirmationService: FuseConfirmationService,
         private readonly changeDetectorRef: ChangeDetectorRef,
         private readonly router: Router,
-        private readonly matDialog: MatDialog
+        private readonly matDialog: MatDialog,
+        private readonly musicGroupService: MusicGroupService
     ) {}
 
     ngOnInit(): void {
@@ -248,18 +251,24 @@ export class RepertoireComponent implements OnInit, OnDestroy {
     }
 
     openCreateRepertoireDialog(): void {
-        this.matDialog
-            .open(RepertoireCreateDialogComponent, { data: { eventTypes: this.eventTypes } })
-            .afterClosed()
+        this.musicGroupService.getMyGroup()
+            .pipe(
+                take(1),
+                switchMap((group) => this.matDialog.open(RepertoireCreateDialogComponent, {
+                    data: { eventTypes: this.eventTypes, canShareWithGroup: Boolean(group) },
+                }).afterClosed().pipe(
+                    map((result) => ({ result, groupId: group?.group.uid }))
+                ))
+            )
             .pipe(takeUntil(this.unsubscribeAll))
-            .subscribe((result) => {
+            .subscribe(({ result, groupId }) => {
                 if (result) {
-                    this.saveNewRepertoire(result);
+                    this.saveNewRepertoire(result, groupId);
                 }
             });
     }
 
-    private async saveNewRepertoire(result: RepertoireCreateDialogResult): Promise<void> {
+    private async saveNewRepertoire(result: RepertoireCreateDialogResult, groupId?: string): Promise<void> {
         const isAuthenticated = await new Promise<boolean>((resolve) =>
             this.userService.isAuthenticated().pipe(take(1)).subscribe(resolve)
         );
@@ -272,6 +281,7 @@ export class RepertoireComponent implements OnInit, OnDestroy {
                     title: result.title,
                     description: result.description,
                     date: result.date.toISOString(),
+                    scope: result.scope,
                 })
             );
             this.authService.promptSignIn();
@@ -283,6 +293,8 @@ export class RepertoireComponent implements OnInit, OnDestroy {
             title: result.title,
             description: result.description,
             date: result.date,
+            scope: result.scope,
+            groupId: result.scope === 'group' ? groupId : undefined,
         } as Repertoire);
         if (uid) {
             this.router.navigate(['/repertoires', uid]);
@@ -312,6 +324,7 @@ export class RepertoireComponent implements OnInit, OnDestroy {
                         title: draft.title,
                         description: draft.description,
                         date: draft.date ? new Date(draft.date) : new Date(),
+                        scope: draft.scope === 'group' ? 'group' : 'personal',
                     });
                 } catch {
                     // Ignore a corrupted draft.
